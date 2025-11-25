@@ -1,4 +1,4 @@
-import { Shield, Heart, Car, Home, Stethoscope, AlertCircle } from "lucide-react";
+import { Shield, Heart, Car, Home, Stethoscope, AlertCircle, Umbrella, Banknote, Users, FileWarning } from "lucide-react";
 
 export const policies = [
   {
@@ -11,7 +11,27 @@ export const policies = [
     premium: "$350/mo",
     icon: Heart,
     color: "text-rose-500 bg-rose-50",
-    status: "Active"
+    status: "Active",
+    details: {
+      pendingPayments: 0,
+      lastPayment: "2025-11-01",
+      nextPaymentDue: "2025-12-01",
+      beneficiaries: ["Jane Doe (Spouse)", "Timmy Doe (Child)"],
+      claims: [
+        { id: "CLM-001", date: "2025-08-15", reason: "Annual Checkup", amount: "$150", status: "Paid" },
+        { id: "CLM-002", date: "2025-10-02", reason: "Emergency Room", amount: "$1,200", status: "Pending" }
+      ],
+      coverageLimits: {
+        hospitalStay: "$5,000/day",
+        prescription: "$500/year",
+        specialist: "$100 co-pay"
+      },
+      gapAnalysis: {
+        score: 85,
+        gaps: ["Dental coverage is minimal"],
+        proposals: ["Add Dental Plus for $20/mo"]
+      }
+    }
   },
   {
     id: 2,
@@ -23,7 +43,24 @@ export const policies = [
     premium: "$120/mo",
     icon: Car,
     color: "text-blue-500 bg-blue-50",
-    status: "Active"
+    status: "Active",
+    details: {
+      pendingPayments: 120,
+      lastPayment: "2025-10-15",
+      nextPaymentDue: "2025-11-15",
+      beneficiaries: ["Self"],
+      claims: [],
+      coverageLimits: {
+        liability: "$50,000",
+        comprehensive: "$500 deductible",
+        collision: "$500 deductible"
+      },
+      gapAnalysis: {
+        score: 60,
+        gaps: ["Low liability limit"],
+        proposals: ["Increase liability to $100k for $10/mo"]
+      }
+    }
   },
   {
     id: 3,
@@ -35,7 +72,26 @@ export const policies = [
     premium: "$180/mo",
     icon: Home,
     color: "text-amber-500 bg-amber-50",
-    status: "Review Needed"
+    status: "Review Needed",
+    details: {
+      pendingPayments: 0,
+      lastPayment: "2025-11-01",
+      nextPaymentDue: "2025-12-01",
+      beneficiaries: ["Jane Doe (Spouse)"],
+      claims: [
+         { id: "CLM-HOME-01", date: "2024-05-20", reason: "Storm Damage", amount: "$2,500", status: "Paid" }
+      ],
+      coverageLimits: {
+        dwelling: "$750,000",
+        personalProperty: "$100,000",
+        liability: "$300,000"
+      },
+      gapAnalysis: {
+        score: 90,
+        gaps: [],
+        proposals: []
+      }
+    }
   },
   {
     id: 4,
@@ -47,7 +103,22 @@ export const policies = [
     premium: "$90/mo",
     icon: Shield,
     color: "text-emerald-500 bg-emerald-50",
-    status: "Active"
+    status: "Active",
+    details: {
+      pendingPayments: 0,
+      lastPayment: "2025-11-01",
+      nextPaymentDue: "2025-12-01",
+      beneficiaries: ["Jane Doe (Spouse)", "Timmy Doe (Child)"],
+      claims: [],
+      coverageLimits: {
+        deathBenefit: "$1,000,000"
+      },
+      gapAnalysis: {
+        score: 75,
+        gaps: ["Term expires in 5 years"],
+        proposals: ["Convert to Whole Life"]
+      }
+    }
   }
 ];
 

@@ -1,5 +1,6 @@
+import { Link } from "wouter";
 import { motion } from "framer-motion";
-import { Download, Share2, AlertCircle, CheckCircle2 } from "lucide-react";
+import { Download, Share2, AlertCircle, CheckCircle2, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -16,6 +17,7 @@ interface PolicyProps {
   color: string;
   status: string;
   index?: number;
+  details?: any;
 }
 
 export default function PolicyCard({ policy, index = 0 }: { policy: PolicyProps, index?: number }) {
@@ -25,7 +27,7 @@ export default function PolicyCard({ policy, index = 0 }: { policy: PolicyProps,
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
     >
-      <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 border-muted group bg-white">
+      <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 border-muted group bg-white h-full flex flex-col">
         <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
           <div className="flex items-center gap-3">
             <div className={`h-10 w-10 rounded-xl flex items-center justify-center ${policy.color}`}>
@@ -41,7 +43,7 @@ export default function PolicyCard({ policy, index = 0 }: { policy: PolicyProps,
             {policy.status}
           </Badge>
         </CardHeader>
-        <CardContent className="pt-4">
+        <CardContent className="pt-4 flex-1">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1">
               <p className="text-xs text-muted-foreground uppercase tracking-wider font-medium">Coverage</p>
@@ -62,13 +64,15 @@ export default function PolicyCard({ policy, index = 0 }: { policy: PolicyProps,
           </div>
         </CardContent>
         <CardFooter className="bg-muted/30 p-3 flex gap-2">
+          <Link href={`/policies/${policy.id}`} className="flex-1">
+             <Button variant="outline" size="sm" className="w-full h-8 text-xs hover:bg-white hover:shadow-sm border-primary/20 text-primary hover:text-primary bg-white">
+               <Eye className="h-3.5 w-3.5 mr-2" />
+               Details
+             </Button>
+          </Link>
           <Button variant="ghost" size="sm" className="flex-1 h-8 text-xs hover:bg-white hover:shadow-sm">
             <Download className="h-3.5 w-3.5 mr-2" />
-            Download
-          </Button>
-          <Button variant="ghost" size="sm" className="flex-1 h-8 text-xs hover:bg-white hover:shadow-sm">
-            <Share2 className="h-3.5 w-3.5 mr-2" />
-            Share
+            Docs
           </Button>
         </CardFooter>
       </Card>
