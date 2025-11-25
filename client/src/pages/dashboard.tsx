@@ -1,0 +1,100 @@
+import { policies, notifications, appointments } from "@/lib/mockData";
+import PolicyCard from "@/components/policy-card";
+import { Button } from "@/components/ui/button";
+import { Bell, Plus, ChevronRight, Calendar } from "lucide-react";
+import { Link } from "wouter";
+import generatedImage from '@assets/generated_images/friendly_3d_isometric_insurance_wallet_icon.png';
+
+export default function Dashboard() {
+  const today = new Date();
+  const upcomingAppointment = appointments[0];
+
+  return (
+    <div className="space-y-8">
+      {/* Hero / Welcome Section */}
+      <section className="flex flex-col md:flex-row items-center justify-between gap-6 bg-primary rounded-3xl p-6 md:p-10 text-white shadow-xl shadow-primary/20 relative overflow-hidden">
+        <div className="relative z-10 space-y-4 max-w-lg">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white/90 text-xs font-medium backdrop-blur-sm border border-white/10">
+            <Bell className="h-3 w-3" />
+            <span>You have {notifications.length} new updates</span>
+          </div>
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tight">Welcome back, Alex</h1>
+          <p className="text-white/80 text-lg">Your insurance health score is <span className="font-bold text-white">92/100</span>. You're well covered!</p>
+          <div className="flex gap-3 pt-2">
+            <Button className="bg-white text-primary hover:bg-white/90 shadow-sm border-0" data-testid="button-add-policy">
+              <Plus className="h-4 w-4 mr-2" />
+              Add Policy
+            </Button>
+            <Link href="/analysis">
+              <Button variant="outline" className="bg-transparent border-white/30 text-white hover:bg-white/10 hover:text-white hover:border-white/50">
+                View Analysis
+              </Button>
+            </Link>
+          </div>
+        </div>
+        <div className="absolute right-0 bottom-0 md:h-[140%] h-[120%] w-1/2 opacity-20 md:opacity-100 pointer-events-none">
+          <div className="absolute inset-0 bg-gradient-to-l from-transparent to-primary md:hidden"></div>
+          <img src={generatedImage} alt="3D Wallet" className="h-full w-full object-contain object-right-bottom" />
+        </div>
+      </section>
+
+      {/* Upcoming Section */}
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="md:col-span-2 space-y-6">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-bold text-foreground">Active Policies</h2>
+            <Link href="/policies">
+              <a className="text-sm text-primary font-medium hover:underline flex items-center">
+                View All <ChevronRight className="h-4 w-4 ml-1" />
+              </a>
+            </Link>
+          </div>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {policies.slice(0, 2).map((policy, i) => (
+              <PolicyCard key={policy.id} policy={policy} index={i} />
+            ))}
+          </div>
+        </div>
+
+        <div className="space-y-6">
+           <h2 className="text-xl font-bold text-foreground">Up Next</h2>
+           <div className="bg-white rounded-2xl p-5 shadow-sm border border-muted space-y-4">
+              <div className="flex items-center gap-3 text-primary">
+                <div className="bg-primary/10 p-2 rounded-lg">
+                  <Calendar className="h-5 w-5" />
+                </div>
+                <span className="font-semibold">Upcoming Visit</span>
+              </div>
+              
+              <div>
+                <h3 className="font-bold">{upcomingAppointment.type}</h3>
+                <p className="text-muted-foreground text-sm">{upcomingAppointment.doctor}</p>
+              </div>
+              
+              <div className="flex items-center justify-between text-sm border-t pt-4 mt-2">
+                <div className="text-foreground font-medium">
+                  {upcomingAppointment.date}
+                </div>
+                <div className="bg-secondary px-2 py-1 rounded text-xs font-medium">
+                  {upcomingAppointment.time}
+                </div>
+              </div>
+
+              <Link href="/appointments">
+                <Button variant="outline" className="w-full text-xs">Reschedule</Button>
+              </Link>
+           </div>
+
+           <div className="bg-emerald-50 rounded-2xl p-5 border border-emerald-100">
+              <h3 className="font-bold text-emerald-900 mb-1">Healthy Streak!</h3>
+              <p className="text-sm text-emerald-700 mb-3">You haven't made a claim in 12 months.</p>
+              <div className="h-2 bg-emerald-200 rounded-full overflow-hidden">
+                <div className="h-full bg-emerald-500 w-[80%] rounded-full"></div>
+              </div>
+           </div>
+        </div>
+      </section>
+    </div>
+  );
+}
