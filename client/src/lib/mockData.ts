@@ -16,6 +16,13 @@ export const policies = [
     icon: Heart,
     color: "text-orange-500 bg-orange-50",
     status: "Active",
+    quickViewMetadata: {
+      insuredPerson: "Sophia Nikolaidis",
+      hospitalClass: "A-Class",
+      deductible: "€1,500",
+      annualLimit: "€1,000,000",
+      preAuthNumber: "+30 210 6849000"
+    },
     details: {
       pendingPayments: 0,
       lastPayment: "2025-11-01",
@@ -89,6 +96,13 @@ export const policies = [
     icon: Car,
     color: "text-red-600 bg-red-50",
     status: "Active",
+    quickViewMetadata: {
+      licensePlate: "YZA-1234",
+      coverageTier: "Full Casco",
+      greenCardStatus: "Valid",
+      accidentCarePhone: "+30 18118",
+      roadsideAssistance: "24/7 Europe-wide"
+    },
     details: {
       pendingPayments: 0,
       lastPayment: "2025-06-15",
@@ -154,6 +168,14 @@ export const policies = [
     icon: Home,
     color: "text-red-700 bg-red-50",
     status: "Active",
+    quickViewMetadata: {
+      propertyAddress: "Akadimias 10, Kolonaki, Athens",
+      sumInsured: "€465,000",
+      catastropheCover: { fire: true, flood: true, earthquake: true },
+      deductible: "€500",
+      mortgagee: "Alpha Bank",
+      emergencyServices: "+30 214 2000214"
+    },
     details: {
       pendingPayments: 0,
       lastPayment: "2024-09-01",
@@ -204,6 +226,14 @@ export const policies = [
     icon: Briefcase,
     color: "text-blue-600 bg-blue-50",
     status: "Active",
+    quickViewMetadata: {
+      fundValue: "€45,200",
+      ytdGrowth: "+5.2%",
+      surrenderValue: "€44,800",
+      fundAllocation: { equity: "60%", bonds: "30%", cash: "10%" },
+      lastPremiumDate: "2025-11-01",
+      lastPremiumAmount: "€200.00"
+    },
     details: {
       pendingPayments: 0,
       lastPayment: "2025-11-01",
@@ -257,6 +287,16 @@ export const policies = [
     icon: Dog,
     color: "text-amber-600 bg-amber-50",
     status: "Review Needed",
+    quickViewMetadata: {
+      petName: "Max",
+      petType: "Golden Retriever",
+      limitTotal: "€1,000",
+      limitUsed: "€400",
+      limitUsedPercent: "40%",
+      microchipNumber: "GR-0241234567",
+      coPay: "20%",
+      waitingPeriods: "All conditions covered"
+    },
     details: {
       pendingPayments: 25,
       lastPayment: "2025-10-10",
