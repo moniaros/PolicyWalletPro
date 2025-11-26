@@ -1,18 +1,46 @@
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Lock, Eye, EyeOff, CheckCircle2, AlertCircle, Globe, Clock, Smartphone, ArrowRight, Lightbulb, TrendingUp, Shield } from "lucide-react";
+import {
+  Lock,
+  Eye,
+  EyeOff,
+  CheckCircle2,
+  AlertCircle,
+  Globe,
+  Clock,
+  Smartphone,
+  ArrowRight,
+  Lightbulb,
+  TrendingUp,
+  Shield,
+} from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
-import { INSURANCE_QUESTIONNAIRE, TRUST_BUILDING_INSIGHTS } from "@/lib/insurance-analyst-data";
+import {
+  INSURANCE_QUESTIONNAIRE,
+  TRUST_BUILDING_INSIGHTS,
+} from "@/lib/insurance-analyst-data";
 
 export default function UserSettingsPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -20,7 +48,9 @@ export default function UserSettingsPage() {
   const [settingsPIN, setSettingsPIN] = useState(false);
   const [showPIN, setShowPIN] = useState(false);
   const [currentQuestionIdx, setCurrentQuestionIdx] = useState(0);
-  const [insuranceProfileCompleted, setInsuranceProfileCompleted] = useState(!!localStorage.getItem("userProfile"));
+  const [insuranceProfileCompleted, setInsuranceProfileCompleted] = useState(
+    !!localStorage.getItem("userProfile"),
+  );
   const [showQuestionnaire, setShowQuestionnaire] = useState(false);
   const [loading, setLoading] = useState(false);
   const [questionnaire, setQuestionnaire] = useState({
@@ -48,7 +78,9 @@ export default function UserSettingsPage() {
 
   const [formData, setFormData] = useState({
     // Personal
-    fullName: localStorage.getItem("userProfile") ? JSON.parse(localStorage.getItem("userProfile") || "{}").fullName : "",
+    fullName: localStorage.getItem("userProfile")
+      ? JSON.parse(localStorage.getItem("userProfile") || "{}").fullName
+      : "",
     email: "",
     phone: "",
     // Password
@@ -62,7 +94,8 @@ export default function UserSettingsPage() {
     // Preferences
     language: localStorage.getItem("app_language") || "en",
     theme: localStorage.getItem("policy-guard-theme") || "system",
-    availabilityStart: localStorage.getItem("agent_availability_start") || "09:00",
+    availabilityStart:
+      localStorage.getItem("agent_availability_start") || "09:00",
     availabilityEnd: localStorage.getItem("agent_availability_end") || "17:00",
     timezone: localStorage.getItem("user_timezone") || "Europe/Athens",
     contactPreference: localStorage.getItem("contact_preference") || "email",
@@ -82,7 +115,11 @@ export default function UserSettingsPage() {
   };
 
   const handlePasswordChange = async () => {
-    if (!formData.currentPassword || !formData.newPassword || !formData.confirmPassword) {
+    if (
+      !formData.currentPassword ||
+      !formData.newPassword ||
+      !formData.confirmPassword
+    ) {
       toast.error("Please fill in all password fields");
       return;
     }
@@ -97,7 +134,12 @@ export default function UserSettingsPage() {
     // In production, this would hash and verify against backend
     localStorage.setItem("user_password_hint", "Password updated");
     toast.success("Password changed successfully");
-    setFormData({ ...formData, currentPassword: "", newPassword: "", confirmPassword: "" });
+    setFormData({
+      ...formData,
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    });
   };
 
   const handleToggle2FA = () => {
@@ -121,19 +163,27 @@ export default function UserSettingsPage() {
     const newState = !formData.biometricAuth;
     setFormData({ ...formData, biometricAuth: newState });
     localStorage.setItem("auth_biometric", newState.toString());
-    toast.success(newState ? "Biometric login enabled" : "Biometric login disabled");
+    toast.success(
+      newState ? "Biometric login enabled" : "Biometric login disabled",
+    );
   };
 
   const handlePreferencesUpdate = () => {
     localStorage.setItem("app_language", formData.language);
     localStorage.setItem("policy-guard-theme", formData.theme);
-    localStorage.setItem("agent_availability_start", formData.availabilityStart);
+    localStorage.setItem(
+      "agent_availability_start",
+      formData.availabilityStart,
+    );
     localStorage.setItem("agent_availability_end", formData.availabilityEnd);
     localStorage.setItem("user_timezone", formData.timezone);
     localStorage.setItem("contact_preference", formData.contactPreference);
     toast.success("Preferences updated");
     if (formData.theme !== "system") {
-      document.documentElement.classList.toggle("dark", formData.theme === "dark");
+      document.documentElement.classList.toggle(
+        "dark",
+        formData.theme === "dark",
+      );
     }
   };
 
@@ -156,7 +206,9 @@ export default function UserSettingsPage() {
       setInsuranceProfileCompleted(true);
       setShowQuestionnaire(false);
       setCurrentQuestionIdx(0);
-      toast.success("Insurance profile saved! We'll personalize your recommendations.");
+      toast.success(
+        "Insurance profile saved! We'll personalize your recommendations.",
+      );
     } finally {
       setLoading(false);
     }
@@ -186,12 +238,14 @@ export default function UserSettingsPage() {
       </div>
 
       <Tabs defaultValue="personal" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-5" data-testid="settings-tabs">
+        <TabsList
+          className="grid w-full grid-cols-4"
+          data-testid="settings-tabs"
+        >
           <TabsTrigger value="personal">Personal</TabsTrigger>
           <TabsTrigger value="security">Security</TabsTrigger>
           <TabsTrigger value="preferences">Preferences</TabsTrigger>
           <TabsTrigger value="insurance">Insurance</TabsTrigger>
-          <TabsTrigger value="agents">Agents</TabsTrigger>
         </TabsList>
 
         {/* PERSONAL INFORMATION */}
@@ -199,7 +253,9 @@ export default function UserSettingsPage() {
           <Card>
             <CardHeader>
               <CardTitle>Personal Information</CardTitle>
-              <CardDescription>Update your basic profile details</CardDescription>
+              <CardDescription>
+                Update your basic profile details
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
@@ -207,7 +263,9 @@ export default function UserSettingsPage() {
                 <Input
                   id="fullName"
                   value={formData.fullName}
-                  onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, fullName: e.target.value })
+                  }
                   placeholder="John Doe"
                   data-testid="input-settings-fullname"
                 />
@@ -219,7 +277,9 @@ export default function UserSettingsPage() {
                     id="email"
                     type="email"
                     value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, email: e.target.value })
+                    }
                     placeholder="john@example.com"
                     data-testid="input-settings-email"
                   />
@@ -229,13 +289,19 @@ export default function UserSettingsPage() {
                   <Input
                     id="phone"
                     value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, phone: e.target.value })
+                    }
                     placeholder="+30 6XX XXX XXXX"
                     data-testid="input-settings-phone"
                   />
                 </div>
               </div>
-              <Button onClick={handlePersonalUpdate} className="w-full" data-testid="button-save-personal">
+              <Button
+                onClick={handlePersonalUpdate}
+                className="w-full"
+                data-testid="button-save-personal"
+              >
                 <CheckCircle2 className="h-4 w-4 mr-2" />
                 Save Changes
               </Button>
@@ -259,7 +325,12 @@ export default function UserSettingsPage() {
                     id="currentPassword"
                     type={showPassword ? "text" : "password"}
                     value={formData.currentPassword}
-                    onChange={(e) => setFormData({ ...formData, currentPassword: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        currentPassword: e.target.value,
+                      })
+                    }
                     placeholder="••••••••"
                     data-testid="input-current-password"
                   />
@@ -267,7 +338,11 @@ export default function UserSettingsPage() {
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-2.5 text-muted-foreground hover:text-foreground"
                   >
-                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
                   </button>
                 </div>
               </div>
@@ -278,7 +353,9 @@ export default function UserSettingsPage() {
                     id="newPassword"
                     type={showNewPassword ? "text" : "password"}
                     value={formData.newPassword}
-                    onChange={(e) => setFormData({ ...formData, newPassword: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, newPassword: e.target.value })
+                    }
                     placeholder="••••••••"
                     data-testid="input-new-password"
                   />
@@ -286,7 +363,11 @@ export default function UserSettingsPage() {
                     onClick={() => setShowNewPassword(!showNewPassword)}
                     className="absolute right-3 top-2.5 text-muted-foreground hover:text-foreground"
                   >
-                    {showNewPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    {showNewPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
                   </button>
                 </div>
               </div>
@@ -296,12 +377,21 @@ export default function UserSettingsPage() {
                   id="confirmPassword"
                   type="password"
                   value={formData.confirmPassword}
-                  onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      confirmPassword: e.target.value,
+                    })
+                  }
                   placeholder="••••••••"
                   data-testid="input-confirm-password"
                 />
               </div>
-              <Button onClick={handlePasswordChange} className="w-full" data-testid="button-change-password">
+              <Button
+                onClick={handlePasswordChange}
+                className="w-full"
+                data-testid="button-change-password"
+              >
                 <Lock className="h-4 w-4 mr-2" />
                 Update Password
               </Button>
@@ -315,13 +405,17 @@ export default function UserSettingsPage() {
                 <Smartphone className="h-5 w-5" />
                 Two-Factor Authentication
               </CardTitle>
-              <CardDescription>Add an extra layer of security to your account</CardDescription>
+              <CardDescription>
+                Add an extra layer of security to your account
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium">Enable 2FA</p>
-                  <p className="text-sm text-muted-foreground">Require authentication code on login</p>
+                  <p className="text-sm text-muted-foreground">
+                    Require authentication code on login
+                  </p>
                 </div>
                 <Checkbox
                   checked={formData.enable2FA}
@@ -333,7 +427,8 @@ export default function UserSettingsPage() {
                 <Alert className="bg-emerald-50 border-emerald-200">
                   <CheckCircle2 className="h-4 w-4 text-emerald-600" />
                   <AlertDescription className="text-emerald-700">
-                    2FA is enabled. You'll receive a code via email when logging in.
+                    2FA is enabled. You'll receive a code via email when logging
+                    in.
                   </AlertDescription>
                 </Alert>
               )}
@@ -344,7 +439,9 @@ export default function UserSettingsPage() {
           <Card>
             <CardHeader>
               <CardTitle>Login PIN</CardTitle>
-              <CardDescription>Set a 4-digit PIN for quick login</CardDescription>
+              <CardDescription>
+                Set a 4-digit PIN for quick login
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {!settingsPIN ? (
@@ -365,7 +462,9 @@ export default function UserSettingsPage() {
                         id="loginPin"
                         type={showPIN ? "text" : "password"}
                         value={formData.loginPIN}
-                        onChange={(e) => setFormData({ ...formData, loginPIN: e.target.value })}
+                        onChange={(e) =>
+                          setFormData({ ...formData, loginPIN: e.target.value })
+                        }
                         placeholder="0000"
                         maxLength={4}
                         data-testid="input-pin"
@@ -374,15 +473,27 @@ export default function UserSettingsPage() {
                         onClick={() => setShowPIN(!showPIN)}
                         className="absolute right-3 top-2.5 text-muted-foreground hover:text-foreground"
                       >
-                        {showPIN ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        {showPIN ? (
+                          <EyeOff className="h-4 w-4" />
+                        ) : (
+                          <Eye className="h-4 w-4" />
+                        )}
                       </button>
                     </div>
                   </div>
                   <div className="flex gap-2">
-                    <Button onClick={handleSetPIN} className="flex-1" data-testid="button-confirm-pin">
+                    <Button
+                      onClick={handleSetPIN}
+                      className="flex-1"
+                      data-testid="button-confirm-pin"
+                    >
                       Save PIN
                     </Button>
-                    <Button onClick={() => setSettingsPIN(false)} variant="outline" className="flex-1">
+                    <Button
+                      onClick={() => setSettingsPIN(false)}
+                      variant="outline"
+                      className="flex-1"
+                    >
                       Cancel
                     </Button>
                   </div>
@@ -395,13 +506,17 @@ export default function UserSettingsPage() {
           <Card>
             <CardHeader>
               <CardTitle>Biometric Login</CardTitle>
-              <CardDescription>Use fingerprint or face recognition to login</CardDescription>
+              <CardDescription>
+                Use fingerprint or face recognition to login
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium">Enable Biometric Authentication</p>
-                  <p className="text-sm text-muted-foreground">Use your fingerprint or face to login</p>
+                  <p className="text-sm text-muted-foreground">
+                    Use your fingerprint or face to login
+                  </p>
                 </div>
                 <Checkbox
                   checked={formData.biometricAuth}
@@ -413,7 +528,8 @@ export default function UserSettingsPage() {
                 <Alert className="bg-emerald-50 border-emerald-200">
                   <CheckCircle2 className="h-4 w-4 text-emerald-600" />
                   <AlertDescription className="text-emerald-700">
-                    Biometric login is enabled. Use your device's fingerprint or face recognition.
+                    Biometric login is enabled. Use your device's fingerprint or
+                    face recognition.
                   </AlertDescription>
                 </Alert>
               )}
@@ -434,7 +550,12 @@ export default function UserSettingsPage() {
                   <Globe className="h-4 w-4" />
                   Language
                 </Label>
-                <Select value={formData.language} onValueChange={(val) => setFormData({ ...formData, language: val })}>
+                <Select
+                  value={formData.language}
+                  onValueChange={(val) =>
+                    setFormData({ ...formData, language: val })
+                  }
+                >
                   <SelectTrigger data-testid="select-language">
                     <SelectValue />
                   </SelectTrigger>
@@ -450,7 +571,12 @@ export default function UserSettingsPage() {
 
               <div className="space-y-3">
                 <Label>Theme</Label>
-                <RadioGroup value={formData.theme} onValueChange={(val) => setFormData({ ...formData, theme: val })}>
+                <RadioGroup
+                  value={formData.theme}
+                  onValueChange={(val) =>
+                    setFormData({ ...formData, theme: val })
+                  }
+                >
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="light" id="theme-light" />
                     <Label htmlFor="theme-light" className="cursor-pointer">
@@ -472,7 +598,11 @@ export default function UserSettingsPage() {
                 </RadioGroup>
               </div>
 
-              <Button onClick={handlePreferencesUpdate} className="w-full" data-testid="button-save-preferences">
+              <Button
+                onClick={handlePreferencesUpdate}
+                className="w-full"
+                data-testid="button-save-preferences"
+              >
                 <CheckCircle2 className="h-4 w-4 mr-2" />
                 Save Preferences
               </Button>
@@ -486,7 +616,9 @@ export default function UserSettingsPage() {
                 <Clock className="h-5 w-5" />
                 Agent Contact Availability
               </CardTitle>
-              <CardDescription>When can agents contact you for quotes and support</CardDescription>
+              <CardDescription>
+                When can agents contact you for quotes and support
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -496,7 +628,12 @@ export default function UserSettingsPage() {
                     id="availabilityStart"
                     type="time"
                     value={formData.availabilityStart}
-                    onChange={(e) => setFormData({ ...formData, availabilityStart: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        availabilityStart: e.target.value,
+                      })
+                    }
                     data-testid="input-availability-start"
                   />
                 </div>
@@ -506,7 +643,12 @@ export default function UserSettingsPage() {
                     id="availabilityEnd"
                     type="time"
                     value={formData.availabilityEnd}
-                    onChange={(e) => setFormData({ ...formData, availabilityEnd: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        availabilityEnd: e.target.value,
+                      })
+                    }
                     data-testid="input-availability-end"
                   />
                 </div>
@@ -514,15 +656,28 @@ export default function UserSettingsPage() {
 
               <div className="space-y-3">
                 <Label>Timezone</Label>
-                <Select value={formData.timezone} onValueChange={(val) => setFormData({ ...formData, timezone: val })}>
+                <Select
+                  value={formData.timezone}
+                  onValueChange={(val) =>
+                    setFormData({ ...formData, timezone: val })
+                  }
+                >
                   <SelectTrigger data-testid="select-timezone">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Europe/Athens">Athens (EET/EEST)</SelectItem>
-                    <SelectItem value="Europe/London">London (GMT/BST)</SelectItem>
-                    <SelectItem value="Europe/Paris">Paris (CET/CEST)</SelectItem>
-                    <SelectItem value="Europe/Berlin">Berlin (CET/CEST)</SelectItem>
+                    <SelectItem value="Europe/Athens">
+                      Athens (EET/EEST)
+                    </SelectItem>
+                    <SelectItem value="Europe/London">
+                      London (GMT/BST)
+                    </SelectItem>
+                    <SelectItem value="Europe/Paris">
+                      Paris (CET/CEST)
+                    </SelectItem>
+                    <SelectItem value="Europe/Berlin">
+                      Berlin (CET/CEST)
+                    </SelectItem>
                     <SelectItem value="UTC">UTC</SelectItem>
                   </SelectContent>
                 </Select>
@@ -530,7 +685,12 @@ export default function UserSettingsPage() {
 
               <div className="space-y-3">
                 <Label>Preferred Contact Method</Label>
-                <RadioGroup value={formData.contactPreference} onValueChange={(val) => setFormData({ ...formData, contactPreference: val })}>
+                <RadioGroup
+                  value={formData.contactPreference}
+                  onValueChange={(val) =>
+                    setFormData({ ...formData, contactPreference: val })
+                  }
+                >
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="email" id="contact-email" />
                     <Label htmlFor="contact-email" className="cursor-pointer">
@@ -552,7 +712,11 @@ export default function UserSettingsPage() {
                 </RadioGroup>
               </div>
 
-              <Button onClick={handlePreferencesUpdate} className="w-full" data-testid="button-save-availability">
+              <Button
+                onClick={handlePreferencesUpdate}
+                className="w-full"
+                data-testid="button-save-availability"
+              >
                 <CheckCircle2 className="h-4 w-4 mr-2" />
                 Save Availability
               </Button>
@@ -571,19 +735,25 @@ export default function UserSettingsPage() {
                     <Shield className="h-5 w-5 text-emerald-600" />
                     Insurance Gap Analysis
                   </CardTitle>
-                  <CardDescription>Identify coverage gaps and get personalized recommendations</CardDescription>
+                  <CardDescription>
+                    Identify coverage gaps and get personalized recommendations
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <Alert className="bg-white border-emerald-200">
                     <Lightbulb className="h-4 w-4 text-amber-500" />
                     <AlertDescription className="text-gray-700">
-                      <strong>Why take this analysis?</strong> {TRUST_BUILDING_INSIGHTS[0]}
+                      <strong>Why take this analysis?</strong>{" "}
+                      {TRUST_BUILDING_INSIGHTS[0]}
                     </AlertDescription>
                   </Alert>
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                     {TRUST_BUILDING_INSIGHTS.slice(1, 4).map((insight, idx) => (
-                      <div key={idx} className="p-3 bg-white rounded-lg border border-blue-100">
+                      <div
+                        key={idx}
+                        className="p-3 bg-white rounded-lg border border-blue-100"
+                      >
                         <p className="text-sm text-gray-700">✓ {insight}</p>
                       </div>
                     ))}
@@ -594,7 +764,9 @@ export default function UserSettingsPage() {
                     className="w-full bg-emerald-600 hover:bg-emerald-700 text-white h-12 text-base font-semibold"
                     data-testid="button-start-questionnaire"
                   >
-                    {insuranceProfileCompleted ? "Update Insurance Profile" : "Start Insurance Analysis"}
+                    {insuranceProfileCompleted
+                      ? "Update Insurance Profile"
+                      : "Start Insurance Analysis"}
                     <ArrowRight className="h-4 w-4 ml-2" />
                   </Button>
                 </CardContent>
@@ -606,32 +778,62 @@ export default function UserSettingsPage() {
               <Card>
                 <CardHeader>
                   <CardTitle>Insurance Gap Analysis Questionnaire</CardTitle>
-                  <CardDescription>Step-by-step analysis to identify your coverage needs</CardDescription>
+                  <CardDescription>
+                    Step-by-step analysis to identify your coverage needs
+                  </CardDescription>
                   <div className="mt-4">
-                    <Progress value={((currentQuestionIdx + 1) / INSURANCE_QUESTIONNAIRE.length) * 100} className="h-2" />
-                    <p className="text-xs text-muted-foreground mt-2">Question {currentQuestionIdx + 1} of {INSURANCE_QUESTIONNAIRE.length}</p>
+                    <Progress
+                      value={
+                        ((currentQuestionIdx + 1) /
+                          INSURANCE_QUESTIONNAIRE.length) *
+                        100
+                      }
+                      className="h-2"
+                    />
+                    <p className="text-xs text-muted-foreground mt-2">
+                      Question {currentQuestionIdx + 1} of{" "}
+                      {INSURANCE_QUESTIONNAIRE.length}
+                    </p>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div className="space-y-4">
                     <div>
-                      <h3 className="text-lg font-semibold">{INSURANCE_QUESTIONNAIRE[currentQuestionIdx].title}</h3>
-                      <p className="text-sm text-muted-foreground mt-1">{INSURANCE_QUESTIONNAIRE[currentQuestionIdx].guidance}</p>
+                      <h3 className="text-lg font-semibold">
+                        {INSURANCE_QUESTIONNAIRE[currentQuestionIdx].title}
+                      </h3>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        {INSURANCE_QUESTIONNAIRE[currentQuestionIdx].guidance}
+                      </p>
                     </div>
                     <RadioGroup
-                      value={questionnaire[INSURANCE_QUESTIONNAIRE[currentQuestionIdx].id as keyof typeof questionnaire] as string}
+                      value={
+                        questionnaire[
+                          INSURANCE_QUESTIONNAIRE[currentQuestionIdx]
+                            .id as keyof typeof questionnaire
+                        ] as string
+                      }
                       onValueChange={(value) =>
                         setQuestionnaire({
                           ...questionnaire,
-                          [INSURANCE_QUESTIONNAIRE[currentQuestionIdx].id]: value,
+                          [INSURANCE_QUESTIONNAIRE[currentQuestionIdx].id]:
+                            value,
                         })
                       }
                     >
                       <div className="space-y-2">
-                        {INSURANCE_QUESTIONNAIRE[currentQuestionIdx].options.map((option) => (
-                          <div key={option} className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                        {INSURANCE_QUESTIONNAIRE[
+                          currentQuestionIdx
+                        ].options.map((option) => (
+                          <div
+                            key={option}
+                            className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer"
+                          >
                             <RadioGroupItem value={option} id={`q-${option}`} />
-                            <Label htmlFor={`q-${option}`} className="cursor-pointer flex-1">
+                            <Label
+                              htmlFor={`q-${option}`}
+                              className="cursor-pointer flex-1"
+                            >
                               {option}
                             </Label>
                           </div>
@@ -643,7 +845,9 @@ export default function UserSettingsPage() {
                   <div className="flex gap-3 pt-4">
                     {currentQuestionIdx > 0 && (
                       <Button
-                        onClick={() => setCurrentQuestionIdx(currentQuestionIdx - 1)}
+                        onClick={() =>
+                          setCurrentQuestionIdx(currentQuestionIdx - 1)
+                        }
                         variant="outline"
                         className="flex-1"
                         data-testid="button-questionnaire-prev"
@@ -683,13 +887,16 @@ export default function UserSettingsPage() {
                       <CheckCircle2 className="h-5 w-5 text-emerald-600" />
                       Your Insurance Profile
                     </CardTitle>
-                    <CardDescription>Edit and update your insurance information</CardDescription>
+                    <CardDescription>
+                      Edit and update your insurance information
+                    </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-6">
                     <Alert className="bg-emerald-50 border-emerald-200">
                       <CheckCircle2 className="h-4 w-4 text-emerald-600" />
                       <AlertDescription className="text-emerald-700">
-                        Profile complete! We're analyzing your coverage needs to provide personalized recommendations.
+                        Profile complete! We're analyzing your coverage needs to
+                        provide personalized recommendations.
                       </AlertDescription>
                     </Alert>
 
@@ -698,104 +905,189 @@ export default function UserSettingsPage() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <Label>Age Group *</Label>
-                          <Select value={questionnaire.ageGroup} onValueChange={(val) => handleEditField("ageGroup", val)}>
+                          <Select
+                            value={questionnaire.ageGroup}
+                            onValueChange={(val) =>
+                              handleEditField("ageGroup", val)
+                            }
+                          >
                             <SelectTrigger data-testid="select-age-group">
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
                               {["18-30", "31-45", "46-60", "60+"].map((age) => (
-                                <SelectItem key={age} value={age}>{age}</SelectItem>
+                                <SelectItem key={age} value={age}>
+                                  {age}
+                                </SelectItem>
                               ))}
                             </SelectContent>
                           </Select>
                         </div>
                         <div className="space-y-2">
                           <Label>Family Status *</Label>
-                          <Select value={questionnaire.familyStatus} onValueChange={(val) => handleEditField("familyStatus", val)}>
+                          <Select
+                            value={questionnaire.familyStatus}
+                            onValueChange={(val) =>
+                              handleEditField("familyStatus", val)
+                            }
+                          >
                             <SelectTrigger data-testid="select-family-status">
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                              {["Single", "Married", "Domestic Partner", "Widowed/Divorced"].map((status) => (
-                                <SelectItem key={status} value={status}>{status}</SelectItem>
+                              {[
+                                "Single",
+                                "Married",
+                                "Domestic Partner",
+                                "Widowed/Divorced",
+                              ].map((status) => (
+                                <SelectItem key={status} value={status}>
+                                  {status}
+                                </SelectItem>
                               ))}
                             </SelectContent>
                           </Select>
                         </div>
                         <div className="space-y-2">
                           <Label>Number of Dependents *</Label>
-                          <Select value={questionnaire.dependents} onValueChange={(val) => handleEditField("dependents", val)}>
+                          <Select
+                            value={questionnaire.dependents}
+                            onValueChange={(val) =>
+                              handleEditField("dependents", val)
+                            }
+                          >
                             <SelectTrigger data-testid="select-dependents">
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
                               {["0", "1-2", "3+"].map((num) => (
-                                <SelectItem key={num} value={num}>{num}</SelectItem>
+                                <SelectItem key={num} value={num}>
+                                  {num}
+                                </SelectItem>
                               ))}
                             </SelectContent>
                           </Select>
                         </div>
                         <div className="space-y-2">
                           <Label>Income Range *</Label>
-                          <Select value={questionnaire.incomeRange} onValueChange={(val) => handleEditField("incomeRange", val)}>
+                          <Select
+                            value={questionnaire.incomeRange}
+                            onValueChange={(val) =>
+                              handleEditField("incomeRange", val)
+                            }
+                          >
                             <SelectTrigger data-testid="select-income">
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                              {["<€30k", "€30-60k", "€60-100k", "€100-150k", ">€150k"].map((range) => (
-                                <SelectItem key={range} value={range}>{range}</SelectItem>
+                              {[
+                                "<€30k",
+                                "€30-60k",
+                                "€60-100k",
+                                "€100-150k",
+                                ">€150k",
+                              ].map((range) => (
+                                <SelectItem key={range} value={range}>
+                                  {range}
+                                </SelectItem>
                               ))}
                             </SelectContent>
                           </Select>
                         </div>
                         <div className="space-y-2">
                           <Label>Health Status *</Label>
-                          <Select value={questionnaire.healthStatus} onValueChange={(val) => handleEditField("healthStatus", val)}>
+                          <Select
+                            value={questionnaire.healthStatus}
+                            onValueChange={(val) =>
+                              handleEditField("healthStatus", val)
+                            }
+                          >
                             <SelectTrigger data-testid="select-health">
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                              {["Excellent", "Good", "Fair", "Has chronic conditions"].map((status) => (
-                                <SelectItem key={status} value={status}>{status}</SelectItem>
+                              {[
+                                "Excellent",
+                                "Good",
+                                "Fair",
+                                "Has chronic conditions",
+                              ].map((status) => (
+                                <SelectItem key={status} value={status}>
+                                  {status}
+                                </SelectItem>
                               ))}
                             </SelectContent>
                           </Select>
                         </div>
                         <div className="space-y-2">
                           <Label>Emergency Fund Status *</Label>
-                          <Select value={questionnaire.emergencyFund} onValueChange={(val) => handleEditField("emergencyFund", val)}>
+                          <Select
+                            value={questionnaire.emergencyFund}
+                            onValueChange={(val) =>
+                              handleEditField("emergencyFund", val)
+                            }
+                          >
                             <SelectTrigger data-testid="select-emergency-fund">
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                              {["Yes, well covered", "Partially covered", "Minimal or none"].map((status) => (
-                                <SelectItem key={status} value={status}>{status}</SelectItem>
+                              {[
+                                "Yes, well covered",
+                                "Partially covered",
+                                "Minimal or none",
+                              ].map((status) => (
+                                <SelectItem key={status} value={status}>
+                                  {status}
+                                </SelectItem>
                               ))}
                             </SelectContent>
                           </Select>
                         </div>
                         <div className="space-y-2">
                           <Label>Travel Frequency *</Label>
-                          <Select value={questionnaire.travelFrequency} onValueChange={(val) => handleEditField("travelFrequency", val)}>
+                          <Select
+                            value={questionnaire.travelFrequency}
+                            onValueChange={(val) =>
+                              handleEditField("travelFrequency", val)
+                            }
+                          >
                             <SelectTrigger data-testid="select-travel">
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                              {["Never", "1-2 times/year", "3-6 times/year", "Monthly+"].map((freq) => (
-                                <SelectItem key={freq} value={freq}>{freq}</SelectItem>
+                              {[
+                                "Never",
+                                "1-2 times/year",
+                                "3-6 times/year",
+                                "Monthly+",
+                              ].map((freq) => (
+                                <SelectItem key={freq} value={freq}>
+                                  {freq}
+                                </SelectItem>
                               ))}
                             </SelectContent>
                           </Select>
                         </div>
                         <div className="space-y-2">
                           <Label>Occupation Risk *</Label>
-                          <Select value={questionnaire.occupationRisk} onValueChange={(val) => handleEditField("occupationRisk", val)}>
+                          <Select
+                            value={questionnaire.occupationRisk}
+                            onValueChange={(val) =>
+                              handleEditField("occupationRisk", val)
+                            }
+                          >
                             <SelectTrigger data-testid="select-occupation-risk">
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                              {["Low risk (office work)", "Medium risk (mixed activities)", "High risk (physical/travel intensive)"].map((risk) => (
-                                <SelectItem key={risk} value={risk}>{risk}</SelectItem>
+                              {[
+                                "Low risk (office work)",
+                                "Medium risk (mixed activities)",
+                                "High risk (physical/travel intensive)",
+                              ].map((risk) => (
+                                <SelectItem key={risk} value={risk}>
+                                  {risk}
+                                </SelectItem>
                               ))}
                             </SelectContent>
                           </Select>
@@ -826,7 +1118,9 @@ export default function UserSettingsPage() {
                     <Alert className="bg-blue-50 border-blue-200">
                       <TrendingUp className="h-4 w-4 text-blue-600" />
                       <AlertDescription className="text-blue-700 text-sm">
-                        Your profile is used to identify coverage gaps and provide personalized insurance recommendations. Update it whenever your situation changes.
+                        Your profile is used to identify coverage gaps and
+                        provide personalized insurance recommendations. Update
+                        it whenever your situation changes.
                       </AlertDescription>
                     </Alert>
                   </CardContent>
@@ -834,32 +1128,6 @@ export default function UserSettingsPage() {
               </div>
             )}
           </div>
-        </TabsContent>
-
-        {/* PREFERRED AGENTS */}
-        <TabsContent value="agents">
-          <Card>
-            <CardHeader>
-              <CardTitle>Preferred Insurance Agents</CardTitle>
-              <CardDescription>Manage your agent relationships and preferences</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Alert className="bg-blue-50 border-blue-200">
-                <AlertCircle className="h-4 w-4 text-blue-600" />
-                <AlertDescription className="text-blue-700">
-                  Your preferred agents are managed in a dedicated section. Click the button below to manage them.
-                </AlertDescription>
-              </Alert>
-              <Link href="/agents">
-                <Button className="w-full" data-testid="button-manage-agents">
-                  Manage Preferred Agents
-                </Button>
-              </Link>
-              <p className="text-sm text-muted-foreground">
-                Select your preferred insurance agents who will handle your quotes, policy questions, and claims support. Agents will respect your availability preferences when contacting you.
-              </p>
-            </CardContent>
-          </Card>
         </TabsContent>
       </Tabs>
     </div>
