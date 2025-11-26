@@ -237,3 +237,50 @@ export const notifications = [
     date: "2 days ago"
   }
 ];
+
+export const agents = [
+  {
+    id: 1,
+    name: "Maria K.",
+    specialty: "Family Protection Specialist",
+    rating: 4.9,
+    reviews: 142,
+    experience: "12 Years",
+    about: "Dedicated to helping families secure their future with comprehensive health and life planning.",
+    isCurrent: true,
+    avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=200&h=200"
+  },
+  {
+    id: 2,
+    name: "Nikos A.",
+    specialty: "Investment & Retirement",
+    rating: 4.8,
+    reviews: 98,
+    experience: "15 Years",
+    about: "Expert in long-term wealth accumulation and pension planning strategies.",
+    isCurrent: false,
+    avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=200&h=200"
+  },
+  {
+    id: 3,
+    name: "Elena P.",
+    specialty: "General Insurance (Auto/Home)",
+    rating: 4.7,
+    reviews: 85,
+    experience: "8 Years",
+    about: "Fast and reliable support for all your property and vehicle insurance needs.",
+    isCurrent: false,
+    avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=200&h=200"
+  },
+  {
+    id: 4,
+    name: "George S.",
+    specialty: "Business & Liability",
+    rating: 5.0,
+    reviews: 56,
+    experience: "20 Years",
+    about: "Specialized in complex liability and corporate risk management.",
+    isCurrent: false,
+    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200&h=200"
+  }
+];

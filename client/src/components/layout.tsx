@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { Home, FileText, Calendar, BarChart2, User, Bell } from "lucide-react";
+import { Home, FileText, Calendar, BarChart2, User, Bell, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ModeToggle } from "@/components/mode-toggle";
@@ -13,6 +13,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     { icon: FileText, label: "Policies", href: "/policies" },
     { icon: Calendar, label: "Visits", href: "/appointments" },
     { icon: BarChart2, label: "Analysis", href: "/analysis" },
+    { icon: Users, label: "Agents", href: "/agents" },
   ];
 
   return (
@@ -49,9 +50,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div className="bg-gradient-to-br from-primary/10 to-accent/20 rounded-xl p-4">
             <h4 className="text-sm font-semibold mb-1">Need Help?</h4>
             <p className="text-xs text-muted-foreground mb-3">Contact your agent anytime.</p>
-            <Button variant="outline" size="sm" className="w-full bg-card hover:bg-card/80 text-xs h-8">
-              Support
-            </Button>
+            <Link href="/agents">
+              <Button variant="outline" size="sm" className="w-full bg-card hover:bg-card/80 text-xs h-8">
+                Contact Agent
+              </Button>
+            </Link>
           </div>
         </div>
       </aside>
@@ -81,7 +84,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
       {/* Mobile Bottom Nav */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-background border-t pb-safe pt-2 px-6 z-50 flex justify-between items-center h-20 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
-        {navItems.map((item) => {
+        {navItems.slice(0, 5).map((item) => {
             const isActive = location === item.href;
             return (
               <Link key={item.href} href={item.href}>
@@ -94,14 +97,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </Link>
             );
         })}
-        <Link href="/profile">
-          <a className={`flex flex-col items-center gap-1 text-muted-foreground`}>
-             <Avatar className="h-9 w-9 border-2 border-background shadow-sm">
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-          </a>
-        </Link>
       </nav>
     </div>
   );

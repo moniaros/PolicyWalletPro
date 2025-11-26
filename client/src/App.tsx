@@ -9,6 +9,7 @@ import PoliciesPage from "@/pages/policies";
 import PolicyDetailsPage from "@/pages/policy-details";
 import AppointmentsPage from "@/pages/appointments";
 import AnalysisPage from "@/pages/analysis";
+import AgentsPage from "@/pages/agents";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -20,6 +21,7 @@ function Router() {
         <Route path="/policies/:id" component={PolicyDetailsPage} />
         <Route path="/appointments" component={AppointmentsPage} />
         <Route path="/analysis" component={AnalysisPage} />
+        <Route path="/agents" component={AgentsPage} />
         <Route component={NotFound} />
       </Switch>
     </Layout>
