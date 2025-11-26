@@ -1,16 +1,31 @@
+import { useState, useEffect } from "react";
 import { policies, notifications, appointments } from "@/lib/mockData";
 import PolicyCard from "@/components/policy-card";
 import { Button } from "@/components/ui/button";
 import { Bell, Plus, ChevronRight, Calendar } from "lucide-react";
 import { Link } from "wouter";
 import generatedImage from '@assets/generated_images/friendly_3d_isometric_insurance_wallet_icon.png';
+import { OnboardingModal } from "@/components/onboarding-modal";
 
 export default function Dashboard() {
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  
+  useEffect(() => {
+    // Show onboarding if first visit
+    const hasSeenOnboarding = localStorage.getItem("onboarding_shown");
+    if (!hasSeenOnboarding) {
+      setShowOnboarding(true);
+      localStorage.setItem("onboarding_shown", "true");
+    }
+  }, []);
+
   const today = new Date();
   const upcomingAppointment = appointments[0];
 
   return (
-    <div className="space-y-8">
+    <>
+      <OnboardingModal isOpen={showOnboarding} onClose={() => setShowOnboarding(false)} />
+      <div className="space-y-8">
       {/* Hero / Welcome Section */}
       <section className="flex flex-col md:flex-row items-center justify-between gap-6 bg-primary rounded-3xl p-6 md:p-10 text-white shadow-xl shadow-primary/20 relative overflow-hidden">
         <div className="relative z-10 space-y-4 max-w-lg">
@@ -96,5 +111,6 @@ export default function Dashboard() {
         </div>
       </section>
     </div>
+    </>
   );
 }

@@ -2,11 +2,24 @@ import { useState } from "react";
 import { useLocation } from "wouter";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Shield, AlertCircle } from "lucide-react";
+import { Shield, AlertCircle, Mail, Lock } from "lucide-react";
+import { FormInputWithValidation } from "@/components/form-input-with-validation";
+
+const emailValidator = (email: string): string | null => {
+  if (!email) return "Email is required";
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return "Please enter a valid email";
+  return null;
+};
+
+const passwordValidator = (password: string): string | null => {
+  if (!password) return "Password is required";
+  if (password.length < 6) return "Password must be at least 6 characters";
+  return null;
+};
+
+const errorValidator = (val: string): string | null => null;
 
 export default function LoginPage() {
   const [, setLocation] = useLocation();
@@ -44,8 +57,12 @@ export default function LoginPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    if (!email || !password) {
-      setError("Email and password are required");
+    
+    const emailError = emailValidator(email);
+    const passwordError = passwordValidator(password);
+    
+    if (emailError || passwordError) {
+      setError(emailError || passwordError || "");
       return;
     }
     mutation.mutate();
@@ -69,43 +86,39 @@ export default function LoginPage() {
 
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
-              {error && (
+              {error && !errorValidator(email) && !errorValidator(password) && (
                 <Alert variant="destructive">
                   <AlertCircle className="h-4 w-4" />
                   <AlertDescription>{error}</AlertDescription>
                 </Alert>
               )}
 
-              <div className="space-y-2">
-                <Label htmlFor="email">Email or Username</Label>
-                <Input
-                  id="email"
-                  type="text"
-                  placeholder="you@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  disabled={mutation.isPending}
-                  data-testid="input-email"
-                />
-              </div>
+              <FormInputWithValidation
+                label="Email or Username"
+                type="email"
+                placeholder="you@example.com"
+                value={email}
+                onChange={setEmail}
+                validator={emailValidator}
+                hint="Use the demo email: demo@example.com"
+                testId="input-email"
+              />
 
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  disabled={mutation.isPending}
-                  data-testid="input-password"
-                />
-              </div>
+              <FormInputWithValidation
+                label="Password"
+                type="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={setPassword}
+                validator={passwordValidator}
+                hint={isLogin ? "Demo password: password" : "At least 6 characters"}
+                testId="input-password"
+              />
 
               <Button
                 type="submit"
                 className="w-full"
-                disabled={mutation.isPending}
+                disabled={mutation.isPending || !!emailValidator(email) || !!passwordValidator(password)}
                 data-testid="button-submit"
               >
                 {mutation.isPending
