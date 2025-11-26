@@ -25,6 +25,9 @@ export interface IStorage {
   getPreventiveRecommendations(userId: string): Promise<PreventiveRecommendation[]>;
   createPreventiveRecommendation(rec: InsertPreventiveRecommendation): Promise<PreventiveRecommendation>;
   updateRecommendation(id: string, completed: boolean): Promise<PreventiveRecommendation>;
+
+  // Audit Logging
+  logAuditEvent(event: any): Promise<void>;
 }
 
 export class MemStorage implements IStorage {
@@ -33,6 +36,7 @@ export class MemStorage implements IStorage {
   private metrics: Map<string, HealthMetrics>;
   private risks: Map<string, RiskAssessment>;
   private recommendations: Map<string, PreventiveRecommendation>;
+  private auditLog: any[];
 
   constructor() {
     this.users = new Map();
@@ -40,6 +44,7 @@ export class MemStorage implements IStorage {
     this.metrics = new Map();
     this.risks = new Map();
     this.recommendations = new Map();
+    this.auditLog = [];
   }
 
   async getUser(id: string): Promise<User | undefined> {
@@ -150,6 +155,14 @@ export class MemStorage implements IStorage {
     const updated: PreventiveRecommendation = { ...rec, completedAt: completed ? new Date() : null } as any;
     this.recommendations.set(id, updated);
     return updated;
+  }
+
+  async logAuditEvent(event: any): Promise<void> {
+    this.auditLog.push(event);
+    // Keep only last 10000 events in memory
+    if (this.auditLog.length > 10000) {
+      this.auditLog = this.auditLog.slice(-10000);
+    }
   }
 }
 

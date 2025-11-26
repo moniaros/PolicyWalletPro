@@ -1,10 +1,64 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertHealthCheckupSchema, insertHealthMetricsSchema, insertPreventiveRecommendationSchema } from "@shared/schema";
+import { insertHealthCheckupSchema, insertHealthMetricsSchema, insertPreventiveRecommendationSchema, insertUserSchema } from "@shared/schema";
 import { z } from "zod";
+import { authMiddleware, errorHandler, adminMiddleware, type AuthRequest } from "./middleware";
+import { login, register } from "./auth";
+import { auditLog } from "./middleware";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Authentication Routes
+  app.post("/api/auth/register", async (req, res) => {
+    try {
+      const { username, password, email } = req.body;
+      if (!username || !password) {
+        return res.status(400).json({ error: "Username and password required" });
+      }
+      const user = await register(username, password, email);
+      await auditLog("system", "user_registered", "users", { username });
+      res.status(201).json(user);
+    } catch (error: any) {
+      res.status(400).json({ error: error.message });
+    }
+  });
+
+  app.post("/api/auth/login", async (req, res) => {
+    try {
+      const { username, password } = req.body;
+      if (!username || !password) {
+        return res.status(400).json({ error: "Username and password required" });
+      }
+      const user = await login(username, password);
+      await auditLog("system", "user_login", "users", { username });
+      res.json(user);
+    } catch (error: any) {
+      res.status(401).json({ error: error.message });
+    }
+  });
+
+  app.get("/api/auth/me", authMiddleware, (req: AuthRequest, res) => {
+    res.json({
+      id: req.userId,
+      username: req.user?.username,
+      role: req.userRole,
+    });
+  });
+
+  // Admin Stats - Protected by admin middleware
+  app.get("/api/admin/stats", authMiddleware, adminMiddleware, async (req: AuthRequest, res) => {
+    try {
+      res.json({
+        totalUsers: 2400,
+        activePolicies: 1800,
+        pendingClaims: 240,
+        claimsApproved: "92%",
+      });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch stats" });
+    }
+  });
+
   // Health Checkups - GET all checkups for user
   app.get("/api/health/checkups/:userId", async (req, res) => {
     try {

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { Home, FileText, Calendar, BarChart2, User, Bell, Users, FolderOpen, ShieldAlert, PhoneCall, Heart } from "lucide-react";
+import { Home, FileText, Calendar, BarChart2, User, Bell, Users, FolderOpen, ShieldAlert, PhoneCall, Heart, LogOut, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ModeToggle } from "@/components/mode-toggle";
@@ -10,6 +10,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
 
+  const isAdmin = localStorage.getItem("user_role") === "admin";
+  
   const navItems = [
     { icon: Home, label: "Home", href: "/" },
     { icon: FileText, label: "Policies", href: "/policies" },
@@ -19,7 +21,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     { icon: Calendar, label: "Visits", href: "/appointments" },
     { icon: BarChart2, label: "Analysis", href: "/analysis" },
     { icon: Users, label: "Agents", href: "/agents" },
+    ...(isAdmin ? [{ icon: Settings, label: "Admin", href: "/admin" }] : []),
   ];
+
+  const handleLogout = () => {
+    localStorage.removeItem("auth_token");
+    localStorage.removeItem("user_id");
+    localStorage.removeItem("user_role");
+    window.location.href = "/";
+  };
 
   return (
     <div className="min-h-screen bg-background font-sans text-foreground flex flex-col md:flex-row">
@@ -39,6 +49,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <span className="text-xs font-medium text-muted-foreground">Theme</span>
             <ModeToggle />
           </div>
+
+          <Button
+            variant="outline"
+            className="w-full justify-start text-muted-foreground hover:text-foreground"
+            onClick={handleLogout}
+            data-testid="button-logout"
+          >
+            <LogOut className="h-4 w-4 mr-2" />
+            Logout
+          </Button>
           
           <Dialog>
             <DialogTrigger asChild>
