@@ -1,111 +1,251 @@
 import { useState } from "react";
 import { agents } from "@/lib/mockData";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Star, Phone, Mail, MessageSquare, Check, UserCheck } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Star, Phone, Mail, MessageSquare, Clock, MapPin, Briefcase, MessageCircle, Send } from "lucide-react";
 import { toast } from "sonner";
 
-export default function AgentsPage() {
-  const [currentAgentId, setCurrentAgentId] = useState(agents.find(a => a.isCurrent)?.id || 1);
+const AGENT_PHONE = "+306956338110";
+const AGENT_WHATSAPP = "306956338110"; // Without +
+const AGENT_EMAIL = "agent@policyguard.gr";
 
-  const handleSelectAgent = (id: number, name: string) => {
-    setCurrentAgentId(id);
-    toast.success(`Agent ${name} selected`, {
-      description: "Your policies will now be managed by this agent."
-    });
+export default function AgentsPage() {
+  const [contactSent, setContactSent] = useState(false);
+  // Using first agent as current agent
+  const currentAgent = agents[0];
+
+  const handleCall = () => {
+    window.location.href = `tel:${AGENT_PHONE}`;
+    toast.success("Opening call...", { description: `Calling ${AGENT_PHONE}` });
+  };
+
+  const handleWhatsApp = () => {
+    window.open(`https://wa.me/${AGENT_WHATSAPP}?text=Hello%20${currentAgent.name}%2C%20I%20would%20like%20to%20discuss%20my%20insurance%20policies.`, "_blank");
+    toast.success("Opening WhatsApp...", { description: `Chat with ${currentAgent.name} on WhatsApp` });
+  };
+
+  const handleViber = () => {
+    window.location.href = `viber://contact?number=${AGENT_WHATSAPP}`;
+    toast.success("Opening Viber...", { description: `Chat with ${currentAgent.name} on Viber` });
+  };
+
+  const handleEmail = () => {
+    window.location.href = `mailto:${AGENT_EMAIL}?subject=Insurance%20Inquiry`;
+    toast.success("Opening email...", { description: `Email to ${currentAgent.name}` });
+  };
+
+  const handleMessage = () => {
+    setContactSent(true);
+    toast.success("Message sent!", { description: `${currentAgent.name} will get back to you shortly.` });
+    setTimeout(() => setContactSent(false), 3000);
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 max-w-4xl">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">Find an Agent</h1>
-        <p className="text-muted-foreground mt-1">Connect with an expert to manage your insurance portfolio.</p>
+        <h1 className="text-4xl font-bold tracking-tight">Your Insurance Agent</h1>
+        <p className="text-muted-foreground mt-2">Get in touch anytime - multiple ways to connect</p>
       </div>
 
-      {/* Current Agent Highlight */}
-      {agents.find(a => a.id === currentAgentId) && (
-        <div className="mb-10">
-           <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-              <UserCheck className="h-5 w-5 text-primary" />
-              Your Current Agent
-           </h2>
-           <Card className="border-primary/20 bg-primary/5 overflow-hidden">
-              <CardContent className="p-0">
-                 <div className="flex flex-col md:flex-row">
-                    <div className="p-6 flex items-start gap-4 flex-1">
-                       <Avatar className="h-20 w-20 border-4 border-background shadow-xl">
-                          <AvatarImage src={agents.find(a => a.id === currentAgentId)?.avatar} />
-                          <AvatarFallback>{agents.find(a => a.id === currentAgentId)?.name.charAt(0)}</AvatarFallback>
-                       </Avatar>
-                       <div>
-                          <div className="flex items-center gap-2">
-                             <h3 className="text-xl font-bold">{agents.find(a => a.id === currentAgentId)?.name}</h3>
-                             <Badge className="bg-primary text-primary-foreground hover:bg-primary">Active</Badge>
-                          </div>
-                          <p className="text-primary font-medium">{agents.find(a => a.id === currentAgentId)?.specialty}</p>
-                          <div className="flex items-center gap-1 text-amber-500 mt-1">
-                             <Star className="h-4 w-4 fill-current" />
-                             <span className="font-bold text-sm">{agents.find(a => a.id === currentAgentId)?.rating}</span>
-                             <span className="text-muted-foreground text-sm">({agents.find(a => a.id === currentAgentId)?.reviews} reviews)</span>
-                          </div>
-                          <p className="text-muted-foreground text-sm mt-3 max-w-md">{agents.find(a => a.id === currentAgentId)?.about}</p>
-                       </div>
-                    </div>
-                    <div className="bg-background/50 border-l border-border/50 p-6 flex flex-col justify-center gap-3 min-w-[250px]">
-                       <Button className="w-full">
-                          <MessageSquare className="h-4 w-4 mr-2" /> Chat Now
-                       </Button>
-                       <Button variant="outline" className="w-full">
-                          <Phone className="h-4 w-4 mr-2" /> Schedule Call
-                       </Button>
-                       <Button variant="ghost" className="w-full">
-                          <Mail className="h-4 w-4 mr-2" /> Email
-                       </Button>
-                    </div>
-                 </div>
-              </CardContent>
-           </Card>
-        </div>
-      )}
+      {/* Main Agent Card */}
+      <Card className="border-emerald-200 bg-gradient-to-br from-emerald-50 to-blue-50 overflow-hidden">
+        <CardContent className="p-0">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
+            {/* Agent Info Section */}
+            <div className="md:col-span-2 p-8 space-y-6">
+              <div className="flex items-start gap-4">
+                <Avatar className="h-24 w-24 border-4 border-white shadow-lg">
+                  <AvatarImage src={currentAgent.avatar} />
+                  <AvatarFallback className="text-2xl">{currentAgent.name.charAt(0)}</AvatarFallback>
+                </Avatar>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2">
+                    <h2 className="text-3xl font-bold">{currentAgent.name}</h2>
+                    <Badge className="bg-emerald-600 text-white hover:bg-emerald-700">Active</Badge>
+                  </div>
+                  <p className="text-emerald-700 font-semibold mt-1">{currentAgent.specialty}</p>
+                  <div className="flex items-center gap-1 text-amber-600 mt-2">
+                    <Star className="h-4 w-4 fill-current" />
+                    <span className="font-bold text-sm">{currentAgent.rating}/5</span>
+                    <span className="text-muted-foreground text-sm">({currentAgent.reviews} reviews)</span>
+                  </div>
+                </div>
+              </div>
 
-      <h2 className="text-lg font-semibold mb-4">Available Agents</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-         {agents.filter(a => a.id !== currentAgentId).map((agent) => (
-            <Card key={agent.id} className="hover:shadow-md transition-all duration-300 flex flex-col">
-               <CardHeader className="pb-2">
-                  <div className="flex justify-between items-start">
-                     <Avatar className="h-14 w-14 border-2 border-muted">
-                        <AvatarImage src={agent.avatar} />
-                        <AvatarFallback>{agent.name.charAt(0)}</AvatarFallback>
-                     </Avatar>
-                     <div className="flex items-center gap-1 bg-amber-50 text-amber-700 px-2 py-1 rounded-md text-xs font-bold">
-                        <Star className="h-3 w-3 fill-current" /> {agent.rating}
-                     </div>
-                  </div>
-                  <CardTitle className="mt-3 text-lg">{agent.name}</CardTitle>
-                  <CardDescription className="font-medium text-primary">{agent.specialty}</CardDescription>
-               </CardHeader>
-               <CardContent className="flex-1">
-                  <p className="text-sm text-muted-foreground mb-4 line-clamp-2">{agent.about}</p>
-                  <div className="text-xs text-muted-foreground">
-                     <p>Experience: <span className="font-medium text-foreground">{agent.experience}</span></p>
-                     <p>Active Clients: <span className="font-medium text-foreground">{agent.reviews * 2}+</span></p>
-                  </div>
-               </CardContent>
-               <CardFooter className="pt-0">
-                  <Button 
-                     variant="outline" 
-                     className="w-full hover:border-primary hover:text-primary hover:bg-primary/5"
-                     onClick={() => handleSelectAgent(agent.id, agent.name)}
-                  >
-                     Select Agent
-                  </Button>
-               </CardFooter>
-            </Card>
-         ))}
-      </div>
+              <p className="text-gray-700 leading-relaxed">{currentAgent.about}</p>
+
+              {/* Quick Stats */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="p-3 bg-white rounded-lg border border-emerald-100">
+                  <p className="text-xs text-muted-foreground">Experience</p>
+                  <p className="font-bold text-lg">{currentAgent.experience}</p>
+                </div>
+                <div className="p-3 bg-white rounded-lg border border-emerald-100">
+                  <p className="text-xs text-muted-foreground">Active Clients</p>
+                  <p className="font-bold text-lg">{currentAgent.reviews * 2}+</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Contact Methods Section */}
+            <div className="bg-white border-l border-emerald-100 p-6 flex flex-col justify-between">
+              <div className="space-y-3">
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Contact Methods</p>
+
+                {/* Phone Call */}
+                <Button
+                  onClick={handleCall}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white justify-start"
+                  data-testid="button-call-agent"
+                >
+                  <Phone className="h-4 w-4 mr-2" />
+                  Call Now
+                </Button>
+
+                {/* WhatsApp */}
+                <Button
+                  onClick={handleWhatsApp}
+                  className="w-full bg-green-600 hover:bg-green-700 text-white justify-start"
+                  data-testid="button-whatsapp-agent"
+                >
+                  <MessageCircle className="h-4 w-4 mr-2" />
+                  WhatsApp
+                </Button>
+
+                {/* Viber */}
+                <Button
+                  onClick={handleViber}
+                  className="w-full bg-purple-600 hover:bg-purple-700 text-white justify-start"
+                  data-testid="button-viber-agent"
+                >
+                  <Send className="h-4 w-4 mr-2" />
+                  Viber
+                </Button>
+
+                {/* Email */}
+                <Button
+                  onClick={handleEmail}
+                  variant="outline"
+                  className="w-full border-2 border-gray-300 hover:bg-gray-50 justify-start"
+                  data-testid="button-email-agent"
+                >
+                  <Mail className="h-4 w-4 mr-2" />
+                  Email
+                </Button>
+              </div>
+
+              {/* Phone Number Display */}
+              <div className="text-center pt-4 border-t border-gray-200">
+                <p className="text-xs text-muted-foreground mb-1">Direct Phone</p>
+                <p className="font-mono font-bold text-lg text-blue-600">{AGENT_PHONE}</p>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Availability & Response Time */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Clock className="h-5 w-5 text-emerald-600" />
+            Availability & Response Times
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+              <p className="text-sm text-muted-foreground">Working Hours</p>
+              <p className="font-bold text-lg">Monday - Friday</p>
+              <p className="text-sm text-muted-foreground">09:00 - 18:00 (EET)</p>
+            </div>
+            <div className="p-4 bg-green-50 rounded-lg border border-green-200">
+              <p className="text-sm text-muted-foreground">Call Response</p>
+              <p className="font-bold text-lg">Average 2 mins</p>
+              <p className="text-sm text-muted-foreground">During business hours</p>
+            </div>
+            <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
+              <p className="text-sm text-muted-foreground">Message Response</p>
+              <p className="font-bold text-lg">Average 1 hour</p>
+              <p className="text-sm text-muted-foreground">WhatsApp & Email</p>
+            </div>
+          </div>
+
+          <Alert className="bg-emerald-50 border-emerald-200">
+            <MapPin className="h-4 w-4 text-emerald-600" />
+            <AlertDescription className="text-emerald-700">
+              <strong>Based in Athens, Greece</strong> - Serving clients across Greece and EU. Fluent in English, Greek, German, and Italian.
+            </AlertDescription>
+          </Alert>
+        </CardContent>
+      </Card>
+
+      {/* Services Provided */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Briefcase className="h-5 w-5 text-emerald-600" />
+            Services Provided
+          </CardTitle>
+          <CardDescription>What you can get help with</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {[
+              "Policy Selection & Purchase",
+              "Claims Assistance",
+              "Policy Reviews & Optimization",
+              "Coverage Gap Analysis",
+              "Quote Requests",
+              "Policy Renewals",
+              "Document Support",
+              "Emergency Support 24/7",
+            ].map((service, idx) => (
+              <div key={idx} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <div className="h-5 w-5 rounded-full bg-emerald-600 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-white text-xs font-bold">✓</span>
+                </div>
+                <p className="text-sm font-medium">{service}</p>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Quick Contact Section */}
+      <Card className="bg-gradient-to-r from-emerald-50 to-blue-50">
+        <CardHeader>
+          <CardTitle>Send a Quick Message</CardTitle>
+          <CardDescription>Don't see your question answered? Send a message and we'll respond soon</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-3">
+            <textarea
+              placeholder="Tell us what you need help with..."
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              rows={3}
+              data-testid="textarea-agent-message"
+            />
+            <Button
+              onClick={handleMessage}
+              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
+              data-testid="button-send-message"
+            >
+              <MessageSquare className="h-4 w-4 mr-2" />
+              {contactSent ? "Message Sent!" : "Send Message"}
+            </Button>
+          </div>
+
+          <Alert className="bg-white border-emerald-200">
+            <AlertDescription className="text-sm">
+              💡 For urgent matters, calling during business hours is fastest. We're here to help!
+            </AlertDescription>
+          </Alert>
+        </CardContent>
+      </Card>
     </div>
   );
 }

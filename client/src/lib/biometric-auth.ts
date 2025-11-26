@@ -5,7 +5,8 @@ export async function isBiometricAvailable(): Promise<boolean> {
   }
 
   try {
-    const available = await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
+    const available =
+      await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
     return available;
   } catch (error) {
     console.error("Error checking biometric availability:", error);
@@ -26,7 +27,7 @@ export async function registerBiometric(userId: string): Promise<boolean> {
       publicKey: {
         challenge,
         rp: {
-          name: "PolicyGuard",
+          name: "PolicyWallet",
           id: window.location.hostname,
         },
         user: {
@@ -57,7 +58,9 @@ export async function registerBiometric(userId: string): Promise<boolean> {
   }
 }
 
-export async function authenticateWithBiometric(userId: string): Promise<boolean> {
+export async function authenticateWithBiometric(
+  userId: string,
+): Promise<boolean> {
   try {
     if (!("PublicKeyCredential" in window)) {
       return false;
@@ -71,7 +74,9 @@ export async function authenticateWithBiometric(userId: string): Promise<boolean
     const challenge = crypto.getRandomValues(new Uint8Array(32));
     const allowCredentials = [
       {
-        id: new Uint8Array(credentialId.match(/.{1,2}/g)!.map((x) => parseInt(x, 16))),
+        id: new Uint8Array(
+          credentialId.match(/.{1,2}/g)!.map((x) => parseInt(x, 16)),
+        ),
         type: "public-key" as const,
       },
     ];
@@ -96,7 +101,7 @@ export async function authenticateWithBiometric(userId: string): Promise<boolean
 export function generatePinHash(pin: string): string {
   // Simple hash for demo - use proper hashing in production
   return Array.from(pin)
-    .reduce((hash, char) => ((hash << 5) - hash) + char.charCodeAt(0), 0)
+    .reduce((hash, char) => (hash << 5) - hash + char.charCodeAt(0), 0)
     .toString();
 }
 

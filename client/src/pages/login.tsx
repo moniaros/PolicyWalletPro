@@ -2,14 +2,21 @@ import { useState } from "react";
 import { useLocation } from "wouter";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Shield, AlertCircle, Mail, Lock } from "lucide-react";
 import { FormInputWithValidation } from "@/components/form-input-with-validation";
 
 const emailValidator = (email: string): string | null => {
   if (!email) return "Email is required";
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return "Please enter a valid email";
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+    return "Please enter a valid email";
   return null;
 };
 
@@ -57,10 +64,10 @@ export default function LoginPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    
+
     const emailError = emailValidator(email);
     const passwordError = passwordValidator(password);
-    
+
     if (emailError || passwordError) {
       setError(emailError || passwordError || "");
       return;
@@ -78,7 +85,7 @@ export default function LoginPage() {
                 <Shield className="text-primary-foreground h-6 w-6" />
               </div>
             </div>
-            <CardTitle className="text-3xl">PolicyGuard</CardTitle>
+            <CardTitle className="text-3xl">PolicyWallet</CardTitle>
             <CardDescription>
               {isLogin ? "Welcome back" : "Create your account"}
             </CardDescription>
@@ -111,27 +118,35 @@ export default function LoginPage() {
                 value={password}
                 onChange={setPassword}
                 validator={passwordValidator}
-                hint={isLogin ? "Demo password: password" : "At least 6 characters"}
+                hint={
+                  isLogin ? "Demo password: password" : "At least 6 characters"
+                }
                 testId="input-password"
               />
 
               <Button
                 type="submit"
                 className="w-full"
-                disabled={mutation.isPending || !!emailValidator(email) || !!passwordValidator(password)}
+                disabled={
+                  mutation.isPending ||
+                  !!emailValidator(email) ||
+                  !!passwordValidator(password)
+                }
                 data-testid="button-submit"
               >
                 {mutation.isPending
                   ? "Loading..."
                   : isLogin
-                  ? "Sign In"
-                  : "Create Account"}
+                    ? "Sign In"
+                    : "Create Account"}
               </Button>
             </form>
 
             <div className="mt-6 text-center">
               <p className="text-sm text-muted-foreground">
-                {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
+                {isLogin
+                  ? "Don't have an account?"
+                  : "Already have an account?"}{" "}
                 <button
                   type="button"
                   onClick={() => setIsLogin(!isLogin)}
@@ -144,17 +159,23 @@ export default function LoginPage() {
             </div>
 
             <div className="mt-6 pt-6 border-t space-y-2">
-              <p className="text-xs text-center text-muted-foreground font-medium">DEMO CREDENTIALS</p>
+              <p className="text-xs text-center text-muted-foreground font-medium">
+                DEMO CREDENTIALS
+              </p>
               <div className="bg-slate-50 p-3 rounded-lg text-xs space-y-1">
-                <p><span className="font-semibold">Email:</span> demo@example.com</p>
-                <p><span className="font-semibold">Password:</span> password</p>
+                <p>
+                  <span className="font-semibold">Email:</span> demo@example.com
+                </p>
+                <p>
+                  <span className="font-semibold">Password:</span> password
+                </p>
               </div>
             </div>
           </CardContent>
         </Card>
 
         <p className="text-center text-xs text-muted-foreground mt-6">
-          Insurance policy management for EU citizens • ACORD Compliant
+          Insurance policy management for EU citizens • GDPR Compliant
         </p>
       </div>
     </div>

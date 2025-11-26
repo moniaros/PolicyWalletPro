@@ -14,7 +14,7 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
 
   const steps = [
     {
-      title: "Welcome to PolicyGuard",
+      title: "Welcome to PolicyWallet",
       description: "Your personal insurance manager for managing policies from multiple insurers.",
       icon: FileText,
       details: [
