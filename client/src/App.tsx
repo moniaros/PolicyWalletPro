@@ -8,6 +8,7 @@ import { NetworkStatus } from "@/components/network-status";
 import Layout from "@/components/layout";
 import Dashboard from "@/pages/dashboard";
 import ProfilePage from "@/pages/profile";
+import UserSettingsPage from "@/pages/user-settings";
 import PoliciesPage from "@/pages/policies";
 import PolicyDetailsPage from "@/pages/policy-details";
 import AppointmentsPage from "@/pages/appointments";
@@ -31,6 +32,7 @@ function Router({ isAuthenticated }: { isAuthenticated: boolean }) {
     <Layout>
       <Switch>
         <Route path="/" component={Dashboard} />
+        <Route path="/settings" component={UserSettingsPage} />
         <Route path="/profile" component={ProfilePage} />
         <Route path="/policies" component={PoliciesPage} />
         <Route path="/policies/:id" component={PolicyDetailsPage} />

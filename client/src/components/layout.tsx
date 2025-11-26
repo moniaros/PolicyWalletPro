@@ -14,15 +14,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   
   const navItems = [
     { icon: Home, label: "Home", href: "/" },
-    { icon: User, label: "Profile", href: "/profile" },
     { icon: FileText, label: "Policies", href: "/policies" },
     { icon: Heart, label: "Wellness", href: "/health-wellness" },
     { icon: ShieldAlert, label: "Claims", href: "/claims" },
     { icon: FolderOpen, label: "Documents", href: "/documents" },
     { icon: Calendar, label: "Visits", href: "/appointments" },
     { icon: BarChart2, label: "Analysis", href: "/analysis" },
-    { icon: Zap, label: "Gap Analysis", href: "/gap-analysis" },
     { icon: Users, label: "Agents", href: "/agents" },
+    { icon: Settings, label: "Settings", href: "/settings" },
     ...(isAdmin ? [{ icon: Settings, label: "Admin", href: "/admin" }] : []),
   ];
 
