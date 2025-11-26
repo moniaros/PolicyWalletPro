@@ -21,7 +21,8 @@ export const policies = [
       hospitalClass: "A-Class",
       deductible: "€1,500",
       annualLimit: "€1,000,000",
-      preAuthNumber: "+30 210 6849000"
+      preAuthNumber: "+30 210 6849000",
+      excludedProviders: ["Metropolitan Hospital", "Some Private Clinic"]
     },
     details: {
       pendingPayments: 0,
@@ -101,7 +102,8 @@ export const policies = [
       coverageTier: "Full Casco",
       greenCardStatus: "Valid",
       accidentCarePhone: "+30 18118",
-      roadsideAssistance: "24/7 Europe-wide"
+      roadsideAssistance: "24/7 Europe-wide",
+      namedDrivers: ["Alex Nikolaidis", "Maria Nikolaidis"]
     },
     details: {
       pendingPayments: 0,
@@ -295,7 +297,8 @@ export const policies = [
       limitUsedPercent: "40%",
       microchipNumber: "GR-0241234567",
       coPay: "20%",
-      waitingPeriods: "All conditions covered"
+      waitingPeriods: "All conditions covered",
+      ageAtEnrollment: "2 years"
     },
     details: {
       pendingPayments: 25,

@@ -1,0 +1,186 @@
+As a world-class broker, your mobile app acts as a 24/7 service hub and a retention engine. The "Quick View" must answer "Am I covered?" and "Is action required?". The "Detailed View" must prevent a support call by answering "What is covered?" and "How do I use it?".
+
+The data structure below utilizes your Policy , Coverage , RiskItem , and PortalAccount  schemas.
+
+
+
+
+1. Investment Life (Unit-Linked / Savings)
+Quick View (List Card)
+
+Fund Value: Current Account Value (Integrated feed). Broker logic: Proves wealth value immediately.
+
+Performance Badge: YTD Growth % (e.g., "+5.2%").
+
+Status: Active | Premium Holiday. 
+
+Detailed View (On Click)
+
+Surrender Value: The "cash-out" amount if cancelled today.
+
+Fund Allocation: Split between Equity/Bond/Cash funds.
+
+
+Beneficiaries: Names of designated recipients. 
+
+
+Transaction History: Last premium paid date and amount. 
+
+
+Action: "Top-up Investment" button (via PaymentLink__EXT ).
+
+2. Life & Health (Medical)
+Quick View (List Card)
+
+
+Plan Name: e.g., "Full Health Exclusive". 
+
+
+Insured Person: Name of the primary insured (useful for family policies). 
+
+Hospital Class: "A-Class / Lux" or "B-Class". Broker logic: Essential for admission.
+
+Detailed View (On Click)
+
+
+Deductible: The exact amount (e.g., €1,500) per incident. 
+
+
+Annual Limit: Maximum coverage amount (e.g., €1,000,000). 
+
+Pre-Auth Number: One-tap call button for hospital admission approval.
+
+Excluded Providers: List of non-network hospitals to avoid.
+
+
+Action: "Digital ID Card" (View Document ).
+
+3. Auto (Motor)
+Quick View (List Card)
+
+
+License Plate: "YZA-1234" (Primary visual identifier). 
+
+
+Renewal Date: "Expires in 12 days" (Urgency driver). 
+
+Action: "Roadside Assistance" (SOS button).
+
+Detailed View (On Click)
+
+
+Coverage Tier: TPL vs. Fire/Theft vs. Full Casco. 
+
+Driver List: Named drivers allowed to operate the vehicle.
+
+
+Green Card: Status (Valid/Invalid) for cross-border travel. 
+
+Accident Care: Phone number for on-site accident recording (Frontida).
+
+
+Action: "Download Green Card" or "Report Claim" (Trigger FNOL ).
+
+4. Home & Liability
+Quick View (List Card)
+
+
+Property Address: "Akadimias 10, Athens". 
+
+
+Sum Insured: Total coverage value (Building + Contents). 
+
+
+Status: Active. 
+
+Detailed View (On Click)
+
+
+Catastrophe Cover: Distinct "YES" for Fire, Flood, Earthquake. 
+
+Mortgagee: Bank name listed as beneficiary (proof for loans).
+
+
+Deductible: Retained amount per event (e.g., €500). 
+
+Emergency Services: Direct numbers for plumbers/locksmiths.
+
+
+Action: "Request Certificate" (Trigger ServiceRequest ).
+
+5. Pet
+Quick View (List Card)
+
+Pet Name & Photo: Emotional connection.
+
+
+Annual Limit Remaining: Progress bar (e.g., €400 used / €1000 limit). 
+
+
+Renewal: Date of policy expiry. 
+
+Detailed View (On Click)
+
+Microchip Number: Required for vet identification.
+
+Co-Pay: Percentage paid by owner (e.g., 20%).
+
+Waiting Periods: Status of coverage for specific illnesses.
+
+
+Action: "Upload Vet Invoice" (Trigger Claim / FNOL ).
+
+6. Doctor Civil Liability
+Quick View (List Card)
+
+
+Limit of Indemnity: Max payout per claim (e.g., €500,000). 
+
+Retroactive Date: Date from which past acts are covered.
+
+
+Status: Active. 
+
+Detailed View (On Click)
+
+Specialty Code: Explicit medical field covered (e.g., "Surgeon").
+
+Jurisdiction: "Greece Only" or "EU Wide".
+
+Extended Reporting: Tail coverage details.
+
+
+Action: "Download Proof of Insurance" (Trigger ServiceRequest  for hospital credentialing).
+
+7. Marine Motor (Yacht)
+Quick View (List Card)
+
+Boat Name / Reg #: Primary identifier.
+
+TPL Status: "Port Police Compliant" badge.
+
+
+Renewal: "Expires 01/05/2026". 
+
+Detailed View (On Click)
+
+Cruising Limits: Geographic warranty (e.g., "Ionian Sea").
+
+
+Agreed Value: Hull & Machinery payout amount. 
+
+Tender Details: Reg/Serial of the auxiliary boat.
+
+Action: "Emergency Towing" contact.
+
+Universal Broker Actions (All Policies)
+At the bottom of every Detailed View, your app must expose these PortalAccount entitlements:
+
+
+Pay Now: If PaymentLink__EXT status is open.
+
+
+File Claim: Triggers Transaction.FirstNoticeOfLoss.
+
+
+Modify: Triggers ServiceRequest (e.g., Change Address).

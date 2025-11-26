@@ -9,6 +9,7 @@ import { Progress } from "@/components/ui/progress";
 import { PolicyRecommendations } from "@/components/policy-recommendations";
 import { calculatePolicyGaps } from "@/lib/gap-calculation";
 import { useUserProfile } from "@/hooks/useUserProfile";
+import { HealthDetailedView, AutoDetailedView, HomeDetailedView, InvestmentLifeDetailedView, PetDetailedView, UniversalBrokerActions } from "@/components/policy-detail-sections";
 import { toast } from "sonner";
 
 export default function PolicyDetailsPage() {
@@ -118,6 +119,13 @@ export default function PolicyDetailsPage() {
           <TabsTrigger value="analysis">Analysis</TabsTrigger>
         </TabsList>
 
+        {/* Type-Specific Detailed Views */}
+        {policy.type === "Health" && <TabsContent value="overview" className="mt-6"><HealthDetailedView policy={policy} metadata={policy.quickViewMetadata} /></TabsContent>}
+        {policy.type === "Auto" && <TabsContent value="overview" className="mt-6"><AutoDetailedView policy={policy} metadata={policy.quickViewMetadata} /></TabsContent>}
+        {policy.type === "Home & Liability" && <TabsContent value="overview" className="mt-6"><HomeDetailedView policy={policy} metadata={policy.quickViewMetadata} /></TabsContent>}
+        {policy.type === "Investment Life" && <TabsContent value="overview" className="mt-6"><InvestmentLifeDetailedView policy={policy} metadata={policy.quickViewMetadata} /></TabsContent>}
+        {policy.type === "Pet Insurance" && <TabsContent value="overview" className="mt-6"><PetDetailedView policy={policy} metadata={policy.quickViewMetadata} /></TabsContent>}
+        
         {/* Overview Tab */}
         <TabsContent value="overview" className="space-y-4 mt-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -363,6 +371,9 @@ export default function PolicyDetailsPage() {
           </div>
         </TabsContent>
       </Tabs>
+
+      {/* Universal Broker Actions */}
+      <UniversalBrokerActions policy={policy} />
     </div>
   );
 }
