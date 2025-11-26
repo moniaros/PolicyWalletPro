@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { Home, FileText, Calendar, BarChart2, User, Bell, Users, FolderOpen, ShieldAlert, PhoneCall } from "lucide-react";
+import { Home, FileText, Calendar, BarChart2, User, Bell, Users, FolderOpen, ShieldAlert, PhoneCall, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ModeToggle } from "@/components/mode-toggle";
@@ -13,6 +13,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const navItems = [
     { icon: Home, label: "Home", href: "/" },
     { icon: FileText, label: "Policies", href: "/policies" },
+    { icon: Heart, label: "Wellness", href: "/health-wellness" },
     { icon: ShieldAlert, label: "Claims", href: "/claims" },
     { icon: FolderOpen, label: "Documents", href: "/documents" },
     { icon: Calendar, label: "Visits", href: "/appointments" },
