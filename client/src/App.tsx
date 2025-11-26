@@ -21,10 +21,13 @@ import HealthWellnessPage from "@/pages/health-wellness";
 import AdminDashboard from "@/pages/admin-dashboard";
 import LoginPage from "@/pages/login";
 import NotFound from "@/pages/not-found";
-import { useState, useEffect } from "react";
 
-function Router({ isAuthenticated }: { isAuthenticated: boolean }) {
-  if (!isAuthenticated) {
+// Ultra-fast synchronous auth check - no useState needed
+const token = typeof window !== 'undefined' ? localStorage.getItem("auth_token") : null;
+const isAuthenticatedSync = !!token;
+
+function Router() {
+  if (!isAuthenticatedSync) {
     return <LoginPage />;
   }
 
@@ -51,31 +54,13 @@ function Router({ isAuthenticated }: { isAuthenticated: boolean }) {
 }
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    // Check if user is authenticated
-    const token = localStorage.getItem("auth_token");
-    setIsAuthenticated(!!token);
-    setIsLoading(false);
-  }, []);
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin h-8 w-8 text-primary"></div>
-      </div>
-    );
-  }
-
   return (
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider defaultTheme="system" storageKey="policy-guard-theme">
           <NetworkStatus />
           <Toaster />
-          <Router isAuthenticated={isAuthenticated} />
+          <Router />
         </ThemeProvider>
       </QueryClientProvider>
     </ErrorBoundary>

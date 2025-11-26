@@ -176,30 +176,26 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </DialogTitle>
               </DialogHeader>
               <div className="space-y-3 py-4">
-                <a href="tel:112" className="block">
-                  <div className="bg-white p-4 rounded-xl border border-red-100 shadow-sm flex items-center justify-between">
-                    <div>
-                      <p className="font-bold text-lg">General Emergency</p>
-                      <p className="text-sm text-muted-foreground">Call 112</p>
-                    </div>
-                    <div className="bg-red-600 text-white rounded-full h-10 w-10 flex items-center justify-center">
-                      <PhoneCall className="h-5 w-5" />
-                    </div>
+                <button onClick={() => window.location.href = "tel:112"} className="w-full bg-white p-4 rounded-xl border border-red-100 shadow-sm flex items-center justify-between hover:bg-red-50 transition-colors cursor-pointer border-0">
+                  <div className="text-left">
+                    <p className="font-bold text-lg">General Emergency</p>
+                    <p className="text-sm text-muted-foreground">Call 112</p>
                   </div>
-                </a>
-                <a href="tel:18118" className="block">
-                  <div className="bg-white p-4 rounded-xl border border-red-100 shadow-sm flex items-center justify-between">
-                    <div>
-                      <p className="font-bold text-lg">Roadside Assist</p>
-                      <p className="text-sm text-muted-foreground">
-                        Generali Express
-                      </p>
-                    </div>
-                    <div className="bg-red-600 text-white rounded-full h-10 w-10 flex items-center justify-center">
-                      <PhoneCall className="h-5 w-5" />
-                    </div>
+                  <div className="bg-red-600 text-white rounded-full h-10 w-10 flex items-center justify-center flex-shrink-0">
+                    <PhoneCall className="h-5 w-5" />
                   </div>
-                </a>
+                </button>
+                <button onClick={() => window.location.href = "tel:18118"} className="w-full bg-white p-4 rounded-xl border border-red-100 shadow-sm flex items-center justify-between hover:bg-red-50 transition-colors cursor-pointer border-0">
+                  <div className="text-left">
+                    <p className="font-bold text-lg">Roadside Assist</p>
+                    <p className="text-sm text-muted-foreground">
+                      Generali Express
+                    </p>
+                  </div>
+                  <div className="bg-red-600 text-white rounded-full h-10 w-10 flex items-center justify-center flex-shrink-0">
+                    <PhoneCall className="h-5 w-5" />
+                  </div>
+                </button>
               </div>
             </DialogContent>
           </Dialog>
@@ -255,15 +251,15 @@ function ScrollableNav({
       {navItems.map((item) => {
         const isActive = location === item.href;
         return (
-          <Link key={item.href} href={item.href}>
-            <a
-              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${isActive ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25" : "hover:bg-secondary text-muted-foreground hover:text-foreground"}`}
+          <Link key={item.href} href={item.href} asChild>
+            <button
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group bg-transparent border-0 text-left cursor-pointer ${isActive ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25" : "hover:bg-secondary text-muted-foreground hover:text-foreground"}`}
             >
               <item.icon
-                className={`h-5 w-5 ${isActive ? "animate-pulse" : ""}`}
+                className={`h-5 w-5 flex-shrink-0 ${isActive ? "animate-pulse" : ""}`}
               />
               <span className="font-medium">{item.label}</span>
-            </a>
+            </button>
           </Link>
         );
       })}
