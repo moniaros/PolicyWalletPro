@@ -24,6 +24,22 @@ export interface UserProfile {
 
 export type InsertUserProfile = Omit<UserProfile, 'id' | 'updatedAt' | 'createdAt'>;
 
+export interface Appointment {
+  id: string;
+  userId: string;
+  policyType: string;
+  serviceType: string;
+  providerName: string;
+  location: string;
+  appointmentDate: Date;
+  appointmentTime: string;
+  notes?: string;
+  status: string;
+  createdAt: Date;
+}
+
+export type InsertAppointment = Omit<Appointment, 'id' | 'createdAt'>;
+
 export interface IStorage {
   // User CRUD
   getUser(id: string): Promise<User | undefined>;
@@ -54,6 +70,13 @@ export interface IStorage {
   createPreventiveRecommendation(rec: InsertPreventiveRecommendation): Promise<PreventiveRecommendation>;
   updateRecommendation(id: string, completed: boolean): Promise<PreventiveRecommendation>;
 
+  // Appointments
+  getAppointments(userId: string): Promise<Appointment[]>;
+  getAppointment(id: string): Promise<Appointment | undefined>;
+  createAppointment(appointment: InsertAppointment): Promise<Appointment>;
+  updateAppointment(id: string, appointment: Partial<InsertAppointment>): Promise<Appointment>;
+  deleteAppointment(id: string): Promise<void>;
+
   // Audit Logging
   logAuditEvent(event: any): Promise<void>;
 }
@@ -65,6 +88,7 @@ export class MemStorage implements IStorage {
   private metrics: Map<string, HealthMetrics>;
   private risks: Map<string, RiskAssessment>;
   private recommendations: Map<string, PreventiveRecommendation>;
+  private appointments: Map<string, Appointment>;
   private auditLog: any[];
 
   constructor() {
@@ -74,6 +98,7 @@ export class MemStorage implements IStorage {
     this.metrics = new Map();
     this.risks = new Map();
     this.recommendations = new Map();
+    this.appointments = new Map();
     this.auditLog = [];
   }
 
@@ -212,6 +237,39 @@ export class MemStorage implements IStorage {
     const updated: PreventiveRecommendation = { ...rec, completedAt: completed ? new Date() : null } as any;
     this.recommendations.set(id, updated);
     return updated;
+  }
+
+  async getAppointments(userId: string): Promise<Appointment[]> {
+    return Array.from(this.appointments.values())
+      .filter(a => a.userId === userId)
+      .sort((a, b) => new Date(b.appointmentDate).getTime() - new Date(a.appointmentDate).getTime());
+  }
+
+  async getAppointment(id: string): Promise<Appointment | undefined> {
+    return this.appointments.get(id);
+  }
+
+  async createAppointment(apt: InsertAppointment): Promise<Appointment> {
+    const id = randomUUID();
+    const newApt: Appointment = {
+      ...apt,
+      id,
+      createdAt: new Date(),
+    };
+    this.appointments.set(id, newApt);
+    return newApt;
+  }
+
+  async updateAppointment(id: string, partial: Partial<InsertAppointment>): Promise<Appointment> {
+    const apt = this.appointments.get(id);
+    if (!apt) throw new Error("Appointment not found");
+    const updated: Appointment = { ...apt, ...partial };
+    this.appointments.set(id, updated);
+    return updated;
+  }
+
+  async deleteAppointment(id: string): Promise<void> {
+    this.appointments.delete(id);
   }
 
   async logAuditEvent(event: any): Promise<void> {

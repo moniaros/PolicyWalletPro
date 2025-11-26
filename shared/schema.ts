@@ -80,6 +80,20 @@ export const userProfiles = pgTable("user_profiles", {
   createdAt: timestamp("created_at").notNull().default(sql`now()`),
 });
 
+export const appointments = pgTable("appointments", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull(),
+  policyType: text("policy_type").notNull(), // "Health", "Auto", "Home", "Pet"
+  serviceType: text("service_type").notNull(), // "Cardiology", "Dental", "Auto Repair", etc.
+  providerName: text("provider_name").notNull(),
+  location: text("location").notNull(),
+  appointmentDate: timestamp("appointment_date").notNull(),
+  appointmentTime: text("appointment_time").notNull(),
+  notes: text("notes"),
+  status: text("status").notNull().default("Scheduled"), // "Scheduled", "Completed", "Cancelled"
+  createdAt: timestamp("created_at").notNull().default(sql`now()`),
+});
+
 // Insert Schemas
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
@@ -112,6 +126,11 @@ export const insertUserProfileSchema = createInsertSchema(userProfiles).omit({
   updatedAt: true,
 });
 
+export const insertAppointmentSchema = createInsertSchema(appointments).omit({
+  id: true,
+  createdAt: true,
+});
+
 // Types
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
@@ -130,3 +149,6 @@ export type PreventiveRecommendation = typeof preventiveRecommendations.$inferSe
 
 export type InsertUserProfile = z.infer<typeof insertUserProfileSchema>;
 export type UserProfile = typeof userProfiles.$inferSelect;
+
+export type InsertAppointment = z.infer<typeof insertAppointmentSchema>;
+export type Appointment = typeof appointments.$inferSelect;

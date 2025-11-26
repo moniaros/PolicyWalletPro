@@ -335,6 +335,35 @@ export const appointments = [
   }
 ];
 
+export const inNetworkServices = {
+  Health: [
+    { id: "hs1", name: "Cardiology", provider: "Dr. Papadopoulos", location: "Hygeia Hospital", phone: "+30 210 6849000" },
+    { id: "hs2", name: "Dental Care", provider: "Dr. Nikolaidis Clinic", location: "Syntagma, Athens", phone: "+30 210 3224567" },
+    { id: "hs3", name: "Ophthalmology", provider: "Eye Center Athens", location: "Maroussi", phone: "+30 210 6134444" },
+    { id: "hs4", name: "General Checkup", provider: "Metro Medical Center", location: "Kifisia", phone: "+30 210 6296200" },
+    { id: "hs5", name: "Physiotherapy", provider: "Athens Physio Clinic", location: "Glyfada", phone: "+30 210 8940123" },
+    { id: "hs6", name: "Mental Health", provider: "Psych Wellness Center", location: "Kolonaki", phone: "+30 210 7225566" }
+  ],
+  Auto: [
+    { id: "as1", name: "Generali Approved Garage", provider: "Speed Auto Repair", location: "Acharnes", phone: "+30 213 0033800" },
+    { id: "as2", name: "Auto Glass Replacement", provider: "Glass Pro", location: "Chalandri", phone: "+30 210 6847123" },
+    { id: "as3", name: "Tire Service", provider: "Michelin Service Center", location: "Maroussi", phone: "+30 210 6199999" },
+    { id: "as4", name: "Roadside Assistance", provider: "Generali Express", location: "24/7 Mobile", phone: "+30 18118" }
+  ],
+  Home: [
+    { id: "ho1", name: "Emergency Plumbing", provider: "HomeServe Greece", location: "24/7 Mobile", phone: "+30 214 2000214" },
+    { id: "ho2", name: "Electrical Repairs", provider: "ElectroTech", location: "Glyfada", phone: "+30 210 8943333" },
+    { id: "ho3", name: "Locksmith Service", provider: "24/7 Locks", location: "24/7 Mobile", phone: "+30 211 4101234" },
+    { id: "ho4", name: "Glass Replacement", provider: "Window Experts", location: "Marousi", phone: "+30 210 6189999" }
+  ],
+  Pet: [
+    { id: "ps1", name: "Veterinary Clinic", provider: "Happy Paws Vet", location: "Kifisia Vet Center", phone: "+30 210 6234567" },
+    { id: "ps2", name: "Pet Surgery", provider: "Veterinary Hospital Athens", location: "Maroussi", phone: "+30 210 6109000" },
+    { id: "ps3", name: "Pet Grooming", provider: "Pet Beauty", location: "Glyfada", phone: "+30 210 8946666" },
+    { id: "ps4", name: "Emergency Vet", provider: "24h Pet Emergency", location: "Chalandri", phone: "+30 210 6742111" }
+  ]
+};
+
 export const analysisData = [
   { category: "Health", coverage: 98, risk: 40, gap: 2 },
   { category: "Auto", coverage: 95, risk: 70, gap: 5 },
