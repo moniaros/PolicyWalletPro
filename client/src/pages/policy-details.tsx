@@ -338,7 +338,6 @@ export default function PolicyDetailsPage() {
                    </CardContent>
                 </Card>
              )}
-          </div>
 
              <Card className="bg-indigo-50 border-indigo-100">
                 <CardHeader>
