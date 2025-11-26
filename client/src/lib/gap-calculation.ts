@@ -1,5 +1,5 @@
 // Gap analysis calculation engine for per-policy recommendations
-import type { UserProfile } from "@shared/schema";
+import type { UserProfileData } from "@/hooks/useUserProfile";
 
 export interface PolicyRecommendation {
   type: "add" | "drop" | "enhance" | "optional";
@@ -17,7 +17,7 @@ export interface PolicyGapAnalysis {
 
 export function calculatePolicyGaps(
   policyType: string,
-  profile: UserProfile | null
+  profile: UserProfileData | null
 ): PolicyGapAnalysis {
   const gaps: PolicyRecommendation[] = [];
 
@@ -31,7 +31,7 @@ export function calculatePolicyGaps(
 
   const coverage = new Set(profile.currentCoverages || []);
   const ageGroup = profile.ageGroup || "31-45";
-  const dependents = profile.dependents || 0;
+  const dependents = (profile.dependents ?? 0) as number;
   const familyStatus = profile.familyStatus || "Single";
 
   // HEALTH INSURANCE ANALYSIS
@@ -231,7 +231,7 @@ export function calculatePolicyGaps(
 
 export function getSavingsOpportunities(
   policyType: string,
-  profile: UserProfile | null
+  profile: UserProfileData | null
 ): PolicyRecommendation[] {
   if (!profile) return [];
 

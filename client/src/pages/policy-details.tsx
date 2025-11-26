@@ -6,11 +6,16 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, Download, CreditCard, Users, AlertTriangle, FileCheck, Shield, TrendingUp, AlertCircle, DollarSign, CheckCircle2, Calendar, Hash, FileText } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import { PolicyRecommendations } from "@/components/policy-recommendations";
+import { calculatePolicyGaps } from "@/lib/gap-calculation";
+import { useUserProfile } from "@/hooks/useUserProfile";
+import { toast } from "sonner";
 
 export default function PolicyDetailsPage() {
   const [match, params] = useRoute("/policies/:id");
   const id = params ? parseInt(params.id) : 0;
   const policy = policies.find((p) => p.id === id);
+  const userProfile = useUserProfile();
 
   if (!policy) {
     return (
@@ -23,8 +28,9 @@ export default function PolicyDetailsPage() {
     );
   }
 
-  // Calculate some stats for the gap analysis
-  const gapScore = policy.details?.gapAnalysis?.score || 0;
+  // Calculate gap analysis based on user profile
+  const gapAnalysis = userProfile ? calculatePolicyGaps(policy.type, userProfile) : null;
+  const gapScore = gapAnalysis?.score || 0;
 
   return (
     <div className="space-y-6 pb-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -308,41 +314,31 @@ export default function PolicyDetailsPage() {
 
         {/* Analysis Tab */}
         <TabsContent value="analysis" className="space-y-4 mt-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-             <Card className="md:col-span-2">
-                <CardHeader>
-                   <CardTitle className="flex items-center gap-2">
-                      <TrendingUp className="h-5 w-5 text-primary" />
-                      Policy Gap Analysis
-                   </CardTitle>
-                   <CardDescription>AI-driven analysis based on your age, location, and lifestyle.</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                   <div>
-                      <div className="flex justify-between mb-2">
-                         <span className="font-medium">Coverage Score</span>
-                         <span className={`font-bold ${gapScore > 80 ? 'text-emerald-600' : gapScore > 50 ? 'text-amber-600' : 'text-red-600'}`}>{gapScore}/100</span>
+          <div className="grid grid-cols-1 gap-6">
+             {gapAnalysis ? (
+                <PolicyRecommendations 
+                  analysis={gapAnalysis} 
+                  onContactAgent={() => {
+                    toast.info("Redirecting to agent contact form...");
+                  }}
+                />
+             ) : (
+                <Card className="bg-blue-50 border-blue-200">
+                   <CardContent className="pt-6">
+                      <div className="text-center space-y-3">
+                         <AlertCircle className="h-12 w-12 text-blue-600 mx-auto" />
+                         <h3 className="font-semibold text-lg">Complete Your Profile</h3>
+                         <p className="text-sm text-muted-foreground">
+                            Personalized gap analysis requires your profile information. Visit the Profile page to get started.
+                         </p>
+                         <Link href="/profile">
+                            <Button className="mt-2">Complete Profile</Button>
+                         </Link>
                       </div>
-                      <Progress value={gapScore} className="h-3" />
-                      <p className="text-xs text-muted-foreground mt-2">
-                         {gapScore > 80 ? "Excellent coverage. You are well protected." : "There are some gaps in your coverage that need attention."}
-                      </p>
-                   </div>
-
-                   {policy.details?.gapAnalysis?.gaps.length > 0 && (
-                      <div className="bg-red-50 border border-red-100 rounded-xl p-4">
-                         <h4 className="font-semibold text-red-900 mb-2 flex items-center gap-2">
-                            <AlertCircle className="h-4 w-4" /> Identified Gaps
-                         </h4>
-                         <ul className="list-disc list-inside text-sm text-red-800 space-y-1">
-                            {policy.details?.gapAnalysis?.gaps.map((gap: string, i: number) => (
-                               <li key={i}>{gap}</li>
-                            ))}
-                         </ul>
-                      </div>
-                   )}
-                </CardContent>
-             </Card>
+                   </CardContent>
+                </Card>
+             )}
+          </div>
 
              <Card className="bg-indigo-50 border-indigo-100">
                 <CardHeader>
