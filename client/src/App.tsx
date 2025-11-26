@@ -10,6 +10,8 @@ import PolicyDetailsPage from "@/pages/policy-details";
 import AppointmentsPage from "@/pages/appointments";
 import AnalysisPage from "@/pages/analysis";
 import AgentsPage from "@/pages/agents";
+import DocumentsPage from "@/pages/documents";
+import ClaimsPage from "@/pages/claims";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -22,6 +24,8 @@ function Router() {
         <Route path="/appointments" component={AppointmentsPage} />
         <Route path="/analysis" component={AnalysisPage} />
         <Route path="/agents" component={AgentsPage} />
+        <Route path="/documents" component={DocumentsPage} />
+        <Route path="/claims" component={ClaimsPage} />
         <Route component={NotFound} />
       </Switch>
     </Layout>

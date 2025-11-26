@@ -1,4 +1,4 @@
-import { Shield, Heart, Car, Home, Stethoscope, AlertCircle, Dog, Globe, Briefcase } from "lucide-react";
+import { Shield, Heart, Car, Home, Stethoscope, AlertCircle, Dog, Globe, Briefcase, FileText, FileCheck, FileBarChart } from "lucide-react";
 
 export const policies = [
   {
@@ -18,7 +18,7 @@ export const policies = [
       nextPaymentDue: "2025-12-01",
       beneficiaries: ["Sophia (Spouse)", "Dimitris (Son)"],
       claims: [
-        { id: "CLM-NN-001", date: "2025-09-10", reason: "Annual Executive Checkup", amount: "€450", status: "Paid" },
+        { id: "CLM-NN-001", date: "2025-09-10", reason: "Annual Executive Checkup", amount: "€450", status: "Paid", step: 4, steps: ["Submitted", "Reviewing", "Approved", "Paid"] },
       ],
       coverageLimits: {
         "Annual Limit": "Unlimited",
@@ -57,7 +57,9 @@ export const policies = [
       lastPayment: "2025-06-15",
       nextPaymentDue: "2025-12-15",
       beneficiaries: ["Self"],
-      claims: [],
+      claims: [
+         { id: "CLM-GEN-002", date: "2025-11-20", reason: "Windshield Crack", amount: "€350", status: "In Review", step: 2, steps: ["Submitted", "Reviewing", "Approved", "Paid"] }
+      ],
       coverageLimits: {
         "Bodily Injury Liability": "€1,220,000 per victim",
         "Material Damage Liability": "€1,220,000 per accident",
@@ -164,7 +166,7 @@ export const policies = [
       nextPaymentDue: "2025-11-10",
       beneficiaries: ["Max (Golden Retriever)"],
       claims: [
-        { id: "CLM-PET-004", date: "2025-08-01", reason: "Paw Surgery", amount: "€800", status: "Paid" }
+        { id: "CLM-PET-004", date: "2025-08-01", reason: "Paw Surgery", amount: "€800", status: "Paid", step: 4, steps: ["Submitted", "Reviewing", "Approved", "Paid"] }
       ],
       coverageLimits: {
         "Annual Limit": "€2,000",
@@ -183,6 +185,15 @@ export const policies = [
       }
     }
   }
+];
+
+export const documents = [
+  { id: 1, name: "NN Health Policy Schedule 2025", type: "Policy", date: "2025-01-01", size: "1.2 MB", icon: FileText },
+  { id: 2, name: "NN Tax Certificate 2024", type: "Tax", date: "2025-02-15", size: "0.8 MB", icon: FileBarChart },
+  { id: 3, name: "Generali Green Card (EU)", type: "ID Card", date: "2025-06-15", size: "0.5 MB", icon: Globe },
+  { id: 4, name: "Generali Auto Contract", type: "Policy", date: "2025-06-15", size: "2.4 MB", icon: FileText },
+  { id: 5, name: "Ergo Home Insurance Schedule", type: "Policy", date: "2024-09-01", size: "1.5 MB", icon: FileText },
+  { id: 6, name: "Claim Report #CLM-NN-001", type: "Claim", date: "2025-09-12", size: "3.1 MB", icon: FileCheck },
 ];
 
 export const appointments = [
