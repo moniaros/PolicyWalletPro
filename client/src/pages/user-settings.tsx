@@ -9,20 +9,10 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Lock, Eye, EyeOff, CheckCircle2, AlertCircle, Globe, Clock, Smartphone, ArrowRight } from "lucide-react";
+import { Lock, Eye, EyeOff, CheckCircle2, AlertCircle, Globe, Clock, Smartphone, ArrowRight, Lightbulb, TrendingUp, Shield } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
-
-const questionsData = [
-  { id: "ageGroup", title: "What is your age group?", options: ["18-30", "31-45", "46-60", "60+"] },
-  { id: "familyStatus", title: "What is your family status?", options: ["Single", "Married", "Domestic Partner", "Widowed/Divorced"] },
-  { id: "dependents", title: "Number of dependents?", options: ["0", "1-2", "3+"] },
-  { id: "incomeRange", title: "Annual household income?", options: ["<€30k", "€30-60k", "€60-100k", "€100-150k", ">€150k"] },
-  { id: "healthStatus", title: "Current health status?", options: ["Excellent", "Good", "Fair", "Has chronic conditions"] },
-  { id: "emergencyFund", title: "Emergency savings (3-6 months)?", options: ["Yes, well covered", "Partially covered", "Minimal or none"] },
-  { id: "travelFrequency", title: "International travel frequency?", options: ["Never", "1-2 times/year", "3-6 times/year", "Monthly+"] },
-  { id: "occupationRisk", title: "Occupation risk level?", options: ["Low risk (office)", "Medium risk (mixed)", "High risk (physical/travel)"] },
-];
+import { INSURANCE_QUESTIONNAIRE, TRUST_BUILDING_INSIGHTS } from "@/lib/insurance-analyst-data";
 
 export default function UserSettingsPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -31,6 +21,8 @@ export default function UserSettingsPage() {
   const [showPIN, setShowPIN] = useState(false);
   const [currentQuestionIdx, setCurrentQuestionIdx] = useState(0);
   const [insuranceProfileCompleted, setInsuranceProfileCompleted] = useState(!!localStorage.getItem("userProfile"));
+  const [showQuestionnaire, setShowQuestionnaire] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [questionnaire, setQuestionnaire] = useState({
     ageGroup: "",
     familyStatus: "",
@@ -44,6 +36,15 @@ export default function UserSettingsPage() {
     lifeStageFactors: [] as string[],
     chronicConditions: [] as string[],
   });
+
+  useEffect(() => {
+    const profile = localStorage.getItem("userProfile");
+    if (profile) {
+      const parsed = JSON.parse(profile);
+      setQuestionnaire(parsed);
+      setInsuranceProfileCompleted(true);
+    }
+  }, []);
 
   const [formData, setFormData] = useState({
     // Personal
@@ -137,21 +138,42 @@ export default function UserSettingsPage() {
   };
 
   const handleQuestionnaireNext = () => {
-    const current = questionsData[currentQuestionIdx];
+    const current = INSURANCE_QUESTIONNAIRE[currentQuestionIdx];
     if (!questionnaire[current.id as keyof typeof questionnaire]) {
       toast.error("Please select an answer");
       return;
     }
-    if (currentQuestionIdx < questionsData.length - 1) {
+    if (currentQuestionIdx < INSURANCE_QUESTIONNAIRE.length - 1) {
       setCurrentQuestionIdx(currentQuestionIdx + 1);
     }
   };
 
-  const handleQuestionnaireComplete = () => {
-    const profile = { ...questionnaire, fullName: "", dateOfBirth: "" };
-    localStorage.setItem("userProfile", JSON.stringify(profile));
-    setInsuranceProfileCompleted(true);
-    toast.success("Insurance profile questionnaire completed!");
+  const handleQuestionnaireComplete = async () => {
+    setLoading(true);
+    try {
+      const profile = { ...questionnaire };
+      localStorage.setItem("userProfile", JSON.stringify(profile));
+      setInsuranceProfileCompleted(true);
+      setShowQuestionnaire(false);
+      setCurrentQuestionIdx(0);
+      toast.success("Insurance profile saved! We'll personalize your recommendations.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleEditField = (field: string, value: any) => {
+    setQuestionnaire({ ...questionnaire, [field]: value });
+  };
+
+  const handleSaveProfile = async () => {
+    setLoading(true);
+    try {
+      localStorage.setItem("userProfile", JSON.stringify(questionnaire));
+      toast.success("Insurance profile updated successfully!");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -540,145 +562,278 @@ export default function UserSettingsPage() {
 
         {/* INSURANCE PROFILE (Gap Analysis) */}
         <TabsContent value="insurance">
-          {!insuranceProfileCompleted ? (
-            // Questionnaire Step-by-Step
-            <Card>
-              <CardHeader>
-                <CardTitle>Insurance Profile Questionnaire</CardTitle>
-                <CardDescription>Complete in {questionsData.length} quick steps to identify your coverage gaps</CardDescription>
-                <div className="mt-4">
-                  <Progress value={((currentQuestionIdx + 1) / questionsData.length) * 100} className="h-2" />
-                  <p className="text-xs text-muted-foreground mt-2">Question {currentQuestionIdx + 1} of {questionsData.length}</p>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="space-y-4">
-                  <h3 className="text-lg font-semibold">{questionsData[currentQuestionIdx].title}</h3>
-                  <RadioGroup
-                    value={questionnaire[questionsData[currentQuestionIdx].id as keyof typeof questionnaire] as string}
-                    onValueChange={(value) =>
-                      setQuestionnaire({
-                        ...questionnaire,
-                        [questionsData[currentQuestionIdx].id]: value,
-                      })
-                    }
-                  >
-                    <div className="space-y-2">
-                      {questionsData[currentQuestionIdx].options.map((option) => (
-                        <div key={option} className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
-                          <RadioGroupItem value={option} id={`q-${option}`} />
-                          <Label htmlFor={`q-${option}`} className="cursor-pointer flex-1">
-                            {option}
-                          </Label>
-                        </div>
-                      ))}
-                    </div>
-                  </RadioGroup>
-                </div>
-
-                <div className="flex gap-3 pt-4">
-                  {currentQuestionIdx > 0 && (
-                    <Button
-                      onClick={() => setCurrentQuestionIdx(currentQuestionIdx - 1)}
-                      variant="outline"
-                      className="flex-1"
-                      data-testid="button-questionnaire-prev"
-                    >
-                      Back
-                    </Button>
-                  )}
-                  {currentQuestionIdx < questionsData.length - 1 ? (
-                    <Button
-                      onClick={handleQuestionnaireNext}
-                      className="flex-1"
-                      data-testid="button-questionnaire-next"
-                    >
-                      Next <ArrowRight className="h-4 w-4 ml-2" />
-                    </Button>
-                  ) : (
-                    <Button
-                      onClick={handleQuestionnaireComplete}
-                      className="flex-1 bg-emerald-600 hover:bg-emerald-700"
-                      data-testid="button-questionnaire-complete"
-                    >
-                      Complete <CheckCircle2 className="h-4 w-4 ml-2" />
-                    </Button>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          ) : (
-            // Profile Form with Pre-filled Data
-            <div className="space-y-6">
-              <Card>
+          <div className="space-y-6">
+            {/* Prominent Button Section */}
+            {!showQuestionnaire && (
+              <Card className="border-2 border-emerald-200 bg-gradient-to-r from-emerald-50 to-blue-50">
                 <CardHeader>
-                  <CardTitle>Insurance Profile Summary</CardTitle>
-                  <CardDescription>Your profile information used for gap analysis</CardDescription>
+                  <CardTitle className="flex items-center gap-2">
+                    <Shield className="h-5 w-5 text-emerald-600" />
+                    Insurance Gap Analysis
+                  </CardTitle>
+                  <CardDescription>Identify coverage gaps and get personalized recommendations</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <Alert className="bg-emerald-50 border-emerald-200">
-                    <CheckCircle2 className="h-4 w-4 text-emerald-600" />
-                    <AlertDescription className="text-emerald-700">
-                      Your insurance profile is complete! View personalized gap analysis on your policies.
+                  <Alert className="bg-white border-emerald-200">
+                    <Lightbulb className="h-4 w-4 text-amber-500" />
+                    <AlertDescription className="text-gray-700">
+                      <strong>Why take this analysis?</strong> {TRUST_BUILDING_INSIGHTS[0]}
                     </AlertDescription>
                   </Alert>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="p-3 bg-blue-50 rounded-lg">
-                      <p className="text-xs text-muted-foreground">Age Group</p>
-                      <p className="font-semibold">{questionnaire.ageGroup}</p>
-                    </div>
-                    <div className="p-3 bg-blue-50 rounded-lg">
-                      <p className="text-xs text-muted-foreground">Family Status</p>
-                      <p className="font-semibold">{questionnaire.familyStatus}</p>
-                    </div>
-                    <div className="p-3 bg-blue-50 rounded-lg">
-                      <p className="text-xs text-muted-foreground">Dependents</p>
-                      <p className="font-semibold">{questionnaire.dependents}</p>
-                    </div>
-                    <div className="p-3 bg-blue-50 rounded-lg">
-                      <p className="text-xs text-muted-foreground">Income Range</p>
-                      <p className="font-semibold">{questionnaire.incomeRange}</p>
-                    </div>
-                    <div className="p-3 bg-blue-50 rounded-lg">
-                      <p className="text-xs text-muted-foreground">Health Status</p>
-                      <p className="font-semibold">{questionnaire.healthStatus}</p>
-                    </div>
-                    <div className="p-3 bg-blue-50 rounded-lg">
-                      <p className="text-xs text-muted-foreground">Emergency Fund</p>
-                      <p className="font-semibold">{questionnaire.emergencyFund}</p>
-                    </div>
-                    <div className="p-3 bg-blue-50 rounded-lg">
-                      <p className="text-xs text-muted-foreground">Travel Frequency</p>
-                      <p className="font-semibold">{questionnaire.travelFrequency}</p>
-                    </div>
-                    <div className="p-3 bg-blue-50 rounded-lg">
-                      <p className="text-xs text-muted-foreground">Occupation Risk</p>
-                      <p className="font-semibold">{questionnaire.occupationRisk}</p>
-                    </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    {TRUST_BUILDING_INSIGHTS.slice(1, 4).map((insight, idx) => (
+                      <div key={idx} className="p-3 bg-white rounded-lg border border-blue-100">
+                        <p className="text-sm text-gray-700">✓ {insight}</p>
+                      </div>
+                    ))}
                   </div>
 
-                  <div className="space-y-2">
-                    <Button onClick={() => setInsuranceProfileCompleted(false)} variant="outline" className="w-full" data-testid="button-edit-questionnaire">
-                      Edit Questionnaire
-                    </Button>
-                    <Link href="/profile">
-                      <Button className="w-full" data-testid="button-view-full-profile">
-                        View Full Profile & Add More Details
-                      </Button>
-                    </Link>
-                  </div>
-
-                  <Alert className="bg-gray-50 border-gray-200">
-                    <AlertCircle className="h-4 w-4 text-gray-600" />
-                    <AlertDescription className="text-gray-700 text-sm">
-                      Your profile helps identify coverage gaps and recommend missing policies. This data is protected by privacy policies and used only to improve your recommendations.
-                    </AlertDescription>
-                  </Alert>
+                  <Button
+                    onClick={() => setShowQuestionnaire(!showQuestionnaire)}
+                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white h-12 text-base font-semibold"
+                    data-testid="button-start-questionnaire"
+                  >
+                    {insuranceProfileCompleted ? "Update Insurance Profile" : "Start Insurance Analysis"}
+                    <ArrowRight className="h-4 w-4 ml-2" />
+                  </Button>
                 </CardContent>
               </Card>
-            </div>
-          )}
+            )}
+
+            {/* Questionnaire Step-by-Step */}
+            {showQuestionnaire && !insuranceProfileCompleted && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Insurance Gap Analysis Questionnaire</CardTitle>
+                  <CardDescription>Step-by-step analysis to identify your coverage needs</CardDescription>
+                  <div className="mt-4">
+                    <Progress value={((currentQuestionIdx + 1) / INSURANCE_QUESTIONNAIRE.length) * 100} className="h-2" />
+                    <p className="text-xs text-muted-foreground mt-2">Question {currentQuestionIdx + 1} of {INSURANCE_QUESTIONNAIRE.length}</p>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-4">
+                    <div>
+                      <h3 className="text-lg font-semibold">{INSURANCE_QUESTIONNAIRE[currentQuestionIdx].title}</h3>
+                      <p className="text-sm text-muted-foreground mt-1">{INSURANCE_QUESTIONNAIRE[currentQuestionIdx].guidance}</p>
+                    </div>
+                    <RadioGroup
+                      value={questionnaire[INSURANCE_QUESTIONNAIRE[currentQuestionIdx].id as keyof typeof questionnaire] as string}
+                      onValueChange={(value) =>
+                        setQuestionnaire({
+                          ...questionnaire,
+                          [INSURANCE_QUESTIONNAIRE[currentQuestionIdx].id]: value,
+                        })
+                      }
+                    >
+                      <div className="space-y-2">
+                        {INSURANCE_QUESTIONNAIRE[currentQuestionIdx].options.map((option) => (
+                          <div key={option} className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <RadioGroupItem value={option} id={`q-${option}`} />
+                            <Label htmlFor={`q-${option}`} className="cursor-pointer flex-1">
+                              {option}
+                            </Label>
+                          </div>
+                        ))}
+                      </div>
+                    </RadioGroup>
+                  </div>
+
+                  <div className="flex gap-3 pt-4">
+                    {currentQuestionIdx > 0 && (
+                      <Button
+                        onClick={() => setCurrentQuestionIdx(currentQuestionIdx - 1)}
+                        variant="outline"
+                        className="flex-1"
+                        data-testid="button-questionnaire-prev"
+                      >
+                        Back
+                      </Button>
+                    )}
+                    {currentQuestionIdx < INSURANCE_QUESTIONNAIRE.length - 1 ? (
+                      <Button
+                        onClick={handleQuestionnaireNext}
+                        className="flex-1"
+                        data-testid="button-questionnaire-next"
+                      >
+                        Next <ArrowRight className="h-4 w-4 ml-2" />
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={handleQuestionnaireComplete}
+                        disabled={loading}
+                        className="flex-1 bg-emerald-600 hover:bg-emerald-700"
+                        data-testid="button-questionnaire-complete"
+                      >
+                        Complete <CheckCircle2 className="h-4 w-4 ml-2" />
+                      </Button>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Editable Form with Pre-filled Data */}
+            {insuranceProfileCompleted && (
+              <div className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <CheckCircle2 className="h-5 w-5 text-emerald-600" />
+                      Your Insurance Profile
+                    </CardTitle>
+                    <CardDescription>Edit and update your insurance information</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    <Alert className="bg-emerald-50 border-emerald-200">
+                      <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+                      <AlertDescription className="text-emerald-700">
+                        Profile complete! We're analyzing your coverage needs to provide personalized recommendations.
+                      </AlertDescription>
+                    </Alert>
+
+                    {/* Editable Form Fields - Grid Layout */}
+                    <div className="space-y-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label>Age Group *</Label>
+                          <Select value={questionnaire.ageGroup} onValueChange={(val) => handleEditField("ageGroup", val)}>
+                            <SelectTrigger data-testid="select-age-group">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {["18-30", "31-45", "46-60", "60+"].map((age) => (
+                                <SelectItem key={age} value={age}>{age}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Family Status *</Label>
+                          <Select value={questionnaire.familyStatus} onValueChange={(val) => handleEditField("familyStatus", val)}>
+                            <SelectTrigger data-testid="select-family-status">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {["Single", "Married", "Domestic Partner", "Widowed/Divorced"].map((status) => (
+                                <SelectItem key={status} value={status}>{status}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Number of Dependents *</Label>
+                          <Select value={questionnaire.dependents} onValueChange={(val) => handleEditField("dependents", val)}>
+                            <SelectTrigger data-testid="select-dependents">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {["0", "1-2", "3+"].map((num) => (
+                                <SelectItem key={num} value={num}>{num}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Income Range *</Label>
+                          <Select value={questionnaire.incomeRange} onValueChange={(val) => handleEditField("incomeRange", val)}>
+                            <SelectTrigger data-testid="select-income">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {["<€30k", "€30-60k", "€60-100k", "€100-150k", ">€150k"].map((range) => (
+                                <SelectItem key={range} value={range}>{range}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Health Status *</Label>
+                          <Select value={questionnaire.healthStatus} onValueChange={(val) => handleEditField("healthStatus", val)}>
+                            <SelectTrigger data-testid="select-health">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {["Excellent", "Good", "Fair", "Has chronic conditions"].map((status) => (
+                                <SelectItem key={status} value={status}>{status}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Emergency Fund Status *</Label>
+                          <Select value={questionnaire.emergencyFund} onValueChange={(val) => handleEditField("emergencyFund", val)}>
+                            <SelectTrigger data-testid="select-emergency-fund">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {["Yes, well covered", "Partially covered", "Minimal or none"].map((status) => (
+                                <SelectItem key={status} value={status}>{status}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Travel Frequency *</Label>
+                          <Select value={questionnaire.travelFrequency} onValueChange={(val) => handleEditField("travelFrequency", val)}>
+                            <SelectTrigger data-testid="select-travel">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {["Never", "1-2 times/year", "3-6 times/year", "Monthly+"].map((freq) => (
+                                <SelectItem key={freq} value={freq}>{freq}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Occupation Risk *</Label>
+                          <Select value={questionnaire.occupationRisk} onValueChange={(val) => handleEditField("occupationRisk", val)}>
+                            <SelectTrigger data-testid="select-occupation-risk">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {["Low risk (office work)", "Medium risk (mixed activities)", "High risk (physical/travel intensive)"].map((risk) => (
+                                <SelectItem key={risk} value={risk}>{risk}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+
+                      <div className="flex gap-3">
+                        <Button
+                          onClick={handleSaveProfile}
+                          disabled={loading}
+                          className="flex-1 bg-emerald-600 hover:bg-emerald-700"
+                          data-testid="button-save-profile"
+                        >
+                          <CheckCircle2 className="h-4 w-4 mr-2" />
+                          Save Changes
+                        </Button>
+                        <Button
+                          onClick={() => setShowQuestionnaire(true)}
+                          variant="outline"
+                          className="flex-1"
+                          data-testid="button-retake-questionnaire"
+                        >
+                          Retake Analysis
+                        </Button>
+                      </div>
+                    </div>
+
+                    <Alert className="bg-blue-50 border-blue-200">
+                      <TrendingUp className="h-4 w-4 text-blue-600" />
+                      <AlertDescription className="text-blue-700 text-sm">
+                        Your profile is used to identify coverage gaps and provide personalized insurance recommendations. Update it whenever your situation changes.
+                      </AlertDescription>
+                    </Alert>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+          </div>
         </TabsContent>
 
         {/* PREFERRED AGENTS */}

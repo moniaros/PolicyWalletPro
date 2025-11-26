@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertHealthCheckupSchema, insertHealthMetricsSchema, insertPreventiveRecommendationSchema, insertUserSchema } from "@shared/schema";
+import { insertHealthCheckupSchema, insertHealthMetricsSchema, insertPreventiveRecommendationSchema, insertUserSchema, insertUserProfileSchema } from "@shared/schema";
 import { z } from "zod";
 import { authMiddleware, errorHandler, adminMiddleware, type AuthRequest } from "./middleware";
 import { login, register } from "./auth";
@@ -43,6 +43,38 @@ export async function registerRoutes(app: Express): Promise<Server> {
       username: req.user?.username,
       role: req.userRole,
     });
+  });
+
+  // User Profile - GET
+  app.get("/api/profile/:userId", async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const profile = await storage.getUserProfile(userId);
+      res.json(profile || null);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch profile" });
+    }
+  });
+
+  // User Profile - POST/Create
+  app.post("/api/profile", async (req, res) => {
+    try {
+      const profile = await storage.createUserProfile(req.body);
+      res.status(201).json(profile);
+    } catch (error) {
+      res.status(400).json({ error: "Failed to create profile" });
+    }
+  });
+
+  // User Profile - PUT/Update
+  app.put("/api/profile/:userId", async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const profile = await storage.updateUserProfile(userId, req.body);
+      res.json(profile);
+    } catch (error) {
+      res.status(400).json({ error: "Failed to update profile" });
+    }
   });
 
   // Admin Stats - Protected by admin middleware

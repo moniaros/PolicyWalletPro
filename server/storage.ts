@@ -1,11 +1,39 @@
 import { type User, type InsertUser, type HealthCheckup, type InsertHealthCheckup, type HealthMetrics, type InsertHealthMetrics, type RiskAssessment, type InsertRiskAssessment, type PreventiveRecommendation, type InsertPreventiveRecommendation } from "@shared/schema";
 import { randomUUID } from "crypto";
 
+export interface UserProfile {
+  id: string;
+  userId: string;
+  fullName?: string;
+  dateOfBirth?: string;
+  ageGroup?: string;
+  familyStatus?: string;
+  dependents?: number;
+  incomeRange?: string;
+  healthStatus?: string;
+  emergencyFund?: string;
+  travelFrequency?: string;
+  occupationRisk?: string;
+  lifeStageFactors?: string[];
+  currentCoverages?: string[];
+  chronicConditions?: string[];
+  dependentDetails?: any;
+  updatedAt: Date;
+  createdAt: Date;
+}
+
+export type InsertUserProfile = Omit<UserProfile, 'id' | 'updatedAt' | 'createdAt'>;
+
 export interface IStorage {
   // User CRUD
   getUser(id: string): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
+
+  // User Profile
+  getUserProfile(userId: string): Promise<UserProfile | undefined>;
+  createUserProfile(profile: InsertUserProfile): Promise<UserProfile>;
+  updateUserProfile(userId: string, profile: Partial<InsertUserProfile>): Promise<UserProfile>;
 
   // Health Checkups
   getHealthCheckups(userId: string): Promise<HealthCheckup[]>;
@@ -32,6 +60,7 @@ export interface IStorage {
 
 export class MemStorage implements IStorage {
   private users: Map<string, User>;
+  private userProfiles: Map<string, UserProfile>;
   private checkups: Map<string, HealthCheckup>;
   private metrics: Map<string, HealthMetrics>;
   private risks: Map<string, RiskAssessment>;
@@ -40,6 +69,7 @@ export class MemStorage implements IStorage {
 
   constructor() {
     this.users = new Map();
+    this.userProfiles = new Map();
     this.checkups = new Map();
     this.metrics = new Map();
     this.risks = new Map();
@@ -60,6 +90,33 @@ export class MemStorage implements IStorage {
     const user: User = { ...insertUser, id };
     this.users.set(id, user);
     return user;
+  }
+
+  async getUserProfile(userId: string): Promise<UserProfile | undefined> {
+    return this.userProfiles.get(userId);
+  }
+
+  async createUserProfile(profile: InsertUserProfile): Promise<UserProfile> {
+    const now = new Date();
+    const newProfile: UserProfile = {
+      ...profile,
+      id: randomUUID(),
+      updatedAt: now,
+      createdAt: now,
+    };
+    this.userProfiles.set(profile.userId, newProfile);
+    return newProfile;
+  }
+
+  async updateUserProfile(userId: string, partial: Partial<InsertUserProfile>): Promise<UserProfile> {
+    let profile = this.userProfiles.get(userId);
+    if (!profile) {
+      profile = await this.createUserProfile({ userId, ...partial });
+    } else {
+      profile = { ...profile, ...partial, updatedAt: new Date() };
+      this.userProfiles.set(userId, profile);
+    }
+    return profile;
   }
 
   async getHealthCheckups(userId: string): Promise<HealthCheckup[]> {
