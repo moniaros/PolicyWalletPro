@@ -69,11 +69,13 @@ export class MemStorage implements IStorage {
 
   async createHealthCheckup(checkup: InsertHealthCheckup): Promise<HealthCheckup> {
     const id = randomUUID();
-    const newCheckup: HealthCheckup = {
+    const newCheckup = {
       ...checkup,
       id,
       createdAt: new Date(),
-    };
+      results: checkup.results || null,
+      fileUrls: checkup.fileUrls || null,
+    } as HealthCheckup;
     this.checkups.set(id, newCheckup);
     return newCheckup;
   }
@@ -130,11 +132,14 @@ export class MemStorage implements IStorage {
 
   async createPreventiveRecommendation(rec: InsertPreventiveRecommendation): Promise<PreventiveRecommendation> {
     const id = randomUUID();
-    const newRec: PreventiveRecommendation = {
+    const newRec = {
       ...rec,
       id,
       createdAt: new Date(),
-    };
+      coverageStatus: rec.coverageStatus || null,
+      estimatedCost: rec.estimatedCost || null,
+      completedAt: rec.completedAt || null,
+    } as PreventiveRecommendation;
     this.recommendations.set(id, newRec);
     return newRec;
   }
