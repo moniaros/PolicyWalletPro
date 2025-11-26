@@ -11,6 +11,7 @@ import PoliciesPage from "@/pages/policies";
 import PolicyDetailsPage from "@/pages/policy-details";
 import AppointmentsPage from "@/pages/appointments";
 import AnalysisPage from "@/pages/analysis";
+import GapAnalysisPage from "@/pages/gap-analysis";
 import AgentsPage from "@/pages/agents";
 import DocumentsPage from "@/pages/documents";
 import ClaimsPage from "@/pages/claims";
@@ -33,6 +34,7 @@ function Router({ isAuthenticated }: { isAuthenticated: boolean }) {
         <Route path="/policies/:id" component={PolicyDetailsPage} />
         <Route path="/appointments" component={AppointmentsPage} />
         <Route path="/analysis" component={AnalysisPage} />
+        <Route path="/gap-analysis" component={GapAnalysisPage} />
         <Route path="/agents" component={AgentsPage} />
         <Route path="/documents" component={DocumentsPage} />
         <Route path="/claims" component={ClaimsPage} />

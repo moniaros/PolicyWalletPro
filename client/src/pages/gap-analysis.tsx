@@ -1,0 +1,477 @@
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import { AlertCircle, CheckCircle2, TrendingUp, ShieldAlert } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+
+interface GapAnalysisResponse {
+  ageGroup: string;
+  familyStatus: string;
+  currentCoverages: string[];
+  incomeRange: string;
+  healthStatus: string;
+  lifeStageRisks: string[];
+  emergencyFund: string;
+  dependents: string;
+  travelFrequency: string;
+  occupationRisk: string;
+}
+
+interface CoverageGap {
+  type: string;
+  priority: "critical" | "high" | "medium" | "low";
+  description: string;
+  recommendation: string;
+  estimatedCost: string;
+}
+
+const questions = [
+  {
+    id: "ageGroup",
+    title: "What is your age group?",
+    type: "radio",
+    options: ["18-30", "31-45", "46-60", "60+"],
+  },
+  {
+    id: "familyStatus",
+    title: "What is your family status?",
+    type: "radio",
+    options: ["Single", "Married", "Domestic Partner", "Widowed/Divorced"],
+  },
+  {
+    id: "dependents",
+    title: "Do you have dependents (children)?",
+    type: "radio",
+    options: ["No dependents", "1-2 dependents", "3+ dependents"],
+  },
+  {
+    id: "currentCoverages",
+    title: "Which insurance types do you currently have?",
+    type: "checkbox",
+    options: ["Health", "Auto", "Home", "Life", "Disability", "Travel", "Pet"],
+  },
+  {
+    id: "incomeRange",
+    title: "What is your annual household income range?",
+    type: "radio",
+    options: ["<€30k", "€30-60k", "€60-100k", "€100-150k", ">€150k"],
+  },
+  {
+    id: "healthStatus",
+    title: "How would you describe your current health?",
+    type: "radio",
+    options: ["Excellent", "Good", "Fair", "Has chronic conditions"],
+  },
+  {
+    id: "emergencyFund",
+    title: "Do you have 3-6 months of emergency savings?",
+    type: "radio",
+    options: ["Yes, well covered", "Partially covered", "Minimal or none"],
+  },
+  {
+    id: "travelFrequency",
+    title: "How often do you travel internationally?",
+    type: "radio",
+    options: ["Never", "1-2 times/year", "3-6 times/year", "Monthly+"],
+  },
+  {
+    id: "occupationRisk",
+    title: "Would you describe your occupation as:",
+    type: "radio",
+    options: ["Low risk (office)", "Medium risk (mixed)", "High risk (physical/travel)"],
+  },
+  {
+    id: "lifeStageRisks",
+    title: "Which of these apply to your life stage?",
+    type: "checkbox",
+    options: ["First home purchase planned", "Young children", "Mortgage holder", "High debt", "Business owner"],
+  },
+];
+
+function calculateGaps(responses: GapAnalysisResponse): CoverageGap[] {
+  const gaps: CoverageGap[] = [];
+  const coverage = new Set(responses.currentCoverages);
+
+  // Life insurance gap
+  if (
+    (responses.dependents !== "No dependents" || responses.familyStatus === "Married") &&
+    !coverage.has("Life")
+  ) {
+    gaps.push({
+      type: "Life Insurance",
+      priority: "critical",
+      description: "You have dependents or family obligations without life insurance protection",
+      recommendation:
+        "Term life insurance (10-30 years) to protect your family's financial future. Amount: 5-10x your annual income",
+      estimatedCost: "€15-40/month",
+    });
+  }
+
+  // Disability insurance gap
+  if (responses.incomeRange !== "<€30k" && !coverage.has("Disability")) {
+    gaps.push({
+      type: "Disability Insurance",
+      priority: "high",
+      description: "If you cannot work due to illness/injury, your income is at risk",
+      recommendation: "Short and long-term disability coverage to replace 60-80% of your income",
+      estimatedCost: "€30-80/month",
+    });
+  }
+
+  // Travel insurance gap
+  if (responses.travelFrequency !== "Never" && !coverage.has("Travel")) {
+    gaps.push({
+      type: "International Travel Insurance",
+      priority: "high",
+      description: `You travel ${responses.travelFrequency} but lack travel medical coverage`,
+      recommendation:
+        "Annual travel insurance covering medical emergencies, evacuation, and trip cancellation",
+      estimatedCost: "€80-150/year",
+    });
+  }
+
+  // Health insurance gap
+  if (!coverage.has("Health")) {
+    gaps.push({
+      type: "Comprehensive Health Insurance",
+      priority: "critical",
+      description: "Medical expenses can be catastrophic without proper coverage",
+      recommendation:
+        "Private health insurance or comprehensive public coverage with supplemental options",
+      estimatedCost: "€50-150/month",
+    });
+  }
+
+  // Home/Property gap
+  if (!coverage.has("Home") && responses.lifeStageRisks.includes("First home purchase planned")) {
+    gaps.push({
+      type: "Home Insurance",
+      priority: "critical",
+      description: "Your largest asset (home) needs protection against damage and liability",
+      recommendation:
+        "Comprehensive homeowner insurance covering building, contents, and liability (€1M minimum)",
+      estimatedCost: "€30-80/month",
+    });
+  }
+
+  // Auto insurance gap
+  if (!coverage.has("Auto") && responses.occupationRisk !== "Low risk (office)") {
+    gaps.push({
+      type: "Auto Insurance",
+      priority: "critical",
+      description: "Regular vehicle use without proper coverage creates legal and financial risk",
+      recommendation: "Third-party liability + collision/comprehensive coverage",
+      estimatedCost: "€40-120/month",
+    });
+  }
+
+  // Emergency fund gap
+  if (responses.emergencyFund === "Minimal or none") {
+    gaps.push({
+      type: "Emergency Fund",
+      priority: "high",
+      description: "Without emergency savings, unexpected events force debt or insurance claims",
+      recommendation:
+        "Build 3-6 months of living expenses in accessible savings (€3k-€15k minimum)",
+      estimatedCost: "Self-funding priority",
+    });
+  }
+
+  // Pet insurance (if not mentioned)
+  if (responses.lifeStageRisks.includes("Young children") && !coverage.has("Pet")) {
+    gaps.push({
+      type: "Pet Insurance (Optional)",
+      priority: "low",
+      description: "Pet medical emergencies can cost €1000-€5000",
+      recommendation: "Pet health insurance covering accidents, illnesses, and preventive care",
+      estimatedCost: "€15-40/month",
+    });
+  }
+
+  return gaps;
+}
+
+export default function GapAnalysisPage() {
+  const [currentStep, setCurrentStep] = useState(0);
+  const [responses, setResponses] = useState<GapAnalysisResponse>({
+    ageGroup: "",
+    familyStatus: "",
+    currentCoverages: [],
+    incomeRange: "",
+    healthStatus: "",
+    lifeStageRisks: [],
+    emergencyFund: "",
+    dependents: "",
+    travelFrequency: "",
+    occupationRisk: "",
+  });
+  const [gaps, setGaps] = useState<CoverageGap[]>([]);
+  const [completed, setCompleted] = useState(false);
+
+  const handleNext = () => {
+    if (currentStep < questions.length - 1) {
+      setCurrentStep(currentStep + 1);
+    } else {
+      const calculatedGaps = calculateGaps(responses);
+      setGaps(calculatedGaps);
+      setCompleted(true);
+    }
+  };
+
+  const handleResponseChange = (questionId: string, value: string | string[]) => {
+    setResponses((prev) => ({
+      ...prev,
+      [questionId]: value,
+    }));
+  };
+
+  const handleReset = () => {
+    setCurrentStep(0);
+    setResponses({
+      ageGroup: "",
+      familyStatus: "",
+      currentCoverages: [],
+      incomeRange: "",
+      healthStatus: "",
+      lifeStageRisks: [],
+      emergencyFund: "",
+      dependents: "",
+      travelFrequency: "",
+      occupationRisk: "",
+    });
+    setGaps([]);
+    setCompleted(false);
+  };
+
+  if (!completed) {
+    const question = questions[currentStep];
+    const isAnswered = question.type === "checkbox"
+      ? (responses as any)[question.id]?.length > 0
+      : (responses as any)[question.id] !== "";
+
+    return (
+      <div className="space-y-8 max-w-2xl mx-auto">
+        {/* Header */}
+        <div className="space-y-2">
+          <h1 className="text-4xl font-bold tracking-tight">Insurance Gap Analysis</h1>
+          <p className="text-lg text-muted-foreground">
+            10 quick questions to identify coverage gaps and recommend policies for your peace of mind
+          </p>
+        </div>
+
+        {/* Progress */}
+        <div className="space-y-3">
+          <div className="flex justify-between items-center text-sm">
+            <span className="font-medium">Question {currentStep + 1} of {questions.length}</span>
+            <span className="text-muted-foreground">{Math.round(((currentStep + 1) / questions.length) * 100)}%</span>
+          </div>
+          <Progress value={((currentStep + 1) / questions.length) * 100} className="h-2" />
+        </div>
+
+        {/* Question Card */}
+        <Card className="border-2">
+          <CardHeader>
+            <CardTitle className="text-2xl">{question.title}</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {question.type === "radio" && (
+              <RadioGroup
+                value={(responses as any)[question.id]}
+                onValueChange={(value) => handleResponseChange(question.id, value)}
+                data-testid={`radio-group-${question.id}`}
+              >
+                <div className="space-y-3">
+                  {question.options.map((option) => (
+                    <div key={option} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted cursor-pointer transition-colors">
+                      <RadioGroupItem value={option} id={option} data-testid={`radio-${option}`} />
+                      <Label htmlFor={option} className="cursor-pointer flex-1 font-medium text-base">
+                        {option}
+                      </Label>
+                    </div>
+                  ))}
+                </div>
+              </RadioGroup>
+            )}
+
+            {question.type === "checkbox" && (
+              <div className="space-y-3">
+                {question.options.map((option) => (
+                  <div key={option} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted cursor-pointer transition-colors">
+                    <Checkbox
+                      id={`checkbox-${option}`}
+                      checked={(responses as any)[question.id]?.includes(option) || false}
+                      onCheckedChange={(checked) => {
+                        const current = (responses as any)[question.id] || [];
+                        const updated = checked
+                          ? [...current, option]
+                          : current.filter((item: string) => item !== option);
+                        handleResponseChange(question.id, updated);
+                      }}
+                      data-testid={`checkbox-${option}`}
+                    />
+                    <Label htmlFor={`checkbox-${option}`} className="cursor-pointer flex-1 font-medium text-base">
+                      {option}
+                    </Label>
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Navigation */}
+        <div className="flex gap-3">
+          {currentStep > 0 && (
+            <Button
+              variant="outline"
+              onClick={() => setCurrentStep(currentStep - 1)}
+              className="flex-1"
+              data-testid="button-previous"
+            >
+              Previous
+            </Button>
+          )}
+          <Button
+            onClick={handleNext}
+            disabled={!isAnswered}
+            className="flex-1 bg-primary hover:bg-primary/90"
+            data-testid="button-next-question"
+          >
+            {currentStep === questions.length - 1 ? "View Results" : "Next"}
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  // Results View
+  const criticalGaps = gaps.filter((g) => g.priority === "critical");
+  const highGaps = gaps.filter((g) => g.priority === "high");
+  const mediumGaps = gaps.filter((g) => g.priority === "medium");
+  const lowGaps = gaps.filter((g) => g.priority === "low");
+
+  return (
+    <div className="space-y-8 max-w-3xl mx-auto">
+      {/* Header */}
+      <div className="space-y-4">
+        <h1 className="text-4xl font-bold tracking-tight">Your Insurance Gap Analysis</h1>
+        <div className="grid grid-cols-3 gap-4">
+          <div className="bg-red-50 p-4 rounded-lg border border-red-200">
+            <div className="text-2xl font-bold text-red-600">{criticalGaps.length}</div>
+            <p className="text-sm text-red-700 font-medium">Critical Gaps</p>
+          </div>
+          <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
+            <div className="text-2xl font-bold text-amber-600">{highGaps.length}</div>
+            <p className="text-sm text-amber-700 font-medium">High Priority</p>
+          </div>
+          <div className="bg-emerald-50 p-4 rounded-lg border border-emerald-200">
+            <div className="text-2xl font-bold text-emerald-600">{mediumGaps.length + lowGaps.length}</div>
+            <p className="text-sm text-emerald-700 font-medium">Optional</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Critical Gaps */}
+      {criticalGaps.length > 0 && (
+        <div className="space-y-4">
+          <h2 className="text-2xl font-bold flex items-center gap-2">
+            <ShieldAlert className="h-6 w-6 text-red-600" />
+            Critical Coverage Gaps
+          </h2>
+          <div className="space-y-3">
+            {criticalGaps.map((gap) => (
+              <Card key={gap.type} className="border-l-4 border-l-red-600 bg-red-50/50">
+                <CardHeader>
+                  <CardTitle className="text-lg text-red-700">{gap.type}</CardTitle>
+                  <CardDescription className="text-base">{gap.description}</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <Alert className="bg-white border-red-200">
+                    <TrendingUp className="h-4 w-4 text-red-600" />
+                    <AlertDescription className="text-base font-medium">{gap.recommendation}</AlertDescription>
+                  </Alert>
+                  <p className="text-sm font-medium text-muted-foreground">Estimated cost: {gap.estimatedCost}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* High Priority Gaps */}
+      {highGaps.length > 0 && (
+        <div className="space-y-4">
+          <h2 className="text-2xl font-bold flex items-center gap-2">
+            <AlertCircle className="h-6 w-6 text-amber-600" />
+            High Priority Recommendations
+          </h2>
+          <div className="space-y-3">
+            {highGaps.map((gap) => (
+              <Card key={gap.type} className="border-l-4 border-l-amber-600 bg-amber-50/50">
+                <CardHeader>
+                  <CardTitle className="text-lg text-amber-700">{gap.type}</CardTitle>
+                  <CardDescription className="text-base">{gap.description}</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <Alert className="bg-white border-amber-200">
+                    <TrendingUp className="h-4 w-4 text-amber-600" />
+                    <AlertDescription className="text-base">{gap.recommendation}</AlertDescription>
+                  </Alert>
+                  <p className="text-sm font-medium text-muted-foreground">Estimated cost: {gap.estimatedCost}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Medium/Low Priority */}
+      {(mediumGaps.length > 0 || lowGaps.length > 0) && (
+        <div className="space-y-4">
+          <h2 className="text-2xl font-bold flex items-center gap-2">
+            <CheckCircle2 className="h-6 w-6 text-emerald-600" />
+            Optional Enhancements
+          </h2>
+          <div className="space-y-3">
+            {[...mediumGaps, ...lowGaps].map((gap) => (
+              <Card key={gap.type} className="border-l-4 border-l-emerald-600 bg-emerald-50/50">
+                <CardHeader>
+                  <CardTitle className="text-lg text-emerald-700">{gap.type}</CardTitle>
+                  <CardDescription className="text-base">{gap.description}</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <p className="text-sm">{gap.recommendation}</p>
+                  <p className="text-sm font-medium text-muted-foreground">Estimated cost: {gap.estimatedCost}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* CTA Section */}
+      <Card className="bg-gradient-to-r from-primary/10 to-emerald-500/10 border-primary/20">
+        <CardHeader>
+          <CardTitle className="text-xl">Next Steps</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <p className="text-base text-muted-foreground">
+            Ready to close your coverage gaps? Our insurance agents can help you find the best policies at competitive rates.
+          </p>
+          <div className="flex gap-3">
+            <Button className="flex-1" data-testid="button-contact-agent">
+              Contact Insurance Agent
+            </Button>
+            <Button variant="outline" onClick={handleReset} data-testid="button-restart-analysis">
+              Start Over
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
