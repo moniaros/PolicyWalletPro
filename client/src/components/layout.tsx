@@ -4,6 +4,7 @@ import { Home, FileText, Calendar, BarChart2, User, Bell, Users } from "lucide-r
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ModeToggle } from "@/components/mode-toggle";
+import { Chatbot } from "@/components/chatbot";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
@@ -76,11 +77,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 md:ml-64 pb-24 md:pb-8 overflow-x-hidden">
+      <main className="flex-1 md:ml-64 pb-24 md:pb-8 overflow-x-hidden relative">
         <div className="max-w-5xl mx-auto p-4 md:p-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
           {children}
         </div>
       </main>
+
+      <Chatbot />
 
       {/* Mobile Bottom Nav */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-background border-t pb-safe pt-2 px-6 z-50 flex justify-between items-center h-20 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
