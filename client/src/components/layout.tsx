@@ -221,9 +221,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         {navItems.map((item) => {
           const isActive = location === item.href;
           return (
-            <Link key={item.href} href={item.href}>
-              <a
-                className={`flex flex-col items-center gap-1 min-w-[60px] transition-colors duration-200 ${isActive ? "text-primary" : "text-muted-foreground"}`}
+            <Link key={item.href} href={item.href} asChild>
+              <button
+                className={`flex flex-col items-center gap-1 min-w-[60px] transition-colors duration-200 ${isActive ? "text-primary" : "text-muted-foreground"} bg-transparent border-0 cursor-pointer p-0`}
               >
                 <div
                   className={`p-1.5 rounded-full ${isActive ? "bg-primary/10" : ""}`}
@@ -233,7 +233,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   />
                 </div>
                 <span className="text-[10px] font-medium">{item.label}</span>
-              </a>
+              </button>
             </Link>
           );
         })}
