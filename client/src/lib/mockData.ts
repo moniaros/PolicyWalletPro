@@ -1,122 +1,156 @@
-import { Shield, Heart, Car, Home, Stethoscope, AlertCircle, Umbrella, Banknote, Users, FileWarning } from "lucide-react";
+import { Shield, Heart, Car, Home, Stethoscope, AlertCircle, Dog, Globe, Briefcase } from "lucide-react";
 
 export const policies = [
   {
     id: 1,
     type: "Health",
-    provider: "BlueCross",
-    policyNumber: "HC-8839201",
-    coverage: "$500,000",
+    provider: "NN Hellas",
+    policyNumber: "NN-ORANGE-992",
+    coverage: "Unlimited / 100%",
     expiry: "2025-12-31",
-    premium: "$350/mo",
+    premium: "€145/mo",
     icon: Heart,
-    color: "text-rose-500 bg-rose-50",
+    color: "text-orange-500 bg-orange-50",
     status: "Active",
     details: {
       pendingPayments: 0,
       lastPayment: "2025-11-01",
       nextPaymentDue: "2025-12-01",
-      beneficiaries: ["Jane Doe (Spouse)", "Timmy Doe (Child)"],
+      beneficiaries: ["Sophia (Spouse)", "Dimitris (Son)"],
       claims: [
-        { id: "CLM-001", date: "2025-08-15", reason: "Annual Checkup", amount: "$150", status: "Paid" },
-        { id: "CLM-002", date: "2025-10-02", reason: "Emergency Room", amount: "$1,200", status: "Pending" }
+        { id: "CLM-NN-001", date: "2025-09-10", reason: "Annual Executive Checkup", amount: "€450", status: "Paid" },
       ],
       coverageLimits: {
-        hospitalStay: "$5,000/day",
-        prescription: "$500/year",
-        specialist: "$100 co-pay"
+        hospitalization: "Unlimited in A-List Hospitals",
+        outpatient: "Unlimited Visits",
+        prevention: "Free Annual Checkup + Dental",
+        abroad: "100% Coverage (USA included)"
       },
       gapAnalysis: {
-        score: 85,
-        gaps: ["Dental coverage is minimal"],
-        proposals: ["Add Dental Plus for $20/mo"]
+        score: 98,
+        gaps: [],
+        proposals: ["Did you know? You have a free nutrition plan included."]
       }
     }
   },
   {
     id: 2,
     type: "Auto",
-    provider: "Geico",
-    policyNumber: "AU-992811",
-    coverage: "$50,000",
+    provider: "Generali",
+    policyNumber: "GEN-SPEED-882",
+    coverage: "Full Kasko + Green Card",
     expiry: "2025-06-15",
-    premium: "$120/mo",
+    premium: "€320/6mo",
     icon: Car,
-    color: "text-blue-500 bg-blue-50",
+    color: "text-red-600 bg-red-50",
     status: "Active",
     details: {
-      pendingPayments: 120,
-      lastPayment: "2025-10-15",
-      nextPaymentDue: "2025-11-15",
+      pendingPayments: 0,
+      lastPayment: "2025-06-15",
+      nextPaymentDue: "2025-12-15",
       beneficiaries: ["Self"],
       claims: [],
       coverageLimits: {
-        liability: "$50,000",
-        comprehensive: "$500 deductible",
-        collision: "$500 deductible"
+        liability: "€1,220,000",
+        ownDamage: "Full Replacement Value",
+        theftFire: "Included",
+        roadside: "Express Service (Europe-wide)",
+        greenCard: "Active (EU + Balkans)"
       },
       gapAnalysis: {
-        score: 60,
-        gaps: ["Low liability limit"],
-        proposals: ["Increase liability to $100k for $10/mo"]
+        score: 95,
+        gaps: [],
+        proposals: ["Upgrade to 'Generali Drive' app for 10% discount on renewal."]
       }
     }
   },
   {
     id: 3,
-    type: "Home",
-    provider: "State Farm",
-    policyNumber: "HO-112233",
-    coverage: "$750,000",
+    type: "Home & Liability",
+    provider: "Ergo",
+    policyNumber: "ERG-HOME-112",
+    coverage: "Building + Content + Civil",
     expiry: "2025-09-01",
-    premium: "$180/mo",
+    premium: "€180/yr",
     icon: Home,
-    color: "text-amber-500 bg-amber-50",
-    status: "Review Needed",
+    color: "text-red-700 bg-red-50",
+    status: "Active",
     details: {
       pendingPayments: 0,
-      lastPayment: "2025-11-01",
-      nextPaymentDue: "2025-12-01",
-      beneficiaries: ["Jane Doe (Spouse)"],
-      claims: [
-         { id: "CLM-HOME-01", date: "2024-05-20", reason: "Storm Damage", amount: "$2,500", status: "Paid" }
-      ],
+      lastPayment: "2024-09-01",
+      nextPaymentDue: "2025-09-01",
+      beneficiaries: ["Sophia (Spouse)"],
+      claims: [],
       coverageLimits: {
-        dwelling: "$750,000",
-        personalProperty: "$100,000",
-        liability: "$300,000"
+        building: "€350,000",
+        contents: "€80,000",
+        civilLiability: "€1,000,000 (Family Protection)",
+        earthquake: "Included (First Loss)"
       },
       gapAnalysis: {
-        score: 90,
-        gaps: [],
-        proposals: []
+        score: 92,
+        gaps: ["Cyber protection is basic"],
+        proposals: ["Add 'Cyber Shield' for online banking protection (€15/yr)"]
       }
     }
   },
   {
     id: 4,
-    type: "Life",
-    provider: "Prudential",
-    policyNumber: "LF-445566",
-    coverage: "$1,000,000",
-    expiry: "2030-01-01",
-    premium: "$90/mo",
-    icon: Shield,
-    color: "text-emerald-500 bg-emerald-50",
+    type: "Investment Life",
+    provider: "Ethniki Asfalistiki",
+    policyNumber: "ETH-FULL-445",
+    coverage: "€500k Life + Pension",
+    expiry: "2040-01-01",
+    premium: "€200/mo",
+    icon: Briefcase,
+    color: "text-blue-600 bg-blue-50",
     status: "Active",
     details: {
       pendingPayments: 0,
       lastPayment: "2025-11-01",
       nextPaymentDue: "2025-12-01",
-      beneficiaries: ["Jane Doe (Spouse)", "Timmy Doe (Child)"],
+      beneficiaries: ["Sophia (Spouse)", "Dimitris (Son)"],
       claims: [],
       coverageLimits: {
-        deathBenefit: "$1,000,000"
+        lifeCover: "€500,000",
+        criticalIllness: "€100,000",
+        pensionPot: "€45,200 (Accumulated)"
       },
       gapAnalysis: {
-        score: 75,
-        gaps: ["Term expires in 5 years"],
-        proposals: ["Convert to Whole Life"]
+        score: 88,
+        gaps: [],
+        proposals: ["Inflation is rising. Consider indexing premium by 3%."]
+      }
+    }
+  },
+  {
+    id: 5,
+    type: "Pet Insurance",
+    provider: "Ergo",
+    policyNumber: "ERG-PET-991",
+    coverage: "Vet & Surgery",
+    expiry: "2025-10-10",
+    premium: "€25/mo",
+    icon: Dog,
+    color: "text-amber-600 bg-amber-50",
+    status: "Review Needed",
+    details: {
+      pendingPayments: 25,
+      lastPayment: "2025-10-10",
+      nextPaymentDue: "2025-11-10",
+      beneficiaries: ["Max (Golden Retriever)"],
+      claims: [
+        { id: "CLM-PET-004", date: "2025-08-01", reason: "Paw Surgery", amount: "€800", status: "Paid" }
+      ],
+      coverageLimits: {
+        medicalExpenses: "€2,000/year",
+        liability: "€50,000 (Third Party)",
+        boarding: "€500 (If owner hospitalized)"
+      },
+      gapAnalysis: {
+        score: 70,
+        gaps: ["Vaccines not fully covered"],
+        proposals: ["Upgrade to Premium Pet for €5/mo extra to cover annual vaccines."]
       }
     }
   }
@@ -125,45 +159,52 @@ export const policies = [
 export const appointments = [
   {
     id: 1,
-    doctor: "Dr. Sarah Smith",
+    doctor: "Dr. Papadopoulos",
     specialty: "Cardiologist",
     date: "2025-11-28",
     time: "10:00 AM",
-    location: "City Heart Center",
-    type: "Checkup"
+    location: "Hygeia Hospital",
+    type: "Annual Checkup (NN)"
   },
   {
     id: 2,
-    doctor: "Dr. James Wilson",
-    specialty: "Dentist",
+    doctor: "Vet Clinic 'Happy Paws'",
+    specialty: "Veterinarian",
     date: "2025-12-05",
-    time: "2:30 PM",
-    location: "Bright Smiles Clinic",
-    type: "Cleaning"
+    time: "5:30 PM",
+    location: "Kifisia Vet Center",
+    type: "Vaccination (Max)"
   }
 ];
 
 export const analysisData = [
-  { category: "Health", coverage: 85, risk: 40, gap: 0 },
-  { category: "Auto", coverage: 60, risk: 70, gap: 10 },
-  { category: "Home", coverage: 90, risk: 30, gap: 0 },
-  { category: "Life", coverage: 75, risk: 50, gap: 0 },
-  { category: "Disability", coverage: 20, risk: 60, gap: 40 },
+  { category: "Health", coverage: 98, risk: 40, gap: 2 },
+  { category: "Auto", coverage: 95, risk: 70, gap: 5 },
+  { category: "Home", coverage: 92, risk: 30, gap: 8 },
+  { category: "Life", coverage: 88, risk: 50, gap: 12 },
+  { category: "Liability", coverage: 100, risk: 60, gap: 0 },
 ];
 
 export const notifications = [
   {
     id: 1,
-    title: "Premium Due Soon",
-    message: "Your Auto Insurance premium is due in 5 days.",
-    type: "warning",
+    title: "Green Card Ready",
+    message: "Your Generali Green Card for European travel is ready to download.",
+    type: "info",
     date: "Today"
   },
   {
     id: 2,
-    title: "Policy Updated",
-    message: "Your Health Insurance coverage terms have been updated.",
-    type: "info",
+    title: "Pet Policy Payment",
+    message: "Monthly premium for Max is due (Ergo).",
+    type: "warning",
     date: "Yesterday"
+  },
+  {
+    id: 3,
+    title: "Health Perk Unused",
+    message: "You haven't used your free nutritionist session from NN this year!",
+    type: "info",
+    date: "2 days ago"
   }
 ];
