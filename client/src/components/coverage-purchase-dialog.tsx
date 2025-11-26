@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { AlertCircle, CreditCard, FileText, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
 import type { PolicyRecommendation } from "@/lib/gap-calculation";
@@ -14,10 +14,16 @@ interface CoveragePurchaseDialogProps {
   onOpenChange: (open: boolean) => void;
 }
 
+type BillingPlan = "monthly" | "6month" | "yearly";
+
+const billingPlans = {
+  monthly: { label: "Monthly", multiplier: 1, savingsPercent: 0 },
+  "6month": { label: "6 Months", multiplier: 5.5, savingsPercent: 8 },
+  yearly: { label: "Yearly", multiplier: 10.5, savingsPercent: 12 },
+};
+
 export function CoveragePurchaseDialog({ recommendation, isOpen, onOpenChange }: CoveragePurchaseDialogProps) {
-  const [activeTab, setActiveTab] = useState<"quote" | "purchase">(
-    recommendation.requiresUnderwriting ? "quote" : "purchase"
-  );
+  const [billingPlan, setBillingPlan] = useState<BillingPlan>("monthly");
   const [requestingQuote, setRequestingQuote] = useState(false);
   const [processingPayment, setProcessingPayment] = useState(false);
   const [formData, setFormData] = useState({
@@ -28,6 +34,10 @@ export function CoveragePurchaseDialog({ recommendation, isOpen, onOpenChange }:
     expiryDate: "",
     cvv: "",
   });
+
+  const monthlyPrice = recommendation.estimatedMonthlyPrice || 0;
+  const planDetails = billingPlans[billingPlan];
+  const totalPrice = Math.round(monthlyPrice * planDetails.multiplier * 100) / 100;
 
   const handleRequestQuote = async () => {
     if (!formData.fullName || !formData.email) {
@@ -174,9 +184,57 @@ export function CoveragePurchaseDialog({ recommendation, isOpen, onOpenChange }:
               </div>
             </div>
 
-            <div className="bg-gray-50 rounded-lg p-3 flex justify-between items-center">
-              <span className="text-sm font-medium">Monthly Cost:</span>
-              <span className="text-xl font-bold text-primary">€{recommendation.estimatedMonthlyPrice}</span>
+            {/* Billing Plan Selection */}
+            <div className="space-y-2">
+              <Label className="font-semibold">Choose Your Plan</Label>
+              <RadioGroup value={billingPlan} onValueChange={(val) => setBillingPlan(val as BillingPlan)}>
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                    <RadioGroupItem value="monthly" id="plan-monthly" />
+                    <Label htmlFor="plan-monthly" className="flex-1 cursor-pointer">
+                      <div className="flex justify-between items-center w-full">
+                        <span className="font-medium">Monthly</span>
+                        <span className="text-sm font-bold text-primary">€{monthlyPrice}/month</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground">No commitment, cancel anytime</p>
+                    </Label>
+                  </div>
+
+                  <div className="flex items-center space-x-2 p-3 border rounded-lg hover:bg-emerald-50 cursor-pointer bg-emerald-50/50 border-emerald-200">
+                    <RadioGroupItem value="6month" id="plan-6month" />
+                    <Label htmlFor="plan-6month" className="flex-1 cursor-pointer">
+                      <div className="flex justify-between items-center w-full">
+                        <div>
+                          <span className="font-medium">6 Months</span>
+                          <span className="ml-2 text-xs bg-emerald-200 text-emerald-900 px-2 py-0.5 rounded">Save 8%</span>
+                        </div>
+                        <span className="text-sm font-bold text-emerald-600">€{(monthlyPrice * 5.5 * 0.92).toFixed(2)}</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground">€{(monthlyPrice * 5.5 * 0.92 / 6).toFixed(2)}/month avg</p>
+                    </Label>
+                  </div>
+
+                  <div className="flex items-center space-x-2 p-3 border rounded-lg hover:bg-blue-50 cursor-pointer bg-blue-50/50 border-blue-200">
+                    <RadioGroupItem value="yearly" id="plan-yearly" />
+                    <Label htmlFor="plan-yearly" className="flex-1 cursor-pointer">
+                      <div className="flex justify-between items-center w-full">
+                        <div>
+                          <span className="font-medium">Yearly</span>
+                          <span className="ml-2 text-xs bg-blue-200 text-blue-900 px-2 py-0.5 rounded">Save 12%</span>
+                        </div>
+                        <span className="text-sm font-bold text-blue-600">€{(monthlyPrice * 10.5 * 0.88).toFixed(2)}</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground">€{(monthlyPrice * 10.5 * 0.88 / 12).toFixed(2)}/month avg</p>
+                    </Label>
+                  </div>
+                </div>
+              </RadioGroup>
+            </div>
+
+            {/* Total Price Display */}
+            <div className="bg-primary/5 rounded-lg p-3 flex justify-between items-center border border-primary/20">
+              <span className="text-sm font-medium">Total: {planDetails.label}</span>
+              <span className="text-2xl font-bold text-primary">€{totalPrice.toFixed(2)}</span>
             </div>
 
             <div className="space-y-3">
@@ -224,7 +282,7 @@ export function CoveragePurchaseDialog({ recommendation, isOpen, onOpenChange }:
                 data-testid="button-buy-now"
               >
                 <CreditCard className="h-4 w-4 mr-2" />
-                {processingPayment ? "Processing..." : `Buy Now - €${recommendation.estimatedMonthlyPrice}/month`}
+                {processingPayment ? "Processing..." : `Buy Now - €${totalPrice.toFixed(2)}`}
               </Button>
             </div>
           </div>

@@ -113,7 +113,7 @@ export function PolicyRecommendations({ analysis, onContactAgent }: PolicyRecomm
           </h3>
           <div className="space-y-2">
             {groupedByType.drop.map((rec, i) => (
-              <RecommendationCard key={i} recommendation={rec} />
+              <RecommendationCard key={i} recommendation={rec} onSelect={() => setSelectedRec(rec)} />
             ))}
           </div>
         </div>

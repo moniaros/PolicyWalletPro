@@ -68,6 +68,7 @@ export function calculatePolicyGaps(
         reason: "Unexpected medical costs without emergency savings create debt",
         savingsOrBenefit: "Build 3-6 months (€3k-€15k minimum)",
         priority: "high",
+        requiresUnderwriting: false,
       });
     }
 
@@ -88,19 +89,22 @@ export function calculatePolicyGaps(
         reason: "Enhanced coverage for children's preventive care",
         savingsOrBenefit: "€20-50/month, saves on out-of-pocket",
         priority: "medium",
+        requiresUnderwriting: false,
+        estimatedMonthlyPrice: 35,
       });
     }
   }
 
   // AUTO INSURANCE ANALYSIS
   if (policyType.toLowerCase() === "auto") {
-    if (profile.occupationRisk === "High risk" && profile.dependents > 0) {
+    if (profile.occupationRisk === "High risk" && dependents > 0) {
       gaps.push({
         type: "enhance",
         coverage: "Enhanced Liability Coverage",
         reason: "High-risk occupation + dependents = higher liability exposure",
         savingsOrBenefit: "€10-20/month more, but €1M-€3M protection",
         priority: "critical",
+        requiresUnderwriting: true,
       });
     }
 
@@ -111,6 +115,8 @@ export function calculatePolicyGaps(
         reason: `You travel internationally ${profile.travelFrequency} but policy may be limited`,
         savingsOrBenefit: "€5-15/month for EU+ coverage",
         priority: "high",
+        requiresUnderwriting: false,
+        estimatedMonthlyPrice: 10,
       });
     }
 
@@ -121,6 +127,7 @@ export function calculatePolicyGaps(
         reason: "If at-fault accident causes disability/death, family protected",
         savingsOrBenefit: "Bundle discount potential",
         priority: "high",
+        requiresUnderwriting: true,
       });
     }
 
@@ -130,6 +137,8 @@ export function calculatePolicyGaps(
       reason: "Small cost add-on waives deductible if hit by uninsured driver",
       savingsOrBenefit: "€5-10/month, saves €500+ claim deductible",
       priority: "low",
+      requiresUnderwriting: false,
+      estimatedMonthlyPrice: 7,
     });
   }
 
@@ -142,6 +151,7 @@ export function calculatePolicyGaps(
         reason: `3+ dependents + mortgage = higher financial obligation`,
         savingsOrBenefit: "Add €50k-€100k cover, €10-20/month more",
         priority: "critical",
+        requiresUnderwriting: true,
       });
     }
 
@@ -152,6 +162,7 @@ export function calculatePolicyGaps(
         reason: "High-risk occupation increases accident exposure",
         savingsOrBenefit: "€50-100/month additional protection",
         priority: "high",
+        requiresUnderwriting: true,
       });
     }
 
@@ -162,6 +173,7 @@ export function calculatePolicyGaps(
         reason: "Income protection more important than death benefit if you're sole earner",
         savingsOrBenefit: "€30-80/month replaces 60-80% income",
         priority: "high",
+        requiresUnderwriting: true,
       });
     }
 
@@ -171,6 +183,8 @@ export function calculatePolicyGaps(
       reason: "Access funds if diagnosed with terminal illness while alive",
       savingsOrBenefit: "€10-25/month for peace of mind",
       priority: "medium",
+      requiresUnderwriting: false,
+      estimatedMonthlyPrice: 15,
     });
   }
 
@@ -183,6 +197,8 @@ export function calculatePolicyGaps(
         reason: "Home values increase; ensure coverage grows annually",
         savingsOrBenefit: "€5-15/month, auto-adjust coverage 3%/year",
         priority: "high",
+        requiresUnderwriting: false,
+        estimatedMonthlyPrice: 8,
       });
     }
 
@@ -193,6 +209,7 @@ export function calculatePolicyGaps(
         reason: "Home liability accident could exceed standard policy limits",
         savingsOrBenefit: "€1M umbrella = €15-30/month, protects assets",
         priority: "high",
+        requiresUnderwriting: true,
       });
     }
 
@@ -202,6 +219,8 @@ export function calculatePolicyGaps(
       reason: "Standard policies don't cover sump pump failure or backup",
       savingsOrBenefit: "€10-20/month, saves €5k+ in cleanup costs",
       priority: "medium",
+      requiresUnderwriting: false,
+      estimatedMonthlyPrice: 15,
     });
 
     if (profile.lifeStageFactors?.includes("Young children")) {
@@ -211,6 +230,8 @@ export function calculatePolicyGaps(
         reason: "Monitored alarm system reduces premium + increases safety",
         savingsOrBenefit: "Save €10-30/month on premium with system",
         priority: "low",
+        requiresUnderwriting: false,
+        estimatedMonthlyPrice: 20,
       });
     }
   }
@@ -247,7 +268,7 @@ export function getSavingsOpportunities(
   // Single person with expensive health coverage
   if (
     profile.familyStatus === "Single" &&
-    profile.dependents === 0 &&
+    (profile.dependents ?? 0) === 0 &&
     policyType.toLowerCase() === "health"
   ) {
     opportunities.push({
@@ -256,6 +277,7 @@ export function getSavingsOpportunities(
       reason: "You don't have dependents - paying for unused coverage",
       savingsOrBenefit: "Save €20-50/month",
       priority: "high",
+      requiresUnderwriting: false,
     });
   }
 
@@ -263,7 +285,7 @@ export function getSavingsOpportunities(
   if (
     profile.ageGroup === "18-30" &&
     profile.occupationRisk === "Low risk" &&
-    profile.dependents === 0 &&
+    (profile.dependents ?? 0) === 0 &&
     policyType.toLowerCase() === "life"
   ) {
     opportunities.push({
@@ -272,6 +294,7 @@ export function getSavingsOpportunities(
       reason: "Young, low-risk, no dependents = minimal life insurance needs",
       savingsOrBenefit: "Drop to basic coverage, save €30-60/month",
       priority: "medium",
+      requiresUnderwriting: false,
     });
   }
 
@@ -286,6 +309,7 @@ export function getSavingsOpportunities(
       reason: "You never travel internationally",
       savingsOrBenefit: "Save €5-10/month",
       priority: "low",
+      requiresUnderwriting: false,
     });
   }
 
