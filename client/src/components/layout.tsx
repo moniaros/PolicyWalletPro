@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { Home, FileText, Calendar, BarChart2, User, Bell, Users, FolderOpen, ShieldAlert, PhoneCall, Heart, LogOut, Settings, TrendingUp } from "lucide-react";
+import { Home, FileText, Calendar, BarChart2, User, Bell, Users, FolderOpen, ShieldAlert, PhoneCall, Heart, LogOut, Settings, TrendingUp, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ModeToggle } from "@/components/mode-toggle";
@@ -14,13 +14,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   
   const navItems = [
     { icon: Home, label: "Home", href: "/" },
+    { icon: User, label: "Profile", href: "/profile" },
     { icon: FileText, label: "Policies", href: "/policies" },
     { icon: Heart, label: "Wellness", href: "/health-wellness" },
     { icon: ShieldAlert, label: "Claims", href: "/claims" },
     { icon: FolderOpen, label: "Documents", href: "/documents" },
     { icon: Calendar, label: "Visits", href: "/appointments" },
     { icon: BarChart2, label: "Analysis", href: "/analysis" },
-    { icon: TrendingUp, label: "Gap Analysis", href: "/gap-analysis" },
+    { icon: Zap, label: "Gap Analysis", href: "/gap-analysis" },
     { icon: Users, label: "Agents", href: "/agents" },
     ...(isAdmin ? [{ icon: Settings, label: "Admin", href: "/admin" }] : []),
   ];

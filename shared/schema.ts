@@ -59,6 +59,27 @@ export const preventiveRecommendations = pgTable("preventive_recommendations", {
   createdAt: timestamp("created_at").notNull().default(sql`now()`),
 });
 
+export const userProfiles = pgTable("user_profiles", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().unique(),
+  fullName: text("full_name"),
+  dateOfBirth: text("date_of_birth"),
+  ageGroup: text("age_group"), // "18-30", "31-45", "46-60", "60+"
+  familyStatus: text("family_status"), // "Single", "Married", "Domestic Partner", "Widowed/Divorced"
+  dependents: integer("dependents").default(0),
+  incomeRange: text("income_range"), // "<€30k", "€30-60k", "€60-100k", "€100-150k", ">€150k"
+  healthStatus: text("health_status"), // "Excellent", "Good", "Fair", "Has chronic conditions"
+  emergencyFund: text("emergency_fund"), // "Yes, well covered", "Partially covered", "Minimal or none"
+  travelFrequency: text("travel_frequency"), // "Never", "1-2 times/year", "3-6 times/year", "Monthly+"
+  occupationRisk: text("occupation_risk"), // "Low risk", "Medium risk", "High risk"
+  lifeStageFactors: text("life_stage_factors").array(), // "First home", "Young children", "Mortgage", etc
+  currentCoverages: text("current_coverages").array(), // "Health", "Auto", "Home", "Life", etc
+  chronicConditions: text("chronic_conditions").array(), // Medical conditions
+  dependentDetails: jsonb("dependent_details"), // Spouse, children details
+  updatedAt: timestamp("updated_at").notNull().default(sql`now()`),
+  createdAt: timestamp("created_at").notNull().default(sql`now()`),
+});
+
 // Insert Schemas
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
@@ -85,6 +106,12 @@ export const insertPreventiveRecommendationSchema = createInsertSchema(preventiv
   createdAt: true,
 });
 
+export const insertUserProfileSchema = createInsertSchema(userProfiles).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 // Types
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
@@ -100,3 +127,6 @@ export type RiskAssessment = typeof riskAssessments.$inferSelect;
 
 export type InsertPreventiveRecommendation = z.infer<typeof insertPreventiveRecommendationSchema>;
 export type PreventiveRecommendation = typeof preventiveRecommendations.$inferSelect;
+
+export type InsertUserProfile = z.infer<typeof insertUserProfileSchema>;
+export type UserProfile = typeof userProfiles.$inferSelect;
