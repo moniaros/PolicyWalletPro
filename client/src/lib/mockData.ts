@@ -17,11 +17,13 @@ export const policies = [
     color: "text-orange-500 bg-orange-50",
     status: "Active",
     quickViewMetadata: {
-      insuredPerson: "Sophia Nikolaidis",
-      hospitalClass: "A-Class",
+      insuredPerson: "Σοφία Νικολάιδης",
+      hospitalClass: "A-Class (Μονόκλινο)",
+      network: "Συμβεβλημένα",
       deductible: "€1,500",
       annualLimit: "€1,000,000",
       preAuthNumber: "+30 210 6849000",
+      annualCheckup: "Περιλαμβάνεται - Αιματολογικές εξετάσεις",
       excludedProviders: ["Metropolitan Hospital", "Some Private Clinic"]
     },
     details: {
@@ -99,11 +101,13 @@ export const policies = [
     status: "Active",
     quickViewMetadata: {
       licensePlate: "YZA-1234",
-      coverageTier: "Full Casco",
+      carModel: "Toyota Yaris",
+      coverageTier: "Πλήρες Kasko",
       greenCardStatus: "Valid",
       accidentCarePhone: "+30 18118",
-      roadsideAssistance: "24/7 Europe-wide",
-      namedDrivers: ["Alex Nikolaidis", "Maria Nikolaidis"]
+      roadsidePhone: "+30 18180",
+      roadsideAssistance: "24/7 Ευρώπη-Βαλκάνια",
+      namedDrivers: ["Αλέξανδρος Νικολάιδης", "Μαρία Νικολάιδης"]
     },
     details: {
       pendingPayments: 0,
@@ -171,9 +175,10 @@ export const policies = [
     color: "text-red-700 bg-red-50",
     status: "Active",
     quickViewMetadata: {
-      propertyAddress: "Akadimias 10, Kolonaki, Athens",
+      propertyAddress: "Ακαδημίας 10, Κολωνάκι, Αθήνα",
       sumInsured: "€465,000",
-      catastropheCover: { fire: true, flood: true, earthquake: true },
+      enfiaBadge: "✓ Έκπτωση Φόρου Ενισχυμένη",
+      catastropheCover: { seismos: true, pirkagia: true, plimmira: true },
       deductible: "€500",
       mortgagee: "Alpha Bank",
       emergencyServices: "+30 214 2000214"
@@ -234,7 +239,9 @@ export const policies = [
       surrenderValue: "€44,800",
       fundAllocation: { equity: "60%", bonds: "30%", cash: "10%" },
       lastPremiumDate: "2025-11-01",
-      lastPremiumAmount: "€200.00"
+      lastPremiumAmount: "€200.00",
+      taxStatus: "Απαλλαγή Φόρου σε Ωρίμανση",
+      guaranteedVsLinked: { guaranteed: "€35,000", linked: "€10,200" }
     },
     details: {
       pendingPayments: 0,
@@ -290,15 +297,16 @@ export const policies = [
     color: "text-amber-600 bg-amber-50",
     status: "Review Needed",
     quickViewMetadata: {
-      petName: "Max",
+      petName: "Μάξιμος",
       petType: "Golden Retriever",
       limitTotal: "€1,000",
       limitUsed: "€400",
       limitUsedPercent: "40%",
       microchipNumber: "GR-0241234567",
       coPay: "20%",
-      waitingPeriods: "All conditions covered",
-      ageAtEnrollment: "2 years"
+      waitingPeriods: { kalazar: "Κάλυψη", λευκωματα: "Καλυμμένη" },
+      greekDiseases: "Leishmania (Κάλαζαρ) - Κάλυψη",
+      vetNetwork: "Direct Payment σε Συμβεβλημένα Ιατρεία"
     },
     details: {
       pendingPayments: 25,

@@ -1,0 +1,121 @@
+To dominate the Greek market, your mobile app must address specific local pain points: bureaucracy (Tax/ENFIA/Port Police), fragmented emergency services (Roadside vs. Accident Care), and family-centric safety.
+
+The data below maps your Policy, Coverage, and PortalAccount schemas to Greek consumer needs.
+
+1. Auto (Motor) — The "Legal & Road" View
+Quick View (Card)
+
+Plate & Car Model: "YZA-1234 | Toyota Yaris" (Visual confirmation).
+
+Status: Active (Green badge). Crucial for police checks.
+
+Next Payment: "€145 due 15/10" (Matches Greek "Examino" (6-month) billing cycles).
+
+Detailed View (Tap)
+
+Accident Care (Frontida Atichimatos): Must be distinct from Roadside. This number handles the "Dilosi" (Statement) on-site.
+
+Roadside Assistance (Odiki Boitheia): The number for towing only.
+
+Green Card (Prasini Karta): Toggle to "Request" or "View". Greeks travel to Balkans/Turkey frequently.
+
+Named Drivers: Confirms if the "New Driver" (child) is legally added.
+
+2. Life & Health — The "Hospital Entry" View
+Quick View (Card)
+
+Insured Name: "Maria Papadopoulou" (Distinguishes between family members on one plan).
+
+Hospital Class: "A-Class (Monoklino)" or "B-Class (Diklino)". The first question hospital admission desks ask.
+
+Network: "Symvavlimena" (Contracted) vs. "Open".
+
+Detailed View (Tap)
+
+Coordination Center (Syntonistiko Kentro): The 24/7 line for pre-approval.
+
+Deductible (Apallagi): e.g., "€1,500". Critical: clarify if this applies if EOPYY (Public Social Security) is used.
+
+Check-up Entitlement: "Annual Check-up: Available". Greeks value the "free" annual blood tests included in private plans.
+
+3. Home — The "Mortgage & Tax" View
+Quick View (Card)
+
+Address: "Kifisias 100, Athens".
+
+ENFIA Badge: "Tax Deduction Eligible". Huge 2024/25 driver: confirms coverage meets state requirements (Earthquake/Fire/Flood) for tax rebates.
+
+Detailed View (Tap)
+
+Coverages: Explicit "Seismos" (Earthquake), "Pirkagia" (Fire), "Plimmira" (Flood) checkmarks.
+
+Assistance (Techniki Boitheia): Direct line for plumbing/electrical failures (high value in older Greek apartment buildings).
+
+Bank/Mortgagee: Displays the bank name if pledged. Proof the loan condition is met.
+
+4. Marine (Boat) — The "Port Police" View
+Quick View (Card)
+
+Boat Name & Reg #: "Poseidon | T.P. 550".
+
+Compliance Badge: "Limenarcheio Compliant" (Confirming TPL limits met).
+
+Renewal: "Expires 01/05".
+
+Detailed View (Tap)
+
+Mandatory TPL Limits: Explicit display of Bodily Injury/Material Damage limits required by law.
+
+Speedboat License: Reminder of whose license is attached if specific.
+
+Towing (Thalassia Boitheia): Distinct from insurance; contact for sea rescue.
+
+5. Doctor Liability — The "Hospital Privileges" View
+Quick View (Card)
+
+Specialty: "Xirourgos" (Surgeon).
+
+Limit: "€500k Agg".
+
+Hospital: "Hygeia / Iatriko". (If specific to a clinic).
+
+Detailed View (Tap)
+
+Retroactive Date: Proof of continuous cover for credentialing offices.
+
+Certificate: "Download PDF for Clinic Admin". Doctors need this document constantly for privileges.
+
+6. Pet — The "Vet" View
+Quick View (Card)
+
+Pet Name: "Luna".
+
+Microchip: "900..." (Visible immediately for the Vet's scanner).
+
+Detailed View (Tap)
+
+Waiting Periods: "Leishmaniasis (Kalazar): Covered/Waiting". Specific Greek disease prevalence makes this the #1 coverage question.
+
+Direct Payment: Map of vets where the client pays only the participation (Co-pay).
+
+7. Investment — The "Capital" View
+Quick View (Card)
+
+Value: "€24,500".
+
+Performance: "+4.5%".
+
+Detailed View (Tap)
+
+Guaranteed vs. Unit-Linked: Distinct split of capital.
+
+Beneficiaries: Who inherits.
+
+Tax Status: "Tax-Free Maturity" confirmation (common selling point in Greece).
+
+Implementation Note for AgentRise
+In Greece, the Agent is the interface.
+
+Bottom of every Detail View: "Call Nikos" (The Agent). Do not route to a generic call center unless it's 3 AM.
+
+Documents: All PDFs (Green Card, Tax Certificate, Hospital Admission Form) must be downloadable via Document URLs stored in your Policy schema.
