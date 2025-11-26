@@ -1,0 +1,99 @@
+ou are building against the ProtectionProfile__EXT schema.
+
+
+Master Metric: protectionScore (Float 0.0–1.0). Visualized as a circular health ring (Green > 0.8, Orange > 0.5, Red < 0.5).
+
+Gap Types:
+
+
+gaps: Missing coverageCd tags (Binary: Present/Absent).
+
+
+underinsurance: Numerical delta between declared value and estimatedReplacement.
+
+2. Global UI Pattern
+For every policy detail view, inject a "Coverage Health" card:
+
+Header: "Protection Score: [X]%" (Gamified).
+
+Visual: "Risk Radar" or "Progress Bar" showing Covered vs. Exposed.
+
+Gap List: Warning badges for critical missing items.
+
+
+Action: "Fix Now" button linking to a QuoteRequest pre-filled with the missing coverage.
+
+3. Policy-Specific UX & Data Mapping
+A. Investment Life
+The Gap: Inflation vs. Yield.
+
+Data Check: Compare Policy.fundValue + projectedYield against InflationRate (External Constant).
+
+UI Component: "Purchasing Power" Graph. Show two lines: "Your Money" vs. "Real Value."
+
+Alert: "Inflation is eroding your capital by X% annually."
+
+B. Life & Health
+The Gap: Financial Toxicity (Deductible/Co-pay).
+
+
+Data Check: Highlight Policy.Coverage.deductible  relative to average monthly income (if known) or a standard threshold (e.g., €1,500). Check for missing CriticalIllness coverage code.
+
+UI Component: "Out-of-Pocket" Simulator. "In a €20k surgery, you pay €2,000."
+
+Alert: "High Deductible Warning" or "Missing Critical Illness Cash Benefit."
+
+C. Auto (Motor)
+The Gap: Legal Exposure.
+
+Data Check: Check Policy.Coverage.limits against standard "High Liability" benchmarks (e.g., €1.3M/€1.3M is standard, but check if UninsuredMotorist or LegalProtection is missing).
+
+UI Component: "Shield" Iconography. Dimmed sections of the shield represent missing protections (e.g., "Theft" greyed out).
+
+Alert: "You are paying for legal fees out of pocket."
+
+D. Home & Liability
+The Gap: Underinsurance (Rebuild Cost) & Tax Eligibility.
+
+Data Check:
+
+
+Value: ProtectionProfile__EXT.underinsurance (Declared vs. Estimated Rebuild Cost).
+
+
+Tax: Check if FIRE, EARTHQUAKE, and FLOOD are all present (Required for Greek ENFIA tax rebate).
+
+UI Component:
+
+Bar Chart: "Insured Value" (Red Bar) vs. "Rebuild Cost" (Grey Bar).
+
+Badge: "Tax Rebate Ineligible" if missing the 3 key perils.
+
+Alert: "Your home is underinsured by €60k. You will cover 23% of any claim yourself."
+
+E. Pet
+The Gap: Aging Out & Annual Limits.
+
+Data Check: Compare Policy.expiryDate against breed-specific "Max Enrollment Age." Check Coverage.annualLimit remaining.
+
+UI Component: "Coverage Timeline." Visual marker showing when the pet becomes uninsurable for new conditions.
+
+Alert: "Lock in lifetime cover before Luna turns 8."
+
+F. Doctor Civil Liability
+The Gap: Retroactive Exposure (Tail Risk).
+
+Data Check: Policy.retroactiveDate vs. CareerStartDate.
+
+UI Component: Timeline Visualization. Highlight the "Unprotected Years" gap before the retroactive date.
+
+Alert: "Claims from 2018–2020 are currently uninsured."
+
+G. Marine (Yacht)
+The Gap: Navigation Breach.
+
+Data Check: Compare Policy.Coverage.navigationWarranty (e.g., "Ionian") against user's common GPS inputs or generic "Aegean" requirement.
+
+UI Component: Map Overlay. Show "Insured Zone" (Green) vs. "Uninsured Zone" (Red).
+
+Alert: "Sailing outside the Ionian Sea voids your Hull coverage."

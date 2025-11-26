@@ -1,0 +1,41 @@
+1. Home & Liability (Priority: High - Greek Market Relevance)
+
+Data Logic: Compare the user’s current_sum_insured against a dynamic construction_cost_index (e.g., €1,600/sqm for Athens). Flag "Underinsurance" if the deviation is >10%. Also, check for the specific combination of Fire+Earthquake+Flood required for state tax rebates (ENFIA).
+
+UI/UX: Display a "slider" showing their current coverage vs. the "Safe Replacement Value." If the tax rebate criteria are unmet, show a "Tax Benefit: Missed" badge that turns green dynamically if they accept the upgrade.
+
+2. Auto (Motor)
+
+Data Logic: Compare insured_vehicle_value against live market depreciation tables (EuroTax/Autovista). Flag "Overinsurance" (wasting premium) or "Underinsurance" (partial payout risk). Check legal_protection_limit against average court costs for serious injury claims.
+
+UI/UX: A "Market Value Meter." If over-insured, show "You are overpaying €X/year." If under-insured, show "Payout Risk: You will lose €Y in a total loss."
+
+3. Life & Health
+
+Data Logic: Compare the policy’s daily_room_limit and surgical_allowance against current average private hospital pricelists (Medical Inflation Index). Identify deductible vs. savings_liquidity mismatch (e.g., a €3k deductible is a gap if the user has <€1k in savings).
+
+UI/UX: "Hospital Simulation." Show a graphic: "In a 5-day surgery scenario, you pay €X out of pocket." Button: "Lower my risk to €0."
+
+4. Investment Life
+
+Data Logic: Compare projected_maturity_value (at current inflation-adjusted rates) against the user’s stated financial_goal (e.g., Retirement or Child's Education). Calculate the "Purchasing Power Erosion" if the fund is in low-yield bonds.
+
+UI/UX: A "Goal Timeline" graph. Show two lines: "Target" (Solid) vs. "Current Path" (Dotted). If there is a gap, label it "Shortfall: €25,000."
+
+5. Pet Insurance
+
+Data Logic: Cross-reference the pet's breed and age against known high-risk hereditary conditions (e.g., Hip Dysplasia in Shepherds). Check if current waiting_periods leave these specific windows exposed.
+
+UI/UX: "Breed Health Radar." Highlight specific organs/conditions relevant to their dog/cat. If excluded, mark them Red with a tooltip: "Not covered for Dysplasia."
+
+6. Doctor Civil Liability
+
+Data Logic: Compare limit_of_indemnity against the average court settlement for their specific specialty over the last 5 years. Check retroactive_date against their actual start-of-practice date to find "Career Gaps."
+
+UI/UX: "Career Shield" visualization. A timeline showing their career years. If the retroactive date leaves early years exposed, color that segment Red: "Unprotected Years (2018-2020)."
+
+7. Marine (Yacht)
+
+Data Logic: Verify cruising_area warranties against the boat’s GPS history or home port (if integrated/known). Compare tender_value listing against average tender costs for that vessel size (often totally uninsured).
+
+UI/UX: "Map Overlay." Show their insured zone on a map. If they are paying for "Mediterranean" but only sail "Ionian," suggest a downgrade to save money. If the Tender is missing, show a "Dinghy: Uninsured" warning icon.

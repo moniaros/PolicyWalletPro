@@ -7,7 +7,17 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, Download, CreditCard, Users, AlertTriangle, FileCheck, Shield, TrendingUp, AlertCircle, DollarSign, CheckCircle2, Calendar, Hash, FileText } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { PolicyRecommendations } from "@/components/policy-recommendations";
+import { DynamicGapRecommendations } from "@/components/dynamic-gap-recommendations";
 import { calculatePolicyGaps } from "@/lib/gap-calculation";
+import { 
+  analyzeHomeGaps, 
+  analyzeAutoGaps, 
+  analyzeHealthGaps, 
+  analyzeInvestmentGaps, 
+  analyzePetGaps,
+  analyzeDoctorGaps,
+  analyzeMarineGaps
+} from "@/lib/enhanced-gap-analysis";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { HealthDetailedView, AutoDetailedView, HomeDetailedView, InvestmentLifeDetailedView, PetDetailedView, UniversalBrokerActions } from "@/components/policy-detail-sections";
 import { toast } from "sonner";
@@ -32,6 +42,25 @@ export default function PolicyDetailsPage() {
   // Calculate gap analysis based on user profile
   const gapAnalysis = userProfile ? calculatePolicyGaps(policy.type, userProfile) : null;
   const gapScore = gapAnalysis?.score || 0;
+  
+  // Calculate type-specific enhanced gap analysis
+  let enhancedGapAnalysis: any = null;
+  
+  if (policy.type === "Home & Liability") {
+    enhancedGapAnalysis = analyzeHomeGaps(450000, 280); // Example property
+  } else if (policy.type === "Auto") {
+    enhancedGapAnalysis = analyzeAutoGaps(25000, 180000);
+  } else if (policy.type === "Health") {
+    enhancedGapAnalysis = analyzeHealthGaps(1500, 800, 500);
+  } else if (policy.type === "Investment Life") {
+    enhancedGapAnalysis = analyzeInvestmentGaps(45200, 75000, 15);
+  } else if (policy.type === "Pet Insurance") {
+    enhancedGapAnalysis = analyzePetGaps("Golden Retriever", 3, { "Hip Dysplasia": true });
+  } else if (policy.type === "Doctor Civil Liability") {
+    enhancedGapAnalysis = analyzeDoctorGaps("Surgeon", 2010, 2015);
+  } else if (policy.type === "Marine") {
+    enhancedGapAnalysis = analyzeMarineGaps("Mediterranean", "Ionian", 0, 45000);
+  }
 
   return (
     <div className="space-y-6 pb-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -323,6 +352,16 @@ export default function PolicyDetailsPage() {
         {/* Analysis Tab */}
         <TabsContent value="analysis" className="space-y-4 mt-6">
           <div className="grid grid-cols-1 gap-6">
+             {/* Enhanced Dynamic Gap Analysis */}
+             {enhancedGapAnalysis && (
+                <DynamicGapRecommendations 
+                  analysis={enhancedGapAnalysis}
+                  onQuoteRequest={() => {
+                    toast.success("Quote request sent to agent!");
+                  }}
+                />
+             )}
+             
              {gapAnalysis ? (
                 <PolicyRecommendations 
                   analysis={gapAnalysis} 
