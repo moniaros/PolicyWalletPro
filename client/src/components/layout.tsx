@@ -3,6 +3,7 @@ import { Link, useLocation } from "wouter";
 import { Home, FileText, Calendar, BarChart2, User, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ModeToggle } from "@/components/mode-toggle";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
@@ -17,10 +18,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-background font-sans text-foreground flex flex-col md:flex-row">
       {/* Desktop Sidebar */}
-      <aside className="hidden md:flex w-64 flex-col border-r bg-white/50 backdrop-blur-md fixed h-full z-20">
+      <aside className="hidden md:flex w-64 flex-col border-r bg-background/50 backdrop-blur-md fixed h-full z-20">
         <div className="p-6 flex items-center gap-3">
           <div className="h-8 w-8 bg-primary rounded-lg flex items-center justify-center shadow-lg shadow-primary/30">
-            <ShieldIcon className="text-white h-5 w-5" />
+            <ShieldIcon className="text-primary-foreground h-5 w-5" />
           </div>
           <span className="font-bold text-xl tracking-tight">PolicyGuard</span>
         </div>
@@ -39,11 +40,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           })}
         </nav>
 
-        <div className="p-4 border-t border-border/50">
+        <div className="p-4 border-t border-border/50 space-y-4">
+          <div className="flex justify-between items-center px-2">
+            <span className="text-xs font-medium text-muted-foreground">Theme</span>
+            <ModeToggle />
+          </div>
+          
           <div className="bg-gradient-to-br from-primary/10 to-accent/20 rounded-xl p-4">
             <h4 className="text-sm font-semibold mb-1">Need Help?</h4>
             <p className="text-xs text-muted-foreground mb-3">Contact your agent anytime.</p>
-            <Button variant="outline" size="sm" className="w-full bg-white hover:bg-white/80 text-xs h-8">
+            <Button variant="outline" size="sm" className="w-full bg-card hover:bg-card/80 text-xs h-8">
               Support
             </Button>
           </div>
@@ -51,16 +57,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </aside>
 
       {/* Mobile Header */}
-      <header className="md:hidden flex items-center justify-between p-4 bg-white/80 backdrop-blur-md border-b sticky top-0 z-30">
+      <header className="md:hidden flex items-center justify-between p-4 bg-background/80 backdrop-blur-md border-b sticky top-0 z-30">
         <div className="flex items-center gap-2">
           <div className="h-8 w-8 bg-primary rounded-lg flex items-center justify-center shadow-lg shadow-primary/30">
-            <ShieldIcon className="text-white h-5 w-5" />
+            <ShieldIcon className="text-primary-foreground h-5 w-5" />
           </div>
           <span className="font-bold text-lg">PolicyGuard</span>
         </div>
-        <Button variant="ghost" size="icon" className="rounded-full">
-          <Bell className="h-5 w-5 text-muted-foreground" />
-        </Button>
+        <div className="flex items-center gap-2">
+          <ModeToggle />
+          <Button variant="ghost" size="icon" className="rounded-full">
+            <Bell className="h-5 w-5 text-muted-foreground" />
+          </Button>
+        </div>
       </header>
 
       {/* Main Content */}
@@ -71,7 +80,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </main>
 
       {/* Mobile Bottom Nav */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t pb-safe pt-2 px-6 z-50 flex justify-between items-center h-20 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-background border-t pb-safe pt-2 px-6 z-50 flex justify-between items-center h-20 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
         {navItems.map((item) => {
             const isActive = location === item.href;
             return (
@@ -87,7 +96,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         })}
         <Link href="/profile">
           <a className={`flex flex-col items-center gap-1 text-muted-foreground`}>
-             <Avatar className="h-9 w-9 border-2 border-white shadow-sm">
+             <Avatar className="h-9 w-9 border-2 border-background shadow-sm">
                 <AvatarImage src="https://github.com/shadcn.png" />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>

@@ -2,6 +2,7 @@ import { Switch, Route } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
+import { ThemeProvider } from "@/components/theme-provider";
 import Layout from "@/components/layout";
 import Dashboard from "@/pages/dashboard";
 import PoliciesPage from "@/pages/policies";
@@ -28,8 +29,10 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Toaster />
-      <Router />
+      <ThemeProvider defaultTheme="system" storageKey="policy-guard-theme">
+        <Toaster />
+        <Router />
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }
