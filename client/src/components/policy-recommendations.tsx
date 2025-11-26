@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { AlertCircle, TrendingUp, CheckCircle2, AlertTriangle } from "lucide-react";
+import { AlertCircle, TrendingUp, CheckCircle2, AlertTriangle, FileText, CreditCard } from "lucide-react";
+import { CoveragePurchaseDialog } from "./coverage-purchase-dialog";
 import type { PolicyGapAnalysis, PolicyRecommendation } from "@/lib/gap-calculation";
 
 interface PolicyRecommendationsProps {
@@ -17,6 +19,8 @@ const priorityConfig = {
 };
 
 export function PolicyRecommendations({ analysis, onContactAgent }: PolicyRecommendationsProps) {
+  const [selectedRec, setSelectedRec] = useState<PolicyRecommendation | null>(null);
+  
   const groupedByType = {
     add: analysis.gaps.filter((g) => g.type === "add"),
     drop: analysis.gaps.filter((g) => g.type === "drop"),
@@ -77,7 +81,7 @@ export function PolicyRecommendations({ analysis, onContactAgent }: PolicyRecomm
             {groupedByType.add
               .filter((g) => g.priority === "critical")
               .map((rec, i) => (
-                <RecommendationCard key={i} recommendation={rec} />
+                <RecommendationCard key={i} recommendation={rec} onSelect={() => setSelectedRec(rec)} />
               ))}
           </div>
         </div>
@@ -94,7 +98,7 @@ export function PolicyRecommendations({ analysis, onContactAgent }: PolicyRecomm
             {groupedByType.add
               .filter((g) => g.priority === "high")
               .map((rec, i) => (
-                <RecommendationCard key={i} recommendation={rec} />
+                <RecommendationCard key={i} recommendation={rec} onSelect={() => setSelectedRec(rec)} />
               ))}
           </div>
         </div>
@@ -124,7 +128,7 @@ export function PolicyRecommendations({ analysis, onContactAgent }: PolicyRecomm
           </h3>
           <div className="space-y-2">
             {groupedByType.enhance.map((rec, i) => (
-              <RecommendationCard key={i} recommendation={rec} />
+              <RecommendationCard key={i} recommendation={rec} onSelect={() => setSelectedRec(rec)} />
             ))}
           </div>
         </div>
@@ -139,30 +143,32 @@ export function PolicyRecommendations({ analysis, onContactAgent }: PolicyRecomm
           </h3>
           <div className="space-y-2">
             {groupedByType.optional.map((rec, i) => (
-              <RecommendationCard key={i} recommendation={rec} />
+              <RecommendationCard key={i} recommendation={rec} onSelect={() => setSelectedRec(rec)} />
             ))}
           </div>
         </div>
       )}
 
-      {/* CTA */}
-      {analysis.gaps.length > 0 && onContactAgent && (
-        <Button onClick={onContactAgent} className="w-full" size="lg" data-testid="button-contact-agent-policy">
-          Discuss with Insurance Agent
-        </Button>
+      {selectedRec && (
+        <CoveragePurchaseDialog
+          recommendation={selectedRec}
+          isOpen={!!selectedRec}
+          onOpenChange={(open) => !open && setSelectedRec(null)}
+        />
       )}
     </div>
   );
 }
 
-function RecommendationCard({ recommendation }: { recommendation: PolicyRecommendation }) {
+function RecommendationCard({ recommendation, onSelect }: { recommendation: PolicyRecommendation; onSelect: () => void }) {
   const config = priorityConfig[recommendation.priority];
   const Icon = config.icon;
+  const isAddable = recommendation.type === "add" || recommendation.type === "enhance";
 
   return (
     <Card className={`border ${config.border} ${config.color}`}>
       <CardContent className="pt-6">
-        <div className="space-y-2">
+        <div className="space-y-3">
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-start gap-3 flex-1">
               <Icon className="h-5 w-5 mt-0.5 flex-shrink-0" />
@@ -178,7 +184,35 @@ function RecommendationCard({ recommendation }: { recommendation: PolicyRecommen
               {recommendation.type === "optional" && "Optional"}
             </Badge>
           </div>
-          <p className="text-sm font-medium text-foreground pt-1">{recommendation.savingsOrBenefit}</p>
+          <p className="text-sm font-medium text-foreground">{recommendation.savingsOrBenefit}</p>
+
+          {/* Action Buttons */}
+          {isAddable && (
+            <div className="flex gap-2 pt-2">
+              {recommendation.requiresUnderwriting ? (
+                <Button
+                  onClick={onSelect}
+                  variant="outline"
+                  size="sm"
+                  className="flex-1 border-primary text-primary hover:bg-primary/5"
+                  data-testid={`button-request-quote-${recommendation.coverage.replace(/\s+/g, "-").toLowerCase()}`}
+                >
+                  <FileText className="h-3.5 w-3.5 mr-2" />
+                  Request Quote
+                </Button>
+              ) : (
+                <Button
+                  onClick={onSelect}
+                  size="sm"
+                  className="flex-1 bg-emerald-600 hover:bg-emerald-700"
+                  data-testid={`button-buy-now-${recommendation.coverage.replace(/\s+/g, "-").toLowerCase()}`}
+                >
+                  <CreditCard className="h-3.5 w-3.5 mr-2" />
+                  Buy Now
+                </Button>
+              )}
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>

@@ -7,6 +7,8 @@ export interface PolicyRecommendation {
   reason: string;
   savingsOrBenefit: string;
   priority: "critical" | "high" | "medium" | "low";
+  requiresUnderwriting: boolean; // true = Request Quote, false = Buy Now
+  estimatedMonthlyPrice?: number; // For direct purchase
 }
 
 export interface PolicyGapAnalysis {
@@ -43,6 +45,7 @@ export function calculatePolicyGaps(
         reason: "Protects income if health condition prevents work",
         savingsOrBenefit: "Replace 60-80% income, €30-80/month",
         priority: "critical",
+        requiresUnderwriting: true,
       });
     }
 
@@ -53,6 +56,8 @@ export function calculatePolicyGaps(
         reason: `You travel ${profile.travelFrequency} but health only covers domestic`,
         savingsOrBenefit: "€80-150/year for worldwide coverage",
         priority: "high",
+        requiresUnderwriting: false,
+        estimatedMonthlyPrice: 12,
       });
     }
 
@@ -72,6 +77,8 @@ export function calculatePolicyGaps(
       reason: "Mental wellness as important as physical health",
       savingsOrBenefit: "€15-40/month for therapy sessions coverage",
       priority: "medium",
+      requiresUnderwriting: false,
+      estimatedMonthlyPrice: 25,
     });
 
     if (profile.lifeStageFactors?.includes("Young children")) {
