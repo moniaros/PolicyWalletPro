@@ -21,10 +21,18 @@ export const policies = [
         { id: "CLM-NN-001", date: "2025-09-10", reason: "Annual Executive Checkup", amount: "€450", status: "Paid" },
       ],
       coverageLimits: {
-        hospitalization: "Unlimited in A-List Hospitals",
-        outpatient: "Unlimited Visits",
-        prevention: "Free Annual Checkup + Dental",
-        abroad: "100% Coverage (USA included)"
+        "Annual Limit": "Unlimited",
+        "Room & Board": "100% (Private Room)",
+        "ICU": "100% Coverage",
+        "Surgeons & Physicians": "100% of Reasonable & Customary",
+        "Prescribed Drugs": "100% Coverage",
+        "Diagnostic Tests": "100% Coverage",
+        "Ambulance Service": "100% Coverage",
+        "Maternity": "€3,000 per delivery",
+        "Dental (Emergency)": "€500 per year",
+        "Optical": "€200 per 2 years",
+        "Physiotherapy": "15 sessions/year",
+        "International Cover": "100% (USA/Canada included)"
       },
       gapAnalysis: {
         score: 98,
@@ -51,11 +59,16 @@ export const policies = [
       beneficiaries: ["Self"],
       claims: [],
       coverageLimits: {
-        liability: "€1,220,000",
-        ownDamage: "Full Replacement Value",
-        theftFire: "Included",
-        roadside: "Express Service (Europe-wide)",
-        greenCard: "Active (EU + Balkans)"
+        "Bodily Injury Liability": "€1,220,000 per victim",
+        "Material Damage Liability": "€1,220,000 per accident",
+        "Own Damage (Kasko)": "Full Replacement Value",
+        "Fire & Theft": "Included",
+        "Natural Phenomena": "Included (Hail, Flood)",
+        "Glass Breakage": "Unlimited",
+        "Driver Accident": "€15,000",
+        "Legal Protection": "€3,000",
+        "Roadside Assistance": "Express Service (Europe-wide)",
+        "Green Card": "Active (EU + Balkans)"
       },
       gapAnalysis: {
         score: 95,
@@ -82,10 +95,16 @@ export const policies = [
       beneficiaries: ["Sophia (Spouse)"],
       claims: [],
       coverageLimits: {
-        building: "€350,000",
-        contents: "€80,000",
-        civilLiability: "€1,000,000 (Family Protection)",
-        earthquake: "Included (First Loss)"
+        "Building (Reconstruction)": "€350,000",
+        "Contents (Replacement)": "€80,000",
+        "Family Civil Liability": "€1,000,000",
+        "Earthquake": "Included (First Loss)",
+        "Fire & Explosion": "Included",
+        "Pipe Bursting": "Included",
+        "Theft/Burglary": "€15,000 limit",
+        "Short Circuit": "€3,000",
+        "Loss of Rent": "Up to 12 months",
+        "Emergency Home Assist": "24/7 Included"
       },
       gapAnalysis: {
         score: 92,
@@ -112,9 +131,14 @@ export const policies = [
       beneficiaries: ["Sophia (Spouse)", "Dimitris (Son)"],
       claims: [],
       coverageLimits: {
-        lifeCover: "€500,000",
-        criticalIllness: "€100,000",
-        pensionPot: "€45,200 (Accumulated)"
+        "Life Cover (Death)": "€500,000",
+        "Accidental Death": "Double Indemnity (€1M)",
+        "Permanent Disability": "€500,000",
+        "Critical Illness": "€100,000 (Lump Sum)",
+        "Hospital Cash Benefit": "€100/day",
+        "Premium Waiver": "Included (if disabled)",
+        "Pension Pot Value": "€45,200 (Accumulated)",
+        "Guaranteed Interest": "2.5%"
       },
       gapAnalysis: {
         score: 88,
@@ -143,9 +167,14 @@ export const policies = [
         { id: "CLM-PET-004", date: "2025-08-01", reason: "Paw Surgery", amount: "€800", status: "Paid" }
       ],
       coverageLimits: {
-        medicalExpenses: "€2,000/year",
-        liability: "€50,000 (Third Party)",
-        boarding: "€500 (If owner hospitalized)"
+        "Annual Limit": "€2,000",
+        "Vet Visits": "Unlimited (Network)",
+        "Surgery": "100% Covered",
+        "Medication": "Included",
+        "Third Party Liability": "€50,000",
+        "Boarding Fees": "€500 (If owner hospitalized)",
+        "Lost Pet Advertising": "€100",
+        "Euthanasia/Burial": "€200"
       },
       gapAnalysis: {
         score: 70,
