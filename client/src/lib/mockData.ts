@@ -4,11 +4,15 @@ export const policies = [
   {
     id: 1,
     type: "Health",
+    lob: "HLT", // ACORD Line of Business Code
     provider: "NN Hellas",
+    carrierId: "NN-GR-001",
     policyNumber: "NN-ORANGE-992",
     coverage: "Unlimited / 100%",
+    effectiveDate: "2025-01-01",
     expiry: "2025-12-31",
-    premium: "€145/mo",
+    premium: "€145.00",
+    paymentFrequency: "Monthly",
     icon: Heart,
     color: "text-orange-500 bg-orange-50",
     status: "Active",
@@ -16,23 +20,52 @@ export const policies = [
       pendingPayments: 0,
       lastPayment: "2025-11-01",
       nextPaymentDue: "2025-12-01",
-      beneficiaries: ["Sophia (Spouse)", "Dimitris (Son)"],
+      beneficiaries: [
+        { 
+          name: "Sophia (Spouse)", 
+          relation: "SP", // Spouse
+          dob: "1985-05-12", 
+          allocation: "50%", 
+          primary: true 
+        },
+        { 
+          name: "Dimitris (Son)", 
+          relation: "CH", // Child
+          dob: "2015-08-20", 
+          allocation: "50%", 
+          primary: true 
+        }
+      ],
       claims: [
-        { id: "CLM-NN-001", date: "2025-09-10", reason: "Annual Executive Checkup", amount: "€450", status: "Paid", step: 4, steps: ["Submitted", "Reviewing", "Approved", "Paid"] },
+        { 
+          id: "CLM-NN-001", 
+          incidentDate: "2025-09-01",
+          reportedDate: "2025-09-10",
+          type: "Medical",
+          reason: "Annual Executive Checkup", 
+          amount: "€450.00", 
+          reserveAmount: "€0.00",
+          paidAmount: "€450.00",
+          status: "Paid", 
+          adjuster: "Dr. A. Makris",
+          step: 4, 
+          steps: ["FNOL", "Coverage", "Appraisal", "Payment"] // First Notice of Loss
+        },
       ],
       coverageLimits: {
-        "Annual Limit": "Unlimited",
-        "Room & Board": "100% (Private Room)",
-        "ICU": "100% Coverage",
-        "Surgeons & Physicians": "100% of Reasonable & Customary",
-        "Prescribed Drugs": "100% Coverage",
-        "Diagnostic Tests": "100% Coverage",
-        "Ambulance Service": "100% Coverage",
-        "Maternity": "€3,000 per delivery",
-        "Dental (Emergency)": "€500 per year",
-        "Optical": "€200 per 2 years",
+        "Annual Aggregate Limit": "Unlimited",
+        "Room & Board (Daily)": "100% (Private Room)",
+        "ICU (Daily)": "100% Coverage",
+        "Surgical Schedule": "100% R&C (Reasonable & Customary)",
+        "Anesthesia": "100% Coverage",
+        "Prescribed Drugs (Inpatient)": "100% Coverage",
+        "Diagnostic X-Ray/Lab": "100% Coverage",
+        "Emergency Ambulance": "100% Coverage",
+        "Maternity Benefit": "€3,000 per delivery",
+        "Dental (Accident/Emergency)": "€500 per year",
+        "Optical Hardware": "€200 per 24 months",
         "Physiotherapy": "15 sessions/year",
-        "International Cover": "100% (USA/Canada included)"
+        "Geographic Scope": "Worldwide (USA/Canada included)"
       },
       gapAnalysis: {
         score: 98,
@@ -44,11 +77,15 @@ export const policies = [
   {
     id: 2,
     type: "Auto",
+    lob: "AUT",
     provider: "Generali",
+    carrierId: "GEN-IT-GR",
     policyNumber: "GEN-SPEED-882",
     coverage: "Full Kasko + Green Card",
-    expiry: "2025-06-15",
-    premium: "€320/6mo",
+    effectiveDate: "2025-06-15",
+    expiry: "2025-12-15",
+    premium: "€320.00",
+    paymentFrequency: "Semi-Annual",
     icon: Car,
     color: "text-red-600 bg-red-50",
     status: "Active",
@@ -56,18 +93,41 @@ export const policies = [
       pendingPayments: 0,
       lastPayment: "2025-06-15",
       nextPaymentDue: "2025-12-15",
-      beneficiaries: ["Self"],
+      beneficiaries: [
+        { 
+          name: "Alex (Insured)", 
+          relation: "IN", // Insured
+          dob: "1982-03-15", 
+          allocation: "100%", 
+          primary: true 
+        }
+      ],
       claims: [
-         { id: "CLM-GEN-002", date: "2025-11-20", reason: "Windshield Crack", amount: "€350", status: "In Review", step: 2, steps: ["Submitted", "Reviewing", "Approved", "Paid"] }
+         { 
+           id: "CLM-GEN-002", 
+           incidentDate: "2025-11-19",
+           reportedDate: "2025-11-20",
+           type: "Property Damage",
+           reason: "Windshield Crack", 
+           amount: "€350.00", 
+           reserveAmount: "€350.00",
+           paidAmount: "€0.00",
+           status: "In Review", 
+           adjuster: "K. Georgiou",
+           step: 2, 
+           steps: ["FNOL", "Inspection", "Approval", "Settlement"] 
+         }
       ],
       coverageLimits: {
-        "Bodily Injury Liability": "€1,220,000 per victim",
-        "Material Damage Liability": "€1,220,000 per accident",
-        "Own Damage (Kasko)": "Full Replacement Value",
-        "Fire & Theft": "Included",
+        "Bodily Injury (Per Person)": "€1,220,000",
+        "Bodily Injury (Per Accident)": "€1,220,000",
+        "Property Damage (Per Accident)": "€1,220,000",
+        "Own Damage (Collision)": "ACV (Actual Cash Value)",
+        "Deductible (Collision)": "€300.00",
+        "Fire & Theft": "Included (No Deductible)",
         "Natural Phenomena": "Included (Hail, Flood)",
-        "Glass Breakage": "Unlimited",
-        "Driver Accident": "€15,000",
+        "Glass Breakage": "Unlimited (Zero Deductible)",
+        "Driver Accident PA": "€15,000",
         "Legal Protection": "€3,000",
         "Roadside Assistance": "Express Service (Europe-wide)",
         "Green Card": "Active (EU + Balkans)"
@@ -82,11 +142,15 @@ export const policies = [
   {
     id: 3,
     type: "Home & Liability",
+    lob: "HOM",
     provider: "Ergo",
+    carrierId: "ERG-DE-GR",
     policyNumber: "ERG-HOME-112",
     coverage: "Building + Content + Civil",
+    effectiveDate: "2024-09-01",
     expiry: "2025-09-01",
-    premium: "€180/yr",
+    premium: "€180.00",
+    paymentFrequency: "Annual",
     icon: Home,
     color: "text-red-700 bg-red-50",
     status: "Active",
@@ -94,18 +158,28 @@ export const policies = [
       pendingPayments: 0,
       lastPayment: "2024-09-01",
       nextPaymentDue: "2025-09-01",
-      beneficiaries: ["Sophia (Spouse)"],
+      beneficiaries: [
+        { 
+          name: "Sophia (Spouse)", 
+          relation: "SP", 
+          dob: "1985-05-12", 
+          allocation: "100%", 
+          primary: true 
+        }
+      ],
       claims: [],
       coverageLimits: {
-        "Building (Reconstruction)": "€350,000",
-        "Contents (Replacement)": "€80,000",
-        "Family Civil Liability": "€1,000,000",
-        "Earthquake": "Included (First Loss)",
+        "Dwelling Amount (Coverage A)": "€350,000",
+        "Other Structures (Coverage B)": "€35,000",
+        "Personal Property (Coverage C)": "€80,000",
+        "Loss of Use (Coverage D)": "12 Months / €20,000",
+        "Personal Liability (Coverage E)": "€1,000,000",
+        "Medical Payments (Coverage F)": "€5,000 per person",
+        "Earthquake Deductible": "2% of Limit",
         "Fire & Explosion": "Included",
-        "Pipe Bursting": "Included",
-        "Theft/Burglary": "€15,000 limit",
-        "Short Circuit": "€3,000",
-        "Loss of Rent": "Up to 12 months",
+        "Water Damage / Pipe Burst": "Included",
+        "Theft/Burglary Limit": "€15,000",
+        "Short Circuit Damage": "€3,000",
         "Emergency Home Assist": "24/7 Included"
       },
       gapAnalysis: {
@@ -118,11 +192,15 @@ export const policies = [
   {
     id: 4,
     type: "Investment Life",
+    lob: "LIF",
     provider: "Ethniki Asfalistiki",
+    carrierId: "ETH-GR",
     policyNumber: "ETH-FULL-445",
     coverage: "€500k Life + Pension",
+    effectiveDate: "2015-01-01",
     expiry: "2040-01-01",
-    premium: "€200/mo",
+    premium: "€200.00",
+    paymentFrequency: "Monthly",
     icon: Briefcase,
     color: "text-blue-600 bg-blue-50",
     status: "Active",
@@ -130,17 +208,32 @@ export const policies = [
       pendingPayments: 0,
       lastPayment: "2025-11-01",
       nextPaymentDue: "2025-12-01",
-      beneficiaries: ["Sophia (Spouse)", "Dimitris (Son)"],
+      beneficiaries: [
+        { 
+          name: "Sophia (Spouse)", 
+          relation: "SP", 
+          dob: "1985-05-12", 
+          allocation: "50%", 
+          primary: true 
+        },
+        { 
+          name: "Dimitris (Son)", 
+          relation: "CH", 
+          dob: "2015-08-20", 
+          allocation: "50%", 
+          primary: true 
+        }
+      ],
       claims: [],
       coverageLimits: {
-        "Life Cover (Death)": "€500,000",
-        "Accidental Death": "Double Indemnity (€1M)",
-        "Permanent Disability": "€500,000",
-        "Critical Illness": "€100,000 (Lump Sum)",
+        "Death Benefit": "€500,000",
+        "Accidental Death Rider": "€500,000 (Double Indemnity)",
+        "Permanent Total Disability": "€500,000",
+        "Critical Illness (Accelerated)": "€100,000",
         "Hospital Cash Benefit": "€100/day",
-        "Premium Waiver": "Included (if disabled)",
-        "Pension Pot Value": "€45,200 (Accumulated)",
-        "Guaranteed Interest": "2.5%"
+        "Waiver of Premium": "Included",
+        "Cash Surrender Value": "€45,200",
+        "Guaranteed Interest Rate": "2.5%"
       },
       gapAnalysis: {
         score: 88,
@@ -152,11 +245,15 @@ export const policies = [
   {
     id: 5,
     type: "Pet Insurance",
+    lob: "PET",
     provider: "Ergo",
+    carrierId: "ERG-DE-GR",
     policyNumber: "ERG-PET-991",
     coverage: "Vet & Surgery",
+    effectiveDate: "2024-10-10",
     expiry: "2025-10-10",
-    premium: "€25/mo",
+    premium: "€25.00",
+    paymentFrequency: "Monthly",
     icon: Dog,
     color: "text-amber-600 bg-amber-50",
     status: "Review Needed",
@@ -164,19 +261,40 @@ export const policies = [
       pendingPayments: 25,
       lastPayment: "2025-10-10",
       nextPaymentDue: "2025-11-10",
-      beneficiaries: ["Max (Golden Retriever)"],
+      beneficiaries: [
+        { 
+          name: "Max (Golden Retriever)", 
+          relation: "PET", 
+          dob: "2022-04-01", 
+          allocation: "N/A", 
+          primary: true 
+        }
+      ],
       claims: [
-        { id: "CLM-PET-004", date: "2025-08-01", reason: "Paw Surgery", amount: "€800", status: "Paid", step: 4, steps: ["Submitted", "Reviewing", "Approved", "Paid"] }
+        { 
+          id: "CLM-PET-004", 
+          incidentDate: "2025-07-30",
+          reportedDate: "2025-08-01",
+          type: "Medical",
+          reason: "Paw Surgery", 
+          amount: "€800.00", 
+          reserveAmount: "€0.00",
+          paidAmount: "€800.00",
+          status: "Paid", 
+          adjuster: "Auto-Adjudicated",
+          step: 4, 
+          steps: ["FNOL", "Review", "Approved", "Paid"] 
+        }
       ],
       coverageLimits: {
-        "Annual Limit": "€2,000",
-        "Vet Visits": "Unlimited (Network)",
+        "Annual Aggregate Limit": "€2,000",
+        "Routine Care/Wellness": "Excluded",
+        "Vet Visits (Illness/Injury)": "Unlimited (Network)",
         "Surgery": "100% Covered",
-        "Medication": "Included",
+        "Medications": "Included",
         "Third Party Liability": "€50,000",
-        "Boarding Fees": "€500 (If owner hospitalized)",
-        "Lost Pet Advertising": "€100",
-        "Euthanasia/Burial": "€200"
+        "Emergency Boarding": "€500",
+        "Deductible": "€50.00 per incident"
       },
       gapAnalysis: {
         score: 70,

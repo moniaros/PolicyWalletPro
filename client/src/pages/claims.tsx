@@ -150,7 +150,7 @@ export default function ClaimsPage() {
                               </Badge>
                            </div>
                            <p className="text-muted-foreground text-sm">
-                              {claim.policyType} ({claim.policyProvider}) • Filed on {claim.date} • ID: {claim.id}
+                              {claim.policyType} ({claim.policyProvider}) • Filed on {claim.reportedDate || claim.date} • ID: {claim.id}
                            </p>
                         </div>
                         <div className="text-right">

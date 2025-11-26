@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Download, CreditCard, Users, AlertTriangle, FileCheck, Shield, TrendingUp, AlertCircle, DollarSign, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, Download, CreditCard, Users, AlertTriangle, FileCheck, Shield, TrendingUp, AlertCircle, DollarSign, CheckCircle2, Calendar, Hash, FileText } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 
 export default function PolicyDetailsPage() {
@@ -49,22 +49,22 @@ export default function PolicyDetailsPage() {
         <div className="flex gap-2">
           <Button variant="outline" size="sm">
             <Download className="h-4 w-4 mr-2" />
-            Download PDF
+            Download ACORD 25
           </Button>
           <Button size="sm">Make Payment</Button>
         </div>
       </div>
 
       {/* Overview Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card className="bg-primary/5 border-primary/10">
           <CardContent className="p-4 flex items-center gap-4">
              <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
                <Shield className="h-5 w-5" />
              </div>
              <div>
-               <p className="text-sm text-muted-foreground font-medium">Total Coverage</p>
-               <p className="text-xl font-bold text-foreground">{policy.coverage}</p>
+               <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">LOB Code</p>
+               <p className="text-xl font-bold text-foreground">{policy.lob}</p>
              </div>
           </CardContent>
         </Card>
@@ -74,7 +74,7 @@ export default function PolicyDetailsPage() {
                <DollarSign className="h-5 w-5" />
              </div>
              <div>
-               <p className="text-sm text-muted-foreground font-medium">Monthly Premium</p>
+               <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Premium</p>
                <p className="text-xl font-bold text-foreground">{policy.premium}</p>
              </div>
           </CardContent>
@@ -82,10 +82,21 @@ export default function PolicyDetailsPage() {
          <Card className="bg-secondary/50 border-muted">
           <CardContent className="p-4 flex items-center gap-4">
              <div className="h-10 w-10 rounded-full bg-secondary flex items-center justify-center text-foreground">
+               <Calendar className="h-5 w-5" />
+             </div>
+             <div>
+               <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Effective</p>
+               <p className="text-lg font-bold text-foreground">{policy.effectiveDate}</p>
+             </div>
+          </CardContent>
+        </Card>
+        <Card className="bg-secondary/50 border-muted">
+          <CardContent className="p-4 flex items-center gap-4">
+             <div className="h-10 w-10 rounded-full bg-secondary flex items-center justify-center text-foreground">
                <Users className="h-5 w-5" />
              </div>
              <div>
-               <p className="text-sm text-muted-foreground font-medium">Beneficiaries</p>
+               <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Beneficiaries</p>
                <p className="text-xl font-bold text-foreground">{policy.details?.beneficiaries.length || 0}</p>
              </div>
           </CardContent>
@@ -108,39 +119,77 @@ export default function PolicyDetailsPage() {
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
                    <FileCheck className="h-5 w-5 text-primary" />
-                   Coverage Limits
+                   Schedule of Benefits
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-0 divide-y">
                 {Object.entries(policy.details?.coverageLimits || {}).map(([key, value]) => (
-                  <div key={key} className="flex justify-between items-center py-2 border-b last:border-0">
-                    <span className="capitalize text-muted-foreground">{key.replace(/([A-Z])/g, ' $1').trim()}</span>
-                    <span className="font-semibold">{value as string}</span>
+                  <div key={key} className="flex justify-between items-center py-3">
+                    <span className="text-sm font-medium text-muted-foreground">{key}</span>
+                    <span className="text-sm font-bold text-foreground text-right">{value as string}</span>
                   </div>
                 ))}
               </CardContent>
             </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg flex items-center gap-2">
-                   <Users className="h-5 w-5 text-primary" />
-                   Beneficiaries
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-3">
-                  {policy.details?.beneficiaries.map((name: string, i: number) => (
-                    <li key={i} className="flex items-center gap-3 p-3 bg-secondary/30 rounded-lg">
-                      <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">
-                        {name.charAt(0)}
+            <div className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                     <Users className="h-5 w-5 text-primary" />
+                     Beneficiaries
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {policy.details?.beneficiaries.map((beneficiary: any, i: number) => (
+                      <div key={i} className="flex items-center justify-between p-3 bg-secondary/30 rounded-lg border border-secondary">
+                        <div className="flex items-center gap-3">
+                          <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
+                            {beneficiary.name.charAt(0)}
+                          </div>
+                          <div>
+                             <p className="font-bold text-sm">{beneficiary.name}</p>
+                             <p className="text-xs text-muted-foreground">Rel: {beneficiary.relation} • DOB: {beneficiary.dob}</p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                           <Badge variant="outline">{beneficiary.allocation}</Badge>
+                           {beneficiary.primary && <p className="text-[10px] text-primary font-medium mt-1">Primary</p>}
+                        </div>
                       </div>
-                      <span className="font-medium">{name}</span>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                 <CardHeader>
+                    <CardTitle className="text-lg flex items-center gap-2">
+                       <FileText className="h-5 w-5 text-primary" />
+                       Technical Data
+                    </CardTitle>
+                 </CardHeader>
+                 <CardContent className="grid grid-cols-2 gap-4 text-sm">
+                    <div>
+                       <p className="text-muted-foreground text-xs uppercase">Carrier ID</p>
+                       <p className="font-mono font-medium">{policy.carrierId || "N/A"}</p>
+                    </div>
+                    <div>
+                       <p className="text-muted-foreground text-xs uppercase">LOB Code</p>
+                       <p className="font-mono font-medium">{policy.lob || "N/A"}</p>
+                    </div>
+                    <div>
+                       <p className="text-muted-foreground text-xs uppercase">Payment Freq</p>
+                       <p className="font-medium">{policy.paymentFrequency || "Monthly"}</p>
+                    </div>
+                    <div>
+                       <p className="text-muted-foreground text-xs uppercase">Expiration</p>
+                       <p className="font-medium">{policy.expiry}</p>
+                    </div>
+                 </CardContent>
+              </Card>
+            </div>
           </div>
         </TabsContent>
 
@@ -208,7 +257,7 @@ export default function PolicyDetailsPage() {
           {policy.details?.claims.length === 0 ? (
             <Card className="bg-muted/20 border-dashed">
                <CardContent className="flex flex-col items-center justify-center py-12 text-muted-foreground">
-                  <ShieldCheckIcon className="h-12 w-12 mb-3 opacity-20" />
+                  <Shield className="h-12 w-12 mb-3 opacity-20" />
                   <p>No claims filed yet. Keep up the good work!</p>
                </CardContent>
             </Card>
@@ -216,19 +265,39 @@ export default function PolicyDetailsPage() {
             <div className="space-y-3">
                {policy.details?.claims.map((claim: any) => (
                   <Card key={claim.id}>
-                     <CardContent className="p-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                        <div>
-                           <div className="flex items-center gap-2 mb-1">
-                              <h4 className="font-bold">{claim.reason}</h4>
-                              <Badge variant={claim.status === "Paid" ? "secondary" : "outline"} className={claim.status === "Paid" ? "bg-emerald-100 text-emerald-800" : "bg-orange-100 text-orange-800 border-orange-200"}>
-                                 {claim.status}
-                              </Badge>
-                           </div>
-                           <p className="text-sm text-muted-foreground">Filed on {claim.date} • ID: {claim.id}</p>
+                     <CardContent className="p-4">
+                        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
+                          <div>
+                             <div className="flex items-center gap-2 mb-1">
+                                <h4 className="font-bold">{claim.reason}</h4>
+                                <Badge variant={claim.status === "Paid" ? "secondary" : "outline"} className={claim.status === "Paid" ? "bg-emerald-100 text-emerald-800" : "bg-orange-100 text-orange-800 border-orange-200"}>
+                                   {claim.status}
+                                </Badge>
+                             </div>
+                             <div className="text-xs text-muted-foreground space-y-1">
+                                <p>ID: <span className="font-mono">{claim.id}</span> • Incident: {claim.incidentDate}</p>
+                                <p>Adjuster: {claim.adjuster || "Unassigned"}</p>
+                             </div>
+                          </div>
+                          <div className="text-right">
+                             <p className="font-bold text-lg">{claim.amount}</p>
+                             <p className="text-xs text-muted-foreground">Paid: {claim.paidAmount}</p>
+                             <p className="text-xs text-muted-foreground">Reserve: {claim.reserveAmount}</p>
+                          </div>
                         </div>
-                        <div className="text-right">
-                           <p className="font-bold text-lg">{claim.amount}</p>
-                           <Button variant="link" size="sm" className="h-auto p-0 text-primary">View Details</Button>
+                        
+                        {/* ACORD Claim Status Steps */}
+                        {claim.steps && (
+                           <div className="w-full bg-secondary/30 h-1.5 rounded-full mt-2 overflow-hidden flex">
+                              {claim.steps.map((s: string, i: number) => (
+                                 <div key={i} className={`h-full flex-1 border-r border-white/20 last:border-0 ${i < (claim.step || 0) ? 'bg-primary' : 'bg-transparent'}`}></div>
+                              ))}
+                           </div>
+                        )}
+                        <div className="flex justify-between mt-1">
+                           {claim.steps?.map((s: string, i: number) => (
+                              <span key={i} className={`text-[10px] ${i < (claim.step || 0) ? 'text-primary font-bold' : 'text-muted-foreground'}`}>{s}</span>
+                           ))}
                         </div>
                      </CardContent>
                   </Card>
@@ -301,24 +370,4 @@ export default function PolicyDetailsPage() {
       </Tabs>
     </div>
   );
-}
-
-function ShieldCheckIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
-      <path d="m9 12 2 2 4-4" />
-    </svg>
-  )
 }
