@@ -784,5 +784,45 @@
     "building": "Building",
     "content": "Content",
     "civil": "Civil"
+  },
+  "familyStatus": {
+    "single": "Single",
+    "married": "Married",
+    "domesticPartner": "Domestic Partner",
+    "widowedDivorced": "Widowed/Divorced"
+  },
+  "dependents": {
+    "noDependents": "No dependents",
+    "oneTwoDependents": "1-2 dependents",
+    "threePlusDependents": "3+ dependents"
+  },
+  "insuranceTypes": {
+    "health": "Health",
+    "auto": "Auto",
+    "home": "Home",
+    "life": "Life",
+    "disability": "Disability",
+    "travel": "Travel",
+    "pet": "Pet",
+    "umbrella": "Umbrella/Liability"
+  },
+  "claimsSteps": {
+    "submitted": "Submitted",
+    "reviewing": "Reviewing",
+    "approved": "Approved",
+    "paid": "Paid"
+  },
+  "healthConditions": {
+    "hypertension": "Hypertension",
+    "diabetes": "Diabetes",
+    "heartDisease": "Heart Disease",
+    "mentalHealth": "Mental Health",
+    "respiratory": "Respiratory",
+    "other": "Other"
+  },
+  "appointmentStatus": {
+    "pending": "Pending",
+    "confirmed": "Confirmed",
+    "cancelled": "Cancelled"
   }
 }

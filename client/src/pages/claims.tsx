@@ -165,7 +165,7 @@ export default function ClaimsPage() {
                      <div className="relative pt-4 pb-2">
                         <Progress value={(claim.step || 1) * 25} className="h-2" />
                         <div className="flex justify-between mt-2 text-xs font-medium text-muted-foreground">
-                           {(claim.steps || ["Submitted", "Reviewing", "Approved", "Paid"]).map((step: string, idx: number) => (
+                           {(claim.steps || [t("claimsSteps.submitted"), t("claimsSteps.reviewing"), t("claimsSteps.approved"), t("claimsSteps.paid")]).map((step: string, idx: number) => (
                               <span key={idx} className={idx < (claim.step || 0) ? "text-primary font-bold" : ""}>{step}</span>
                            ))}
                         </div>

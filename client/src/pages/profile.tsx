@@ -194,7 +194,7 @@ export default function ProfilePage() {
             <Label>Emergency Fund Status</Label>
             <RadioGroup value={profile.emergencyFund} onValueChange={(value) => handleInputChange("emergencyFund", value)}>
               <div className="space-y-2">
-                {["Yes, well covered", "Partially covered", "Minimal or none"].map((status) => (
+                {[t("gapAnalysisQuestions.wellCovered"), t("gapAnalysisQuestions.partiallyCovered"), t("gapAnalysisQuestions.minimalOrNone")].map((status) => (
                   <div key={status} className="flex items-center space-x-2">
                     <RadioGroupItem value={status} id={`fund-${status}`} />
                     <Label htmlFor={`fund-${status}`} className="cursor-pointer">
@@ -219,7 +219,7 @@ export default function ProfilePage() {
             <Label>Health Status *</Label>
             <RadioGroup value={profile.healthStatus} onValueChange={(value) => handleInputChange("healthStatus", value)}>
               <div className="space-y-2">
-                {["Excellent", "Good", "Fair", "Has chronic conditions"].map((status) => (
+                {[t("gapAnalysisQuestions.excellent"), t("gapAnalysisQuestions.good"), t("gapAnalysisQuestions.fair"), t("gapAnalysisQuestions.chronicConditions")].map((status) => (
                   <div key={status} className="flex items-center space-x-2">
                     <RadioGroupItem value={status} id={`health-${status}`} />
                     <Label htmlFor={`health-${status}`} className="cursor-pointer">
@@ -234,7 +234,7 @@ export default function ProfilePage() {
           <div className="space-y-3">
             <Label>Chronic Conditions (if applicable)</Label>
             <div className="space-y-2">
-              {["Hypertension", "Diabetes", "Heart Disease", "Mental Health", "Respiratory", "Other"].map((condition) => (
+              {[t("healthConditions.hypertension"), t("healthConditions.diabetes"), t("healthConditions.heartDisease"), t("healthConditions.mentalHealth"), t("healthConditions.respiratory"), t("healthConditions.other")].map((condition) => (
                 <div key={condition} className="flex items-center space-x-2">
                   <Checkbox
                     id={`condition-${condition}`}
@@ -253,7 +253,7 @@ export default function ProfilePage() {
             <Label>Travel Frequency</Label>
             <RadioGroup value={profile.travelFrequency} onValueChange={(value) => handleInputChange("travelFrequency", value)}>
               <div className="space-y-2">
-                {["Never", "1-2 times/year", "3-6 times/year", "Monthly+"].map((freq) => (
+                {[t("gapAnalysisQuestions.never"), t("gapAnalysisQuestions.oneTwoTimesYear"), t("gapAnalysisQuestions.threeSixTimesYear"), t("gapAnalysisQuestions.monthlyPlus")].map((freq) => (
                   <div key={freq} className="flex items-center space-x-2">
                     <RadioGroupItem value={freq} id={`travel-${freq}`} />
                     <Label htmlFor={`travel-${freq}`} className="cursor-pointer">

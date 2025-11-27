@@ -875,5 +875,45 @@
     "building": "Κτίριο",
     "content": "Περιεχόμενο",
     "civil": "Αστική Ευθύνη"
+  },
+  "familyStatus": {
+    "single": "Ανύπαντρος/η",
+    "married": "Παντρεμένος/η",
+    "domesticPartner": "Ημιουργός",
+    "widowedDivorced": "Χήρος/α ή Διαζευγμένος/η"
+  },
+  "dependents": {
+    "noDependents": "Χωρίς εξαρτώμενα",
+    "oneTwoDependents": "1-2 εξαρτώμενα",
+    "threePlusDependents": "3+ εξαρτώμενα"
+  },
+  "insuranceTypes": {
+    "health": "Υγεία",
+    "auto": "Αυτοκίνητο",
+    "home": "Κατοικία",
+    "life": "Ζωή",
+    "disability": "Αναπηρία",
+    "travel": "Ταξίδια",
+    "pet": "Κατοικίδια",
+    "umbrella": "Ομπρέλα/Ευθύνη"
+  },
+  "claimsSteps": {
+    "submitted": "Υποβλήθηκε",
+    "reviewing": "Υπό Εξέταση",
+    "approved": "Εγκεκριμένη",
+    "paid": "Πληρωμένη"
+  },
+  "healthConditions": {
+    "hypertension": "Υπέρταση",
+    "diabetes": "Διαβήτης",
+    "heartDisease": "Καρδιακή Νόσος",
+    "mentalHealth": "Ψυχική Υγεία",
+    "respiratory": "Αναπνευστική",
+    "other": "Άλλο"
+  },
+  "appointmentStatus": {
+    "pending": "Εκκρεμμότητα",
+    "confirmed": "Επιβεβαιωμένη",
+    "cancelled": "Ακυρωθείσα"
   }
 }
