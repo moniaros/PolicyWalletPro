@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -6,6 +7,7 @@ import { Link } from "wouter";
 import { AlertCircle, TrendingUp, Zap, Calendar, DollarSign, Sparkles, ArrowRight, CheckCircle2 } from "lucide-react";
 
 export function RenewalsWidget() {
+  const { t } = useTranslation();
   const upcomingRenewals = [
     { id: 1, provider: "NN Hellas", daysUntil: 35, premium: "€145" },
     { id: 2, provider: "Generali", daysUntil: 18, premium: "€160" },
@@ -16,7 +18,7 @@ export function RenewalsWidget() {
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-2 text-lg">
           <Calendar className="h-5 w-5 text-primary" />
-          Upcoming Renewals
+          {t('renewals.policyRenewals')}
         </CardTitle>
         <CardDescription>2 policies renewing soon</CardDescription>
       </CardHeader>
@@ -32,7 +34,7 @@ export function RenewalsWidget() {
         ))}
         <Link href="/renewals">
           <Button variant="outline" className="w-full text-xs" size="sm">
-            View All Renewals
+            {t('renewals.policyRenewals')}
             <ArrowRight className="h-3 w-3 ml-1" />
           </Button>
         </Link>
@@ -42,12 +44,14 @@ export function RenewalsWidget() {
 }
 
 export function BillingWidget() {
+  const { t } = useTranslation();
+  
   return (
     <Card className="col-span-1 md:col-span-2 lg:col-span-1">
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-2 text-lg">
           <DollarSign className="h-5 w-5 text-emerald-600" />
-          Billing Summary
+          {t('billing.title')}
         </CardTitle>
         <CardDescription>This month's overview</CardDescription>
       </CardHeader>
@@ -71,7 +75,7 @@ export function BillingWidget() {
         </div>
         <Link href="/billing">
           <Button variant="outline" className="w-full text-xs" size="sm">
-            View Billing
+            {t('billing.title')}
             <ArrowRight className="h-3 w-3 ml-1" />
           </Button>
         </Link>
@@ -81,30 +85,32 @@ export function BillingWidget() {
 }
 
 export function RecommendationsWidget() {
+  const { t } = useTranslation();
+  
   return (
     <Card className="col-span-1 md:col-span-3 lg:col-span-1 bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-2 text-lg">
           <Sparkles className="h-5 w-5 text-primary" />
-          AI Recommendations
+          {t('recommendations.aiPoweredRecommendations')}
         </CardTitle>
         <CardDescription>2 action items awaiting</CardDescription>
       </CardHeader>
       <CardContent className="space-y-3">
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-sm">High Priority</span>
+            <span className="text-sm">{t('recommendations.actionItems')}</span>
             <Badge className="bg-red-100 text-red-800">2</Badge>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-sm">Potential Savings</span>
+            <span className="text-sm">{t('recommendations.potentialSavings')}</span>
             <span className="font-bold">€495-1,062/yr</span>
           </div>
         </div>
         <Progress value={33} className="h-2" />
         <Link href="/recommendations">
           <Button className="w-full bg-primary text-xs" size="sm">
-            Review Recommendations
+            {t('recommendations.title')}
             <ArrowRight className="h-3 w-3 ml-1" />
           </Button>
         </Link>
@@ -114,6 +120,8 @@ export function RecommendationsWidget() {
 }
 
 export function InsuranceHealthWidget() {
+  const { t } = useTranslation();
+  
   const categories = [
     { label: "Health", score: 98, status: "Excellent" },
     { label: "Auto", score: 85, status: "Good" },
@@ -145,6 +153,8 @@ export function InsuranceHealthWidget() {
 }
 
 export function PaymentRemindersWidget() {
+  const { t } = useTranslation();
+  
   const upcoming = [
     { date: "Dec 1", amount: "€145", provider: "NN Hellas", status: "Scheduled" },
     { date: "Dec 15", amount: "€160", provider: "Generali", status: "Scheduled" },
@@ -155,7 +165,7 @@ export function PaymentRemindersWidget() {
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-2 text-lg">
           <AlertCircle className="h-5 w-5 text-amber-600" />
-          Upcoming Payments
+          {t('billing.title')}
         </CardTitle>
         <CardDescription>Next 2 due dates</CardDescription>
       </CardHeader>
@@ -171,7 +181,7 @@ export function PaymentRemindersWidget() {
         ))}
         <Link href="/billing">
           <Button variant="outline" className="w-full text-xs mt-2" size="sm">
-            View All Payments
+            {t('billing.title')}
           </Button>
         </Link>
       </CardContent>
