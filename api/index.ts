@@ -1,9 +1,10 @@
 import fs from "node:fs";
 import path from "node:path";
-import express from "express";
+import express, { type Request, type Response } from "express";
 import { registerRoutes } from "../server/routes";
 
 const app = express();
+let routesInitialized = false;
 
 // Middleware
 app.use(express.json());
@@ -38,20 +39,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// Initialize routes
-let routesInitialized = false;
-
-async function initializeRoutes() {
-  if (!routesInitialized) {
-    try {
-      await registerRoutes(app);
-      routesInitialized = true;
-    } catch (error) {
-      console.error("Failed to initialize routes:", error);
-    }
-  }
-}
-
 // Serve static files from dist/public
 const publicPath = path.resolve(import.meta.dirname, "..", "dist", "public");
 
@@ -85,9 +72,19 @@ app.use((err: any, _req: any, res: any, _next: any) => {
 });
 
 // Initialize routes on first request
-app.use(async (req, res, next) => {
-  await initializeRoutes();
-  next();
-});
+async function ensureRoutesInitialized() {
+  if (!routesInitialized) {
+    try {
+      await registerRoutes(app);
+      routesInitialized = true;
+    } catch (error) {
+      console.error("Failed to initialize routes:", error);
+    }
+  }
+}
 
-export default app;
+// Vercel serverless handler
+export default async function handler(req: Request, res: Response) {
+  await ensureRoutesInitialized();
+  return app(req, res);
+}

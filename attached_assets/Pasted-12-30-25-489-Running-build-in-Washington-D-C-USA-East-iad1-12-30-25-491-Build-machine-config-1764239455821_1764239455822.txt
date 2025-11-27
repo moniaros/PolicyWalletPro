@@ -1,0 +1,67 @@
+12:30:25.489 Running build in Washington, D.C., USA (East) – iad1
+12:30:25.491 Build machine configuration: 2 cores, 8 GB
+12:30:25.667 Cloning github.com/moniaros/PolicyWalletPro (Branch: main, Commit: e5286e8)
+12:30:25.668 Previous build caches not available.
+12:30:26.014 Cloning completed: 346.000ms
+12:30:26.067 Found .vercelignore
+12:30:26.076 Removed 37 ignored files defined in .vercelignore
+12:30:26.077   /.git/config
+12:30:26.077   /.git/description
+12:30:26.077   /.git/FETCH_HEAD
+12:30:26.077   /.git/HEAD
+12:30:26.078   /.git/hooks/applypatch-msg.sample
+12:30:26.078   /.git/hooks/commit-msg.sample
+12:30:26.078   /.git/hooks/fsmonitor-watchman.sample
+12:30:26.078   /.git/hooks/post-update.sample
+12:30:26.078   /.git/hooks/pre-applypatch.sample
+12:30:26.078   /.git/hooks/pre-commit.sample
+12:30:26.440 Running "vercel build"
+12:30:26.854 Vercel CLI 48.11.0
+12:30:27.580 Running "install" command: `npm install`...
+12:30:31.245 npm warn deprecated @esbuild-kit/esm-loader@2.6.5: Merged into tsx: https://tsx.is
+12:30:31.341 npm warn deprecated @esbuild-kit/core-utils@3.3.2: Merged into tsx: https://tsx.is
+12:30:37.659 
+12:30:37.660 added 442 packages, and audited 443 packages in 10s
+12:30:37.661 
+12:30:37.661 42 packages are looking for funding
+12:30:37.661   run `npm fund` for details
+12:30:37.688 
+12:30:37.689 6 vulnerabilities (2 low, 4 moderate)
+12:30:37.689 
+12:30:37.689 To address issues that do not require attention, run:
+12:30:37.689   npm audit fix
+12:30:37.689 
+12:30:37.689 To address all issues (including breaking changes), run:
+12:30:37.689   npm audit fix --force
+12:30:37.690 
+12:30:37.690 Run `npm audit` for details.
+12:30:37.886 
+12:30:37.887 > rest-express@1.0.0 build
+12:30:37.887 > vite build && esbuild server/index-prod.ts --platform=node --packages=external --bundle --format=esm --outfile=dist/index.js
+12:30:37.887 
+12:30:38.464 [36mvite v7.1.12 [32mbuilding for production...[36m[39m
+12:30:38.544 transforming...
+12:30:44.980 [32m✓[39m 3324 modules transformed.
+12:30:45.802 rendering chunks...
+12:30:45.815 [meta-images] no Replit deployment domain found, skipping meta tag updates
+12:30:45.823 computing gzip size...
+12:30:45.862 [2m../dist/public/[22m[32mindex.html                 [39m[1m[2m    2.06 kB[22m[1m[22m[2m │ gzip:   0.74 kB[22m
+12:30:45.863 [2m../dist/public/[22m[2massets/[22m[35mindex-C_VspJDe.css  [39m[1m[2m  137.23 kB[22m[1m[22m[2m │ gzip:  21.62 kB[22m
+12:30:45.863 [2m../dist/public/[22m[2massets/[22m[36mindex-jKbFx1T7.js   [39m[1m[33m1,297.44 kB[39m[22m[2m │ gzip: 369.44 kB[22m
+12:30:45.863 [33m
+12:30:45.863 (!) Some chunks are larger than 500 kB after minification. Consider:
+12:30:45.864 - Using dynamic import() to code-split the application
+12:30:45.864 - Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+12:30:45.864 - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.[39m
+12:30:45.864 [32m✓ built in 7.36s[39m
+12:30:45.934 
+12:30:45.935   dist/index.js  24.1kb
+12:30:45.935 
+12:30:45.935 ⚡ Done in 5ms
+12:30:45.955 Error: No entrypoint found. Searched for:
+12:30:45.961 - app.{js,cjs,mjs,ts,cts,mts}
+12:30:45.961 - index.{js,cjs,mjs,ts,cts,mts}
+12:30:45.961 - server.{js,cjs,mjs,ts,cts,mts}
+12:30:45.961 - src/app.{js,cjs,mjs,ts,cts,mts}
+12:30:45.962 - src/index.{js,cjs,mjs,ts,cts,mts}
+12:30:45.962 - src/server.{js,cjs,mjs,ts,cts,mts}
