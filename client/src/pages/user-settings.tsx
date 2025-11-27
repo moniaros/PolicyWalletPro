@@ -778,8 +778,8 @@ export default function UserSettingsPage() {
                     data-testid="button-start-questionnaire"
                   >
                     {insuranceProfileCompleted
-                      ? "Update Insurance Profile"
-                      : "Start Insurance Analysis"}
+                      ? t('questionnaire.updateProfile')
+                      : t('questionnaire.startAnalysis')}
                     <ArrowRight className="h-4 w-4 ml-2" />
                   </Button>
                 </CardContent>
@@ -790,9 +790,9 @@ export default function UserSettingsPage() {
             {showQuestionnaire && !insuranceProfileCompleted && (
               <Card>
                 <CardHeader>
-                  <CardTitle>Insurance Gap Analysis Questionnaire</CardTitle>
+                  <CardTitle>{t('questionnaire.title')}</CardTitle>
                   <CardDescription>
-                    Step-by-step analysis to identify your coverage needs
+                    {t('questionnaire.description')}
                   </CardDescription>
                   <div className="mt-4">
                     <Progress
@@ -804,8 +804,7 @@ export default function UserSettingsPage() {
                       className="h-2"
                     />
                     <p className="text-xs text-muted-foreground mt-2">
-                      Question {currentQuestionIdx + 1} of{" "}
-                      {INSURANCE_QUESTIONNAIRE.length}
+                      {t('questionnaire.question', { current: currentQuestionIdx + 1, total: INSURANCE_QUESTIONNAIRE.length })}
                     </p>
                   </div>
                 </CardHeader>
@@ -865,7 +864,7 @@ export default function UserSettingsPage() {
                         className="flex-1"
                         data-testid="button-questionnaire-prev"
                       >
-                        Back
+                        {t('common.back')}
                       </Button>
                     )}
                     {currentQuestionIdx < INSURANCE_QUESTIONNAIRE.length - 1 ? (
