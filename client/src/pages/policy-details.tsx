@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useTranslation } from "react-i18next";
 import { ArrowLeft, Download, CreditCard, Users, AlertTriangle, FileCheck, Shield, TrendingUp, AlertCircle, DollarSign, CheckCircle2, Calendar, Hash, FileText } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { PolicyRecommendations } from "@/components/policy-recommendations";
@@ -23,6 +24,7 @@ import { HealthDetailedView, AutoDetailedView, HomeDetailedView, InvestmentLifeD
 import { toast } from "sonner";
 
 export default function PolicyDetailsPage() {
+  const { t } = useTranslation();
   const [match, params] = useRoute("/policies/:id");
   const id = params ? parseInt(params.id) : 0;
   const policy = policies.find((p) => p.id === id);
@@ -31,9 +33,9 @@ export default function PolicyDetailsPage() {
   if (!policy) {
     return (
       <div className="flex flex-col items-center justify-center h-[50vh] space-y-4">
-        <h1 className="text-2xl font-bold">Policy Not Found</h1>
+        <h1 className="text-2xl font-bold">{t('policyDetails.policyNotFound')}</h1>
         <Link href="/policies">
-          <Button>Back to Policies</Button>
+          <Button>{t('policyDetails.backToPolicies')}</Button>
         </Link>
       </div>
     );
@@ -85,9 +87,9 @@ export default function PolicyDetailsPage() {
         <div className="flex gap-2">
           <Button variant="outline" size="sm">
             <Download className="h-4 w-4 mr-2" />
-            Download ACORD 25
+            {t('actions.downloadACORD')}
           </Button>
-          <Button size="sm">Make Payment</Button>
+          <Button size="sm">{t('actions.makePayment')}</Button>
         </div>
       </div>
 
@@ -99,7 +101,7 @@ export default function PolicyDetailsPage() {
                <Shield className="h-5 w-5" />
              </div>
              <div>
-               <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">LOB Code</p>
+               <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">{t('policyDetails.lobCode')}</p>
                <p className="text-xl font-bold text-foreground">{policy.lob}</p>
              </div>
           </CardContent>
@@ -110,7 +112,7 @@ export default function PolicyDetailsPage() {
                <DollarSign className="h-5 w-5" />
              </div>
              <div>
-               <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Premium</p>
+               <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">{t('policyCard.premium')}</p>
                <p className="text-xl font-bold text-foreground">{policy.premium}</p>
              </div>
           </CardContent>
@@ -121,7 +123,7 @@ export default function PolicyDetailsPage() {
                <Calendar className="h-5 w-5" />
              </div>
              <div>
-               <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Effective</p>
+               <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">{t('policyDetails.effective')}</p>
                <p className="text-lg font-bold text-foreground">{policy.effectiveDate}</p>
              </div>
           </CardContent>
@@ -132,7 +134,7 @@ export default function PolicyDetailsPage() {
                <Users className="h-5 w-5" />
              </div>
              <div>
-               <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Beneficiaries</p>
+               <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">{t('policyDetails.beneficiaries')}</p>
                <p className="text-xl font-bold text-foreground">{policy.details?.beneficiaries.length || 0}</p>
              </div>
           </CardContent>
@@ -142,10 +144,10 @@ export default function PolicyDetailsPage() {
       {/* Tabs Content */}
       <Tabs defaultValue="overview" className="w-full">
         <TabsList className="grid w-full grid-cols-4 lg:w-[400px]">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="billing">Billing</TabsTrigger>
-          <TabsTrigger value="claims">Claims</TabsTrigger>
-          <TabsTrigger value="analysis">Analysis</TabsTrigger>
+          <TabsTrigger value="overview">{t('policyDetails.overview')}</TabsTrigger>
+          <TabsTrigger value="billing">{t('policyDetails.billing')}</TabsTrigger>
+          <TabsTrigger value="claims">{t('policyDetails.claimsTab')}</TabsTrigger>
+          <TabsTrigger value="analysis">{t('policyDetails.analysis')}</TabsTrigger>
         </TabsList>
 
         {/* Type-Specific Detailed Views */}
@@ -162,7 +164,7 @@ export default function PolicyDetailsPage() {
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
                    <FileCheck className="h-5 w-5 text-primary" />
-                   Schedule of Benefits
+                   {t('policyDetails.scheduleOfBenefits')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-0 divide-y">
@@ -294,7 +296,7 @@ export default function PolicyDetailsPage() {
         <TabsContent value="claims" className="space-y-4 mt-6">
           <div className="flex justify-between items-center">
              <h3 className="text-lg font-bold">Claims History</h3>
-             <Button size="sm" variant="outline">File New Claim</Button>
+             <Button size="sm" variant="outline">{t('actions.fileNewClaim')}</Button>
           </div>
           
           {policy.details?.claims.length === 0 ? (

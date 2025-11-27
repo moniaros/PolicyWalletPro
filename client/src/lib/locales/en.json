@@ -578,7 +578,39 @@
     "auditTrailExport": "Audit Trail Export"
   },
   "policyRecommendations": {
-    "add": "Add"
+    "add": "Add",
+    "sendingRequest": "Sending...",
+    "requestQuote": "Request Quote"
+  },
+  "actions": {
+    "viewResults": "View Results",
+    "next": "Next",
+    "emailAddress": "Email Address",
+    "orContinueWith": "or continue with",
+    "signingIn": "Signing in...",
+    "connecting": "Connecting...",
+    "downloadACORD": "Download ACORD 25",
+    "makePayment": "Make Payment",
+    "fileNewClaim": "File New Claim",
+    "submitClaim": "Submit Claim",
+    "addDentalCoverage": "Add Dental Coverage",
+    "addDentalRider": "Add Dental Rider",
+    "increaseLifeInsurance": "Increase Life Insurance Coverage",
+    "upgradeLifeInsurance": "Upgrade Life Insurance",
+    "petInsuranceAdded": "Pet Insurance Recently Added",
+    "explorePetInsurance": "Explore Pet Insurance"
+  },
+  "policyDetails": {
+    "lobCode": "LOB Code",
+    "effective": "Effective",
+    "beneficiaries": "Beneficiaries",
+    "scheduleOfBenefits": "Schedule of Benefits",
+    "overview": "Overview",
+    "billing": "Billing",
+    "claimsTab": "Claims",
+    "analysis": "Analysis",
+    "policyNotFound": "Policy Not Found",
+    "backToPolicies": "Back to Policies"
   },
   "status": {
     "success": "Success",

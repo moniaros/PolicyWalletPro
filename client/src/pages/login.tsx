@@ -149,7 +149,7 @@ export default function LoginPage() {
                   )}
 
                   <FormInputWithValidation
-                    label={t('login.emailOrUsername')}
+                    label={t('actions.emailAddress')}
                     type="email"
                     placeholder="you@example.com"
                     value={email}
@@ -183,10 +183,10 @@ export default function LoginPage() {
                     {mutation.isPending ? (
                       <>
                         <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                        Signing in...
+                        {t('actions.signingIn')}
                       </>
                     ) : (
-                      "Sign In"
+                      t('login.signIn')
                     )}
                   </Button>
                 </form>
@@ -197,7 +197,7 @@ export default function LoginPage() {
                     <div className="w-full border-t border-gray-300"></div>
                   </div>
                   <div className="relative flex justify-center text-xs">
-                    <span className="px-2 bg-white text-muted-foreground font-medium">or continue with</span>
+                    <span className="px-2 bg-white text-muted-foreground font-medium">{t('actions.orContinueWith')}</span>
                   </div>
                 </div>
 

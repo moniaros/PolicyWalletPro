@@ -664,7 +664,39 @@
     "auditTrailExport": "Εξαγωγή Ίχνους Ελέγχου"
   },
   "policyRecommendations": {
-    "add": "Προσθήκη"
+    "add": "Προσθήκη",
+    "sendingRequest": "Αποστολή...",
+    "requestQuote": "Αίτηση Προσφοράς"
+  },
+  "actions": {
+    "viewResults": "Δείτε Αποτελέσματα",
+    "next": "Επόμενο",
+    "emailAddress": "Διεύθυνση Email",
+    "orContinueWith": "ή συνεχίστε με",
+    "signingIn": "Σύνδεση...",
+    "connecting": "Σύνδεση...",
+    "downloadACORD": "Λήψη ACORD 25",
+    "makePayment": "Πραγματοποίηση Πληρωμής",
+    "fileNewClaim": "Υποβολή Νέας Δήλωσης",
+    "submitClaim": "Υποβολή Δήλωσης",
+    "addDentalCoverage": "Προσθήκη Οδοντιατρικής Κάλυψης",
+    "addDentalRider": "Προσθήκη Οδοντιατρικού Rider",
+    "increaseLifeInsurance": "Αύξηση Ασφάλισης Ζωής",
+    "upgradeLifeInsurance": "Αναβάθμιση Ασφάλισης Ζωής",
+    "petInsuranceAdded": "Ασφάλιση Κατοικιδίων Προστέθηκε",
+    "explorePetInsurance": "Εξερεύνηση Ασφάλισης Κατοικιδίων"
+  },
+  "policyDetails": {
+    "lobCode": "Κωδικός Κλάδου Ασφάλισης",
+    "effective": "Ημερομηνία Ισχύος",
+    "beneficiaries": "Δικαιούχοι",
+    "scheduleOfBenefits": "Κατάλογος Παροχών",
+    "overview": "Επισκόπηση",
+    "billing": "Τιμολόγηση",
+    "claimsTab": "Αποζημιώσεις",
+    "analysis": "Ανάλυση",
+    "policyNotFound": "Ασφάλιση Δεν Βρέθηκε",
+    "backToPolicies": "Επιστροφή στα Ασφαλιστήρια"
   },
   "validation": {
     "required": "Το πεδίο {{fieldName}} είναι υποχρεωτικό.",
