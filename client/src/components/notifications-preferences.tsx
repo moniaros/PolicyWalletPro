@@ -206,7 +206,7 @@ export function NotificationsPreferences() {
       </div>
 
       <Tabs defaultValue="email" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
           <TabsTrigger value="email">Email</TabsTrigger>
           <TabsTrigger value="in-app">In-App</TabsTrigger>
           <TabsTrigger value="sms">SMS</TabsTrigger>

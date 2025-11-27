@@ -142,7 +142,7 @@ export default function PolicyCard({ policy, index = 0 }: { policy: PolicyProps,
       <Card className="overflow-hidden hover:shadow-2xl transition-all duration-300 border-muted/50 group bg-white h-full flex flex-col hover:border-primary/20 relative">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
         {/* Header: Product Info + Status Badge */}
-        <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-4 border-b bg-gradient-to-r from-white to-muted/5 relative z-10">
+        <CardHeader className="flex flex-col md:flex-row items-start justify-between space-y-0 pb-4 border-b bg-gradient-to-r from-white to-muted/5 relative z-10">
           <div className="flex items-center gap-3 flex-1">
             <div className={`h-14 w-14 rounded-xl flex items-center justify-center shrink-0 ${policy.color} shadow-md`}>
               <policy.icon className="h-7 w-7" />

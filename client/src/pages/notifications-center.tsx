@@ -202,7 +202,7 @@ export default function NotificationsCenterPage() {
 
       {/* Filter Tabs */}
       <Tabs defaultValue="all" onValueChange={setFilter} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
           <TabsTrigger value="all">{t('notifications.allNotifications')} ({notifications.length})</TabsTrigger>
           <TabsTrigger value="unread">
             <Badge variant="destructive" className="mr-2">{unreadCount}</Badge>

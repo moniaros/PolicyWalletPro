@@ -777,6 +777,24 @@
     "lifeStageFactors": "Παράγοντες Σταδίου Ζωής",
     "currentCoverage": "Τρέχουσα Κάλυψη Ασφάλισης"
   },
+  "onboarding": {
+    "welcomeTitle": "Καλώς ήρθατε στο PolicyWallet",
+    "welcomeDesc": "Ο προσωπικός σας διαχειριστής ασφάλισης",
+    "healthTitle": "Η υγεία σας είναι σημαντική",
+    "healthDesc": "Παρακολουθήστε τα δεδομένα υγείας σας",
+    "analyticsTitle": "Έξυπνη Ανάλυση",
+    "analyticsDesc": "Κατανοήστε τα κενά κάλυψής σας"
+  },
+  "admin": {
+    "monthlyClaimsSummary": "Μηνιαία Περίληψη Δηλώσεων",
+    "policyPortfolioAnalysis": "Ανάλυση Χαρτοφυλακίου Πολιτικών",
+    "riskAssessmentReport": "Έκθεση Αξιολόγησης Κινδύνου",
+    "auditTrailExport": "Εξαγωγή Ελέγχου",
+    "availableReports": "Διαθέσιμες Εκθέσεις",
+    "dataStandardCompliance": "Συμμόρφωση Προτύπων",
+    "securityRequirements": "Απαιτήσεις Ασφάλειας",
+    "gdprRequirements": "Απαιτήσεις GDPR"
+  },
   "agents": {
     "quoteRequests": "Αιτήματα Προσφοράς",
     "messageSent": "Μήνυμα Απεστάλη!",

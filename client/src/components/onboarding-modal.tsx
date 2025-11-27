@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -10,37 +11,38 @@ interface OnboardingModalProps {
 }
 
 export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
+  const { t } = useTranslation();
   const [step, setStep] = useState(1);
 
   const steps = [
     {
-      title: "Welcome to PolicyWallet",
-      description: "Your personal insurance manager for managing policies from multiple insurers.",
+      title: t('onboarding.welcomeTitle'),
+      description: t('onboarding.welcomeDesc'),
       icon: FileText,
       details: [
-        "Centralize all your policies in one place",
-        "Track coverage and stay organized",
-        "Get instant policy insights",
+        t('onboarding.welcomeTitle'),
+        t('onboarding.welcomeDesc'),
+        t('onboarding.welcomeDesc'),
       ],
     },
     {
-      title: "Your Health Matters",
-      description: "Track your health data and get personalized wellness recommendations.",
+      title: t('onboarding.healthTitle'),
+      description: t('onboarding.healthDesc'),
       icon: Heart,
       details: [
-        "Upload checkup results",
-        "Get health risk assessments",
-        "Receive preventive action suggestions",
+        t('onboarding.healthTitle'),
+        t('onboarding.healthDesc'),
+        t('onboarding.healthDesc'),
       ],
     },
     {
-      title: "Smart Analytics",
-      description: "Understand your coverage gaps and optimize your protection.",
+      title: t('onboarding.analyticsTitle'),
+      description: t('onboarding.analyticsDesc'),
       icon: BarChart2,
       details: [
-        "Visualize coverage vs. risk",
-        "Find protection gaps",
-        "Get bundle savings suggestions",
+        t('onboarding.analyticsTitle'),
+        t('onboarding.analyticsDesc'),
+        t('onboarding.analyticsDesc'),
       ],
     },
   ];

@@ -691,6 +691,24 @@
     "lifeStageFactors": "Life Stage Factors",
     "currentCoverage": "Current Insurance Coverage"
   },
+  "onboarding": {
+    "welcomeTitle": "Welcome to PolicyWallet",
+    "welcomeDesc": "Your personal insurance manager",
+    "healthTitle": "Your Health Matters",
+    "healthDesc": "Track your health data",
+    "analyticsTitle": "Smart Analytics",
+    "analyticsDesc": "Understand your coverage gaps"
+  },
+  "admin": {
+    "monthlyClaimsSummary": "Monthly Claims Summary",
+    "policyPortfolioAnalysis": "Policy Portfolio Analysis",
+    "riskAssessmentReport": "Risk Assessment Report",
+    "auditTrailExport": "Audit Trail Export",
+    "availableReports": "Available Reports",
+    "dataStandardCompliance": "Data Standard Compliance",
+    "securityRequirements": "Security Requirements",
+    "gdprRequirements": "GDPR Requirements"
+  },
   "agents": {
     "quoteRequests": "Quote Requests",
     "messageSent": "Message Sent!",
