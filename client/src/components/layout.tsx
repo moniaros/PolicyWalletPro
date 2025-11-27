@@ -219,19 +219,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         {navItems.map((item) => {
           const isActive = location === item.href;
           return (
-            <Link key={item.href} href={item.href} asChild>
-              <button
-                className={`flex flex-col items-center gap-1 min-w-[60px] transition-colors duration-200 ${isActive ? "text-primary" : "text-muted-foreground"} bg-transparent border-0 cursor-pointer p-0`}
+            <Link key={item.href} href={item.href} className={`flex flex-col items-center gap-1 min-w-[60px] transition-colors duration-200 ${isActive ? "text-primary" : "text-muted-foreground"} bg-transparent border-0 cursor-pointer p-0`} data-testid={`nav-${item.label.toLowerCase().replace(/\s+/g, '-')}`}>
+              <div
+                className={`p-1.5 rounded-full ${isActive ? "bg-primary/10" : ""}`}
               >
-                <div
-                  className={`p-1.5 rounded-full ${isActive ? "bg-primary/10" : ""}`}
-                >
-                  <item.icon
-                    className={`h-6 w-6 ${isActive ? "stroke-[2.5px]" : "stroke-2"}`}
-                  />
-                </div>
-                <span className="text-[10px] font-medium">{item.label}</span>
-              </button>
+                <item.icon
+                  className={`h-6 w-6 ${isActive ? "stroke-[2.5px]" : "stroke-2"}`}
+                />
+              </div>
+              <span className="text-[10px] font-medium">{item.label}</span>
             </Link>
           );
         })}
@@ -253,15 +249,11 @@ function ScrollableNav({
       {navItems.map((item) => {
         const isActive = location === item.href;
         return (
-          <Link key={item.href} href={item.href} asChild>
-            <button
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group bg-transparent border-0 text-left cursor-pointer ${isActive ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25" : "hover:bg-secondary text-muted-foreground hover:text-foreground"}`}
-            >
-              <item.icon
-                className={`h-5 w-5 flex-shrink-0 ${isActive ? "animate-pulse" : ""}`}
-              />
-              <span className="font-medium">{item.label}</span>
-            </button>
+          <Link key={item.href} href={item.href} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group bg-transparent border-0 text-left cursor-pointer ${isActive ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25" : "hover:bg-secondary text-muted-foreground hover:text-foreground"}`} data-testid={`sidebar-${item.label.toLowerCase().replace(/\s+/g, '-')}`}>
+            <item.icon
+              className={`h-5 w-5 flex-shrink-0 ${isActive ? "animate-pulse" : ""}`}
+            />
+            <span className="font-medium">{item.label}</span>
           </Link>
         );
       })}

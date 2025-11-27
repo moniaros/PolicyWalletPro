@@ -9,23 +9,22 @@ import { OnboardingModal } from "@/components/onboarding-modal";
 
 export default function Dashboard() {
   const { t } = useTranslation();
-  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(() => {
+    // Initialize from localStorage to prevent re-showing
+    return !localStorage.getItem("onboarding_dismissed");
+  });
   
-  useEffect(() => {
-    // Show onboarding if first visit
-    const hasSeenOnboarding = localStorage.getItem("onboarding_shown");
-    if (!hasSeenOnboarding) {
-      setShowOnboarding(true);
-      localStorage.setItem("onboarding_shown", "true");
-    }
-  }, []);
+  const handleCloseOnboarding = () => {
+    setShowOnboarding(false);
+    localStorage.setItem("onboarding_dismissed", "true");
+  };
 
   const today = new Date();
   const upcomingAppointment = appointments[0];
 
   return (
     <>
-      <OnboardingModal isOpen={showOnboarding} onClose={() => setShowOnboarding(false)} />
+      <OnboardingModal isOpen={showOnboarding} onClose={handleCloseOnboarding} />
       <div className="space-y-8">
       {/* Hero / Welcome Section */}
       <section className="flex flex-col md:flex-row items-center justify-between gap-6 bg-gradient-to-br from-primary via-primary to-primary/90 rounded-3xl p-8 md:p-12 text-white shadow-2xl shadow-primary/30 relative overflow-hidden group hover:shadow-primary/40 transition-all duration-300">
