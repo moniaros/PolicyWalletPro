@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import { appointments } from "@/lib/mockData";
@@ -8,13 +9,14 @@ import { Badge } from "@/components/ui/badge";
 import { Calendar as CalendarIcon, MapPin, Clock, Plus } from "lucide-react";
 
 export default function AppointmentsPage() {
+  const { t } = useTranslation();
   const [date, setDate] = useState<Date | undefined>(new Date());
 
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">Appointments</h1>
-        <p className="text-muted-foreground mt-1">Track your doctor visits and checkups.</p>
+        <h1 className="text-3xl font-bold tracking-tight text-foreground">{t('appointments.appointments')}</h1>
+        <p className="text-muted-foreground mt-1">{t('appointments.trackVisits')}</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -33,19 +35,19 @@ export default function AppointmentsPage() {
           </div>
           
           <div className="mt-6 bg-primary/5 p-6 rounded-2xl border border-primary/10">
-            <h3 className="font-semibold text-primary mb-2">Need a checkup?</h3>
-            <p className="text-sm text-muted-foreground mb-4">Based on your age and history, we recommend a dental cleaning soon.</p>
-            <Button className="w-full shadow-lg shadow-primary/20">Book Appointment</Button>
+            <h3 className="font-semibold text-primary mb-2">{t('appointments.needCheckup')}</h3>
+            <p className="text-sm text-muted-foreground mb-4">{t('appointments.recommendCheckup')}</p>
+            <Button className="w-full shadow-lg shadow-primary/20">{t('appointments.bookAppointment')}</Button>
           </div>
         </div>
 
         {/* Right Column: List */}
         <div className="lg:col-span-2 space-y-6">
            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-bold">Upcoming</h2>
+              <h2 className="text-lg font-bold">{t('appointments.upcoming')}</h2>
               <Button variant="outline" size="sm">
                 <Plus className="h-4 w-4 mr-2" />
-                New Appointment
+                {t('appointments.newAppointment')}
               </Button>
            </div>
 
@@ -78,8 +80,8 @@ export default function AppointmentsPage() {
                    </div>
                    
                    <div className="flex sm:flex-col gap-2">
-                     <Button variant="outline" size="sm" className="flex-1">Reschedule</Button>
-                     <Button variant="ghost" size="sm" className="flex-1 text-muted-foreground hover:text-destructive">Cancel</Button>
+                     <Button variant="outline" size="sm" className="flex-1">{t('appointments.reschedule')}</Button>
+                     <Button variant="ghost" size="sm" className="flex-1 text-muted-foreground hover:text-destructive">{t('appointments.cancel')}</Button>
                    </div>
                  </CardContent>
                </Card>

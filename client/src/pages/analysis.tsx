@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { analysisData } from "@/lib/mockData";
 import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend, Tooltip } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -6,18 +7,19 @@ import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle, ShieldCheck, TrendingUp } from "lucide-react";
 
 export default function AnalysisPage() {
+  const { t } = useTranslation();
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">Gap Analysis</h1>
-        <p className="text-muted-foreground mt-1">Visualize your coverage and identify potential risks.</p>
+        <h1 className="text-3xl font-bold tracking-tight text-foreground">{t('analysis.gapAnalysis')}</h1>
+        <p className="text-muted-foreground mt-1">{t('analysis.visualizeVisualize')}</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <Card className="lg:col-span-2 border-none shadow-lg bg-gradient-to-br from-white to-blue-50/50">
           <CardHeader>
-            <CardTitle>Coverage vs. Risk Exposure</CardTitle>
-            <CardDescription>A comparative view of how well you are covered against estimated risks.</CardDescription>
+            <CardTitle>{t('analysis.coverageRisk')}</CardTitle>
+            <CardDescription>{t('analysis.comparativeView')}</CardDescription>
           </CardHeader>
           <CardContent className="h-[400px] flex items-center justify-center">
             <ResponsiveContainer width="100%" height="100%">
@@ -26,7 +28,7 @@ export default function AnalysisPage() {
                 <PolarAngleAxis dataKey="category" tick={{ fill: '#64748b', fontSize: 12 }} />
                 <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
                 <Radar
-                  name="Coverage"
+                  name={t('analysis.coverage')}
                   dataKey="coverage"
                   stroke="hsl(221 83% 53%)"
                   strokeWidth={3}
@@ -34,7 +36,7 @@ export default function AnalysisPage() {
                   fillOpacity={0.3}
                 />
                 <Radar
-                  name="Risk Level"
+                  name={t('analysis.riskLevel')}
                   dataKey="risk"
                   stroke="hsl(346 84% 61%)"
                   strokeWidth={2}
@@ -56,11 +58,11 @@ export default function AnalysisPage() {
              <CardHeader>
                <div className="flex items-center gap-2">
                  <ShieldCheck className="h-6 w-6 text-emerald-600" />
-                 <CardTitle className="text-emerald-900">Strong Protection</CardTitle>
+                 <CardTitle className="text-emerald-900">{t('analysis.strongProtection')}</CardTitle>
                </div>
              </CardHeader>
              <CardContent>
-               <p className="text-emerald-800 text-sm">Your <span className="font-bold">Health</span> and <span className="font-bold">Home</span> coverage exceeds recommended levels by 15%.</p>
+               <p className="text-emerald-800 text-sm">{t('analysis.healthHome')} {t('analysis.coverageExceeds')}</p>
              </CardContent>
           </Card>
 
@@ -68,18 +70,18 @@ export default function AnalysisPage() {
              <CardHeader>
                <div className="flex items-center gap-2">
                  <AlertCircle className="h-6 w-6 text-amber-600" />
-                 <CardTitle className="text-amber-900">Attention Needed</CardTitle>
+                 <CardTitle className="text-amber-900">{t('analysis.attentionNeeded')}</CardTitle>
                </div>
              </CardHeader>
              <CardContent className="space-y-4">
                <div>
                  <div className="flex justify-between text-sm mb-1">
-                   <span className="font-medium text-amber-900">Disability Gap</span>
-                   <span className="text-amber-700">40% gap</span>
+                   <span className="font-medium text-amber-900">{t('analysis.disabilityGap')}</span>
+                   <span className="text-amber-700">40% {t('analysis.gap')}</span>
                  </div>
                  <Progress value={40} className="h-2 bg-amber-200" />
                </div>
-               <p className="text-amber-800 text-xs">You are currently under-insured for long-term disability based on your income.</p>
+               <p className="text-amber-800 text-xs">{t('analysis.underinsured')}</p>
              </CardContent>
           </Card>
         </div>
@@ -90,19 +92,19 @@ export default function AnalysisPage() {
           <CardHeader>
              <CardTitle className="flex items-center gap-2">
                <TrendingUp className="h-5 w-5 text-primary" />
-               Projected Savings
+               {t('analysis.projectedSavings')}
              </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-muted-foreground mb-4">By bundling your Auto and Home policies, you could save approximately <span className="font-bold text-foreground">$450/year</span>.</p>
+            <p className="text-muted-foreground mb-4">{t('analysis.bundlingAuto', { amount: '€450' })}</p>
             <div className="flex gap-3">
               <div className="h-24 flex-1 bg-secondary/50 rounded-lg flex flex-col items-center justify-center border border-dashed border-muted-foreground/30">
-                 <span className="text-xs text-muted-foreground">Current</span>
-                 <span className="text-xl font-bold">$2,400/yr</span>
+                 <span className="text-xs text-muted-foreground">{t('analysis.current')}</span>
+                 <span className="text-xl font-bold">{t('analysis.currentYear')}</span>
               </div>
               <div className="h-24 flex-1 bg-primary/10 rounded-lg flex flex-col items-center justify-center border border-primary/20">
-                 <span className="text-xs text-primary font-medium">With Bundle</span>
-                 <span className="text-xl font-bold text-primary">$1,950/yr</span>
+                 <span className="text-xs text-primary font-medium">{t('analysis.withBundle')}</span>
+                 <span className="text-xl font-bold text-primary">{t('analysis.bundleYear')}</span>
               </div>
             </div>
           </CardContent>

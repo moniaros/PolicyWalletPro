@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,6 +12,7 @@ import { CheckCircle2, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 
 export default function ProfilePage() {
+  const { t } = useTranslation();
   const [profile, setProfile] = useState({
     fullName: "",
     dateOfBirth: "",
@@ -70,9 +72,9 @@ export default function ProfilePage() {
     <div className="space-y-8 max-w-3xl">
       {/* Header */}
       <div className="space-y-2">
-        <h1 className="text-4xl font-bold tracking-tight">Your Profile</h1>
+        <h1 className="text-4xl font-bold tracking-tight">{t('profile.yourProfile')}</h1>
         <p className="text-lg text-muted-foreground">
-          Help us understand your situation so we can identify coverage gaps and recommend the right policies for your peace of mind.
+          {t('profile.helpUnderstand')}
         </p>
       </div>
 
@@ -80,7 +82,7 @@ export default function ProfilePage() {
         <Alert className="bg-emerald-50 border-emerald-200">
           <CheckCircle2 className="h-4 w-4 text-emerald-600" />
           <AlertDescription className="text-emerald-700 font-medium">
-            Your profile has been updated. View your policies to see personalized recommendations.
+            {t('profile.profileUpdated')}
           </AlertDescription>
         </Alert>
       )}
@@ -88,23 +90,23 @@ export default function ProfilePage() {
       {/* Personal Information */}
       <Card>
         <CardHeader>
-          <CardTitle>Personal Information</CardTitle>
-          <CardDescription>Basic details to understand your situation</CardDescription>
+          <CardTitle>{t('profile.personalInfo')}</CardTitle>
+          <CardDescription>{t('profile.basicDetails')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="fullName">Full Name *</Label>
+              <Label htmlFor="fullName">{t('profile.fullName')}</Label>
               <Input
                 id="fullName"
-                placeholder="John Doe"
+                placeholder="Ιωάννης Παπαδόπουλος"
                 value={profile.fullName}
                 onChange={(e) => handleInputChange("fullName", e.target.value)}
                 data-testid="input-fullname"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="dob">Date of Birth</Label>
+              <Label htmlFor="dob">{t('profile.dateOfBirth')}</Label>
               <Input
                 id="dob"
                 type="date"
@@ -116,7 +118,7 @@ export default function ProfilePage() {
           </div>
 
           <div className="space-y-3">
-            <Label>Age Group *</Label>
+            <Label>{t('profile.ageGroup')}</Label>
             <RadioGroup value={profile.ageGroup} onValueChange={(value) => handleInputChange("ageGroup", value)}>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {["18-30", "31-45", "46-60", "60+"].map((age) => (

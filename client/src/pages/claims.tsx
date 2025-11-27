@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { policies } from "@/lib/mockData";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Progress } from "@/components/ui/progress";
 
 export default function ClaimsPage() {
+  const { t } = useTranslation();
   const [isWizardOpen, setIsWizardOpen] = useState(false);
   const [wizardStep, setWizardStep] = useState(1);
 
@@ -40,28 +42,28 @@ export default function ClaimsPage() {
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">Claims Center</h1>
-          <p className="text-muted-foreground mt-1">Track active claims and file new requests.</p>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">{t('claims.claimsCenter')}</h1>
+          <p className="text-muted-foreground mt-1">{t('claims.trackClaims')}</p>
         </div>
         <Dialog open={isWizardOpen} onOpenChange={setIsWizardOpen}>
           <DialogTrigger asChild>
             <Button className="bg-red-600 hover:bg-red-700 text-white shadow-md shadow-red-200">
               <ShieldAlert className="h-4 w-4 mr-2" />
-              File New Claim
+              {t('claims.fileNewClaim')}
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[600px]">
             <DialogHeader>
-              <DialogTitle>File a New Claim - Step {wizardStep} of 3</DialogTitle>
+              <DialogTitle>{t('claims.fileClaimStep', { step: wizardStep })}</DialogTitle>
             </DialogHeader>
             
             {wizardStep === 1 && (
               <div className="space-y-4 py-4">
                  <div className="grid gap-2">
-                    <Label>Which policy is this for?</Label>
+                    <Label>{t('claims.whichPolicy')}</Label>
                     <Select>
                        <SelectTrigger>
-                          <SelectValue placeholder="Select policy..." />
+                          <SelectValue placeholder={t('claims.selectPolicy')} />
                        </SelectTrigger>
                        <SelectContent>
                           {policies.map(p => (
@@ -71,20 +73,20 @@ export default function ClaimsPage() {
                     </Select>
                  </div>
                  <div className="grid gap-2">
-                    <Label>Date of Incident</Label>
+                    <Label>{t('claims.dateOfIncident')}</Label>
                     <Input type="date" />
                  </div>
                  <div className="grid gap-2">
-                    <Label>Incident Type</Label>
+                    <Label>{t('claims.incidentType')}</Label>
                     <Select>
                        <SelectTrigger>
-                          <SelectValue placeholder="Select type..." />
+                          <SelectValue placeholder={t('claims.selectType')} />
                        </SelectTrigger>
                        <SelectContent>
-                          <SelectItem value="accident">Accident</SelectItem>
-                          <SelectItem value="theft">Theft</SelectItem>
-                          <SelectItem value="damage">Damage</SelectItem>
-                          <SelectItem value="medical">Medical Emergency</SelectItem>
+                          <SelectItem value="accident">{t('claims.accident')}</SelectItem>
+                          <SelectItem value="theft">{t('claims.theft')}</SelectItem>
+                          <SelectItem value="damage">{t('claims.damage')}</SelectItem>
+                          <SelectItem value="medical">{t('claims.medical')}</SelectItem>
                        </SelectContent>
                     </Select>
                  </div>
@@ -94,14 +96,14 @@ export default function ClaimsPage() {
             {wizardStep === 2 && (
               <div className="space-y-4 py-4">
                  <div className="grid gap-2">
-                    <Label>Description</Label>
-                    <Textarea placeholder="Please describe what happened in detail..." className="h-32" />
+                    <Label>{t('claims.description')}</Label>
+                    <Textarea placeholder={t('claims.describeWhat')} className="h-32" />
                  </div>
                  <div className="grid gap-2">
-                    <Label>Evidence / Photos</Label>
+                    <Label>{t('claims.evidence')}</Label>
                     <div className="border-2 border-dashed border-muted-foreground/25 rounded-xl h-32 flex flex-col items-center justify-center text-muted-foreground bg-muted/10 hover:bg-muted/20 transition-colors cursor-pointer">
                        <Camera className="h-8 w-8 mb-2 opacity-50" />
-                       <span className="text-sm">Upload Photos or Docs</span>
+                       <span className="text-sm">{t('claims.uploadPhotos')}</span>
                     </div>
                  </div>
               </div>
@@ -112,14 +114,14 @@ export default function ClaimsPage() {
                  <div className="h-16 w-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
                     <CheckCircle2 className="h-8 w-8" />
                  </div>
-                 <h3 className="text-lg font-bold">Ready to Submit?</h3>
-                 <p className="text-muted-foreground">Please review your details before submitting. An agent will be assigned within 24 hours.</p>
+                 <h3 className="text-lg font-bold">{t('claims.readySubmit')}</h3>
+                 <p className="text-muted-foreground">{t('claims.reviewDetails')}</p>
               </div>
             )}
 
             <DialogFooter className="flex justify-between sm:justify-between">
                {wizardStep > 1 ? (
-                 <Button variant="outline" onClick={() => setWizardStep(wizardStep - 1)}>Back</Button>
+                 <Button variant="outline" onClick={() => setWizardStep(wizardStep - 1)}>{t('common.back')}</Button>
                ) : <div></div>}
                
                {wizardStep < 3 ? (
