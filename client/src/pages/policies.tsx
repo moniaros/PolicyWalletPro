@@ -39,15 +39,18 @@ export default function PoliciesPage() {
             <div className="grid gap-4 py-4">
               <div className="grid gap-2">
                 <Label htmlFor="file">{t('policies.policyDocument')}</Label>
-                <div className="border-2 border-dashed border-muted-foreground/25 rounded-xl h-32 flex flex-col items-center justify-center text-muted-foreground bg-muted/10 hover:bg-muted/20 transition-colors cursor-pointer">
+                <div className="border-2 border-dashed border-muted-foreground/25 rounded-xl h-32 flex flex-col items-center justify-center text-muted-foreground bg-muted/10 hover:bg-muted/20 transition-colors cursor-pointer" data-testid="dropzone-policy">
                    <UploadCloud className="h-8 w-8 mb-2 opacity-50" />
                    <span className="text-sm">{t('policies.clickOrDrag')}</span>
                 </div>
+                <p className="text-xs text-muted-foreground mt-2" aria-label="Accepted file formats and size limit">
+                  <strong>Accepted formats:</strong> PDF, PNG, JPG (Max 10MB)
+                </p>
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="type">{t('policies.insuranceType')}</Label>
                 <Select>
-                  <SelectTrigger>
+                  <SelectTrigger data-testid="select-policy-type">
                     <SelectValue placeholder={t('policies.selectType')} />
                   </SelectTrigger>
                   <SelectContent>
@@ -58,7 +61,7 @@ export default function PoliciesPage() {
                   </SelectContent>
                 </Select>
               </div>
-              <Button type="submit">{t('policies.savePolicy')}</Button>
+              <Button type="submit" data-testid="button-save-policy" className="w-full">{t('policies.savePolicy')}</Button>
             </div>
           </DialogContent>
         </Dialog>
