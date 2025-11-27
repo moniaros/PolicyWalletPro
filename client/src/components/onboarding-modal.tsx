@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle2, FileText, Heart, BarChart2, ArrowRight } from "lucide-react";
@@ -56,6 +56,9 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
             <Badge variant="secondary">{step} of 3</Badge>
           </div>
           <DialogTitle className="text-2xl">{currentStep.title}</DialogTitle>
+          <DialogDescription aria-hidden="true" className="sr-only">
+            {currentStep.description}
+          </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-6 py-4">
@@ -77,7 +80,7 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
           </div>
 
           {/* Progress dots */}
-          <div className="flex justify-center gap-2">
+          <div className="flex justify-center gap-2" role="tablist" aria-label="Onboarding steps">
             {[1, 2, 3].map((i) => (
               <button
                 key={i}
@@ -86,6 +89,9 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
                   i === step ? "bg-primary w-8" : i < step ? "bg-emerald-500 w-2" : "bg-muted w-2"
                 }`}
                 data-testid={`onboarding-dot-${i}`}
+                role="tab"
+                aria-selected={i === step}
+                aria-label={`Step ${i}: ${steps[i - 1].title}`}
               />
             ))}
           </div>
@@ -97,6 +103,7 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
             onClick={onClose}
             data-testid="button-skip"
             className="flex-1"
+            aria-label="Skip onboarding tutorial"
           >
             Skip for Now
           </Button>
@@ -105,6 +112,7 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
               onClick={() => setStep(step + 1)}
               className="flex-1"
               data-testid="button-next-onboard"
+              aria-label={`Go to step ${step + 1}`}
             >
               Next <ArrowRight className="h-4 w-4 ml-2" />
             </Button>
@@ -113,6 +121,7 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
               onClick={onClose}
               className="flex-1 bg-emerald-600 hover:bg-emerald-700"
               data-testid="button-finish-onboard"
+              aria-label="Complete onboarding and continue"
             >
               Let's Go! <ArrowRight className="h-4 w-4 ml-2" />
             </Button>
