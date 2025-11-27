@@ -100,95 +100,90 @@ function calculateGaps(responses: GapAnalysisResponse): CoverageGap[] {
   // Life insurance gap
   if (
     (responses.dependents !== "Χωρίς εξαρτώμενα" && responses.dependents !== "No dependents" || responses.familyStatus === "Παντρεμένος/η" || responses.familyStatus === "Married") &&
-    !coverage.has("Life")
+    !coverage.has(t("insuranceTypes.life"))
   ) {
     gaps.push({
-      type: "Life Insurance",
+      type: t("gapAnalysis.lifeInsurance"),
       priority: "critical",
-      description: "You have dependents or family obligations without life insurance protection",
-      recommendation:
-        "Term life insurance (10-30 years) to protect your family's financial future. Amount: 5-10x your annual income",
+      description: t("gapAnalysis.lifeInsuranceDesc"),
+      recommendation: t("gapAnalysis.lifeInsuranceRec"),
       estimatedCost: "€15-40/month",
     });
   }
 
   // Disability insurance gap
-  if (responses.incomeRange !== "<€30k" && !coverage.has("Disability")) {
+  if (responses.incomeRange !== "<€30k" && !coverage.has(t("insuranceTypes.disability"))) {
     gaps.push({
-      type: "Disability Insurance",
+      type: t("gapAnalysis.disabilityInsurance"),
       priority: "high",
-      description: "If you cannot work due to illness/injury, your income is at risk",
-      recommendation: "Short and long-term disability coverage to replace 60-80% of your income",
+      description: t("gapAnalysis.disabilityInsuranceDesc"),
+      recommendation: t("gapAnalysis.disabilityInsuranceRec"),
       estimatedCost: "€30-80/month",
     });
   }
 
   // Travel insurance gap
-  if (responses.travelFrequency !== "Never" && !coverage.has("Travel")) {
+  if (responses.travelFrequency !== t("gapAnalysisQuestions.never") && !coverage.has(t("insuranceTypes.travel"))) {
     gaps.push({
-      type: "International Travel Insurance",
+      type: t("gapAnalysis.travelInsurance"),
       priority: "high",
-      description: `You travel ${responses.travelFrequency} but lack travel medical coverage`,
-      recommendation:
-        "Annual travel insurance covering medical emergencies, evacuation, and trip cancellation",
+      description: t("gapAnalysis.travelInsuranceDesc"),
+      recommendation: t("gapAnalysis.travelInsuranceRec"),
       estimatedCost: "€80-150/year",
     });
   }
 
   // Health insurance gap
-  if (!coverage.has("Health")) {
+  if (!coverage.has(t("insuranceTypes.health"))) {
     gaps.push({
-      type: "Comprehensive Health Insurance",
+      type: t("gapAnalysis.healthInsurance"),
       priority: "critical",
-      description: "Medical expenses can be catastrophic without proper coverage",
-      recommendation:
-        "Private health insurance or comprehensive public coverage with supplemental options",
+      description: t("gapAnalysis.healthInsuranceDesc"),
+      recommendation: t("gapAnalysis.healthInsuranceRec"),
       estimatedCost: "€50-150/month",
     });
   }
 
   // Home/Property gap
-  if (!coverage.has("Home") && responses.lifeStageRisks.includes("First home purchase planned")) {
+  if (!coverage.has(t("insuranceTypes.home")) && responses.lifeStageRisks.includes(t("gapAnalysisQuestions.firstHomePurchase"))) {
     gaps.push({
-      type: "Home Insurance",
+      type: t("gapAnalysis.homeInsurance"),
       priority: "critical",
-      description: "Your largest asset (home) needs protection against damage and liability",
-      recommendation:
-        "Comprehensive homeowner insurance covering building, contents, and liability (€1M minimum)",
+      description: t("gapAnalysis.homeInsuranceDesc"),
+      recommendation: t("gapAnalysis.homeInsuranceRec"),
       estimatedCost: "€30-80/month",
     });
   }
 
   // Auto insurance gap
-  if (!coverage.has("Auto") && responses.occupationRisk !== "Low risk (office)") {
+  if (!coverage.has(t("insuranceTypes.auto")) && responses.occupationRisk !== t("gapAnalysisQuestions.lowRiskOffice")) {
     gaps.push({
-      type: "Auto Insurance",
+      type: t("gapAnalysis.autoInsurance"),
       priority: "critical",
-      description: "Regular vehicle use without proper coverage creates legal and financial risk",
-      recommendation: "Third-party liability + collision/comprehensive coverage",
+      description: t("gapAnalysis.autoInsuranceDesc"),
+      recommendation: t("gapAnalysis.autoInsuranceRec"),
       estimatedCost: "€40-120/month",
     });
   }
 
   // Emergency fund gap
-  if (responses.emergencyFund === "Minimal or none") {
+  if (responses.emergencyFund === t("gapAnalysisQuestions.minimalOrNone")) {
     gaps.push({
-      type: "Emergency Fund",
+      type: t("gapAnalysis.emergencyFund"),
       priority: "high",
-      description: "Without emergency savings, unexpected events force debt or insurance claims",
-      recommendation:
-        "Build 3-6 months of living expenses in accessible savings (€3k-€15k minimum)",
-      estimatedCost: "Self-funding priority",
+      description: t("gapAnalysis.emergencyFundDesc"),
+      recommendation: t("gapAnalysis.emergencyFundRec"),
+      estimatedCost: t("gapAnalysis.selfFunding"),
     });
   }
 
   // Pet insurance (if not mentioned)
-  if (responses.lifeStageRisks.includes("Young children") && !coverage.has("Pet")) {
+  if (responses.lifeStageRisks.includes(t("gapAnalysisQuestions.youngChildren")) && !coverage.has(t("insuranceTypes.pet"))) {
     gaps.push({
-      type: "Pet Insurance (Optional)",
+      type: t("gapAnalysis.petInsurance"),
       priority: "low",
-      description: "Pet medical emergencies can cost €1000-€5000",
-      recommendation: "Pet health insurance covering accidents, illnesses, and preventive care",
+      description: t("gapAnalysis.petInsuranceDesc"),
+      recommendation: t("gapAnalysis.petInsuranceRec"),
       estimatedCost: "€15-40/month",
     });
   }

@@ -860,6 +860,46 @@
     "monthlyClaims": "Monthly Claims Summary",
     "policyPortfolio": "Policy Portfolio Analysis",
     "riskAssessment": "Risk Assessment Report",
-    "auditTrail": "Audit Trail Export"
+    "auditTrail": "Audit Trail Export",
+    "dataCompliance": "Data Standard Compliance",
+    "securityRequirements": "Security Requirements",
+    "gdprRequirements": "GDPR Requirements",
+    "availableReports": "Available Reports"
+  },
+  "profile": {
+    "dependents": "Number of Dependents",
+    "incomeRange": "Annual Household Income",
+    "emergencyFund": "Emergency Fund Status",
+    "healthStatus": "Health Status",
+    "travelFrequency": "Travel Frequency",
+    "occupationRisk": "Occupation Risk",
+    "familyStatus": "Family Status"
+  },
+  "gapAnalysis": {
+    "lifeInsurance": "Life Insurance",
+    "lifeInsuranceDesc": "You have dependents or family obligations without life insurance protection",
+    "lifeInsuranceRec": "Term life insurance (10-30 years) to protect your family's financial future. Amount: 5-10x your annual income",
+    "disabilityInsurance": "Disability Insurance",
+    "disabilityInsuranceDesc": "If you cannot work due to illness/injury, your income is at risk",
+    "disabilityInsuranceRec": "Short and long-term disability coverage to replace 60-80% of your income",
+    "travelInsurance": "International Travel Insurance",
+    "travelInsuranceDesc": "You travel but lack travel medical coverage",
+    "travelInsuranceRec": "Annual travel insurance covering medical emergencies, evacuation, and trip cancellation",
+    "healthInsurance": "Comprehensive Health Insurance",
+    "healthInsuranceDesc": "Medical expenses can be catastrophic without proper coverage",
+    "healthInsuranceRec": "Private health insurance or comprehensive public coverage with supplemental options",
+    "homeInsurance": "Home Insurance",
+    "homeInsuranceDesc": "Your largest asset (home) needs protection against damage and liability",
+    "homeInsuranceRec": "Comprehensive homeowner insurance covering building, contents, and liability (€1M minimum)",
+    "autoInsurance": "Auto Insurance",
+    "autoInsuranceDesc": "Regular vehicle use without proper coverage creates legal and financial risk",
+    "autoInsuranceRec": "Third-party liability + collision/comprehensive coverage",
+    "emergencyFund": "Emergency Fund",
+    "emergencyFundDesc": "Without emergency savings, unexpected events force debt or insurance claims",
+    "emergencyFundRec": "Build 3-6 months of living expenses in accessible savings (€3k-€15k minimum)",
+    "selfFunding": "Self-funding priority",
+    "petInsurance": "Pet Insurance (Optional)",
+    "petInsuranceDesc": "Pet medical emergencies can cost €1000-€5000",
+    "petInsuranceRec": "Pet health insurance covering accidents, illnesses, and preventive care"
   }
 }

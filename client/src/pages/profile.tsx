@@ -150,7 +150,7 @@ export default function ProfilePage() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="dependents">Number of Dependents</Label>
+            <Label htmlFor="dependents">{t('profile.dependents')} *</Label>
             <Select value={profile.dependents} onValueChange={(value) => handleInputChange("dependents", value)}>
               <SelectTrigger id="dependents" data-testid="select-dependents">
                 <SelectValue />
@@ -175,7 +175,7 @@ export default function ProfilePage() {
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-3">
-            <Label>Annual Household Income *</Label>
+            <Label>{t('profile.incomeRange')} *</Label>
             <RadioGroup value={profile.incomeRange} onValueChange={(value) => handleInputChange("incomeRange", value)}>
               <div className="space-y-2">
                 {["<€30k", "€30-60k", "€60-100k", "€100-150k", ">€150k"].map((range) => (
@@ -191,7 +191,7 @@ export default function ProfilePage() {
           </div>
 
           <div className="space-y-3">
-            <Label>Emergency Fund Status</Label>
+            <Label>{t('profile.emergencyFund')}</Label>
             <RadioGroup value={profile.emergencyFund} onValueChange={(value) => handleInputChange("emergencyFund", value)}>
               <div className="space-y-2">
                 {[t("gapAnalysisQuestions.wellCovered"), t("gapAnalysisQuestions.partiallyCovered"), t("gapAnalysisQuestions.minimalOrNone")].map((status) => (
@@ -216,7 +216,7 @@ export default function ProfilePage() {
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-3">
-            <Label>Health Status *</Label>
+            <Label>{t('profile.healthStatus')} *</Label>
             <RadioGroup value={profile.healthStatus} onValueChange={(value) => handleInputChange("healthStatus", value)}>
               <div className="space-y-2">
                 {[t("gapAnalysisQuestions.excellent"), t("gapAnalysisQuestions.good"), t("gapAnalysisQuestions.fair"), t("gapAnalysisQuestions.chronicConditions")].map((status) => (
@@ -250,7 +250,7 @@ export default function ProfilePage() {
           </div>
 
           <div className="space-y-3">
-            <Label>Travel Frequency</Label>
+            <Label>{t('profile.travelFrequency')}</Label>
             <RadioGroup value={profile.travelFrequency} onValueChange={(value) => handleInputChange("travelFrequency", value)}>
               <div className="space-y-2">
                 {[t("gapAnalysisQuestions.never"), t("gapAnalysisQuestions.oneTwoTimesYear"), t("gapAnalysisQuestions.threeSixTimesYear"), t("gapAnalysisQuestions.monthlyPlus")].map((freq) => (

@@ -196,21 +196,21 @@ export default function AdminDashboard() {
             <CardContent className="space-y-4">
               <div>
                 <div className="flex justify-between text-sm mb-2">
-                  <span>Data Standard Compliance</span>
+                  <span>{t('admin.dataCompliance')}</span>
                   <span className="font-semibold">98%</span>
                 </div>
                 <Progress value={98} className="h-2" />
               </div>
               <div>
                 <div className="flex justify-between text-sm mb-2">
-                  <span>Security Requirements</span>
+                  <span>{t('admin.securityRequirements')}</span>
                   <span className="font-semibold">95%</span>
                 </div>
                 <Progress value={95} className="h-2" />
               </div>
               <div>
                 <div className="flex justify-between text-sm mb-2">
-                  <span>GDPR Requirements</span>
+                  <span>{t('admin.gdprRequirements')}</span>
                   <span className="font-semibold">100%</span>
                 </div>
                 <Progress value={100} className="h-2" />
@@ -222,7 +222,7 @@ export default function AdminDashboard() {
         <TabsContent value="reports" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Available Reports</CardTitle>
+              <CardTitle>{t('admin.availableReports')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
               {[

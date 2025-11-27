@@ -937,7 +937,7 @@ export default function UserSettingsPage() {
                           </Select>
                         </div>
                         <div className="space-y-2">
-                          <Label>Family Status *</Label>
+                          <Label>{t('profile.familyStatus')} *</Label>
                           <Select
                             value={questionnaire.familyStatus}
                             onValueChange={(val) =>
@@ -962,7 +962,7 @@ export default function UserSettingsPage() {
                           </Select>
                         </div>
                         <div className="space-y-2">
-                          <Label>Number of Dependents *</Label>
+                          <Label>{t('profile.dependents')} *</Label>
                           <Select
                             value={questionnaire.dependents}
                             onValueChange={(val) =>
@@ -1008,7 +1008,7 @@ export default function UserSettingsPage() {
                           </Select>
                         </div>
                         <div className="space-y-2">
-                          <Label>Health Status *</Label>
+                          <Label>{t('profile.healthStatus')} *</Label>
                           <Select
                             value={questionnaire.healthStatus}
                             onValueChange={(val) =>
@@ -1033,7 +1033,7 @@ export default function UserSettingsPage() {
                           </Select>
                         </div>
                         <div className="space-y-2">
-                          <Label>Emergency Fund Status *</Label>
+                          <Label>{t('profile.emergencyFund')} *</Label>
                           <Select
                             value={questionnaire.emergencyFund}
                             onValueChange={(val) =>
@@ -1057,7 +1057,7 @@ export default function UserSettingsPage() {
                           </Select>
                         </div>
                         <div className="space-y-2">
-                          <Label>Travel Frequency *</Label>
+                          <Label>{t('profile.travelFrequency')} *</Label>
                           <Select
                             value={questionnaire.travelFrequency}
                             onValueChange={(val) =>
@@ -1082,7 +1082,7 @@ export default function UserSettingsPage() {
                           </Select>
                         </div>
                         <div className="space-y-2">
-                          <Label>Occupation Risk *</Label>
+                          <Label>{t('profile.occupationRisk')} *</Label>
                           <Select
                             value={questionnaire.occupationRisk}
                             onValueChange={(val) =>
