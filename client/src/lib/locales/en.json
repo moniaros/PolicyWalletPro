@@ -1202,7 +1202,70 @@
     "monthlyClaims": "Monthly Claims",
     "policyPortfolio": "Policy Portfolio",
     "riskAssessment": "Risk Assessment",
-    "auditTrail": "Audit Trail"
+    "auditTrail": "Audit Trail",
+    "dashboard": "Admin Dashboard",
+    "enterpriseInsurance": "Enterprise insurance platform analytics and management",
+    "totalUsers": "Total Users"
+  },
+  "navigation": {
+    "renewals": "Renewals",
+    "billing": "Billing",
+    "recommendations": "Recommendations",
+    "notifications": "Notifications",
+    "admin": "Admin"
+  },
+  "notifications": {
+    "autoInsuranceRenewal": "Auto Insurance Renewal Due",
+    "paymentDue": "Payment Due",
+    "coverageGapIdentified": "New Coverage Gap Identified",
+    "claimStatusUpdated": "Claim Status Updated",
+    "appointmentReminder": "Appointment Reminder",
+    "newLoginDetected": "New Login Detected",
+    "specialOffer": "Special Offer",
+    "authenticationFailed": "Authentication failed",
+    "failedToLoadAppointments": "Failed to load appointments",
+    "failedToFetch": "Failed to fetch stats",
+    "failedToComplete": "Failed to complete",
+    "failedToSave": "Failed to save profile"
+  },
+  "recommendations": {
+    "addDental": "Add Dental Coverage",
+    "increaseLife": "Increase Life Insurance Coverage",
+    "bundleDiscount": "Bundle Discount Available",
+    "petInsurance": "Pet Insurance Recently Added",
+    "maximizeWellness": "Maximize Wellness Benefits"
+  },
+  "notificationPreferences": {
+    "policyRenewals": "Policy Renewals",
+    "policyRenewalsDesc": "Reminders about upcoming policy renewals",
+    "paymentReminders": "Payment Reminders",
+    "paymentRemindersDesc": "Notifications for upcoming or missed payments",
+    "claimsUpdates": "Claims Updates",
+    "claimsUpdatesDesc": "Status updates on your active claims",
+    "coverageChanges": "Coverage Changes",
+    "coverageChangesDesc": "Notifications when coverage details change",
+    "policyRecommendations": "Policy Recommendations",
+    "appointmentReminders": "Appointment Reminders",
+    "appointmentRemindersDesc": "Reminders for scheduled appointments",
+    "specialOffers": "Special Offers",
+    "specialOffersDesc": "Exclusive deals and promotions from our partners",
+    "securityAlerts": "Security Alerts",
+    "criticalAlertsOnly": "Critical Alerts Only"
+  },
+  "errors": {
+    "validEmail": "Please enter a valid email",
+    "couldNotConnect": "Could not connect to {{provider}}. Please try again",
+    "fillAllFields": "Please fill in all required fields",
+    "fillPasswordFields": "Please fill in all password fields",
+    "selectAnswer": "Please select an answer",
+    "required": "Required"
+  },
+  "ui": {
+    "policyWallet": "PolicyWallet",
+    "appPreferences": "App Preferences",
+    "dashboardScoreHealth": "Health",
+    "dashboardScoreAuto": "Auto",
+    "dashboardScoreHome": "Home"
   },
   "questionnaire": {
     "title": "Insurance Gap Analysis Questionnaire",

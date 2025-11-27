@@ -1290,7 +1290,70 @@
     "monthlyClaims": "Μηνιαίες Αποζημιώσεις",
     "policyPortfolio": "Χαρτοφυλάκιο Πολιτικών",
     "riskAssessment": "Αξιολόγηση Κινδύνου",
-    "auditTrail": "Ιχνηλασία Ελέγχου"
+    "auditTrail": "Ιχνηλασία Ελέγχου",
+    "dashboard": "Πίνακας Ελέγχου Διαχειριστή",
+    "enterpriseInsurance": "Πλατφόρμα Ασφάλισης Εταιρικής Λύσης - Ανάλυση και Διαχείριση",
+    "totalUsers": "Σύνολο Χρηστών"
+  },
+  "navigation": {
+    "renewals": "Ανανεώσεις",
+    "billing": "Χρέωση",
+    "recommendations": "Συστάσεις",
+    "notifications": "Ειδοποιήσεις",
+    "admin": "Διαχειριστής"
+  },
+  "notifications": {
+    "autoInsuranceRenewal": "Ανανέωση Ασφάλειας Αυτοκινήτου Διατίθεται",
+    "paymentDue": "Ημερομηνία Πληρωμής",
+    "coverageGapIdentified": "Εντοπίστηκε Νέο Κενό Κάλυψης",
+    "claimStatusUpdated": "Ενημέρωση Κατάστασης Αποζημίωσης",
+    "appointmentReminder": "Υπενθύμιση Ραντεβού",
+    "newLoginDetected": "Εντοπίστηκε Νέα Σύνδεση",
+    "specialOffer": "Ειδική Προσφορά",
+    "authenticationFailed": "Η Πιστοποίηση Απέτυχε",
+    "failedToLoadAppointments": "Αποτυχία Φόρτωσης Ραντεβού",
+    "failedToFetch": "Αποτυχία Λήψης Δεδομένων",
+    "failedToComplete": "Αποτυχία Ολοκλήρωσης",
+    "failedToSave": "Αποτυχία Αποθήκευσης Προφίλ"
+  },
+  "recommendations": {
+    "addDental": "Προσθήκη Κάλυψης Οδοντιατρικής",
+    "increaseLife": "Αύξηση Κάλυψης Ασφάλειας Ζωής",
+    "bundleDiscount": "Έκπτωση Πακέτου Διαθέσιμη",
+    "petInsurance": "Ασφάλεια Κατοικιδίων Πρόσφατα Προστέθηκε",
+    "maximizeWellness": "Μεγιστοποίηση Παροχών Wellness"
+  },
+  "notificationPreferences": {
+    "policyRenewals": "Ανανεώσεις Πολιτικών",
+    "policyRenewalsDesc": "Υπενθυμίσεις για επερχόμενες ανανεώσεις πολιτικών",
+    "paymentReminders": "Υπενθυμίσεις Πληρωμής",
+    "paymentRemindersDesc": "Ειδοποιήσεις για επερχόμενες ή χαμένες πληρωμές",
+    "claimsUpdates": "Ενημερώσεις Αποζημιώσεων",
+    "claimsUpdatesDesc": "Ενημερώσεις κατάστασης στις ενεργές αποζημιώσεις σας",
+    "coverageChanges": "Αλλαγές Κάλυψης",
+    "coverageChangesDesc": "Ειδοποιήσεις όταν αλλάζουν τα λεπτομέρειες κάλυψης",
+    "policyRecommendations": "Συστάσεις Πολιτικών",
+    "appointmentReminders": "Υπενθυμίσεις Ραντεβού",
+    "appointmentRemindersDesc": "Υπενθυμίσεις για προγραμματισμένα ραντεβού",
+    "specialOffers": "Ειδικές Προσφορές",
+    "specialOffersDesc": "Αποκλειστικές προσφορές και προωθήσεις από τους συνεργάτες μας",
+    "securityAlerts": "Ειδοποιήσεις Ασφαλείας",
+    "criticalAlertsOnly": "Μόνο Κρίσιμες Ειδοποιήσεις"
+  },
+  "errors": {
+    "validEmail": "Παρακαλώ εισαγάγετε ένα έγκυρο email",
+    "couldNotConnect": "Δεν ήταν δυνατή η σύνδεση με {{provider}}. Παρακαλώ προσπαθήστε ξανά",
+    "fillAllFields": "Παρακαλώ συμπληρώστε όλα τα απαιτούμενα πεδία",
+    "fillPasswordFields": "Παρακαλώ συμπληρώστε όλα τα πεδία κωδικού πρόσβασης",
+    "selectAnswer": "Παρακαλώ επιλέξτε μια απάντηση",
+    "required": "Απαιτείται"
+  },
+  "ui": {
+    "policyWallet": "PolicyWallet",
+    "appPreferences": "Προτιμήσεις Εφαρμογής",
+    "dashboardScoreHealth": "Κλάδος Υγείας",
+    "dashboardScoreAuto": "Κλάδος Αυτοκινήτου",
+    "dashboardScoreHome": "Κλάδος Κατοικίας"
   },
   "questionnaire": {
     "title": "Έρευνα Ασφαλιστικών Κενών",
