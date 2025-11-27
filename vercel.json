@@ -1,12 +1,8 @@
 {
   "$schema": "https://vercel.com/schemas/vercel.json",
   "version": 2,
-  "buildCommand": "npm run build",
-  "devCommand": "NODE_ENV=development tsx server/index-dev.ts",
-  "installCommand": "npm install",
+  "buildCommand": "vite build",
+  "outputDirectory": "dist/public",
   "framework": "express",
-  "public": false,
-  "env": {
-    "NODE_ENV": "production"
-  }
+  "public": false
 }
