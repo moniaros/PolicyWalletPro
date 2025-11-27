@@ -164,7 +164,18 @@
     "requestNew": "Request a new appointment to get started",
     "cancelConfirm": "Cancel Appointment?",
     "cancelMessage": "Are you sure you want to cancel this appointment?",
-    "confirm": "Cancel Appointment"
+    "confirm": "Cancel Appointment",
+    "inNetwork": "In-Network",
+    "reasonForVisit": "Reason for Visit",
+    "reasonPlaceholder": "e.g., Annual checkup, follow-up...",
+    "appointmentNotes": "Additional Notes",
+    "notesPlaceholder": "Any allergies, medications, or notes for the provider...",
+    "coveredByInsurance": "This appointment is covered by your insurance",
+    "inNetworkProvider": "In-network provider - no referral needed",
+    "confirmDetails": "Confirm Details",
+    "additionalInfo": "Additional Information",
+    "updateAppointment": "Update Appointment",
+    "bookNow": "Book Now"
   },
   "analysis": {
     "title": "Gap Analysis",

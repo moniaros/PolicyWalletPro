@@ -14,7 +14,7 @@ import {
   DialogTrigger,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { Calendar as CalendarIcon, MapPin, Clock, Plus, Phone, Trash2, Edit2 } from "lucide-react";
+import { Calendar as CalendarIcon, MapPin, Clock, Plus, Phone, Trash2, Edit2, AlertCircle, CheckCircle2, Network, FileText, Stethoscope } from "lucide-react";
 import { toast } from "sonner";
 
 interface BookedAppointment {
@@ -28,17 +28,23 @@ interface BookedAppointment {
   date: string;
   time: string;
   status: "pending" | "confirmed" | "cancelled";
+  reason?: string;
+  notes?: string;
+  inNetwork?: boolean;
+  coveredByInsurance?: boolean;
 }
 
 export default function AppointmentsPage() {
   const { t } = useTranslation();
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [bookedAppointments, setBookedAppointments] = useState<BookedAppointment[]>([]);
-  const [step, setStep] = useState<1 | 2 | 3>(1);
+  const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
   const [selectedPolicy, setSelectedPolicy] = useState<typeof policies[0] | null>(null);
   const [selectedService, setSelectedService] = useState<any | null>(null);
   const [appointmentDate, setAppointmentDate] = useState("");
   const [appointmentTime, setAppointmentTime] = useState("");
+  const [appointmentReason, setAppointmentReason] = useState("");
+  const [appointmentNotes, setAppointmentNotes] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [cancelConfirmOpen, setCancelConfirmOpen] = useState(false);
@@ -66,6 +72,8 @@ export default function AppointmentsPage() {
     setSelectedService(null);
     setAppointmentDate("");
     setAppointmentTime("");
+    setAppointmentReason("");
+    setAppointmentNotes("");
     setEditingId(null);
     setIsOpen(true);
   };
@@ -82,8 +90,10 @@ export default function AppointmentsPage() {
       });
       setAppointmentDate(apt.date);
       setAppointmentTime(apt.time);
+      setAppointmentReason(apt.reason || "");
+      setAppointmentNotes(apt.notes || "");
       setEditingId(apt.id);
-      setStep(3);
+      setStep(4);
       setIsOpen(true);
     }
   };
@@ -112,7 +122,7 @@ export default function AppointmentsPage() {
     if (editingId) {
       const updated = bookedAppointments.map(apt =>
         apt.id === editingId
-          ? { ...apt, date: appointmentDate, time: appointmentTime, status: "confirmed" as const }
+          ? { ...apt, date: appointmentDate, time: appointmentTime, status: "confirmed" as const, reason: appointmentReason, notes: appointmentNotes }
           : apt
       );
       saveAppointments(updated);
@@ -129,6 +139,10 @@ export default function AppointmentsPage() {
         date: appointmentDate,
         time: appointmentTime,
         status: "confirmed",
+        reason: appointmentReason,
+        notes: appointmentNotes,
+        inNetwork: true,
+        coveredByInsurance: true,
       };
       saveAppointments([...bookedAppointments, newAppointment]);
       toast.success(t("appointments.appointmentConfirmed") || "Appointment booked successfully!");
@@ -137,6 +151,8 @@ export default function AppointmentsPage() {
     setIsOpen(false);
     setStep(1);
     setEditingId(null);
+    setAppointmentReason("");
+    setAppointmentNotes("");
   };
 
   const handleCancelAppointment = (apt: BookedAppointment) => {
@@ -165,6 +181,15 @@ export default function AppointmentsPage() {
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
 
+  const upcomingAppointments = activeAppointments.filter(a => new Date(a.date) >= new Date()).length;
+  const getDaysUntil = (date: string) => {
+    const today = new Date();
+    const appointmentDate = new Date(date);
+    const diffTime = appointmentDate.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
+  };
+
   return (
     <div className="space-y-8">
       {/* Header */}
@@ -191,7 +216,8 @@ export default function AppointmentsPage() {
                 </div>
                 {step === 1 && (t("appointments.selectPolicy") || "Select Your Policy")}
                 {step === 2 && (t("appointments.selectService") || "Select Service")}
-                {step === 3 && (editingId ? t("appointments.reschedule") : t("appointments.scheduleDateTime") || "Schedule Date & Time")}
+                {step === 3 && (t("appointments.scheduleDateTime") || "Schedule Date & Time")}
+                {step === 4 && (editingId ? t("appointments.confirmDetails") : t("appointments.additionalInfo") || "Additional Information")}
                 {step === 2 && selectedPolicy && <span className="text-primary ml-2">({selectedPolicy.type})</span>}
               </DialogTitle>
               <DialogDescription className="sr-only">Booking wizard step {step}</DialogDescription>
@@ -239,7 +265,14 @@ export default function AppointmentsPage() {
                       data-testid={`card-service-${service.id}`}
                     >
                       <CardContent className="p-4">
-                        <h3 className="font-semibold mb-2">{service.name}</h3>
+                        <div className="flex items-start justify-between mb-2">
+                          <h3 className="font-semibold flex items-center gap-2">
+                            {service.name}
+                            <Badge variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200">
+                              {t("appointments.inNetwork") || "In-Network"}
+                            </Badge>
+                          </h3>
+                        </div>
                         <div className="space-y-1 text-sm text-muted-foreground">
                           <p><strong>{service.provider}</strong></p>
                           <p className="flex items-center gap-2"><MapPin className="h-4 w-4" />{service.location}</p>
@@ -299,8 +332,61 @@ export default function AppointmentsPage() {
                     <Button variant="outline" onClick={() => setStep(2)} className="flex-1">
                       ← {t("common.back")}
                     </Button>
+                    <Button onClick={() => setStep(4)} className="flex-1 shadow-lg shadow-primary/20">
+                      {t("common.next")} →
+                    </Button>
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* STEP 4: ADDITIONAL INFO */}
+            {step === 4 && selectedPolicy && selectedService && appointmentDate && appointmentTime && (
+              <>
+                <div className="space-y-4 py-4">
+                  <div className="space-y-2">
+                    <label className="text-sm font-semibold">{t("appointments.reasonForVisit") || "Reason for Visit"}</label>
+                    <input
+                      type="text"
+                      placeholder={t("appointments.reasonPlaceholder") || "e.g., Annual checkup, follow-up..."}
+                      value={appointmentReason}
+                      onChange={(e) => setAppointmentReason(e.target.value)}
+                      className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
+                      data-testid="input-appointment-reason"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-semibold">{t("appointments.appointmentNotes") || "Additional Notes"}</label>
+                    <textarea
+                      placeholder={t("appointments.notesPlaceholder") || "Any allergies, medications, or notes for the provider..."}
+                      value={appointmentNotes}
+                      onChange={(e) => setAppointmentNotes(e.target.value)}
+                      rows={3}
+                      className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
+                      data-testid="textarea-appointment-notes"
+                    />
+                  </div>
+
+                  <Card className="bg-blue-50 border-blue-200">
+                    <CardContent className="p-3 text-sm space-y-1">
+                      <div className="flex items-start gap-2">
+                        <CheckCircle2 className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                        <span className="text-blue-900">{t("appointments.coveredByInsurance") || "This appointment is covered by your insurance"}</span>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <Network className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                        <span className="text-blue-900">{t("appointments.inNetworkProvider") || "In-network provider - no referral needed"}</span>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <div className="flex gap-2">
+                    <Button variant="outline" onClick={() => setStep(3)} className="flex-1">
+                      ← {t("common.back")}
+                    </Button>
                     <Button onClick={handleConfirmAppointment} className="flex-1 shadow-lg shadow-primary/20">
-                      {editingId ? t("appointments.reschedule") : t("appointments.confirmBooking") || "Confirm"}
+                      {editingId ? t("appointments.updateAppointment") : t("appointments.confirmBooking") || "Confirm"}
                     </Button>
                   </div>
                 </div>
@@ -338,9 +424,9 @@ export default function AppointmentsPage() {
             <Card className="border-0 shadow-sm">
               <CardContent className="p-4 text-center">
                 <div className="text-2xl font-bold text-emerald-600">
-                  {activeAppointments.filter((a) => a.status === "confirmed").length}
+                  {upcomingAppointments}
                 </div>
-                <p className="text-xs text-muted-foreground">{t("appointments.confirmed")}</p>
+                <p className="text-xs text-muted-foreground">{t("appointments.upcoming") || "Upcoming"}</p>
               </CardContent>
             </Card>
           </div>
@@ -353,60 +439,75 @@ export default function AppointmentsPage() {
               <CardContent className="p-12 text-center">
                 <CalendarIcon className="h-12 w-12 text-muted-foreground/30 mx-auto mb-4" />
                 <h3 className="font-semibold text-lg mb-2">{t("appointments.noAppointments")}</h3>
-                <p className="text-muted-foreground">{t("appointments.requestNew")}</p>
+                <p className="text-muted-foreground mb-4">{t("appointments.requestNew")}</p>
+                <Button onClick={handleRequestAppointment} size="sm">
+                  <Plus className="h-4 w-4 mr-2" />
+                  {t("appointments.bookNow") || "Book Now"}
+                </Button>
               </CardContent>
             </Card>
           ) : (
             <div className="space-y-4">
-              {sortedAppointments.map((apt) => (
-                <Card
-                  key={apt.id}
-                  className="border-l-4 border-l-primary hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
-                  data-testid={`card-appointment-${apt.id}`}
-                >
-                  <CardContent className="p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div className="flex items-start gap-4 flex-1">
-                      <div className="bg-gradient-to-br from-blue-50 to-blue-100 text-blue-600 p-3 rounded-xl flex flex-col items-center justify-center min-w-[70px] shadow-sm">
-                        <span className="text-xs font-bold uppercase">
-                          {new Date(apt.date).toLocaleString("en-US", { month: "short" })}
-                        </span>
-                        <span className="text-2xl font-bold">{new Date(apt.date).getDate()}</span>
+              {sortedAppointments.map((apt) => {
+                const daysUntil = getDaysUntil(apt.date);
+                const isUrgent = daysUntil <= 3 && daysUntil > 0;
+                
+                return (
+                  <Card
+                    key={apt.id}
+                    className={`border-l-4 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 ${
+                      isUrgent ? "border-l-amber-500 bg-amber-50/30" : "border-l-primary"
+                    }`}
+                    data-testid={`card-appointment-${apt.id}`}
+                  >
+                    <CardContent className="p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                      <div className="flex items-start gap-4 flex-1">
+                        <div className="bg-gradient-to-br from-blue-50 to-blue-100 text-blue-600 p-3 rounded-xl flex flex-col items-center justify-center min-w-[70px] shadow-sm">
+                          <span className="text-xs font-bold uppercase">
+                            {new Date(apt.date).toLocaleString("en-US", { month: "short" })}
+                          </span>
+                          <span className="text-2xl font-bold">{new Date(apt.date).getDate()}</span>
+                          {daysUntil > 0 && <span className="text-xs text-blue-600 font-medium">{daysUntil}d away</span>}
+                        </div>
+
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-2 flex-wrap">
+                            <h3 className="font-bold text-lg">{apt.serviceName}</h3>
+                            <Badge variant="secondary" className="text-xs h-6">{apt.policyType}</Badge>
+                            <Badge className={`text-xs h-6 ${apt.status === "confirmed" ? "bg-emerald-100 text-emerald-800" : apt.status === "pending" ? "bg-amber-100 text-amber-800" : "bg-red-100 text-red-800"}`}>
+                              {apt.status === "confirmed" ? "✓ " : ""}{t(`appointments.${apt.status}`) || apt.status}
+                            </Badge>
+                            {isUrgent && <Badge className="text-xs h-6 bg-amber-100 text-amber-800"><AlertCircle className="h-3 w-3 mr-1" />{t("appointments.upcoming") || "Upcoming"}</Badge>}
+                          </div>
+                          <p className="text-sm font-semibold text-foreground mb-2">{apt.provider}</p>
+                          {apt.reason && <p className="text-xs text-muted-foreground mb-2"><FileText className="h-3 w-3 inline mr-1" />{apt.reason}</p>}
+                          <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+                            <span className="flex items-center gap-2 bg-muted/50 px-3 py-1 rounded-lg">
+                              <Clock className="h-4 w-4" /> {apt.time}
+                            </span>
+                            <span className="flex items-center gap-2 bg-muted/50 px-3 py-1 rounded-lg">
+                              <MapPin className="h-4 w-4" /> {apt.location}
+                            </span>
+                            {apt.inNetwork && <Badge variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200"><Network className="h-3 w-3 mr-1" />{t("appointments.inNetwork") || "In-Network"}</Badge>}
+                          </div>
+                        </div>
                       </div>
 
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2 flex-wrap">
-                          <h3 className="font-bold text-lg">{apt.serviceName}</h3>
-                          <Badge variant="secondary" className="text-xs h-6">{apt.policyType}</Badge>
-                          <Badge className="text-xs h-6 bg-emerald-100 text-emerald-800">
-                            {apt.status === "confirmed" ? "✓ " : ""}{t(`appointments.${apt.status}`) || apt.status}
-                          </Badge>
-                        </div>
-                        <p className="text-sm font-semibold text-foreground mb-2">{apt.provider}</p>
-                        <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-                          <span className="flex items-center gap-2 bg-muted/50 px-3 py-1 rounded-lg">
-                            <Clock className="h-4 w-4" /> {apt.time}
-                          </span>
-                          <span className="flex items-center gap-2 bg-muted/50 px-3 py-1 rounded-lg">
-                            <MapPin className="h-4 w-4" /> {apt.location}
-                          </span>
-                        </div>
+                      <div className="flex sm:flex-col gap-2 sm:items-end">
+                        <Button size="sm" variant="outline" onClick={() => handleCallProvider(apt.phone)} data-testid="button-call-provider">
+                          <Phone className="h-4 w-4 mr-1" /> Call
+                        </Button>
+                        <Button size="sm" variant="outline" onClick={() => handleRescheduleClick(apt)} data-testid="button-reschedule">
+                          <Edit2 className="h-4 w-4 mr-1" /> Reschedule
+                        </Button>
+                        <Button size="sm" variant="ghost" className="text-red-600 hover:text-red-700 hover:bg-red-50" onClick={() => handleCancelAppointment(apt)} data-testid="button-cancel-appointment">
+                          <Trash2 className="h-4 w-4 mr-1" /> Cancel
+                        </Button>
                       </div>
-                    </div>
-
-                    <div className="flex sm:flex-col gap-2 sm:items-end">
-                      <Button size="sm" variant="outline" onClick={() => handleCallProvider(apt.phone)} data-testid="button-call-provider">
-                        <Phone className="h-4 w-4 mr-1" /> Call
-                      </Button>
-                      <Button size="sm" variant="outline" onClick={() => handleRescheduleClick(apt)} data-testid="button-reschedule">
-                        <Edit2 className="h-4 w-4 mr-1" /> Reschedule
-                      </Button>
-                      <Button size="sm" variant="ghost" className="text-red-600 hover:text-red-700 hover:bg-red-50" onClick={() => handleCancelAppointment(apt)} data-testid="button-cancel-appointment">
-                        <Trash2 className="h-4 w-4 mr-1" /> Cancel
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                    </CardContent>
+                  </Card>
+                );
+              })}
             </div>
           )}
         </div>
