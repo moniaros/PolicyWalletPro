@@ -150,7 +150,7 @@ export default function RenewalsPage() {
           {renewalData.map((renewal) => (
             <Card key={renewal.id} className="hover:shadow-lg transition-shadow border-l-4 border-l-primary">
               <CardContent className="p-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-2 gap-6">
                   {/* Left side */}
                   <div className="space-y-4">
                     <div className="flex items-start justify-between">
@@ -176,7 +176,7 @@ export default function RenewalsPage() {
                       />
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4 pt-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                       <div>
                         <p className="text-xs text-muted-foreground uppercase">{t('renewals.renewalDate')}</p>
                         <p className="font-semibold text-sm">{format(renewal.renewalDate, 'MMM dd, yyyy')}</p>

@@ -197,12 +197,12 @@ export default function HealthWellnessPage() {
               <div className={`inline-block px-6 py-3 rounded-full text-3xl font-bold ${getRiskBadgeColor(riskAssessment?.riskScore)}`}>
                 {riskAssessment?.riskScore || 45}
               </div>
-              <p className="text-xs text-muted-foreground mt-2">Risk Assessment Score</p>
+              <p className="text-xs text-muted-foreground mt-2">{ t("health.riskAssessmentScore") }</p>
             </div>
 
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
-                <span className="font-medium">Risk Level</span>
+                <span className="font-medium">{ t("health.riskLevel") }</span>
                 <Badge variant="outline" className={getRiskBadgeColor(riskAssessment?.riskScore)}>
                   {riskAssessment?.riskLevel || "Moderate"}
                 </Badge>
@@ -369,7 +369,7 @@ export default function HealthWellnessPage() {
               <Card className="bg-muted/20 border-dashed">
                 <CardContent className="flex flex-col items-center justify-center py-12 text-muted-foreground">
                   <Activity className="h-12 w-12 mb-3 opacity-20" />
-                  <p>No checkups uploaded yet. Upload your first checkup result to get started.</p>
+                  <p>No checkups uploaded yet Upload your first checkup result to get started.</p>
                 </CardContent>
               </Card>
             )}

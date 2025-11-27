@@ -16,7 +16,7 @@ export function HealthDetailedView({ policy, metadata = {} }: DetailedViewProps)
           <CardTitle className="text-lg">🏥 Συνδεδεμένα Νοσοκομεία (Network Hospitals)</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="bg-purple-50 p-3 rounded-lg">
               <p className="text-xs text-purple-600 uppercase font-semibold mb-1">Απαλλαγή (Deductible)</p>
               <p className="font-bold text-lg text-purple-900">{safeMetadata.deductible || "€1,500"}</p>
@@ -70,7 +70,7 @@ export function AutoDetailedView({ policy, metadata = {} }: DetailedViewProps) {
             <p className="font-mono text-2xl font-bold text-blue-900">{safeMetadata.licensePlate || "YZA-1234"} | {safeMetadata.carModel || "Toyota Yaris"}</p>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="bg-slate-100 p-3 rounded-lg">
               <p className="text-xs text-slate-600 uppercase font-semibold mb-1">Κάλυψη</p>
               <p className="font-bold text-slate-900">{safeMetadata.coverageTier || "Πλήρες Kasko"}</p>
@@ -92,7 +92,7 @@ export function AutoDetailedView({ policy, metadata = {} }: DetailedViewProps) {
             </div>
           )}
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="bg-red-50 border border-red-200 p-3 rounded-lg">
               <p className="font-semibold text-red-900 text-xs mb-2">🚨 Δήλωση Ατυχήματος</p>
               <Button className="w-full bg-red-600 hover:bg-red-700 text-white text-xs h-8">
@@ -156,7 +156,7 @@ export function HomeDetailedView({ policy, metadata = {} }: DetailedViewProps) {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="bg-slate-100 p-3 rounded-lg">
               <p className="text-xs text-slate-600 uppercase font-semibold mb-1">Απαλλαγή</p>
               <p className="font-bold text-slate-900">{safeMetadata.deductible || "€500"}</p>
@@ -187,7 +187,7 @@ export function InvestmentLifeDetailedView({ policy, metadata }: DetailedViewPro
           <CardTitle className="text-lg">Investment Performance</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="bg-blue-50 p-3 rounded-lg">
               <p className="text-xs text-blue-600 uppercase font-semibold mb-1">Fund Value</p>
               <p className="font-bold text-lg text-blue-900">{metadata?.fundValue || "€45,200"}</p>
@@ -260,7 +260,7 @@ export function PetDetailedView({ policy, metadata }: DetailedViewProps) {
             <p className="text-xs text-muted-foreground mt-1">{metadata?.limitUsed || "€400"} / {metadata?.limitTotal || "€1,000"} used</p>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="bg-purple-50 p-3 rounded-lg">
               <p className="text-xs text-purple-600 uppercase font-semibold mb-1">Co-Pay</p>
               <p className="font-bold text-purple-900">{metadata?.coPay || "20%"}</p>
@@ -318,7 +318,7 @@ export function UniversalBrokerActions({ policy }: { policy: any }) {
           <CardTitle className="text-lg">📄 Έγγραφα & Πιστοποιητικά</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <Button variant="outline" className="text-xs h-9">
               📋 Κάρτα ENFIA
             </Button>

@@ -140,7 +140,7 @@ export function CoveragePurchaseDialog({ recommendation, isOpen, onOpenChange }:
                   data-testid="input-quote-name"
                 />
               </div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <Label htmlFor="quote-email">Email *</Label>
                   <Input
@@ -251,7 +251,7 @@ export function CoveragePurchaseDialog({ recommendation, isOpen, onOpenChange }:
                   data-testid="input-card-number"
                 />
               </div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <Label htmlFor="expiry">Expiry Date *</Label>
                   <Input

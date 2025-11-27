@@ -460,7 +460,7 @@ export default function AppointmentsPage() {
             </CardContent>
           </Card>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <Card className="border-0 shadow-sm">
               <CardContent className="p-4 text-center">
                 <div className="text-2xl font-bold text-primary">{bookedAppointments.filter(a => a.status !== "cancelled").length}</div>

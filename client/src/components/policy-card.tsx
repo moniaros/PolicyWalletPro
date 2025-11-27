@@ -102,7 +102,7 @@ function renderQuickViewByType(policy: PolicyProps) {
     
     default:
       return (
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <p className="text-xs text-muted-foreground uppercase font-semibold mb-1">{t('policyCard.coverage')}</p>
             <p className="font-semibold text-sm text-foreground">{policy.coverage}</p>
@@ -167,7 +167,7 @@ export default function PolicyCard({ policy, index = 0 }: { policy: PolicyProps,
           {renderQuickViewByType(policy)}
 
           {/* Row 2: Policy Number & Renewal Countdown */}
-          <div className="grid grid-cols-2 gap-3 pt-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
             <div>
               <p className="text-xs text-muted-foreground uppercase tracking-wider font-bold mb-1.5">{t('policyCard.policyNo')}</p>
               <p className="font-mono text-sm bg-gradient-to-br from-secondary/80 to-secondary/60 text-foreground py-2 px-2.5 rounded-lg font-semibold border border-secondary/40" data-testid={`policy-number-${policy.id}`}>{policy.policyNumber}</p>

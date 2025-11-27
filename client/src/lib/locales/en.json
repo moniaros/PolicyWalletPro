@@ -17,6 +17,9 @@
     "addPolicy": "Add New Policy",
     "submit": "Submit",
     "next": "Next",
+    "uploading": "Uploading...",
+    "upload": "Upload",
+    "uploadResults": "Upload Results",
     "welcome": "Dashboard"
   },
   "dashboard": {
@@ -214,6 +217,10 @@
     "current": "Current",
     "withBundle": "With Bundle",
     "currentYear": "$2,400/yr",
+    "healthRiskScore": "Health Risk Score",
+    "riskAssessmentScore": "Risk Assessment Score",
+    "riskLevel": "Risk Level",
+    "noCheckupsMessage": "No checkups uploaded yet",
     "bundleYear": "$1,950/yr"
   },
   "health": {
@@ -362,6 +369,9 @@
     "yes": "Yes",
     "back": "Back",
     "next": "Next",
+    "uploading": "Uploading...",
+    "upload": "Upload",
+    "uploadResults": "Upload Results",
     "previous": "Previous",
     "submit": "Submit",
     "cancel": "Cancel",
@@ -585,6 +595,9 @@
   "actions": {
     "viewResults": "View Results",
     "next": "Next",
+    "uploading": "Uploading...",
+    "upload": "Upload",
+    "uploadResults": "Upload Results",
     "emailAddress": "Email Address",
     "orContinueWith": "or continue with",
     "signingIn": "Signing in...",

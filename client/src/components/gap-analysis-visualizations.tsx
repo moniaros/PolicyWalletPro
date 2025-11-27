@@ -32,7 +32,7 @@ export function SliderVisualization({ min, max, current, safe, threshold, curren
         </div>
       </div>
       
-      <div className="grid grid-cols-1 sm:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 text-xs">
+      <div className="grid grid-cols-1 sm:grid-cols-1 sm:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 text-xs">
         <div>
           <p className="text-muted-foreground">Current</p>
           <p className="font-bold">{currency ? `€${(current/1000).toFixed(1)}k` : current}</p>
@@ -130,7 +130,7 @@ export function HospitalSimulation({ hospitalCost, insurancePays, patientPays, d
           </div>
         </div>
         
-        <div className="grid grid-cols-2 gap-2 text-xs">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
           <div className="bg-white p-2 rounded border-l-4 border-emerald-500">
             <p className="text-muted-foreground">Insurance Pays</p>
             <p className="font-bold text-emerald-700">€{insurancePays.toLocaleString()}</p>

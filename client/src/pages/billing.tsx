@@ -154,7 +154,7 @@ export default function BillingPage() {
       </div>
 
       <Tabs value={selectedTab} onValueChange={setSelectedTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-1 sm:grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+        <TabsList className="grid w-full grid-cols-1 sm:grid-cols-1 sm:grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
           <TabsTrigger value="overview">{t('billing.overview')}</TabsTrigger>
           <TabsTrigger value="history">{t('billing.paymentHistory')}</TabsTrigger>
           <TabsTrigger value="methods">{t('billing.paymentMethods')}</TabsTrigger>
@@ -237,13 +237,13 @@ export default function BillingPage() {
                 <div>
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-sm font-medium">{t('billing_trends.homeInsurance')}</span>
-                    <span className="text-sm text-muted-foreground">€150/year</span>
+                    <span className="text-sm text-muted-foreground">€150€</span>
                   </div>
                   <Progress value={12} className="h-2" />
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4 pt-4 border-t">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t">
                 <div>
                   <p className="text-xs text-muted-foreground uppercase">{t('billing.yearOverYearChange')}</p>
                   <p className="text-lg font-bold text-emerald-600 flex items-center gap-1 mt-1">
@@ -260,7 +260,7 @@ export default function BillingPage() {
           </Card>
 
           {/* Quick Actions */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-2 gap-4">
             <Button className="w-full h-12 bg-primary" size="lg">
               <Download className="h-4 w-4 mr-2" />
               {t('billing.downloadInvoice')}
@@ -313,7 +313,7 @@ export default function BillingPage() {
                     <div className="flex items-center justify-between">
                       <Badge className={getStatusColor(payment.status)}>
                         {getStatusIcon(payment.status)}
-                        <span className="ml-1">{t(`common.${payment.status.toLowerCase()}`)}</span>
+                        <span className="ml-1">{t(`common.€payment.status.toLowerCase()}`)}</span>
                       </Badge>
                       <Button variant="ghost" size="sm">
                         <Download className="h-4 w-4" />
@@ -339,10 +339,10 @@ export default function BillingPage() {
                       </div>
                       <div>
                         <p className="font-semibold">
-                          {method.type === "Credit Card" ? `${method.brand} ••••${method.lastFour}` : `${method.bank} ${t('common.directDebit')}`}
+                          {method.type === "Credit Card" ? `€method.brand} ••••€method.lastFour}` : `€method.bank} €t('common.directDebit')}`}
                         </p>
                         <p className="text-xs text-muted-foreground">
-                          {method.type === "Credit Card" ? `${t('common.expires')} ${method.expiryDate}` : method.iban}
+                          {method.type === "Credit Card" ? `€t('common.expires')} €method.expiryDate}` : method.iban}
                         </p>
                       </div>
                     </div>

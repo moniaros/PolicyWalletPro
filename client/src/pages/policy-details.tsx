@@ -159,7 +159,7 @@ export default function PolicyDetailsPage() {
         
         {/* Overview Tab */}
         <TabsContent value="overview" className="space-y-4 mt-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
@@ -215,7 +215,7 @@ export default function PolicyDetailsPage() {
                        Technical Data
                     </CardTitle>
                  </CardHeader>
-                 <CardContent className="grid grid-cols-2 gap-4 text-sm">
+                 <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                     <div>
                        <p className="text-muted-foreground text-xs uppercase">Carrier ID</p>
                        <p className="font-mono font-medium">{policy.carrierId || "N/A"}</p>

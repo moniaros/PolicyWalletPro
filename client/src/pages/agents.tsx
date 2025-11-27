@@ -80,7 +80,7 @@ export default function AgentsPage() {
               <p className="text-gray-700 leading-relaxed">{currentAgent.about}</p>
 
               {/* Quick Stats */}
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="p-3 bg-white rounded-lg border border-emerald-100">
                   <p className="text-xs text-muted-foreground">Experience</p>
                   <p className="font-bold text-lg">{currentAgent.experience}</p>
@@ -195,7 +195,7 @@ export default function AgentsPage() {
           <CardDescription>{t('agentServices.whatYouCanGetHelp')}</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-2 gap-4">
             {[
               t('agentServices.policySelection'),
               t('agentServices.claimsAssistance'),

@@ -63,7 +63,7 @@ export function BillingWidget() {
           </div>
           <Progress value={60} className="h-2" />
         </div>
-        <div className="grid grid-cols-2 gap-3 text-xs">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
           <div className="bg-emerald-50 p-2 rounded">
             <p className="text-muted-foreground">Paid YTD</p>
             <p className="font-bold text-emerald-900">€1,045</p>
