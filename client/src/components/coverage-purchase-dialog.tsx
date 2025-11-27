@@ -153,7 +153,7 @@ export function CoveragePurchaseDialog({ recommendation, isOpen, onOpenChange }:
                   />
                 </div>
                 <div>
-                  <Label htmlFor="quote-phone">Phone</Label>
+                  <Label htmlFor="quote-phone">{ t("forms.phone") }</Label>
                   <Input
                     id="quote-phone"
                     value={formData.phone}

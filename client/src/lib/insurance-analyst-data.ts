@@ -48,7 +48,7 @@ export const INSURANCE_QUESTIONNAIRE = [
     id: "travelFrequency",
     title: "How often do you travel internationally?",
     description: "Travel frequency indicates need for international coverage",
-    options: ["Never", "1-2 times/year", "3-6 times/year", "Monthly+"],
+    options: ["Never", "1-2 times{ t('time.perYear') }", "3-6 times{ t('time.perYear') }", "Monthly+"],
     guidance: "Frequent travelers should consider travel insurance, international health coverage, and trip protection policies.",
   },
   {

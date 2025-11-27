@@ -168,7 +168,7 @@ export default function UserSettingsPage() {
     setFormData({ ...formData, biometricAuth: newState });
     localStorage.setItem("auth_biometric", newState.toString());
     toast.success(
-      newState ? "Biometric login enabled" : "Biometric login disabled",
+      newState ? t("security.biometricEnabled") : t("security.biometricDisabled"),
     );
   };
 
@@ -249,11 +249,11 @@ export default function UserSettingsPage() {
           className="grid w-full grid-cols-1 sm:grid-cols-1 sm:grid-cols-2 md:grid-cols-5"
           data-testid="settings-tabs"
         >
-          <TabsTrigger value="personal">Personal</TabsTrigger>
-          <TabsTrigger value="security">Security</TabsTrigger>
-          <TabsTrigger value="preferences">Preferences</TabsTrigger>
+          <TabsTrigger value="personal">{ t("tabs.personal") }</TabsTrigger>
+          <TabsTrigger value="security">{ t("tabs.security") }</TabsTrigger>
+          <TabsTrigger value="preferences">{ t("tabs.preferences") }</TabsTrigger>
           <TabsTrigger value="notifications">{ t('settings.notifications') }</TabsTrigger>
-          <TabsTrigger value="insurance">Insurance</TabsTrigger>
+          <TabsTrigger value="insurance">{ t("tabs.insurance") }</TabsTrigger>
         </TabsList>
 
         {/* PERSONAL INFORMATION */}
@@ -293,7 +293,7 @@ export default function UserSettingsPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="phone">Phone</Label>
+                  <Label htmlFor="phone">{ t("forms.phone") }</Label>
                   <Input
                     id="phone"
                     value={formData.phone}
@@ -322,8 +322,8 @@ export default function UserSettingsPage() {
           {/* Change Password */}
           <Card>
             <CardHeader>
-              <CardTitle>Change Password</CardTitle>
-              <CardDescription>Update your login password</CardDescription>
+              <CardTitle>{ t("security.changePassword") }</CardTitle>
+              <CardDescription>{ t("security.updateLoginPassword") }</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
@@ -446,7 +446,7 @@ export default function UserSettingsPage() {
           {/* Login PIN */}
           <Card>
             <CardHeader>
-              <CardTitle>Login PIN</CardTitle>
+              <CardTitle>{ t("security.loginPin") }</CardTitle>
               <CardDescription>
                 Set a 4-digit PIN for quick login
               </CardDescription>
@@ -513,7 +513,7 @@ export default function UserSettingsPage() {
           {/* Biometric Login */}
           <Card>
             <CardHeader>
-              <CardTitle>Biometric Login</CardTitle>
+              <CardTitle>{ t("security.biometricLogin") }</CardTitle>
               <CardDescription>
                 Use fingerprint or face recognition to login
               </CardDescription>
@@ -1070,8 +1070,8 @@ export default function UserSettingsPage() {
                             <SelectContent>
                               {[
                                 "Never",
-                                "1-2 times/year",
-                                "3-6 times/year",
+                                "1-2 times{ t('time.perYear') }",
+                                "3-6 times{ t('time.perYear') }",
                                 "Monthly+",
                               ].map((freq) => (
                                 <SelectItem key={freq} value={freq}>

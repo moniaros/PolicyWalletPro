@@ -170,7 +170,7 @@ export default function BillingPage() {
                   <div>
                     <p className="text-sm text-blue-600 font-medium uppercase">{t('billing.totalAnnualPremiums')}</p>
                     <p className="text-3xl font-bold text-blue-900 mt-1">{billingData.overview.totalAnnualPremiums}</p>
-                    <p className="text-xs text-blue-700 mt-2">{t('billing.monthlyAverage')}: {billingData.overview.monthlyAverage}/month</p>
+                    <p className="text-xs text-blue-700 mt-2">{t('billing.monthlyAverage')}: {billingData.overview.monthlyAverage}{ t('time.perMonth') }</p>
                   </div>
                   <DollarSign className="h-12 w-12 text-blue-400 opacity-50" />
                 </div>
@@ -221,7 +221,7 @@ export default function BillingPage() {
                 <div>
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-sm font-medium">{t('billing_trends.healthInsurance')}</span>
-                    <span className="text-sm text-muted-foreground">€145/month</span>
+                    <span className="text-sm text-muted-foreground">€145{ t('time.perMonth') }</span>
                   </div>
                   <Progress value={75} className="h-2" />
                 </div>
@@ -229,7 +229,7 @@ export default function BillingPage() {
                 <div>
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-sm font-medium">{t('billing_trends.autoInsurance')}</span>
-                    <span className="text-sm text-muted-foreground">€160/month</span>
+                    <span className="text-sm text-muted-foreground">€160{ t('time.perMonth') }</span>
                   </div>
                   <Progress value={85} className="h-2" />
                 </div>

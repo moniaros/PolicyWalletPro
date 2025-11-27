@@ -22,7 +22,9 @@
     "next": "Επόμενο",
     "uploading": "Ανέβασμα...",
     "upload": "Ανέβασμα",
-    "uploadResults": "Ανέβασμα Αποτελεσμάτων"
+    "uploadResults": "Ανέβασμα Αποτελεσμάτων",
+    "gdprCompliant": "Συμμόρφωση GDPR",
+    "euProtected": "Προστασία ΕΕ"
   },
   "dashboard": {
     "title": "Επισκόπηση",
@@ -1019,6 +1021,83 @@
     "deutsch": "Deutsch (German)",
     "french": "Français (French)",
     "italian": "Italiano (Italian)"
+  },
+  "tabs": {
+    "systemAlerts": "Σύστημα Ειδοποιήσεων",
+    "compliance": "Συμμόρφωση",
+    "reports": "Αναφορές",
+    "personal": "Προσωπικά",
+    "security": "Ασφάλεια",
+    "preferences": "Προτιμήσεις",
+    "insurance": "Ασφάλιση",
+    "all": "Όλα",
+    "policies": "Ασφαλίσεις",
+    "idCards": "Δελτία Ταυτότητας",
+    "claims": "Αξιώσεις",
+    "tax": "Φόρος"
+  },
+  "forms": {
+    "fullName": "Πλήρες Όνομα",
+    "email": "Ηλεκτρονική Διεύθυνση",
+    "phone": "Τηλέφωνο",
+    "cardNumber": "Αριθμός Κάρτας"
+  },
+  "security": {
+    "changePassword": "Αλλαγή Κωδικού Πρόσβασης",
+    "updateLoginPassword": "Ενημερώστε τον κωδικό πρόσβασης σας",
+    "loginPin": "PIN Σύνδεσης",
+    "biometricLogin": "Βιομετρική Σύνδεση",
+    "biometricEnabled": "Η βιομετρική σύνδεση ενεργοποιήθηκε",
+    "biometricDisabled": "Η βιομετρική σύνδεση απενεργοποιήθηκε"
+  },
+  "dashboard": {
+    "statusExcellent": "Εξαιρετικό",
+    "statusGood": "Καλό",
+    "statusFair": "Δίκαιο",
+    "health": "Υγεία",
+    "auto": "Αυτοκίνητο",
+    "home": "Σπίτι"
+  },
+  "notifications": {
+    "autoRenewalDue": "Ανανέωση Ασφάλειας Αυτοκινήτου Ληξιμένη",
+    "paymentDue": "Πληρωμή Ληξιμένη",
+    "coverageGapIdentified": "Εντοπίστηκε Νέο Χάσμα Κάλυψης",
+    "claimStatusUpdated": "Κατάσταση Αξίωσης Ενημερώθηκε",
+    "appointmentReminder": "Υπενθύμιση Ραντεβού",
+    "newLoginDetected": "Ανιχνεύθηκε Νέα Σύνδεση",
+    "specialOffer": "Ειδική Προσφορά"
+  },
+  "recommendations": {
+    "addDentalCoverage": "Προσθήκη Κάλυψης Οδοντιατρικής",
+    "addDentalRider": "Προσθήκη Οδοντιατρικής Ασφάλισης",
+    "increaseLifeInsurance": "Αύξηση Κάλυψης Ασφάλειας Ζωής",
+    "upgradeLifeInsurance": "Αναβάθμιση Ασφάλειας Ζωής",
+    "bundleDiscount": "Έκπτωση Πακέτου Διαθέσιμη",
+    "reviewBundling": "Επισκόπηση Επιλογής Πακέτου",
+    "petInsuranceAdded": "Ασφάλεια Κατοικιδίων Προστέθηκε Πρόσφατα",
+    "explorePetInsurance": "Εξερεύνηση Ασφάλειας Κατοικιδίων",
+    "renewalQuotes": "Λήψη Προσφορών Ανανέωσης",
+    "maxWellnessBenefits": "Μεγιστοποίηση Οφελών Wellness",
+    "claimWellnessBenefit": "Αξίωση Οφέλους Wellness",
+    "coversVeterinaryEmergencies": "Καλύπτει Κτηνιατρικές Έκτακτες Ανάγκες και Ρουτίνα Φροντίδα"
+  },
+  "time": {
+    "perYear": "/έτος",
+    "perMonth": "/μήνα",
+    "timesPerYear": "φορές/έτος"
+  },
+  "coverage": {
+    "addDentalRider": "Προσθήκη Οδοντιατρικής",
+    "instantActivation": "Άμεση Ενεργοποίηση",
+    "buyNowStartCoverage": "Αγοράστε τώρα και ξεκινήστε την κάλυψη αμέσως",
+    "chooseYourPlan": "Επιλέξτε Το Σχέδιό Σας",
+    "monthly": "Μηνιαίο",
+    "noCommitmentCancelAnytime": "Χωρίς δέσμευση, ακυρώστε ανά πάσα στιγμή",
+    "sixMonths": "6 Μήνες",
+    "yearly": "Ετήσιο",
+    "total": "Σύνολο",
+    "monthlyAvg": "/μήνα μ.ο.",
+    "save": "Εξοικονόμηση"
   },
   "gapAnalysis": {
     "lifeInsurance": "Ασφάλεια Ζωής",

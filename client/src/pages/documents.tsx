@@ -65,11 +65,11 @@ export default function DocumentsPage() {
 
       <Tabs defaultValue="all" onValueChange={setActiveTab} className="w-full">
         <TabsList className="w-full md:w-auto overflow-x-auto flex justify-start h-auto p-1 bg-transparent md:bg-muted/50 md:rounded-lg gap-2">
-          <TabsTrigger value="all" className="rounded-md data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">All</TabsTrigger>
-          <TabsTrigger value="policy" className="rounded-md data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Policies</TabsTrigger>
-          <TabsTrigger value="idcard" className="rounded-md data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">ID Cards</TabsTrigger>
-          <TabsTrigger value="claim" className="rounded-md data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Claims</TabsTrigger>
-          <TabsTrigger value="tax" className="rounded-md data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Tax</TabsTrigger>
+          <TabsTrigger value="all" className="rounded-md data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">{ t("tabs.all") }</TabsTrigger>
+          <TabsTrigger value="policy" className="rounded-md data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">{ t("tabs.policies") }</TabsTrigger>
+          <TabsTrigger value="idcard" className="rounded-md data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">{ t("tabs.idCards") }</TabsTrigger>
+          <TabsTrigger value="claim" className="rounded-md data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">{ t("tabs.claims") }</TabsTrigger>
+          <TabsTrigger value="tax" className="rounded-md data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">{ t("tabs.tax") }</TabsTrigger>
         </TabsList>
 
         <TabsContent value={activeTab} className="mt-6">

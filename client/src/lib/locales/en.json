@@ -934,6 +934,83 @@
     "french": "Français (French)",
     "italian": "Italiano (Italian)"
   },
+  "tabs": {
+    "systemAlerts": "System Alerts",
+    "compliance": "Compliance",
+    "reports": "Reports",
+    "personal": "Personal",
+    "security": "Security",
+    "preferences": "Preferences",
+    "insurance": "Insurance",
+    "all": "All",
+    "policies": "Policies",
+    "idCards": "ID Cards",
+    "claims": "Claims",
+    "tax": "Tax"
+  },
+  "forms": {
+    "fullName": "Full Name",
+    "email": "Email",
+    "phone": "Phone",
+    "cardNumber": "Card Number"
+  },
+  "security": {
+    "changePassword": "Change Password",
+    "updateLoginPassword": "Update your login password",
+    "loginPin": "Login PIN",
+    "biometricLogin": "Biometric Login",
+    "biometricEnabled": "Biometric login enabled",
+    "biometricDisabled": "Biometric login disabled"
+  },
+  "dashboard": {
+    "statusExcellent": "Excellent",
+    "statusGood": "Good",
+    "statusFair": "Fair",
+    "health": "Health",
+    "auto": "Auto",
+    "home": "Home"
+  },
+  "notifications": {
+    "autoRenewalDue": "Auto Insurance Renewal Due",
+    "paymentDue": "Payment Due",
+    "coverageGapIdentified": "New Coverage Gap Identified",
+    "claimStatusUpdated": "Claim Status Updated",
+    "appointmentReminder": "Appointment Reminder",
+    "newLoginDetected": "New Login Detected",
+    "specialOffer": "Special Offer"
+  },
+  "recommendations": {
+    "addDentalCoverage": "Add Dental Coverage",
+    "addDentalRider": "Add Dental Rider",
+    "increaseLifeInsurance": "Increase Life Insurance Coverage",
+    "upgradeLifeInsurance": "Upgrade Life Insurance",
+    "bundleDiscount": "Bundle Discount Available",
+    "reviewBundling": "Review Bundling Option",
+    "petInsuranceAdded": "Pet Insurance Recently Added",
+    "explorePetInsurance": "Explore Pet Insurance",
+    "renewalQuotes": "Get Renewal Quotes",
+    "maxWellnessBenefits": "Maximize Wellness Benefits",
+    "claimWellnessBenefit": "Claim Wellness Benefit",
+    "coversVeterinaryEmergencies": "Covers veterinary emergencies and routine care"
+  },
+  "time": {
+    "perYear": "/year",
+    "perMonth": "/month",
+    "timesPerYear": "times/year"
+  },
+  "coverage": {
+    "addDentalRider": "Add Dental Rider",
+    "instantActivation": "Instant activation",
+    "buyNowStartCoverage": "Buy now and start coverage immediately",
+    "chooseYourPlan": "Choose Your Plan",
+    "monthly": "Monthly",
+    "noCommitmentCancelAnytime": "No commitment, cancel anytime",
+    "sixMonths": "6 Months",
+    "yearly": "Yearly",
+    "total": "Total",
+    "monthlyAvg": "/month avg",
+    "save": "Save"
+  },
   "gapAnalysis": {
     "lifeInsurance": "Life Insurance",
     "lifeInsuranceDesc": "You have dependents or family obligations without life insurance protection",

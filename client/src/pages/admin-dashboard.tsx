@@ -160,9 +160,9 @@ export default function AdminDashboard() {
       {/* Alerts & Actions */}
       <Tabs defaultValue="alerts" className="space-y-4">
         <TabsList>
-          <TabsTrigger value="alerts">System Alerts</TabsTrigger>
-          <TabsTrigger value="compliance">Compliance</TabsTrigger>
-          <TabsTrigger value="reports">Reports</TabsTrigger>
+          <TabsTrigger value="alerts">{ t("tabs.systemAlerts") }</TabsTrigger>
+          <TabsTrigger value="compliance">{ t("tabs.compliance") }</TabsTrigger>
+          <TabsTrigger value="reports">{ t("tabs.reports") }</TabsTrigger>
         </TabsList>
 
         <TabsContent value="alerts" className="space-y-4">

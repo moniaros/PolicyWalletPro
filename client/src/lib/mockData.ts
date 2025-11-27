@@ -74,7 +74,7 @@ export const policies = [
         "Maternity Benefit": "€3,000 per delivery",
         "Dental (Accident/Emergency)": "€500 per year",
         "Optical Hardware": "€200 per 24 months",
-        "Physiotherapy": "15 sessions/year",
+        "Physiotherapy": "15 sessions{ t('time.perYear') }",
         "Geographic Scope": "Worldwide (USA/Canada included)"
       },
       gapAnalysis: {
