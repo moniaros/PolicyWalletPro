@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import { policies, inNetworkServices } from "@/lib/mockData";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -12,17 +12,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogDescription,
 } from "@/components/ui/dialog";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { Calendar as CalendarIcon, MapPin, Clock, Plus, Phone, ArrowRight, Check, Trash2, Edit2 } from "lucide-react";
+import { Calendar as CalendarIcon, MapPin, Clock, Plus, Phone, Trash2, Edit2 } from "lucide-react";
 import { toast } from "sonner";
 
 interface BookedAppointment {
@@ -42,18 +34,15 @@ export default function AppointmentsPage() {
   const { t } = useTranslation();
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [bookedAppointments, setBookedAppointments] = useState<BookedAppointment[]>([]);
-  
-  // Wizard steps
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [selectedPolicy, setSelectedPolicy] = useState<typeof policies[0] | null>(null);
   const [selectedService, setSelectedService] = useState<any | null>(null);
   const [appointmentDate, setAppointmentDate] = useState("");
   const [appointmentTime, setAppointmentTime] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  
-  // Edit/Reschedule mode
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [cancellingId, setCancellingId] = useState<string | null>(null);
+  const [cancelConfirmOpen, setCancelConfirmOpen] = useState(false);
+  const [appointmentToCancel, setAppointmentToCancel] = useState<BookedAppointment | null>(null);
 
   useEffect(() => {
     const saved = localStorage.getItem("policyguard_booked_appointments");
@@ -121,21 +110,14 @@ export default function AppointmentsPage() {
     }
 
     if (editingId) {
-      // Update existing
       const updated = bookedAppointments.map(apt =>
         apt.id === editingId
-          ? {
-              ...apt,
-              date: appointmentDate,
-              time: appointmentTime,
-              status: "confirmed" as const,
-            }
+          ? { ...apt, date: appointmentDate, time: appointmentTime, status: "confirmed" as const }
           : apt
       );
       saveAppointments(updated);
       toast.success(t("appointments.appointmentUpdated") || "Appointment rescheduled!");
     } else {
-      // Create new
       const newAppointment: BookedAppointment = {
         id: Date.now().toString(),
         policyId: selectedPolicy!.id,
@@ -157,13 +139,21 @@ export default function AppointmentsPage() {
     setEditingId(null);
   };
 
-  const handleCancelAppointment = (id: string) => {
-    const updated = bookedAppointments.map(apt =>
-      apt.id === id ? { ...apt, status: "cancelled" as const } : apt
-    );
-    saveAppointments(updated);
-    setCancellingId(null);
-    toast.success(t("appointments.appointmentCancelled") || "Appointment cancelled");
+  const handleCancelAppointment = (apt: BookedAppointment) => {
+    setAppointmentToCancel(apt);
+    setCancelConfirmOpen(true);
+  };
+
+  const confirmCancel = () => {
+    if (appointmentToCancel) {
+      const updated = bookedAppointments.map(apt =>
+        apt.id === appointmentToCancel.id ? { ...apt, status: "cancelled" as const } : apt
+      );
+      saveAppointments(updated);
+      toast.success(t("appointments.appointmentCancelled") || "Appointment cancelled");
+    }
+    setCancelConfirmOpen(false);
+    setAppointmentToCancel(null);
   };
 
   const handleCallProvider = (phone: string) => {
@@ -193,60 +183,53 @@ export default function AppointmentsPage() {
             </Button>
           </DialogTrigger>
           
-          {/* WIZARD DIALOG */}
           <DialogContent className="sm:max-w-[600px]">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <div className="flex items-center justify-center w-8 h-8 bg-primary text-white rounded-full text-sm font-bold">
+                  {step}
+                </div>
+                {step === 1 && (t("appointments.selectPolicy") || "Select Your Policy")}
+                {step === 2 && (t("appointments.selectService") || "Select Service")}
+                {step === 3 && (editingId ? t("appointments.reschedule") : t("appointments.scheduleDateTime") || "Schedule Date & Time")}
+                {step === 2 && selectedPolicy && <span className="text-primary ml-2">({selectedPolicy.type})</span>}
+              </DialogTitle>
+              <DialogDescription className="sr-only">Booking wizard step {step}</DialogDescription>
+            </DialogHeader>
+
             {/* STEP 1: SELECT POLICY */}
             {step === 1 && (
-              <>
-                <DialogHeader>
-                  <DialogTitle className="flex items-center gap-2">
-                    <div className="flex items-center justify-center w-8 h-8 bg-primary text-white rounded-full text-sm font-bold">
-                      1
-                    </div>
-                    {t("appointments.selectPolicy") || "Select Your Policy"}
-                  </DialogTitle>
-                </DialogHeader>
-                <div className="space-y-3 py-4">
-                  {policies.map((policy) => (
-                    <Card
-                      key={policy.id}
-                      className="cursor-pointer border-2 hover:border-primary transition-colors"
-                      onClick={() => handlePolicySelect(policy)}
-                      data-testid={`card-policy-${policy.id}`}
-                    >
-                      <CardContent className="p-4 flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <div className={`p-3 rounded-lg ${policy.color}`}>
-                            {policy.icon && <policy.icon className="h-6 w-6" />}
-                          </div>
-                          <div>
-                            <h3 className="font-semibold">{policy.type}</h3>
-                            <p className="text-sm text-muted-foreground">{policy.provider}</p>
-                            <p className="text-xs text-muted-foreground mt-1">{policy.policyNumber}</p>
-                          </div>
+              <div className="space-y-3 py-4">
+                {policies.map((policy) => (
+                  <Card
+                    key={policy.id}
+                    className="cursor-pointer border-2 hover:border-primary transition-colors"
+                    onClick={() => handlePolicySelect(policy)}
+                    data-testid={`card-policy-${policy.id}`}
+                  >
+                    <CardContent className="p-4 flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className={`p-3 rounded-lg ${policy.color}`}>
+                          {policy.icon && <policy.icon className="h-6 w-6" />}
                         </div>
-                        <Badge variant={policy.status === "Active" ? "default" : "secondary"}>
-                          {policy.status}
-                        </Badge>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </>
+                        <div>
+                          <h3 className="font-semibold">{policy.type}</h3>
+                          <p className="text-sm text-muted-foreground">{policy.provider}</p>
+                          <p className="text-xs text-muted-foreground mt-1">{policy.policyNumber}</p>
+                        </div>
+                      </div>
+                      <Badge variant={policy.status === "Active" ? "default" : "secondary"}>
+                        {policy.status}
+                      </Badge>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             )}
 
             {/* STEP 2: SELECT SERVICE */}
             {step === 2 && selectedPolicy && (
               <>
-                <DialogHeader>
-                  <DialogTitle className="flex items-center gap-2">
-                    <div className="flex items-center justify-center w-8 h-8 bg-primary text-white rounded-full text-sm font-bold">
-                      2
-                    </div>
-                    {t("appointments.selectService") || "Select Service"}
-                    <span className="text-primary ml-2">({selectedPolicy.type})</span>
-                  </DialogTitle>
-                </DialogHeader>
                 <div className="space-y-3 py-4 max-h-96 overflow-y-auto">
                   {getServicesForPolicy().map((service: any) => (
                     <Card
@@ -258,27 +241,15 @@ export default function AppointmentsPage() {
                       <CardContent className="p-4">
                         <h3 className="font-semibold mb-2">{service.name}</h3>
                         <div className="space-y-1 text-sm text-muted-foreground">
-                          <p className="flex items-center gap-2">
-                            <span className="font-semibold text-foreground">{service.provider}</span>
-                          </p>
-                          <p className="flex items-center gap-2">
-                            <MapPin className="h-4 w-4" />
-                            {service.location}
-                          </p>
-                          <p className="flex items-center gap-2">
-                            <Phone className="h-4 w-4" />
-                            {service.phone}
-                          </p>
+                          <p><strong>{service.provider}</strong></p>
+                          <p className="flex items-center gap-2"><MapPin className="h-4 w-4" />{service.location}</p>
+                          <p className="flex items-center gap-2"><Phone className="h-4 w-4" />{service.phone}</p>
                         </div>
                       </CardContent>
                     </Card>
                   ))}
                 </div>
-                <Button
-                  variant="outline"
-                  onClick={() => setStep(1)}
-                  className="w-full"
-                >
+                <Button variant="outline" onClick={() => setStep(1)} className="w-full">
                   ← {t("common.back")}
                 </Button>
               </>
@@ -287,34 +258,15 @@ export default function AppointmentsPage() {
             {/* STEP 3: SELECT DATE & TIME */}
             {step === 3 && selectedPolicy && selectedService && (
               <>
-                <DialogHeader>
-                  <DialogTitle className="flex items-center gap-2">
-                    <div className="flex items-center justify-center w-8 h-8 bg-primary text-white rounded-full text-sm font-bold">
-                      3
-                    </div>
-                    {editingId ? t("appointments.reschedule") : t("appointments.scheduleDateTime") || "Schedule Date & Time"}
-                  </DialogTitle>
-                </DialogHeader>
                 <div className="space-y-6 py-4">
-                  {/* Confirmation Summary */}
                   <Card className="border-primary/20 bg-primary/5">
-                    <CardContent className="p-4 space-y-2">
-                      <div>
-                        <p className="text-xs text-muted-foreground">{t("appointments.policy")}</p>
-                        <p className="font-semibold text-sm">{selectedPolicy.type}</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground">{t("appointments.service")}</p>
-                        <p className="font-semibold text-sm">{selectedService.name}</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground">{t("appointments.provider")}</p>
-                        <p className="font-semibold text-sm">{selectedService.provider}</p>
-                      </div>
+                    <CardContent className="p-4 space-y-2 text-sm">
+                      <div><p className="text-xs text-muted-foreground">{t("appointments.policy")}</p><p className="font-semibold">{selectedPolicy.type}</p></div>
+                      <div><p className="text-xs text-muted-foreground">{t("appointments.service")}</p><p className="font-semibold">{selectedService.name}</p></div>
+                      <div><p className="text-xs text-muted-foreground">{t("appointments.provider")}</p><p className="font-semibold">{selectedService.provider}</p></div>
                     </CardContent>
                   </Card>
 
-                  {/* Calendar */}
                   <div className="bg-white p-3 rounded-lg border flex justify-center">
                     <DayPicker
                       mode="single"
@@ -332,7 +284,6 @@ export default function AppointmentsPage() {
                     />
                   </div>
 
-                  {/* Time Input */}
                   <div className="space-y-2">
                     <label className="text-sm font-semibold">{t("appointments.appointmentTime")}</label>
                     <input
@@ -344,21 +295,12 @@ export default function AppointmentsPage() {
                     />
                   </div>
 
-                  {/* Action Buttons */}
                   <div className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      onClick={() => setStep(2)}
-                      className="flex-1"
-                    >
+                    <Button variant="outline" onClick={() => setStep(2)} className="flex-1">
                       ← {t("common.back")}
                     </Button>
-                    <Button
-                      onClick={handleConfirmAppointment}
-                      className="flex-1 shadow-lg shadow-primary/20"
-                    >
-                      <Check className="h-4 w-4 mr-2" />
-                      {editingId ? t("appointments.reschedule") : t("appointments.confirmBooking") || "Confirm Booking"}
+                    <Button onClick={handleConfirmAppointment} className="flex-1 shadow-lg shadow-primary/20">
+                      {editingId ? t("appointments.reschedule") : t("appointments.confirmBooking") || "Confirm"}
                     </Button>
                   </div>
                 </div>
@@ -372,7 +314,6 @@ export default function AppointmentsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left: Calendar & Stats */}
         <div className="lg:col-span-1 space-y-6">
-          {/* Calendar */}
           <Card className="border-0 shadow-sm bg-gradient-to-br from-primary/5 to-transparent">
             <CardContent className="p-4">
               <div className="flex justify-center">
@@ -381,20 +322,17 @@ export default function AppointmentsPage() {
                   selected={selectedDate}
                   onSelect={setSelectedDate}
                   className="p-0"
-                  modifiersClassNames={{
-                    selected: "bg-primary text-white rounded-md",
-                  }}
+                  modifiersClassNames={{ selected: "bg-primary text-white rounded-md" }}
                 />
               </div>
             </CardContent>
           </Card>
 
-          {/* Stats */}
           <div className="grid grid-cols-2 gap-3">
             <Card className="border-0 shadow-sm">
               <CardContent className="p-4 text-center">
                 <div className="text-2xl font-bold text-primary">{activeAppointments.length}</div>
-                <p className="text-xs text-muted-foreground">{t("appointments.total")}</p>
+                <p className="text-xs text-muted-foreground">{t("appointments.total") || "Total"}</p>
               </CardContent>
             </Card>
             <Card className="border-0 shadow-sm">
@@ -428,7 +366,6 @@ export default function AppointmentsPage() {
                 >
                   <CardContent className="p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div className="flex items-start gap-4 flex-1">
-                      {/* Date Badge */}
                       <div className="bg-gradient-to-br from-blue-50 to-blue-100 text-blue-600 p-3 rounded-xl flex flex-col items-center justify-center min-w-[70px] shadow-sm">
                         <span className="text-xs font-bold uppercase">
                           {new Date(apt.date).toLocaleString("en-US", { month: "short" })}
@@ -436,19 +373,15 @@ export default function AppointmentsPage() {
                         <span className="text-2xl font-bold">{new Date(apt.date).getDate()}</span>
                       </div>
 
-                      {/* Info */}
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2 flex-wrap">
                           <h3 className="font-bold text-lg">{apt.serviceName}</h3>
-                          <Badge variant="secondary" className="text-xs h-6">
-                            {apt.policyType}
-                          </Badge>
+                          <Badge variant="secondary" className="text-xs h-6">{apt.policyType}</Badge>
                           <Badge className="text-xs h-6 bg-emerald-100 text-emerald-800">
-                            {apt.status === "confirmed" ? "✓ Confirmed" : "Pending"}
+                            {apt.status === "confirmed" ? "✓ " : ""}{t(`appointments.${apt.status}`) || apt.status}
                           </Badge>
                         </div>
                         <p className="text-sm font-semibold text-foreground mb-2">{apt.provider}</p>
-
                         <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
                           <span className="flex items-center gap-2 bg-muted/50 px-3 py-1 rounded-lg">
                             <Clock className="h-4 w-4" /> {apt.time}
@@ -460,62 +393,16 @@ export default function AppointmentsPage() {
                       </div>
                     </div>
 
-                    {/* Actions */}
                     <div className="flex sm:flex-col gap-2 sm:items-end">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleCallProvider(apt.phone)}
-                        className="flex-1 sm:flex-none"
-                        data-testid="button-call-provider"
-                      >
-                        <Phone className="h-4 w-4 mr-1" />
-                        Call
+                      <Button size="sm" variant="outline" onClick={() => handleCallProvider(apt.phone)} data-testid="button-call-provider">
+                        <Phone className="h-4 w-4 mr-1" /> Call
                       </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleRescheduleClick(apt)}
-                        className="flex-1 sm:flex-none"
-                        data-testid="button-reschedule"
-                      >
-                        <Edit2 className="h-4 w-4 mr-1" />
-                        Reschedule
+                      <Button size="sm" variant="outline" onClick={() => handleRescheduleClick(apt)} data-testid="button-reschedule">
+                        <Edit2 className="h-4 w-4 mr-1" /> Reschedule
                       </Button>
-                      <AlertDialog open={cancellingId === apt.id} onOpenChange={(open) => setCancellingId(open ? apt.id : null)}>
-                        <AlertDialogAction onClick={() => setCancellingId(apt.id)} asChild>
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            className="flex-1 sm:flex-none text-red-600 hover:text-red-700 hover:bg-red-50"
-                            data-testid="button-cancel-appointment"
-                          >
-                            <Trash2 className="h-4 w-4 mr-1" />
-                            Cancel
-                          </Button>
-                        </AlertDialogAction>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>{t("appointments.cancelConfirm") || "Cancel Appointment?"}</AlertDialogTitle>
-                            <AlertDialogDescription>
-                              {t("appointments.cancelMessage") || "Are you sure you want to cancel this appointment?"}
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <div className="space-y-2 my-4 p-3 bg-muted rounded-lg">
-                            <p className="text-sm"><strong>{apt.serviceName}</strong></p>
-                            <p className="text-xs text-muted-foreground">{apt.provider} • {apt.date} at {apt.time}</p>
-                          </div>
-                          <div className="flex gap-2">
-                            <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
-                            <AlertDialogAction
-                              onClick={() => handleCancelAppointment(apt.id)}
-                              className="bg-red-600 hover:bg-red-700"
-                            >
-                              {t("appointments.confirm") || "Cancel Appointment"}
-                            </AlertDialogAction>
-                          </div>
-                        </AlertDialogContent>
-                      </AlertDialog>
+                      <Button size="sm" variant="ghost" className="text-red-600 hover:text-red-700 hover:bg-red-50" onClick={() => handleCancelAppointment(apt)} data-testid="button-cancel-appointment">
+                        <Trash2 className="h-4 w-4 mr-1" /> Cancel
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -524,6 +411,33 @@ export default function AppointmentsPage() {
           )}
         </div>
       </div>
+
+      {/* Cancel Confirmation Dialog */}
+      <Dialog open={cancelConfirmOpen} onOpenChange={setCancelConfirmOpen}>
+        <DialogContent className="sm:max-w-[400px]">
+          <DialogHeader>
+            <DialogTitle>{t("appointments.cancelConfirm") || "Cancel Appointment?"}</DialogTitle>
+            <DialogDescription>
+              {t("appointments.cancelMessage") || "Are you sure you want to cancel this appointment?"}
+            </DialogDescription>
+          </DialogHeader>
+          {appointmentToCancel && (
+            <div className="space-y-2 my-4 p-3 bg-muted rounded-lg">
+              <p className="text-sm font-semibold">{appointmentToCancel.serviceName}</p>
+              <p className="text-xs text-muted-foreground">{appointmentToCancel.provider}</p>
+              <p className="text-xs text-muted-foreground">{appointmentToCancel.date} at {appointmentToCancel.time}</p>
+            </div>
+          )}
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={() => setCancelConfirmOpen(false)} className="flex-1">
+              {t("common.cancel")}
+            </Button>
+            <Button onClick={confirmCancel} className="flex-1 bg-red-600 hover:bg-red-700" data-testid="button-confirm-cancel">
+              {t("appointments.confirm") || "Cancel Appointment"}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
