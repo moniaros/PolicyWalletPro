@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { MessageSquare, X, Send, Bot, Sparkles, Minimize2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,6 +16,7 @@ type Message = {
 };
 
 export function Chatbot() {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
@@ -22,8 +24,7 @@ export function Chatbot() {
     {
       id: "1",
       role: "bot",
-      content:
-        "Hi Alex! I'm your PolicyWallet AI assistant. I can help you check your coverage, file a claim, or find an agent. How can I help you today?",
+      content: t('chatbot.greeting'),
       timestamp: new Date(),
     },
   ]);

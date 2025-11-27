@@ -266,17 +266,24 @@ export default function ProfilePage() {
           </div>
 
           <div className="space-y-3">
-            <Label>Occupation Risk Level</Label>
+            <Label>{t('chatbot.occupationRiskLevel')}</Label>
             <RadioGroup value={profile.occupationRisk} onValueChange={(value) => handleInputChange("occupationRisk", value)}>
               <div className="space-y-2">
-                {["Low risk (office work)", "Medium risk (mixed activities)", "High risk (physical/travel)"].map((risk) => (
-                  <div key={risk} className="flex items-center space-x-2">
-                    <RadioGroupItem value={risk} id={`risk-${risk}`} />
-                    <Label htmlFor={`risk-${risk}`} className="cursor-pointer">
-                      {risk}
-                    </Label>
-                  </div>
-                ))}
+                {["Low risk (office work)", "Medium risk (mixed activities)", "High risk (physical/travel)"].map((risk) => {
+                  const riskMap: {[key: string]: string} = {
+                    "Low risk (office work)": t('gapAnalysisQuestions.lowRiskOffice'),
+                    "Medium risk (mixed activities)": t('gapAnalysisQuestions.mediumRiskMixed'),
+                    "High risk (physical/travel)": t('gapAnalysisQuestions.highRiskPhysical'),
+                  };
+                  return (
+                    <div key={risk} className="flex items-center space-x-2">
+                      <RadioGroupItem value={risk} id={`risk-${risk}`} />
+                      <Label htmlFor={`risk-${risk}`} className="cursor-pointer">
+                        {riskMap[risk] || risk}
+                      </Label>
+                    </div>
+                  );
+                })}
               </div>
             </RadioGroup>
           </div>
@@ -286,30 +293,39 @@ export default function ProfilePage() {
       {/* Life Stage & Coverage */}
       <Card>
         <CardHeader>
-          <CardTitle>Life Stage & Coverage</CardTitle>
-          <CardDescription>Help identify insurance gaps</CardDescription>
+          <CardTitle>{t('chatbot.lifeStageAndCoverage')}</CardTitle>
+          <CardDescription>{t('chatbot.helpIdentifyGaps')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-3">
-            <Label>Life Stage Factors</Label>
+            <Label>{t('chatbot.lifeStageFactors')}</Label>
             <div className="space-y-2">
-              {["First home purchase planned", "Young children", "Mortgage holder", "High debt", "Business owner"].map((factor) => (
-                <div key={factor} className="flex items-center space-x-2">
-                  <Checkbox
-                    id={`factor-${factor}`}
-                    checked={profile.lifeStageFactors.includes(factor)}
-                    onCheckedChange={(checked) => handleCheckboxChange("lifeStageFactors", factor, !!checked)}
-                  />
-                  <Label htmlFor={`factor-${factor}`} className="cursor-pointer">
-                    {factor}
-                  </Label>
-                </div>
-              ))}
+              {["First home purchase planned", "Young children", "Mortgage holder", "High debt", "Business owner"].map((factor) => {
+                const factorMap: {[key: string]: string} = {
+                  "First home purchase planned": t('gapAnalysisQuestions.firstHomePurchase'),
+                  "Young children": t('gapAnalysisQuestions.youngChildren'),
+                  "Mortgage holder": t('gapAnalysisQuestions.mortgageHolder'),
+                  "High debt": t('gapAnalysisQuestions.highDebt'),
+                  "Business owner": t('gapAnalysisQuestions.businessOwner'),
+                };
+                return (
+                  <div key={factor} className="flex items-center space-x-2">
+                    <Checkbox
+                      id={`factor-${factor}`}
+                      checked={profile.lifeStageFactors.includes(factor)}
+                      onCheckedChange={(checked) => handleCheckboxChange("lifeStageFactors", factor, !!checked)}
+                    />
+                    <Label htmlFor={`factor-${factor}`} className="cursor-pointer">
+                      {factorMap[factor] || factor}
+                    </Label>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
           <div className="space-y-3">
-            <Label>Current Insurance Coverage</Label>
+            <Label>{t('chatbot.currentCoverage')}</Label>
             <div className="space-y-2">
               {["Health", "Auto", "Home", "Life", "Disability", "Travel", "Pet", "Umbrella/Liability"].map((coverage) => (
                 <div key={coverage} className="flex items-center space-x-2">
