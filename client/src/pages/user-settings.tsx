@@ -43,6 +43,7 @@ import {
   INSURANCE_QUESTIONNAIRE,
   TRUST_BUILDING_INSIGHTS,
 } from "@/lib/insurance-analyst-data";
+import { NotificationsPreferences } from "@/components/notifications-preferences";
 
 export default function UserSettingsPage() {
   const { t } = useTranslation();
@@ -245,12 +246,13 @@ export default function UserSettingsPage() {
 
       <Tabs defaultValue="personal" className="space-y-4">
         <TabsList
-          className="grid w-full grid-cols-4"
+          className="grid w-full grid-cols-5"
           data-testid="settings-tabs"
         >
           <TabsTrigger value="personal">Personal</TabsTrigger>
           <TabsTrigger value="security">Security</TabsTrigger>
           <TabsTrigger value="preferences">Preferences</TabsTrigger>
+          <TabsTrigger value="notifications">Notifications</TabsTrigger>
           <TabsTrigger value="insurance">Insurance</TabsTrigger>
         </TabsList>
 
@@ -728,6 +730,11 @@ export default function UserSettingsPage() {
               </Button>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        {/* NOTIFICATIONS */}
+        <TabsContent value="notifications" className="space-y-4">
+          <NotificationsPreferences />
         </TabsContent>
 
         {/* INSURANCE PROFILE (Gap Analysis) */}
