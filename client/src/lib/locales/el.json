@@ -1002,6 +1002,24 @@
     "searchDocuments": "Αναζήτηση εγγράφων...",
     "pasteFindings": "Επικολλήστε ευρήματα, μετρήσεις ή βασικά αποτελέσματα..."
   },
+  "messages": {
+    "noActiveClaims": "Δεν υπάρχουν ενεργές αξιώσεις. Είστε σε καλή κατάσταση!",
+    "noDocumentsFound": "Δεν βρέθηκαν έγγραφα.",
+    "noCheckupsMessage": "Δεν έχουν ανεβαστεί έλεγχοι ακόμα. Ανεβάστε το πρώτο αποτέλεσμα ελέγχου για να ξεκινήσετε.",
+    "gdprCompliance": "Συμμόρφωση GDPR: Όλες οι πολιτικές διατήρησης δεδομένων ενημερώθηκαν. Τελευταίος έλεγχος: 15 Νοεμβρίου 2025"
+  },
+  "settings": {
+    "notifications": "Ειδοποιήσεις",
+    "smsNotifications": "Ειδοποιήσεις SMS",
+    "doNotDisturb": "Μην Ενοχλείτε"
+  },
+  "languages": {
+    "english": "English",
+    "greek": "Ελληνικά (Greek)",
+    "deutsch": "Deutsch (German)",
+    "french": "Français (French)",
+    "italian": "Italiano (Italian)"
+  },
   "gapAnalysis": {
     "lifeInsurance": "Ασφάλεια Ζωής",
     "lifeInsuranceDesc": "Έχετε εξαρτώμενα ή οικογενειακές υποχρεώσεις χωρίς προστασία ασφάλειας ζωής",

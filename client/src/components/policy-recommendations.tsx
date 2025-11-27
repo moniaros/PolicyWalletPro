@@ -41,7 +41,7 @@ export function PolicyRecommendations({ analysis, onContactAgent }: PolicyRecomm
       </Card>
 
       {/* Coverage Score */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Card>
           <CardContent className="pt-6">
             <div className="text-center space-y-2">

@@ -916,6 +916,24 @@
     "searchDocuments": "Search documents...",
     "pasteFindings": "Paste findings, measurements, or key results..."
   },
+  "messages": {
+    "noActiveClaims": "No active claims. You're all good!",
+    "noDocumentsFound": "No documents found.",
+    "noCheckupsMessage": "No checkups uploaded yet. Upload your first checkup result to get started.",
+    "gdprCompliance": "GDPR Compliance: All data retention policies updated. Last audit: Nov 15, 2025"
+  },
+  "settings": {
+    "notifications": "Notifications",
+    "smsNotifications": "SMS Notifications",
+    "doNotDisturb": "Do Not Disturb"
+  },
+  "languages": {
+    "english": "English",
+    "greek": "Ελληνικά (Greek)",
+    "deutsch": "Deutsch (German)",
+    "french": "Français (French)",
+    "italian": "Italiano (Italian)"
+  },
   "gapAnalysis": {
     "lifeInsurance": "Life Insurance",
     "lifeInsuranceDesc": "You have dependents or family obligations without life insurance protection",

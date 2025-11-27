@@ -252,7 +252,7 @@ export default function UserSettingsPage() {
           <TabsTrigger value="personal">Personal</TabsTrigger>
           <TabsTrigger value="security">Security</TabsTrigger>
           <TabsTrigger value="preferences">Preferences</TabsTrigger>
-          <TabsTrigger value="notifications">Notifications</TabsTrigger>
+          <TabsTrigger value="notifications">{ t('settings.notifications') }</TabsTrigger>
           <TabsTrigger value="insurance">Insurance</TabsTrigger>
         </TabsList>
 
@@ -568,11 +568,11 @@ export default function UserSettingsPage() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="en">English</SelectItem>
-                    <SelectItem value="el">Ελληνικά (Greek)</SelectItem>
-                    <SelectItem value="de">Deutsch (German)</SelectItem>
-                    <SelectItem value="fr">Français (French)</SelectItem>
-                    <SelectItem value="it">Italiano (Italian)</SelectItem>
+                    <SelectItem value="en">{ t('languages.english') }</SelectItem>
+                    <SelectItem value="el">{ t('languages.greek') }</SelectItem>
+                    <SelectItem value="de">{ t('languages.deutsch') }</SelectItem>
+                    <SelectItem value="fr">{ t('languages.french') }</SelectItem>
+                    <SelectItem value="it">{ t('languages.italian') }</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

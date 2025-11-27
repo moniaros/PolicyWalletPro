@@ -102,7 +102,7 @@ export default function DocumentsPage() {
            {filteredDocs.length === 0 && (
               <div className="text-center py-12 text-muted-foreground">
                  <FolderOpen className="h-12 w-12 mx-auto mb-3 opacity-20" />
-                 <p>No documents found.</p>
+                 <p>{ t('messages.noDocumentsFound') }</p>
               </div>
            )}
         </TabsContent>

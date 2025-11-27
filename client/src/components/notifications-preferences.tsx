@@ -316,7 +316,7 @@ export function NotificationsPreferences() {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle>SMS Notifications</CardTitle>
+                  <CardTitle>{ t('settings.smsNotifications') }</CardTitle>
                   <CardDescription>
                     Receive critical alerts via SMS (additional charges may apply)
                   </CardDescription>
@@ -352,7 +352,7 @@ export function NotificationsPreferences() {
       {/* Do Not Disturb */}
       <Card>
         <CardHeader>
-          <CardTitle>Do Not Disturb</CardTitle>
+          <CardTitle>{ t('settings.doNotDisturb') }</CardTitle>
           <CardDescription>
             Pause notifications during specific hours
           </CardDescription>

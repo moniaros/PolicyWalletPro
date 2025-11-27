@@ -177,7 +177,7 @@ export default function ClaimsPage() {
             <Card className="bg-muted/20 border-dashed">
                <CardContent className="flex flex-col items-center justify-center py-12 text-muted-foreground">
                   <CheckCircle2 className="h-12 w-12 mb-3 opacity-20" />
-                  <p>No active claims. You're all good!</p>
+                  <p>{ t('messages.noActiveClaims') }</p>
                </CardContent>
             </Card>
          )}
