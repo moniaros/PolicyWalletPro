@@ -11,7 +11,7 @@ import { FormInputWithValidation } from "@/components/form-input-with-validation
 import { toast } from "sonner";
 
 const emailValidator = (email: string): string | null => {
-  if (!email) return "Email is required";
+  if (!email) return "Email is required"; 
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
     return "Please enter a valid email";
   return null;
@@ -88,7 +88,7 @@ export default function LoginPage() {
       localStorage.setItem("user_id", `user-${provider}-123`);
       
       toast.success(`${provider} Sign In`, {
-        description: `Connected via ${provider}. Welcome to PolicyWallet!`
+        description: t('login.connectedVia', { provider })
       });
       
       setLocation("/");
@@ -115,7 +115,7 @@ export default function LoginPage() {
             <div>
               <CardTitle className="text-3xl font-bold text-white">PolicyWallet</CardTitle>
               <CardDescription className="text-emerald-50 text-sm mt-1">
-                Your personal insurance wallet
+                {t('login.tagline')}
               </CardDescription>
             </div>
           </CardHeader>
@@ -197,7 +197,7 @@ export default function LoginPage() {
                     <div className="w-full border-t border-gray-300"></div>
                   </div>
                   <div className="relative flex justify-center text-xs">
-                    <span className="px-2 bg-white text-muted-foreground font-medium">{t('actions.orContinueWith')}</span>
+                    <span className="px-2 bg-white text-muted-foreground font-medium">{t('login.orContinueWith')}</span>
                   </div>
                 </div>
 
@@ -214,7 +214,7 @@ export default function LoginPage() {
                     {socialLoading === "Gmail" ? (
                       <>
                         <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                        Connecting...
+                        {t('login.connecting')}
                       </>
                     ) : (
                       <>
@@ -235,7 +235,7 @@ export default function LoginPage() {
                     {socialLoading === "Microsoft" ? (
                       <>
                         <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                        Connecting...
+                        {t('login.connecting')}
                       </>
                     ) : (
                       <>
@@ -261,7 +261,7 @@ export default function LoginPage() {
                     {socialLoading === "Apple" ? (
                       <>
                         <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                        Connecting...
+                        {t('login.connecting')}
                       </>
                     ) : (
                       <>
@@ -276,7 +276,7 @@ export default function LoginPage() {
                 <Alert className="bg-blue-50 border-blue-200 mt-6">
                   <Mail className="h-4 w-4 text-blue-600" />
                   <AlertDescription className="text-blue-700 text-xs">
-                    <strong>Demo credentials:</strong> demo@example.com / password
+                    <strong>{t('login.demoCredentials')}</strong> demo@example.com / password
                   </AlertDescription>
                 </Alert>
               </TabsContent>
@@ -292,24 +292,24 @@ export default function LoginPage() {
                   )}
 
                   <FormInputWithValidation
-                    label={t("ui.emailAddress")}
+                    label={t("actions.emailAddress")}
                     type="email"
                     placeholder="you@example.com"
                     value={email}
                     onChange={setEmail}
                     validator={emailValidator}
-                    hint="We'll use this to create your account"
+                    hint={t('login.accountHint')}
                     testId="input-email-signup"
                   />
 
                   <FormInputWithValidation
-                    label={t("ui.password")}
+                    label={t("login.password")}
                     type="password"
                     placeholder="••••••••"
                     value={password}
                     onChange={setPassword}
                     validator={passwordValidator}
-                    hint="Minimum 6 characters"
+                    hint={t('login.passwordMinimum')}
                     testId="input-password-signup"
                   />
 
@@ -326,10 +326,10 @@ export default function LoginPage() {
                     {mutation.isPending ? (
                       <>
                         <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                        Creating account...
+                        {t('login.creatingAccount')}
                       </>
                     ) : (
-                      "Create Account"
+                      t('login.createAccount')
                     )}
                   </Button>
                 </form>
@@ -340,7 +340,7 @@ export default function LoginPage() {
                     <div className="w-full border-t border-gray-300"></div>
                   </div>
                   <div className="relative flex justify-center text-xs">
-                    <span className="px-2 bg-white text-muted-foreground font-medium">or sign up with</span>
+                    <span className="px-2 bg-white text-muted-foreground font-medium">{t('login.orSignUpWith')}</span>
                   </div>
                 </div>
 
@@ -357,7 +357,7 @@ export default function LoginPage() {
                     {socialLoading === "Gmail" ? (
                       <>
                         <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                        Connecting...
+                        {t('login.connecting')}
                       </>
                     ) : (
                       <>
@@ -378,7 +378,7 @@ export default function LoginPage() {
                     {socialLoading === "Microsoft" ? (
                       <>
                         <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                        Connecting...
+                        {t('login.connecting')}
                       </>
                     ) : (
                       <>
@@ -404,7 +404,7 @@ export default function LoginPage() {
                     {socialLoading === "Apple" ? (
                       <>
                         <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                        Connecting...
+                        {t('login.connecting')}
                       </>
                     ) : (
                       <>

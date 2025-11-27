@@ -649,7 +649,17 @@
     "demoPassword": "Demo: password",
     "welcome": "Καλώς ήρθατε!",
     "signedIn": "Έχετε συνδεθεί επιτυχώς",
-    "accountCreated": "Ο λογαριασμός σας δημιουργήθηκε"
+    "accountCreated": "Ο λογαριασμός σας δημιουργήθηκε",
+    "tagline": "Το δικό σας προσωπικό ασφαλιστικό πορτοφόλι",
+    "demoCredentials": "Διαπιστευτήρια demo:",
+    "orSignUpWith": "ή εγγραφή με",
+    "orContinueWith": "ή συνεχίστε με",
+    "connecting": "Σύνδεση...",
+    "creatingAccount": "Δημιουργία λογαριασμού...",
+    "createAccount": "Δημιουργία Λογαριασμού",
+    "accountHint": "Θα τη χρησιμοποιήσουμε για να δημιουργήσουμε τον λογαριασμό σας",
+    "passwordMinimum": "Ελάχιστο 6 χαρακτήρες",
+    "connectedVia": "Συνδέθηκε μέσω {{provider}}. Καλώς ήρθατε στο PolicyWallet!"
   },
   "policyCard": {
     "insuredPerson": "Ασφαλισμένο Πρόσωπο",

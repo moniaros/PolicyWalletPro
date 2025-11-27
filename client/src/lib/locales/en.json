@@ -563,7 +563,17 @@
     "demoPassword": "Demo: password",
     "welcome": "Welcome!",
     "signedIn": "You're signed in successfully",
-    "accountCreated": "Your account has been created"
+    "accountCreated": "Your account has been created",
+    "tagline": "Your personal insurance wallet",
+    "demoCredentials": "Demo credentials:",
+    "orSignUpWith": "or sign up with",
+    "orContinueWith": "or continue with",
+    "connecting": "Connecting...",
+    "creatingAccount": "Creating account...",
+    "createAccount": "Create Account",
+    "accountHint": "We'll use this to create your account",
+    "passwordMinimum": "Minimum 6 characters",
+    "connectedVia": "Connected via {{provider}}. Welcome to PolicyWallet!"
   },
   "policyCard": {
     "insuredPerson": "Insured Person",
