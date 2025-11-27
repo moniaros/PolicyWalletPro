@@ -49,6 +49,8 @@ export default function AppointmentsPage() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [cancelConfirmOpen, setCancelConfirmOpen] = useState(false);
   const [appointmentToCancel, setAppointmentToCancel] = useState<BookedAppointment | null>(null);
+  const [filterStatus, setFilterStatus] = useState<"all" | "confirmed" | "pending" | "cancelled">("all");
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const saved = localStorage.getItem("policyguard_booked_appointments");
@@ -176,12 +178,25 @@ export default function AppointmentsPage() {
     window.location.href = `tel:${phone.replace(/\s/g, "")}`;
   };
 
-  const activeAppointments = bookedAppointments.filter(a => a.status !== "cancelled");
-  const sortedAppointments = activeAppointments.sort(
+  const activeAppointments = bookedAppointments.filter(a => filterStatus === "all" ? a.status !== "cancelled" : a.status === filterStatus);
+  
+  const filteredAppointments = activeAppointments.filter(apt => {
+    const query = searchQuery.toLowerCase();
+    return (
+      apt.serviceName.toLowerCase().includes(query) ||
+      apt.provider.toLowerCase().includes(query) ||
+      apt.location.toLowerCase().includes(query) ||
+      apt.policyType.toLowerCase().includes(query)
+    );
+  });
+
+  const sortedAppointments = filteredAppointments.sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
 
-  const upcomingAppointments = activeAppointments.filter(a => new Date(a.date) >= new Date()).length;
+  const upcomingAppointments = bookedAppointments.filter(a => a.status !== "cancelled" && new Date(a.date) >= new Date()).length;
+  const confirmedAppointments = bookedAppointments.filter(a => a.status === "confirmed").length;
+  
   const getDaysUntil = (date: string) => {
     const today = new Date();
     const appointmentDate = new Date(date);
@@ -396,6 +411,37 @@ export default function AppointmentsPage() {
         </Dialog>
       </div>
 
+      {/* Filters & Search */}
+      <Card className="border-0 shadow-sm">
+        <CardContent className="p-4 space-y-3">
+          <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+            <div className="flex-1">
+              <input
+                type="text"
+                placeholder={t("appointments.searchPlaceholder") || "Search by service, provider, or location..."}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
+                data-testid="input-search-appointments"
+              />
+            </div>
+            <div className="flex gap-2">
+              {(["all", "confirmed", "pending", "cancelled"] as const).map((status) => (
+                <Button
+                  key={status}
+                  size="sm"
+                  variant={filterStatus === status ? "default" : "outline"}
+                  onClick={() => setFilterStatus(status)}
+                  data-testid={`button-filter-${status}`}
+                >
+                  {t(`appointments.filter${status.charAt(0).toUpperCase() + status.slice(1)}`) || status}
+                </Button>
+              ))}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Main Content */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left: Calendar & Stats */}
@@ -417,16 +463,16 @@ export default function AppointmentsPage() {
           <div className="grid grid-cols-2 gap-3">
             <Card className="border-0 shadow-sm">
               <CardContent className="p-4 text-center">
-                <div className="text-2xl font-bold text-primary">{activeAppointments.length}</div>
+                <div className="text-2xl font-bold text-primary">{bookedAppointments.filter(a => a.status !== "cancelled").length}</div>
                 <p className="text-xs text-muted-foreground">{t("appointments.total") || "Total"}</p>
               </CardContent>
             </Card>
             <Card className="border-0 shadow-sm">
               <CardContent className="p-4 text-center">
                 <div className="text-2xl font-bold text-emerald-600">
-                  {upcomingAppointments}
+                  {confirmedAppointments}
                 </div>
-                <p className="text-xs text-muted-foreground">{t("appointments.upcoming") || "Upcoming"}</p>
+                <p className="text-xs text-muted-foreground">{t("appointments.confirmed")}</p>
               </CardContent>
             </Card>
           </div>

@@ -175,7 +175,12 @@
     "confirmDetails": "Confirm Details",
     "additionalInfo": "Additional Information",
     "updateAppointment": "Update Appointment",
-    "bookNow": "Book Now"
+    "bookNow": "Book Now",
+    "searchPlaceholder": "Search by service, provider, or location...",
+    "filterAll": "All",
+    "filterConfirmed": "Confirmed",
+    "filterPending": "Pending",
+    "filterCancelled": "Cancelled"
   },
   "analysis": {
     "title": "Gap Analysis",

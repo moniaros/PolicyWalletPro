@@ -177,7 +177,12 @@
     "confirmDetails": "Επιβεβαίωση Λεπτομερειών",
     "additionalInfo": "Πρόσθετες Πληροφορίες",
     "updateAppointment": "Ενημέρωση Ραντεβού",
-    "bookNow": "Κράτηση Τώρα"
+    "bookNow": "Κράτηση Τώρα",
+    "searchPlaceholder": "Αναζήτηση ανά υπηρεσία, πάροχο, ή τοποθεσία...",
+    "filterAll": "Όλα",
+    "filterConfirmed": "Επιβεβαιωμένα",
+    "filterPending": "Εκκρεμή",
+    "filterCancelled": "Ακυρωμένα"
   },
   "analysis": {
     "title": "Ανάλυση Ασφαλιστικού κενού",
