@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { ErrorBoundary } from "@/components/error-boundary";
 import { NetworkStatus } from "@/components/network-status";
 import Layout from "@/components/layout";
+import { Suspense } from "react";
 import Dashboard from "@/pages/dashboard";
 import ProfilePage from "@/pages/profile";
 import UserSettingsPage from "@/pages/user-settings";
@@ -58,9 +59,11 @@ function App() {
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider defaultTheme="system" storageKey="policy-guard-theme">
-          <NetworkStatus />
-          <Toaster />
-          <Router />
+          <Suspense fallback={<div>Loading...</div>}>
+            <NetworkStatus />
+            <Toaster />
+            <Router />
+          </Suspense>
         </ThemeProvider>
       </QueryClientProvider>
     </ErrorBoundary>

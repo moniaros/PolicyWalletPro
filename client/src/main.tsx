@@ -1,6 +1,7 @@
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import "./index.css";
+import "./lib/i18n";
 
 // Register service worker for offline support and caching
 if ("serviceWorker" in navigator && import.meta.env.PROD) {

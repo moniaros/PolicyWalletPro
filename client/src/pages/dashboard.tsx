@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { policies, notifications, appointments } from "@/lib/mockData";
 import PolicyCard from "@/components/policy-card";
 import { Button } from "@/components/ui/button";
@@ -7,6 +8,7 @@ import { Link } from "wouter";
 import { OnboardingModal } from "@/components/onboarding-modal";
 
 export default function Dashboard() {
+  const { t } = useTranslation();
   const [showOnboarding, setShowOnboarding] = useState(false);
   
   useEffect(() => {
@@ -30,18 +32,18 @@ export default function Dashboard() {
         <div className="relative z-10 space-y-4 max-w-lg">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white/90 text-xs font-medium backdrop-blur-sm border border-white/10">
             <Bell className="h-3 w-3" />
-            <span>You have {notifications.length} new updates</span>
+            <span>{t('dashboard.newUpdates', { count: notifications.length })}</span>
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold tracking-tight">Welcome back, Alex</h1>
-          <p className="text-white/80 text-lg">Your insurance health score is <span className="font-bold text-white">92/100</span>. You're well covered!</p>
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tight">{t('dashboard.welcomeBack', { name: 'Alex' })}</h1>
+          <p className="text-white/80 text-lg">{t('dashboard.healthScore')} <span className="font-bold text-white">92/100</span>. {t('dashboard.wellCovered')}</p>
           <div className="flex gap-3 pt-2">
             <Button className="bg-white text-primary hover:bg-white/90 shadow-sm border-0" data-testid="button-add-policy">
               <Plus className="h-4 w-4 mr-2" />
-              Add Policy
+              {t('common.addPolicy')}
             </Button>
             <Link href="/analysis">
               <Button variant="outline" className="bg-transparent border-white/30 text-white hover:bg-white/10 hover:text-white hover:border-white/50">
-                View Analysis
+                {t('dashboard.viewAnalysis')}
               </Button>
             </Link>
           </div>
@@ -53,10 +55,10 @@ export default function Dashboard() {
       <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-2 space-y-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold text-foreground">Active Policies</h2>
+            <h2 className="text-xl font-bold text-foreground">{t('dashboard.activePolicies')}</h2>
             <Link href="/policies">
               <a className="text-sm text-primary font-medium hover:underline flex items-center">
-                View All <ChevronRight className="h-4 w-4 ml-1" />
+                {t('common.viewAll')} <ChevronRight className="h-4 w-4 ml-1" />
               </a>
             </Link>
           </div>
@@ -69,13 +71,13 @@ export default function Dashboard() {
         </div>
 
         <div className="space-y-6">
-           <h2 className="text-xl font-bold text-foreground">Up Next</h2>
+           <h2 className="text-xl font-bold text-foreground">{t('dashboard.upNext')}</h2>
            <div className="bg-white rounded-2xl p-5 shadow-sm border border-muted space-y-4">
               <div className="flex items-center gap-3 text-primary">
                 <div className="bg-primary/10 p-2 rounded-lg">
                   <Calendar className="h-5 w-5" />
                 </div>
-                <span className="font-semibold">Upcoming Visit</span>
+                <span className="font-semibold">{t('dashboard.upcomingVisit')}</span>
               </div>
               
               <div>
@@ -93,13 +95,13 @@ export default function Dashboard() {
               </div>
 
               <Link href="/appointments">
-                <Button variant="outline" className="w-full text-xs">Reschedule</Button>
+                <Button variant="outline" className="w-full text-xs">{t('dashboard.reschedule')}</Button>
               </Link>
            </div>
 
            <div className="bg-emerald-50 rounded-2xl p-5 border border-emerald-100">
-              <h3 className="font-bold text-emerald-900 mb-1">Healthy Streak!</h3>
-              <p className="text-sm text-emerald-700 mb-3">You haven't made a claim in 12 months.</p>
+              <h3 className="font-bold text-emerald-900 mb-1">{t('dashboard.healthyStreak')}</h3>
+              <p className="text-sm text-emerald-700 mb-3">{t('dashboard.noClaimsMessage', { months: 12 })}</p>
               <div className="h-2 bg-emerald-200 rounded-full overflow-hidden">
                 <div className="h-full bg-emerald-500 w-[80%] rounded-full"></div>
               </div>

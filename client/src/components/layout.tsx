@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "wouter";
+import { useTranslation } from "react-i18next";
 import {
   Home,
   FileText,
@@ -20,6 +21,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ModeToggle } from "@/components/mode-toggle";
+import { LanguageSelector } from "@/components/language-selector";
 import { Chatbot } from "@/components/chatbot";
 import {
   Dialog,
@@ -30,20 +32,21 @@ import {
 } from "@/components/ui/dialog";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
+  const { t } = useTranslation();
   const [location] = useLocation();
 
   const isAdmin = localStorage.getItem("user_role") === "admin";
 
   const navItems = [
-    { icon: Home, label: "Home", href: "/" },
-    { icon: FileText, label: "Policies", href: "/policies" },
-    { icon: Heart, label: "Wellness", href: "/health-wellness" },
-    { icon: ShieldAlert, label: "Claims", href: "/claims" },
-    { icon: FolderOpen, label: "Documents", href: "/documents" },
-    { icon: Calendar, label: "Visits", href: "/appointments" },
-    { icon: BarChart2, label: "Analysis", href: "/analysis" },
-    { icon: Users, label: "Agents", href: "/agents" },
-    { icon: Settings, label: "Settings", href: "/settings" },
+    { icon: Home, label: t('common.welcome'), href: "/" },
+    { icon: FileText, label: t('policies.title'), href: "/policies" },
+    { icon: Heart, label: t('wellness.title'), href: "/health-wellness" },
+    { icon: ShieldAlert, label: t('claims.title'), href: "/claims" },
+    { icon: FolderOpen, label: t('common.download'), href: "/documents" },
+    { icon: Calendar, label: t('appointments.title'), href: "/appointments" },
+    { icon: BarChart2, label: t('gapAnalysis.title'), href: "/analysis" },
+    { icon: Users, label: t('agents.title'), href: "/agents" },
+    { icon: Settings, label: t('common.settings'), href: "/settings" },
     ...(isAdmin ? [{ icon: Settings, label: "Admin", href: "/admin" }] : []),
   ];
 
@@ -68,9 +71,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <ScrollableNav navItems={navItems} location={location} />
 
         <div className="p-4 border-t border-border/50 space-y-4">
+          <LanguageSelector />
+          
           <div className="flex justify-between items-center px-2">
             <span className="text-xs font-medium text-muted-foreground">
-              Theme
+              {t('settings.theme')}
             </span>
             <ModeToggle />
           </div>
@@ -82,7 +87,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             data-testid="button-logout"
           >
             <LogOut className="h-4 w-4 mr-2" />
-            Logout
+            {t('auth.logout')}
           </Button>
 
           <Dialog>
