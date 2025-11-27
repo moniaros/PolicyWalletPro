@@ -170,8 +170,8 @@ export default function ProfilePage() {
       {/* Financial Information */}
       <Card>
         <CardHeader>
-          <CardTitle>Financial Information</CardTitle>
-          <CardDescription>Helps us recommend appropriate coverage levels</CardDescription>
+          <CardTitle>{t('sections.financialInformation')}</CardTitle>
+          <CardDescription>{t('sections.financialInformationDesc')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-3">
@@ -211,8 +211,8 @@ export default function ProfilePage() {
       {/* Health & Lifestyle */}
       <Card>
         <CardHeader>
-          <CardTitle>Health & Lifestyle</CardTitle>
-          <CardDescription>Impacts insurance needs and risk assessment</CardDescription>
+          <CardTitle>{t('sections.healthAndLifestyle')}</CardTitle>
+          <CardDescription>{t('sections.healthAndLifestyleDesc')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-3">

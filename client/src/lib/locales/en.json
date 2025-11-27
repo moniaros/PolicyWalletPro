@@ -875,6 +875,20 @@
     "occupationRisk": "Occupation Risk",
     "familyStatus": "Family Status"
   },
+  "sections": {
+    "personalDetails": "Personal Details",
+    "personalDetailsDesc": "Basic information about the insured",
+    "familyInformation": "Family Information",
+    "familyInformationDesc": "Describe your family status and obligations",
+    "financialInformation": "Financial Information",
+    "financialInformationDesc": "Helps us recommend appropriate coverage levels",
+    "healthAndLifestyle": "Health & Lifestyle",
+    "healthAndLifestyleDesc": "Impacts insurance needs and risk assessment",
+    "occupationAndRisk": "Occupation & Risk",
+    "occupationAndRiskDesc": "Important for accurate premium calculation",
+    "lifeStageRisks": "Life Stage Risk Factors",
+    "lifeStageRisksDesc": "Helps identify coverage gaps"
+  },
   "gapAnalysis": {
     "lifeInsurance": "Life Insurance",
     "lifeInsuranceDesc": "You have dependents or family obligations without life insurance protection",

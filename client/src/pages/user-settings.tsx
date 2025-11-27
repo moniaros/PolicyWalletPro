@@ -260,7 +260,7 @@ export default function UserSettingsPage() {
         <TabsContent value="personal" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Personal Information</CardTitle>
+              <CardTitle>{t('sections.personalDetails')}</CardTitle>
               <CardDescription>
                 Update your basic profile details
               </CardDescription>

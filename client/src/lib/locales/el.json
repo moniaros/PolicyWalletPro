@@ -966,6 +966,20 @@
     "occupationRisk": "Επαγγελματικός Κίνδυνος",
     "familyStatus": "Οικογενειακή Κατάσταση"
   },
+  "sections": {
+    "personalDetails": "Προσωπικές Λεπτομέρειες",
+    "personalDetailsDesc": "Βασικές πληροφορίες για τον ασφαλιστέο",
+    "familyInformation": "Πληροφορίες Οικογένειας",
+    "familyInformationDesc": "Περιγράψτε την οικογενειακή σας κατάσταση και τις υποχρεώσεις",
+    "financialInformation": "Χρηματοοικονομικές Πληροφορίες",
+    "financialInformationDesc": "Μας βοηθά να προτείνουμε κατάλληλα επίπεδα κάλυψης",
+    "healthAndLifestyle": "Υγεία & Τρόπος Ζωής",
+    "healthAndLifestyleDesc": "Επηρεάζει τις ανάγκες ασφάλειας και την αξιολόγηση κινδύνου",
+    "occupationAndRisk": "Επάγγελμα & Κίνδυνος",
+    "occupationAndRiskDesc": "Σημαντικό για ακριβή υπολογισμό ασφάλιστρων",
+    "lifeStageRisks": "Παράγοντες Σταδίου Ζωής",
+    "lifeStageRisksDesc": "Βοηθά να εντοπίσουμε χάσματα κάλυψης"
+  },
   "gapAnalysis": {
     "lifeInsurance": "Ασφάλεια Ζωής",
     "lifeInsuranceDesc": "Έχετε εξαρτώμενα ή οικογενειακές υποχρεώσεις χωρίς προστασία ασφάλειας ζωής",
