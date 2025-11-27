@@ -147,17 +147,17 @@ export default function BillingPage() {
     <div className="space-y-8 pb-10">
       {/* Header */}
       <div className="space-y-2">
-        <h1 className="text-4xl font-bold tracking-tight">Billing & Payments</h1>
+        <h1 className="text-4xl font-bold tracking-tight">{t('billing.billingPayments')}</h1>
         <p className="text-lg text-muted-foreground">
-          Manage your payments, view history, and track your premium costs
+          {t('billing.managementTracking')}
         </p>
       </div>
 
       <Tabs value={selectedTab} onValueChange={setSelectedTab} className="space-y-6">
         <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="history">Payment History</TabsTrigger>
-          <TabsTrigger value="methods">Payment Methods</TabsTrigger>
+          <TabsTrigger value="overview">{t('billing.overview')}</TabsTrigger>
+          <TabsTrigger value="history">{t('billing.paymentHistory')}</TabsTrigger>
+          <TabsTrigger value="methods">{t('billing.paymentMethods')}</TabsTrigger>
         </TabsList>
 
         {/* Overview Tab */}
@@ -168,9 +168,9 @@ export default function BillingPage() {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-blue-600 font-medium uppercase">Total Annual Premiums</p>
+                    <p className="text-sm text-blue-600 font-medium uppercase">{t('billing.totalAnnualPremiums')}</p>
                     <p className="text-3xl font-bold text-blue-900 mt-1">{billingData.overview.totalAnnualPremiums}</p>
-                    <p className="text-xs text-blue-700 mt-2">Average: {billingData.overview.monthlyAverage}/month</p>
+                    <p className="text-xs text-blue-700 mt-2">{t('billing.monthlyAverage')}: {billingData.overview.monthlyAverage}/month</p>
                   </div>
                   <DollarSign className="h-12 w-12 text-blue-400 opacity-50" />
                 </div>
@@ -181,7 +181,7 @@ export default function BillingPage() {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-emerald-600 font-medium uppercase">Paid This Year</p>
+                    <p className="text-sm text-emerald-600 font-medium uppercase">{t('billing.paidThisYear')}</p>
                     <p className="text-3xl font-bold text-emerald-900 mt-1">{billingData.overview.totalPaidThisYear}</p>
                     <p className="text-xs text-emerald-700 mt-2">12 payments completed</p>
                   </div>
@@ -194,7 +194,7 @@ export default function BillingPage() {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-amber-600 font-medium uppercase">Next Payment Due</p>
+                    <p className="text-sm text-amber-600 font-medium uppercase">{t('billing.nextPaymentDue')}</p>
                     <p className="text-2xl font-bold text-amber-900 mt-1">{billingData.overview.upcomingAmount}</p>
                     <p className="text-xs text-amber-700 mt-2">{billingData.overview.nextPaymentDue}</p>
                   </div>
@@ -209,7 +209,7 @@ export default function BillingPage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <BarChart3 className="h-5 w-5 text-primary" />
-                Premium Payment Trends
+                {t('billing.premiumPaymentTrends')}
               </CardTitle>
               <CardDescription>
                 Your 12-month payment history at a glance
@@ -245,14 +245,14 @@ export default function BillingPage() {
 
               <div className="grid grid-cols-2 gap-4 pt-4 border-t">
                 <div>
-                  <p className="text-xs text-muted-foreground uppercase">Year-over-Year Change</p>
+                  <p className="text-xs text-muted-foreground uppercase">{t('billing.yearOverYearChange')}</p>
                   <p className="text-lg font-bold text-emerald-600 flex items-center gap-1 mt-1">
                     <TrendingUp className="h-4 w-4" />
                     +2.5%
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground uppercase">Average Payment Delay</p>
+                  <p className="text-xs text-muted-foreground uppercase">{t('billing.averagePaymentDelay')}</p>
                   <p className="text-lg font-bold text-emerald-600 mt-1">0 days</p>
                 </div>
               </div>
@@ -263,11 +263,11 @@ export default function BillingPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Button className="w-full h-12 bg-primary" size="lg">
               <Download className="h-4 w-4 mr-2" />
-              Download Invoice
+              {t('billing.downloadInvoice')}
             </Button>
             <Button variant="outline" className="w-full h-12" size="lg">
               <CreditCard className="h-4 w-4 mr-2" />
-              Update Payment Method
+              {t('billing.updatePaymentMethod')}
             </Button>
           </div>
         </TabsContent>

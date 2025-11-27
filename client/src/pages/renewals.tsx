@@ -91,9 +91,9 @@ export default function RenewalsPage() {
     <div className="space-y-8 pb-10">
       {/* Header */}
       <div className="space-y-2">
-        <h1 className="text-4xl font-bold tracking-tight">Policy Renewals</h1>
+        <h1 className="text-4xl font-bold tracking-tight">{t('renewals.policyRenewals')}</h1>
         <p className="text-lg text-muted-foreground">
-          Track upcoming policy renewals and stay on top of your coverage
+          {t('renewals.trackRenewals')}
         </p>
       </div>
 
@@ -103,7 +103,7 @@ export default function RenewalsPage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-red-600 font-medium uppercase">Due This Month</p>
+                <p className="text-sm text-red-600 font-medium uppercase">{t('renewals.dueThisMonth')}</p>
                 <p className="text-3xl font-bold text-red-900 mt-1">2</p>
               </div>
               <AlertCircle className="h-12 w-12 text-red-400 opacity-50" />
@@ -115,7 +115,7 @@ export default function RenewalsPage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-yellow-600 font-medium uppercase">Upcoming (90 Days)</p>
+                <p className="text-sm text-yellow-600 font-medium uppercase">{t('renewals.upcoming90Days')}</p>
                 <p className="text-3xl font-bold text-yellow-900 mt-1">1</p>
               </div>
               <Calendar className="h-12 w-12 text-yellow-400 opacity-50" />
@@ -127,7 +127,7 @@ export default function RenewalsPage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-emerald-600 font-medium uppercase">Auto-Renew Enabled</p>
+                <p className="text-sm text-emerald-600 font-medium uppercase">{t('renewals.autoRenewEnabled')}</p>
                 <p className="text-3xl font-bold text-emerald-900 mt-1">3</p>
               </div>
               <CheckCircle2 className="h-12 w-12 text-emerald-400 opacity-50" />
@@ -139,10 +139,10 @@ export default function RenewalsPage() {
       {/* Renewals List */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold">Your Renewals</h2>
+          <h2 className="text-2xl font-bold">{t('renewals.policyRenewals')}</h2>
           <Badge variant="outline" className="text-sm">
             <Bell className="h-3 w-3 mr-1" />
-            Notifications Enabled
+            {t('notifications.title')}
           </Badge>
         </div>
 
@@ -167,8 +167,8 @@ export default function RenewalsPage() {
 
                     <div className="space-y-2">
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-muted-foreground">Days until renewal:</span>
-                        <span className="font-bold text-lg">{renewal.daysUntilRenewal} days</span>
+                        <span className="text-muted-foreground">{t('renewals.daysUntilRenewal')}</span>
+                        <span className="font-bold text-lg">{renewal.daysUntilRenewal} {t('renewals.daysUntilRenewal').split(' ').pop()}</span>
                       </div>
                       <Progress 
                         value={getProgressPercentage(renewal.daysUntilRenewal)} 
@@ -178,11 +178,11 @@ export default function RenewalsPage() {
 
                     <div className="grid grid-cols-2 gap-4 pt-2">
                       <div>
-                        <p className="text-xs text-muted-foreground uppercase">Renewal Date</p>
+                        <p className="text-xs text-muted-foreground uppercase">{t('renewals.renewalDate')}</p>
                         <p className="font-semibold text-sm">{format(renewal.renewalDate, 'MMM dd, yyyy')}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-muted-foreground uppercase">Premium</p>
+                        <p className="text-xs text-muted-foreground uppercase">{t('billing.amount')}</p>
                         <p className="font-semibold text-sm">{renewal.premium}</p>
                       </div>
                     </div>
@@ -194,15 +194,15 @@ export default function RenewalsPage() {
                       <div className="flex items-start gap-3">
                         <CheckCircle2 className="h-5 w-5 text-emerald-600 mt-0.5 flex-shrink-0" />
                         <div>
-                          <p className="text-sm font-medium">Auto-Renewal</p>
-                          <p className="text-xs text-muted-foreground">{renewal.autoRenew ? "Enabled - Will renew automatically" : "Disabled - Manual renewal required"}</p>
+                          <p className="text-sm font-medium">{t('renewals.autoRenewal')}</p>
+                          <p className="text-xs text-muted-foreground">{renewal.autoRenew ? t('notificationPreferences.alwaysOn') : "Manual renewal required"}</p>
                         </div>
                       </div>
 
                       <div className="flex items-start gap-3">
                         <DollarSign className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                         <div>
-                          <p className="text-sm font-medium">Payment Method</p>
+                          <p className="text-sm font-medium">{t('billing.paymentMethod')}</p>
                           <p className="text-xs text-muted-foreground">{renewal.paymentMethod}</p>
                         </div>
                       </div>
@@ -210,7 +210,7 @@ export default function RenewalsPage() {
                       <div className="flex items-start gap-3">
                         <Calendar className="h-5 w-5 text-blue-500 mt-0.5 flex-shrink-0" />
                         <div>
-                          <p className="text-sm font-medium">Last Renewed</p>
+                          <p className="text-sm font-medium">{t('renewals.lastRenewed')}</p>
                           <p className="text-xs text-muted-foreground">{format(new Date(renewal.lastRenewed), 'MMM dd, yyyy')}</p>
                         </div>
                       </div>
@@ -218,10 +218,10 @@ export default function RenewalsPage() {
 
                     <div className="flex gap-2 pt-2">
                       <Button variant="outline" className="flex-1 text-xs">
-                        View Policy
+                        {t('renewals.viewPolicy')}
                       </Button>
                       <Button className="flex-1 text-xs bg-primary">
-                        Renew Now
+                        {t('renewals.renewNow')}
                         <ArrowRight className="h-3 w-3 ml-1" />
                       </Button>
                     </div>
@@ -238,14 +238,14 @@ export default function RenewalsPage() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-lg">
             <AlertCircle className="h-5 w-5 text-blue-600" />
-            Pro Tips
+            {t('renewals.proTips')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3 text-sm">
-          <p>• <strong>Enable Auto-Renewal:</strong> Never miss a renewal date - your coverage stays uninterrupted</p>
+          <p>• <strong>{t('renewals.autoRenewal')}:</strong> Never miss a renewal date - your coverage stays uninterrupted</p>
           <p>• <strong>Review Before Renewal:</strong> Check if your coverage still meets your needs before auto-renewal</p>
           <p>• <strong>Compare Options:</strong> You can request quotes from other insurers up to 60 days before expiry</p>
-          <p>• <strong>Update Payment:</strong> Ensure your payment method is valid to avoid renewal delays</p>
+          <p>• <strong>{t('billing.updatePaymentMethod')}:</strong> Ensure your payment method is valid to avoid renewal delays</p>
         </CardContent>
       </Card>
     </div>

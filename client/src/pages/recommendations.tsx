@@ -129,10 +129,10 @@ export default function RecommendationsPage() {
       <div className="space-y-2">
         <h1 className="text-4xl font-bold tracking-tight flex items-center gap-2">
           <Sparkles className="h-8 w-8 text-primary" />
-          AI-Powered Recommendations
+          {t('recommendations.aiPoweredRecommendations')}
         </h1>
         <p className="text-lg text-muted-foreground">
-          Personalized insights to optimize your coverage and savings
+          {t('recommendations.personalizedInsights')}
         </p>
       </div>
 
@@ -142,7 +142,7 @@ export default function RecommendationsPage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-red-600 font-medium uppercase">Action Items</p>
+                <p className="text-sm text-red-600 font-medium uppercase">{t('recommendations.actionItems')}</p>
                 <p className="text-3xl font-bold text-red-900 mt-1">{highPriorityCount}</p>
                 <p className="text-xs text-red-700 mt-2">High-priority recommendations</p>
               </div>
@@ -155,9 +155,9 @@ export default function RecommendationsPage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-emerald-600 font-medium uppercase">Potential Savings</p>
+                <p className="text-sm text-emerald-600 font-medium uppercase">{t('recommendations.potentialSavings')}</p>
                 <p className="text-2xl font-bold text-emerald-900 mt-1">{potentialSavings}</p>
-                <p className="text-xs text-emerald-700 mt-2">If all recommendations implemented</p>
+                <p className="text-xs text-emerald-700 mt-2">{t('recommendations.ifImplemented')}</p>
               </div>
               <TrendingUp className="h-12 w-12 text-emerald-400 opacity-50" />
             </div>
@@ -168,9 +168,9 @@ export default function RecommendationsPage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-blue-600 font-medium uppercase">Coverage Score</p>
+                <p className="text-sm text-blue-600 font-medium uppercase">{t('recommendations.coverageScore')}</p>
                 <p className="text-3xl font-bold text-blue-900 mt-1">72%</p>
-                <p className="text-xs text-blue-700 mt-2">Room for improvement</p>
+                <p className="text-xs text-blue-700 mt-2">{t('recommendations.roomForImprovement')}</p>
               </div>
               <Shield className="h-12 w-12 text-blue-400 opacity-50" />
             </div>

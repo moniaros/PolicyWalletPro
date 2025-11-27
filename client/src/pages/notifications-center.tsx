@@ -148,15 +148,15 @@ export default function NotificationsCenterPage() {
         <div className="space-y-2">
           <h1 className="text-4xl font-bold tracking-tight flex items-center gap-2">
             <Bell className="h-8 w-8 text-primary" />
-            Notifications Center
+            {t('notifications.notificationsCenter')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Stay updated on your policies, claims, and recommendations
+            {t('notifications.stayUpdated')}
           </p>
         </div>
         {unreadCount > 0 && (
           <Button variant="outline" onClick={markAllAsRead} size="sm">
-            Mark all as read
+            {t('notifications.markAllAsRead')}
           </Button>
         )}
       </div>
@@ -167,7 +167,7 @@ export default function NotificationsCenterPage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-red-600 font-medium uppercase">High Priority</p>
+                <p className="text-sm text-red-600 font-medium uppercase">{t('notifications.highPriority')}</p>
                 <p className="text-3xl font-bold text-red-900 mt-1">{highPriorityCount}</p>
               </div>
               <AlertCircle className="h-12 w-12 text-red-400 opacity-50" />
@@ -179,7 +179,7 @@ export default function NotificationsCenterPage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-amber-600 font-medium uppercase">Unread</p>
+                <p className="text-sm text-amber-600 font-medium uppercase">{t('notifications.unread')}</p>
                 <p className="text-3xl font-bold text-amber-900 mt-1">{unreadCount}</p>
               </div>
               <Bell className="h-12 w-12 text-amber-400 opacity-50" />
@@ -191,7 +191,7 @@ export default function NotificationsCenterPage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-emerald-600 font-medium uppercase">Total</p>
+                <p className="text-sm text-emerald-600 font-medium uppercase">{t('notifications.total')}</p>
                 <p className="text-3xl font-bold text-emerald-900 mt-1">{notifications.length}</p>
               </div>
               <CheckCircle2 className="h-12 w-12 text-emerald-400 opacity-50" />
@@ -203,14 +203,14 @@ export default function NotificationsCenterPage() {
       {/* Filter Tabs */}
       <Tabs defaultValue="all" onValueChange={setFilter} className="space-y-6">
         <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="all">All ({notifications.length})</TabsTrigger>
+          <TabsTrigger value="all">{t('notifications.allNotifications')} ({notifications.length})</TabsTrigger>
           <TabsTrigger value="unread">
             <Badge variant="destructive" className="mr-2">{unreadCount}</Badge>
-            Unread
+            {t('notifications.unread')}
           </TabsTrigger>
           <TabsTrigger value="high" className="flex items-center gap-1">
             <AlertCircle className="h-3 w-3" />
-            High Priority
+            {t('notifications.highPriority')}
           </TabsTrigger>
         </TabsList>
 
@@ -219,7 +219,7 @@ export default function NotificationsCenterPage() {
             <Card className="bg-muted/50 border-dashed">
               <CardContent className="p-12 text-center">
                 <Bell className="h-12 w-12 text-muted-foreground/50 mx-auto mb-4" />
-                <p className="text-muted-foreground">No notifications to display</p>
+                <p className="text-muted-foreground">{t('notifications.noNotifications')}</p>
               </CardContent>
             </Card>
           ) : (
@@ -251,7 +251,7 @@ export default function NotificationsCenterPage() {
                               </h3>
                               {!notification.read && (
                                 <Badge className={getPriorityColor(notification.priority)}>
-                                  New
+                                  {t('notifications.highPriority')}
                                 </Badge>
                               )}
                             </div>
