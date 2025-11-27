@@ -96,7 +96,19 @@
     "hospitalNetwork": "Hospital Network",
     "inNetwork": "In Network",
     "outOfNetwork": "Out of Network",
-    "cashless": "Cashless"
+    "cashless": "Cashless",
+    "underwriting": "Underwriting",
+    "riskAssessment": "Risk Assessment",
+    "premiumRate": "Premium Rate",
+    "renewalTerms": "Renewal Terms",
+    "policyTerm": "Policy Term",
+    "exclusions": "Exclusions",
+    "limitations": "Limitations",
+    "grace_period": "Grace Period",
+    "lapsing": "Lapsing",
+    "reinstatement": "Reinstatement",
+    "adjustmentFactor": "Adjustment Factor",
+    "loadingFactor": "Loading Factor"
   },
   "claims": {
     "title": "Claims",
@@ -304,7 +316,7 @@
     "trackRenewals": "Track upcoming policy renewals and stay on top of your coverage"
   },
   "billing": {
-    "title": "Billing",
+    "title": "Billing & Payments",
     "billingPayments": "Billing & Payments",
     "totalAnnualPremiums": "Total Annual Premiums",
     "monthlyAverage": "Monthly Average"

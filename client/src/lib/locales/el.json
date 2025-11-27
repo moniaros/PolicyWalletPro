@@ -98,7 +98,19 @@
     "hospitalNetwork": "Δίκτυο Νοσοκομείων",
     "inNetwork": "Εντός Δικτύου",
     "outOfNetwork": "Εκτός Δικτύου",
-    "cashless": "Χωρίς Μετρητά"
+    "cashless": "Χωρίς Μετρητά",
+    "underwriting": "Ασφαλιστική Διαδικασία",
+    "riskAssessment": "Αξιολόγηση Κινδύνου",
+    "premiumRate": "Ασφαλιστικό Επιτόκιο",
+    "renewalTerms": "Όροι Ανανέωσης",
+    "policyTerm": "Αεργικό Σύμβασης",
+    "exclusions": "Αποκλεισμοί",
+    "limitations": "Περιορισμοί",
+    "grace_period": "Περίοδος Χάριτος",
+    "lapsing": "Ληξιπροθεσμία",
+    "reinstatement": "Επανενεργοποίηση",
+    "adjustmentFactor": "Παράγοντας Προσαρμογής",
+    "loadingFactor": "Παράγοντας Φόρτωσης"
   },
   "claims": {
     "title": "Αποζημιώσεις",
@@ -312,7 +324,7 @@
     "proTips": "Συμβουλές Ειδικών"
   },
   "billing": {
-    "title": "Χρεώσεις",
+    "title": "Τιμολόγηση & Πληρωμές",
     "billingPayments": "Χρεώσεις & Πληρωμές",
     "managementTracking": "Διαχειρίστε τις πληρωμές σας, δείτε το ιστορικό και παρακολουθήστε το κόστος των ασφαλίστρων",
     "overview": "Επισκόπηση",
