@@ -53,7 +53,7 @@ export default function DocumentsPage() {
       <div className="flex items-center gap-2 bg-card p-2 rounded-xl border shadow-sm">
         <Search className="h-4 w-4 text-muted-foreground ml-2" />
         <Input 
-          placeholder="Search documents..." 
+          placeholder={t("placeholders.searchDocuments")}
           className="border-0 shadow-none focus-visible:ring-0 bg-transparent"
           value={search}
           onChange={(e) => setSearch(e.target.value)}

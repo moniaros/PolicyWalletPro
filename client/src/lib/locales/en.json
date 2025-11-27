@@ -889,6 +889,20 @@
     "lifeStageRisks": "Life Stage Risk Factors",
     "lifeStageRisksDesc": "Helps identify coverage gaps"
   },
+  "cardTitles": {
+    "claimsProcessingTrend": "Claims Processing Trend",
+    "policyDistribution": "Policy Distribution",
+    "acordComplianceStatus": "ACORD Compliance Status"
+  },
+  "cardDescriptions": {
+    "monthlyClaimsBreakdown": "Monthly claims status breakdown",
+    "byInsuranceType": "By insurance type",
+    "managePaymentsHistory": "Manage your upcoming payments and view history"
+  },
+  "placeholders": {
+    "searchDocuments": "Search documents...",
+    "pasteFindings": "Paste findings, measurements, or key results..."
+  },
   "gapAnalysis": {
     "lifeInsurance": "Life Insurance",
     "lifeInsuranceDesc": "You have dependents or family obligations without life insurance protection",

@@ -154,7 +154,7 @@ export default function BillingPage() {
       </div>
 
       <Tabs value={selectedTab} onValueChange={setSelectedTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+        <TabsList className="grid w-full grid-cols-1 sm:grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
           <TabsTrigger value="overview">{t('billing.overview')}</TabsTrigger>
           <TabsTrigger value="history">{t('billing.paymentHistory')}</TabsTrigger>
           <TabsTrigger value="methods">{t('billing.paymentMethods')}</TabsTrigger>

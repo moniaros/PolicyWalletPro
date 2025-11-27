@@ -147,7 +147,7 @@ export default function HealthWellnessPage() {
               <div className="grid gap-2">
                 <Label>{t('healthWellness.resultsFindings')}</Label>
                 <Textarea
-                  placeholder="Paste findings, measurements, or key results..."
+                  placeholder={t("placeholders.pasteFindings")}
                   value={uploadResults}
                   onChange={(e) => setUploadResults(e.target.value)}
                   className="h-24"

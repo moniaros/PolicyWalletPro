@@ -109,8 +109,8 @@ export default function AdminDashboard() {
         {/* Claims Processing Trend */}
         <Card className="lg:col-span-2">
           <CardHeader>
-            <CardTitle>Claims Processing Trend</CardTitle>
-            <CardDescription>Monthly claims status breakdown</CardDescription>
+            <CardTitle>{t('cardTitles.claimsProcessingTrend')}</CardTitle>
+            <CardDescription>{t('cardDescriptions.monthlyClaimsBreakdown')}</CardDescription>
           </CardHeader>
           <CardContent className="h-[400px]">
             <ResponsiveContainer width="100%" height="100%">
@@ -131,8 +131,8 @@ export default function AdminDashboard() {
         {/* Policy Distribution */}
         <Card>
           <CardHeader>
-            <CardTitle>Policy Distribution</CardTitle>
-            <CardDescription>By insurance type</CardDescription>
+            <CardTitle>{t('cardTitles.policyDistribution')}</CardTitle>
+            <CardDescription>{t('cardDescriptions.byInsuranceType')}</CardDescription>
           </CardHeader>
           <CardContent className="h-[400px]">
             <ResponsiveContainer width="100%" height="100%">
@@ -191,7 +191,7 @@ export default function AdminDashboard() {
         <TabsContent value="compliance" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>ACORD Compliance Status</CardTitle>
+              <CardTitle>{t('cardTitles.acordComplianceStatus')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>

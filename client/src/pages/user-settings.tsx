@@ -246,7 +246,7 @@ export default function UserSettingsPage() {
 
       <Tabs defaultValue="personal" className="space-y-4">
         <TabsList
-          className="grid w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-5"
+          className="grid w-full grid-cols-1 sm:grid-cols-1 sm:grid-cols-2 md:grid-cols-5"
           data-testid="settings-tabs"
         >
           <TabsTrigger value="personal">Personal</TabsTrigger>

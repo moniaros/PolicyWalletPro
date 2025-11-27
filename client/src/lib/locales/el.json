@@ -328,6 +328,7 @@
     "billingPayments": "Χρεώσεις & Πληρωμές",
     "managementTracking": "Διαχειρίστε τις πληρωμές σας, δείτε το ιστορικό και παρακολουθήστε το κόστος των ασφαλίστρων",
     "overview": "Επισκόπηση",
+    "paymentStatus": "Κατάσταση Πληρωμής",
     "paymentHistory": "Ιστορικό Πληρωμών",
     "paymentMethods": "Μέθοδοι Πληρωμής",
     "totalAnnualPremiums": "Συνολικά Ετήσια Ασφάλιστρα",
@@ -979,6 +980,20 @@
     "occupationAndRiskDesc": "Σημαντικό για ακριβή υπολογισμό ασφάλιστρων",
     "lifeStageRisks": "Παράγοντες Σταδίου Ζωής",
     "lifeStageRisksDesc": "Βοηθά να εντοπίσουμε χάσματα κάλυψης"
+  },
+  "cardTitles": {
+    "claimsProcessingTrend": "Τάση Επεξεργασίας Δηλώσεων",
+    "policyDistribution": "Κατανομή Ασφαλίσεων",
+    "acordComplianceStatus": "Κατάσταση Συμμόρφωσης ACORD"
+  },
+  "cardDescriptions": {
+    "monthlyClaimsBreakdown": "Μηνιαία ανάλυση κατάστασης δηλώσεων",
+    "byInsuranceType": "Κατά τύπο ασφάλισης",
+    "managePaymentsHistory": "Διαχειρίστε τις προσεχείς πληρωμές και προβάλλετε το ιστορικό"
+  },
+  "placeholders": {
+    "searchDocuments": "Αναζήτηση εγγράφων...",
+    "pasteFindings": "Επικολλήστε ευρήματα, μετρήσεις ή βασικά αποτελέσματα..."
   },
   "gapAnalysis": {
     "lifeInsurance": "Ασφάλεια Ζωής",

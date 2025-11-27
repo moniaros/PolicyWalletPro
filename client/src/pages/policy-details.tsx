@@ -242,8 +242,8 @@ export default function PolicyDetailsPage() {
         <TabsContent value="billing" className="space-y-4 mt-6">
           <Card>
             <CardHeader>
-               <CardTitle>Payment Status</CardTitle>
-               <CardDescription>Manage your upcoming payments and view history.</CardDescription>
+               <CardTitle>{t('billing.paymentStatus')}</CardTitle>
+               <CardDescription>{t('cardDescriptions.managePaymentsHistory')}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="bg-yellow-50 border border-yellow-100 rounded-xl p-4 mb-6 flex items-center justify-between">
