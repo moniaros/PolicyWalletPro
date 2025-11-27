@@ -43,7 +43,7 @@ export function NetworkStatus() {
         <WifiOff className="h-4 w-4 text-amber-600 flex-shrink-0" />
         <div className="text-sm">
           <p className="font-medium text-amber-900">You're offline</p>
-          <p className="text-xs text-amber-700">Your data will sync when you reconnect</p>
+          <p className="text-xs text-amber-700">{t('ui.dataSyncWhenReconnect')}</p>
         </div>
       </div>
     );
@@ -52,7 +52,7 @@ export function NetworkStatus() {
   return (
     <div className="fixed top-0 left-0 right-0 bg-emerald-50 border-b border-emerald-200 p-3 z-50 flex items-center gap-2 animate-in fade-in slide-in-from-top-2 duration-300">
       <Wifi className="h-4 w-4 text-emerald-600 flex-shrink-0" />
-      <p className="text-sm font-medium text-emerald-900">Connection restored</p>
+      <p className="text-sm font-medium text-emerald-900">{t('ui.connectionRestored')}</p>
     </div>
   );
 }

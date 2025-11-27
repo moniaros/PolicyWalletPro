@@ -146,7 +146,7 @@ export function DynamicGapRecommendations({ analysis, onQuoteRequest }: DynamicG
           <div className="text-center space-y-2">
             <p className="text-sm text-emerald-900 font-semibold uppercase tracking-wider">💰 Revenue Opportunity</p>
             <p className="text-3xl font-bold text-emerald-700">€{analysis.estimatedTotalRevenue.toLocaleString()}/year</p>
-            <p className="text-xs text-emerald-700">Potential annual premium from addressing these gaps</p>
+            <p className="text-xs text-emerald-700">{t('ui.potentialAnnualPremium')}</p>
           </div>
         </CardContent>
       </Card>

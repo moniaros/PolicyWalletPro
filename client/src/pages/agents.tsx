@@ -167,7 +167,7 @@ export default function AgentsPage() {
             <div className="p-4 bg-green-50 rounded-lg border border-green-200">
               <p className="text-sm text-muted-foreground">Call Response</p>
               <p className="font-bold text-lg">Average 2 mins</p>
-              <p className="text-sm text-muted-foreground">During business hours</p>
+              <p className="text-sm text-muted-foreground">{t('ui.duringBusinessHours')}</p>
             </div>
             <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
               <p className="text-sm text-muted-foreground">Message Response</p>

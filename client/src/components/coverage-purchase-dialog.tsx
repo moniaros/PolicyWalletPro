@@ -182,7 +182,7 @@ export function CoveragePurchaseDialog({ recommendation, isOpen, onOpenChange }:
               <CheckCircle2 className="h-5 w-5 text-emerald-600 flex-shrink-0 mt-0.5" />
               <div>
                 <p className="text-sm font-medium text-emerald-900">{ t('policy.instantActivation') }</p>
-                <p className="text-xs text-emerald-800">Buy now and start coverage immediately</p>
+                <p className="text-xs text-emerald-800">{t('ui.buyNowStartCoverageImmediately')}</p>
               </div>
             </div>
 

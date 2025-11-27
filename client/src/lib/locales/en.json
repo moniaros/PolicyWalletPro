@@ -1113,7 +1113,14 @@
     "password": "Password",
     "mmYy": "MM/YY",
     "utc": "UTC",
-    "sms": "SMS"
+    "sms": "SMS",
+    "duringBusinessHours": "During business hours",
+    "buyNowStartCoverageImmediately": "Buy now and start coverage immediately",
+    "potentialAnnualPremium": "Potential annual premium from addressing these gaps",
+    "somethingWentWrong": "Something went wrong",
+    "dataSyncWhenReconnect": "Your data will sync when you reconnect",
+    "connectionRestored": "Connection restored",
+    "foundBasedOnProfile": "Found based on your profile"
   },
   "gapAnalysis": {
     "lifeInsurance": "Life Insurance",

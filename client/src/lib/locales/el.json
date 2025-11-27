@@ -1201,7 +1201,14 @@
     "password": "Κωδικός Πρόσβασης",
     "mmYy": "MM/ΕΕ",
     "utc": "UTC",
-    "sms": "SMS"
+    "sms": "SMS",
+    "duringBusinessHours": "Κατά τις ώρες εργασίας",
+    "buyNowStartCoverageImmediately": "Αγοράστε τώρα και ξεκινήστε την κάλυψη αμέσως",
+    "potentialAnnualPremium": "Δυνητικό ετήσιο ασφάλιστρο από την αντιμετώπιση αυτών των κενών",
+    "somethingWentWrong": "Κάτι πήγε στραβά",
+    "dataSyncWhenReconnect": "Τα δεδομένα σας θα συγχρονιστούν όταν συνδεθείτε ξανά",
+    "connectionRestored": "Η σύνδεση επαναφέρθηκε",
+    "foundBasedOnProfile": "Βρέθηκε με βάση το προφίλ σας"
   },
   "gapAnalysis": {
     "lifeInsurance": "Ασφάλεια Ζωής",

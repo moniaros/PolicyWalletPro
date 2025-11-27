@@ -62,7 +62,7 @@ export function PolicyRecommendations({ analysis, onContactAgent }: PolicyRecomm
             <div className="text-center space-y-2">
               <div className="text-4xl font-bold text-amber-600">{analysis.gaps.length}</div>
               <p className="text-sm text-muted-foreground font-medium">{t("ui.recommendations")}</p>
-              <p className="text-xs text-muted-foreground">Found based on your profile</p>
+              <p className="text-xs text-muted-foreground">{t('ui.foundBasedOnProfile')}</p>
             </div>
           </CardContent>
         </Card>
