@@ -2,7 +2,6 @@
   "$schema": "https://vercel.com/schemas/vercel.json",
   "version": 2,
   "buildCommand": "npm run build",
-  "outputDirectory": "dist/public",
   "framework": "express",
   "public": false
 }
