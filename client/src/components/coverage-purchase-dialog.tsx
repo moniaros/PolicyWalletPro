@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,16 +17,17 @@ interface CoveragePurchaseDialogProps {
 
 type BillingPlan = "monthly" | "6month" | "yearly";
 
-const billingPlans = {
-  monthly: { label: "Monthly", multiplier: 1, savingsPercent: 0 },
-  "6month": { label: "6 Months", multiplier: 5.5, savingsPercent: 8 },
-  yearly: { label: "Yearly", multiplier: 10.5, savingsPercent: 12 },
-};
-
 export function CoveragePurchaseDialog({ recommendation, isOpen, onOpenChange }: CoveragePurchaseDialogProps) {
+  const { t } = useTranslation();
   const [billingPlan, setBillingPlan] = useState<BillingPlan>("monthly");
   const [requestingQuote, setRequestingQuote] = useState(false);
   const [processingPayment, setProcessingPayment] = useState(false);
+  
+  const billingPlans = {
+    monthly: { label: t('billingPlans.monthly'), multiplier: 1, savingsPercent: 0 },
+    "6month": { label: t('billingPlans.sixMonths'), multiplier: 5.5, savingsPercent: 8 },
+    yearly: { label: t('billingPlans.yearly'), multiplier: 10.5, savingsPercent: 12 },
+  };
   const [formData, setFormData] = useState({
     fullName: localStorage.getItem("userProfile") ? JSON.parse(localStorage.getItem("userProfile") || "{}").fullName : "",
     email: "",
@@ -62,7 +64,7 @@ export function CoveragePurchaseDialog({ recommendation, isOpen, onOpenChange }:
         JSON.stringify([...(JSON.parse(localStorage.getItem("quoteRequests") || "[]")), quoteRequest])
       );
 
-      toast.success(`Quote request sent for ${recommendation.coverage}! Your agent will contact you soon.`);
+      toast.success(`${t('billingPlans.quoteRequestSent')} ${recommendation.coverage}! ${t('billingPlans.yourAgentWillContact')}`);
       onOpenChange(false);
     } catch (error) {
       toast.error("Failed to submit quote request");
@@ -96,7 +98,7 @@ export function CoveragePurchaseDialog({ recommendation, isOpen, onOpenChange }:
       toast.success(`✓ ${recommendation.coverage} added to your coverage! Starting immediately.`);
       onOpenChange(false);
     } catch (error) {
-      toast.error("Payment failed. Please try again.");
+      toast.error(t('billingPlans.paymentFailed'));
     } finally {
       setProcessingPayment(false);
     }
@@ -114,7 +116,7 @@ export function CoveragePurchaseDialog({ recommendation, isOpen, onOpenChange }:
 
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
           <p className="text-sm text-blue-900">
-            <strong>Benefit:</strong> {recommendation.savingsOrBenefit}
+            <strong>{t('billingPlans.benefit')}:</strong> {recommendation.savingsOrBenefit}
           </p>
         </div>
 
@@ -282,7 +284,7 @@ export function CoveragePurchaseDialog({ recommendation, isOpen, onOpenChange }:
                 data-testid="button-buy-now"
               >
                 <CreditCard className="h-4 w-4 mr-2" />
-                {processingPayment ? "Processing..." : `Buy Now - €${totalPrice.toFixed(2)}`}
+                {processingPayment ? t('billingPlans.processing') : `${t('billingPlans.buyNow')}${totalPrice.toFixed(2)}`}
               </Button>
             </div>
           </div>

@@ -422,6 +422,83 @@
     "medium": "Medium",
     "low": "Low"
   },
+  "billingPlans": {
+    "monthly": "Monthly",
+    "sixMonths": "6 Months",
+    "yearly": "Yearly",
+    "processing": "Processing...",
+    "buyNow": "Buy Now - €",
+    "requestQuote": "Request Quote",
+    "purchaseNow": "Purchase Now",
+    "fullName": "Full Name",
+    "email": "Email",
+    "phone": "Phone",
+    "cardNumber": "Card Number",
+    "expiryDate": "Expiry Date",
+    "cvv": "CVV",
+    "benefit": "Benefit",
+    "quoteRequestSent": "Quote request sent for",
+    "yourAgentWillContact": "Your agent will contact you soon",
+    "paymentFailed": "Payment failed. Please try again."
+  },
+  "notificationPreferences": {
+    "policyRenewals": "Policy Renewals",
+    "renewalsDesc": "Reminders about upcoming policy renewals",
+    "paymentReminders": "Payment Reminders",
+    "paymentsDesc": "Notifications for upcoming or missed payments",
+    "claimsUpdates": "Claims Updates",
+    "claimsDesc": "Status updates on your active claims",
+    "coverageChanges": "Coverage Changes",
+    "coverageDesc": "Notifications when coverage details change",
+    "policyRecommendations": "Policy Recommendations",
+    "recommendationsDesc": "AI-powered suggestions to improve your coverage",
+    "appointmentReminders": "Appointment Reminders",
+    "appointmentsDesc": "Reminders for scheduled appointments",
+    "specialOffers": "Special Offers",
+    "offersDesc": "Exclusive deals and promotions from our partners",
+    "securityAlerts": "Security Alerts",
+    "securityDesc": "Important security and account alerts (always on)",
+    "criticalAlertsOnly": "Critical Alerts Only",
+    "criticalDesc": "Only receive SMS for urgent matters (renewals due, payment failed)",
+    "claimsStatus": "Claims Status",
+    "claimsStatusDesc": "SMS updates on claims progress"
+  },
+  "onboarding": {
+    "welcome": "Welcome to PolicyWallet",
+    "welcomeDesc": "Your personal insurance manager for managing policies from multiple insurers.",
+    "healthMatters": "Your Health Matters",
+    "healthDesc": "Track your health data and get personalized wellness recommendations.",
+    "smartAnalytics": "Smart Analytics",
+    "analyticsDesc": "Understand your coverage gaps and optimize your protection."
+  },
+  "navigation": {
+    "renewals": "Renewals",
+    "billing": "Billing",
+    "recommendations": "Recommendations",
+    "notifications": "Notifications",
+    "admin": "Admin",
+    "policyWallet": "PolicyWallet"
+  },
+  "dashboardWidgets": {
+    "coverageHealthByType": "Coverage Health by Type",
+    "policyCompletenessScores": "Policy completeness scores",
+    "health": "Health",
+    "auto": "Auto",
+    "home": "Home",
+    "excellent": "Excellent",
+    "good": "Good",
+    "fair": "Fair"
+  },
+  "gapAnalysis": {
+    "optimalCoverage": "✓ Optimal Coverage",
+    "insurancePays": "Insurance Pays",
+    "pet": "Pet Insurance"
+  },
+  "chatbot": {
+    "welcome": "Hi! I'm your PolicyWallet AI assistant. I can help you check your coverage, file a claim, or find an agent. How can I help you today?",
+    "fileClaim": "To file a claim, go to the specific policy details page and click 'File New Claim'. I can guide you through the document upload process if you like.",
+    "aiAssistant": "PolicyWallet AI"
+  },
   "status": {
     "success": "Success",
     "failed": "Failed",
