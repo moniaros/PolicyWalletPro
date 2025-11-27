@@ -386,7 +386,7 @@ export default function GapAnalysisPage() {
       {/* Header */}
       <div className="space-y-4">
         <h1 className="text-4xl font-bold tracking-tight">{t('gapAnalysisPage.yourInsuranceGapAnalysis')}</h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <div className="bg-red-50 p-4 rounded-lg border border-red-200">
             <div className="text-2xl font-bold text-red-600">{criticalGaps.length}</div>
             <p className="text-sm text-red-700 font-medium">{t('gapAnalysisPage.criticalGaps')}</p>

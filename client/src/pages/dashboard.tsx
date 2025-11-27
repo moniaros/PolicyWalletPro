@@ -60,7 +60,7 @@ export default function Dashboard() {
       </section>
 
       {/* Dashboard Widgets Section */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
         <RenewalsWidget />
         <BillingWidget />
         <RecommendationsWidget />
@@ -69,7 +69,7 @@ export default function Dashboard() {
       </section>
 
       {/* Upcoming Section */}
-      <section className="grid grid-cols-1 sm:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+      <section className="grid grid-cols-1 sm:grid-cols-1 sm:grid-cols-2 md:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
         <div className="md:col-span-2 space-y-6">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-bold text-foreground">{t('dashboard.activePolicies')}</h2>

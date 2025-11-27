@@ -15,7 +15,7 @@ export default function AnalysisPage() {
         <p className="text-muted-foreground mt-1">{t('analysis.visualizeVisualize')}</p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <Card className="lg:col-span-2 border-none shadow-lg bg-gradient-to-br from-white to-blue-50/50">
           <CardHeader>
             <CardTitle>{t('analysis.coverageRisk')}</CardTitle>

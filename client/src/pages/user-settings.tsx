@@ -550,7 +550,7 @@ export default function UserSettingsPage() {
           <Card>
             <CardHeader>
               <CardTitle>App Preferences</CardTitle>
-              <CardDescription>Customize your app experience</CardDescription>
+              <CardDescription>{ t("details.customizeAppExperience") }</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-3">
@@ -761,7 +761,7 @@ export default function UserSettingsPage() {
                     </AlertDescription>
                   </Alert>
 
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  <div className="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                     {TRUST_BUILDING_INSIGHTS.slice(1, 4).map((insight, idx) => (
                       <div
                         key={idx}

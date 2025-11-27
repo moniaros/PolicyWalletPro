@@ -1021,7 +1021,13 @@
     "proposals": "Proposals",
     "settings": "Settings",
     "theme": "Theme",
-    "timezone": "Timezone"
+    "timezone": "Timezone",
+    "customizeAppExperience": "Customize your app experience",
+    "policyCompletenessScores": "Policy completeness scores"
+  },
+  "notifications": {
+    "email": "Email",
+    "instant": "Instant"
   },
   "gapAnalysis": {
     "lifeInsurance": "Life Insurance",

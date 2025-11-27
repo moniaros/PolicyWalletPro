@@ -32,7 +32,7 @@ export function SliderVisualization({ min, max, current, safe, threshold, curren
         </div>
       </div>
       
-      <div className="grid grid-cols-1 sm:grid-cols-1 sm:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 text-xs">
+      <div className="grid grid-cols-1 sm:grid-cols-1 sm:grid-cols-1 sm:grid-cols-2 md:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 text-xs">
         <div>
           <p className="text-muted-foreground">Current</p>
           <p className="font-bold">{currency ? `€${(current/1000).toFixed(1)}k` : current}</p>

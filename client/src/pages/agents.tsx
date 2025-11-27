@@ -55,7 +55,7 @@ export default function AgentsPage() {
       {/* Main Agent Card */}
       <Card className="border-emerald-200 bg-gradient-to-br from-emerald-50 to-blue-50 overflow-hidden">
         <CardContent className="p-0">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
+          <div className="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0">
             {/* Agent Info Section */}
             <div className="md:col-span-2 p-8 space-y-6">
               <div className="flex items-start gap-4">
@@ -158,7 +158,7 @@ export default function AgentsPage() {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
               <p className="text-sm text-muted-foreground">Working Hours</p>
               <p className="font-bold text-lg">Monday - Friday</p>

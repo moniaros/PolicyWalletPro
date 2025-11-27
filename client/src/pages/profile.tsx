@@ -120,7 +120,7 @@ export default function ProfilePage() {
           <div className="space-y-3">
             <Label>{t('profile.ageGroup')}</Label>
             <RadioGroup value={profile.ageGroup} onValueChange={(value) => handleInputChange("ageGroup", value)}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                 {["18-30", "31-45", "46-60", "60+"].map((age) => (
                   <div key={age} className="flex items-center space-x-2">
                     <RadioGroupItem value={age} id={`age-${age}`} />

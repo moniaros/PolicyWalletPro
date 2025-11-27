@@ -163,7 +163,7 @@ export default function BillingPage() {
         {/* Overview Tab */}
         <TabsContent value="overview" className="space-y-6">
           {/* Summary Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
@@ -288,7 +288,7 @@ export default function BillingPage() {
             {filteredPayments.map((payment) => (
               <Card key={payment.id}>
                 <CardContent className="p-4">
-                  <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-center">
+                  <div className="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 items-center">
                     <div>
                       <p className="font-semibold text-sm">{payment.provider}</p>
                       <p className="text-xs text-muted-foreground">{payment.type}</p>

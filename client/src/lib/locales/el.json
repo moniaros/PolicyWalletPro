@@ -1109,7 +1109,13 @@
     "proposals": "Προτάσεις",
     "settings": "Ρυθμίσεις",
     "theme": "Θέμα",
-    "timezone": "Ζώνη Ώρας"
+    "timezone": "Ζώνη Ώρας",
+    "customizeAppExperience": "Προσαρμόστε την εμπειρία της εφαρμογής σας",
+    "policyCompletenessScores": "Βαθμολογίες πληρότητας πολιτικής"
+  },
+  "notifications": {
+    "email": "Ηλεκτρονική Διεύθυνση",
+    "instant": "Άμεσα"
   },
   "gapAnalysis": {
     "lifeInsurance": "Ασφάλεια Ζωής",

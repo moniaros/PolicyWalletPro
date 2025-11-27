@@ -25,7 +25,7 @@ export function DashboardSkeleton() {
       <div className="h-40 bg-gradient-to-r from-muted to-muted/50 rounded-3xl animate-pulse" />
       
       {/* Cards skeleton */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {[1, 2, 3].map((i) => (
           <div key={i} className="h-32 bg-muted rounded-xl animate-pulse" />
         ))}

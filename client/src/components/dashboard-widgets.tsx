@@ -135,7 +135,7 @@ export function InsuranceHealthWidget() {
           <CheckCircle2 className="h-5 w-5 text-emerald-600" />
           Coverage Health by Type
         </CardTitle>
-        <CardDescription>Policy completeness scores</CardDescription>
+        <CardDescription>{ t("details.policyCompletenessScores") }</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         {categories.map((cat) => (

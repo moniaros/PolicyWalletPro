@@ -54,7 +54,7 @@ export function QuickActions() {
   return (
     <div className="space-y-4">
       <h2 className="text-lg font-bold">{t('quickActions.quickActions')}</h2>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 sm:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:grid-cols-6 gap-3">
         {actions.map((action) => {
           const Icon = action.icon;
           return (

@@ -207,7 +207,7 @@ export function NotificationsPreferences() {
 
       <Tabs defaultValue="email" className="space-y-6">
         <TabsList className="grid w-full grid-cols-1 sm:grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-          <TabsTrigger value="email">Email</TabsTrigger>
+          <TabsTrigger value="email">{ t("notifications.email") }</TabsTrigger>
           <TabsTrigger value="in-app">In-App</TabsTrigger>
           <TabsTrigger value="sms">SMS</TabsTrigger>
         </TabsList>
@@ -238,7 +238,7 @@ export function NotificationsPreferences() {
                 <div className="space-y-2">
                   <Label className="text-sm">Email Frequency</Label>
                   <select className="w-full px-3 py-2 border rounded-lg bg-background">
-                    <option value="instant">Instant</option>
+                    <option value="instant">{ t("notifications.instant") }</option>
                     <option value="daily">Daily Summary</option>
                     <option value="weekly">Weekly Summary</option>
                   </select>

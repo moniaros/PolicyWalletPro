@@ -137,7 +137,7 @@ export default function RecommendationsPage() {
       </div>
 
       {/* Impact Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <Card className="bg-gradient-to-br from-red-50 to-red-100 border-red-200">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
@@ -233,7 +233,7 @@ export default function RecommendationsPage() {
           {filteredRecommendations.map((rec) => (
             <Card key={rec.id} className="hover:shadow-lg transition-all cursor-pointer border-l-4 border-l-primary">
               <CardContent className="p-6">
-                <div className="grid grid-cols-1 sm:grid-cols-1 sm:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-1 sm:grid-cols-1 sm:grid-cols-2 md:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                   {/* Left: Main Content */}
                   <div className="md:col-span-2 space-y-4">
                     <div className="flex items-start justify-between">

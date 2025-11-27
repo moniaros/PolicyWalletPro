@@ -139,7 +139,7 @@ export function HomeDetailedView({ policy, metadata = {} }: DetailedViewProps) {
 
           <div>
             <p className="font-semibold mb-2 text-sm">🛡️ Κατάσταση Καλύψεων</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
               {["seismos", "pirkagia", "plimmira"].map((type) => {
                 const labels: Record<string, {icon: string; label: string}> = {
                   seismos: { icon: "🌍", label: "Σεισμός" },
@@ -284,7 +284,7 @@ export function UniversalBrokerActions({ policy }: { policy: any }) {
           <CardTitle className="text-lg">📌 Διαθέσιμες Ενέργειες</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
               💳 Πληρώστε Τώρα
             </Button>
