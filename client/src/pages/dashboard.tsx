@@ -58,10 +58,8 @@ export default function Dashboard() {
         <div className="md:col-span-2 space-y-6">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-bold text-foreground">{t('dashboard.activePolicies')}</h2>
-            <Link href="/policies" asChild>
-              <a className="text-sm text-primary font-medium hover:underline flex items-center" data-testid="link-all-policies">
-                {t('common.viewAll')} <ChevronRight className="h-4 w-4 ml-1" />
-              </a>
+            <Link href="/policies" className="text-sm text-primary font-medium hover:underline flex items-center" data-testid="link-all-policies">
+              {t('common.viewAll')} <ChevronRight className="h-4 w-4 ml-1" />
             </Link>
           </div>
           
@@ -96,7 +94,7 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              <Link href="/appointments" asChild>
+              <Link href="/appointments">
                 <Button variant="outline" className="w-full text-xs" data-testid="button-reschedule">{t('dashboard.reschedule')}</Button>
               </Link>
            </div>
