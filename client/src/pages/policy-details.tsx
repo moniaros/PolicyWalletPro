@@ -65,18 +65,18 @@ export default function PolicyDetailsPage() {
   }
 
   return (
-    <div className="space-y-6 pb-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="space-y-8 pb-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="flex items-center gap-2">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="flex items-center gap-3">
           <Link href="/policies">
-            <Button variant="ghost" size="icon" className="rounded-full hover:bg-muted">
+            <Button variant="ghost" size="icon" className="rounded-full hover:bg-muted/50 hover:scale-110 transition-all">
               <ArrowLeft className="h-5 w-5" />
             </Button>
           </Link>
-          <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-bold tracking-tight text-foreground">{policy.type} Insurance</h1>
+          <div className="space-y-1">
+            <div className="flex items-center gap-3">
+              <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground">{policy.type} Insurance</h1>
               <Badge variant={policy.status === "Active" ? "secondary" : "destructive"} className={`${policy.status === "Active" ? "bg-emerald-100 text-emerald-800" : ""}`}>
                 {policy.status}
               </Badge>
@@ -94,33 +94,33 @@ export default function PolicyDetailsPage() {
       </div>
 
       {/* Overview Cards */}
-      <div className="grid grid-cols-1 md:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="bg-primary/5 border-primary/10">
-          <CardContent className="p-4 flex items-center gap-4">
-             <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-               <Shield className="h-5 w-5" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <Card className="bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20 hover:shadow-md transition-all">
+          <CardContent className="p-5 flex items-center gap-4">
+             <div className="h-12 w-12 rounded-xl bg-primary/15 flex items-center justify-center text-primary shadow-sm">
+               <Shield className="h-6 w-6" />
              </div>
-             <div>
-               <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">{t('policyDetails.lobCode')}</p>
-               <p className="text-xl font-bold text-foreground">{policy.lob}</p>
-             </div>
-          </CardContent>
-        </Card>
-        <Card className="bg-secondary/50 border-muted">
-          <CardContent className="p-4 flex items-center gap-4">
-             <div className="h-10 w-10 rounded-full bg-secondary flex items-center justify-center text-foreground">
-               <DollarSign className="h-5 w-5" />
-             </div>
-             <div>
-               <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">{t('policyCard.premium')}</p>
-               <p className="text-xl font-bold text-foreground">{policy.premium}</p>
+             <div className="min-w-0">
+               <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider">{t('policyDetails.lobCode')}</p>
+               <p className="text-lg font-bold text-foreground truncate">{policy.lob}</p>
              </div>
           </CardContent>
         </Card>
-         <Card className="bg-secondary/50 border-muted">
-          <CardContent className="p-4 flex items-center gap-4">
-             <div className="h-10 w-10 rounded-full bg-secondary flex items-center justify-center text-foreground">
-               <Calendar className="h-5 w-5" />
+        <Card className="bg-gradient-to-br from-emerald-50 to-emerald-100/50 dark:from-emerald-950/20 dark:to-emerald-900/10 border-emerald-200/50 dark:border-emerald-800/30 hover:shadow-md transition-all">
+          <CardContent className="p-5 flex items-center gap-4">
+             <div className="h-12 w-12 rounded-xl bg-emerald-200/50 dark:bg-emerald-800/50 flex items-center justify-center text-emerald-700 dark:text-emerald-300 shadow-sm">
+               <DollarSign className="h-6 w-6" />
+             </div>
+             <div>
+               <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider">{t('policyCard.premium')}</p>
+               <p className="text-lg font-bold text-foreground">{policy.premium}</p>
+             </div>
+          </CardContent>
+        </Card>
+         <Card className="bg-gradient-to-br from-blue-50 to-blue-100/50 dark:from-blue-950/20 dark:to-blue-900/10 border-blue-200/50 dark:border-blue-800/30 hover:shadow-md transition-all">
+          <CardContent className="p-5 flex items-center gap-4">
+             <div className="h-12 w-12 rounded-xl bg-blue-200/50 dark:bg-blue-800/50 flex items-center justify-center text-blue-700 dark:text-blue-300 shadow-sm">
+               <Calendar className="h-6 w-6" />
              </div>
              <div>
                <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">{t('policyDetails.effective')}</p>
