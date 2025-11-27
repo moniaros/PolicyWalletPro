@@ -39,8 +39,8 @@ export async function subscribeToPushNotifications() {
 export function sendLocalNotification(title: string, options?: NotificationOptions) {
   if ("Notification" in window && Notification.permission === "granted") {
     return new Notification(title, {
-      icon: "/assets/friendly_3d_isometric_insurance_wallet_icon.png",
-      badge: "/assets/friendly_3d_isometric_insurance_wallet_icon.png",
+      icon: "/favicon.png",
+      badge: "/favicon.png",
       ...options,
     });
   }

@@ -4,7 +4,6 @@ import PolicyCard from "@/components/policy-card";
 import { Button } from "@/components/ui/button";
 import { Bell, Plus, ChevronRight, Calendar } from "lucide-react";
 import { Link } from "wouter";
-import generatedImage from '@assets/generated_images/friendly_3d_isometric_insurance_wallet_icon.png';
 import { OnboardingModal } from "@/components/onboarding-modal";
 
 export default function Dashboard() {
@@ -47,10 +46,7 @@ export default function Dashboard() {
             </Link>
           </div>
         </div>
-        <div className="absolute right-0 bottom-0 md:h-[140%] h-[120%] w-1/2 opacity-20 md:opacity-100 pointer-events-none">
-          <div className="absolute inset-0 bg-gradient-to-l from-transparent to-primary md:hidden"></div>
-          <img src={generatedImage} alt="3D Wallet" className="h-full w-full object-contain object-right-bottom" />
-        </div>
+        <div className="absolute right-0 bottom-0 md:h-[140%] h-[120%] w-1/2 opacity-20 md:opacity-100 pointer-events-none bg-gradient-to-br from-primary/50 via-primary/30 to-transparent rounded-full"></div>
       </section>
 
       {/* Upcoming Section */}
