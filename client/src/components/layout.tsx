@@ -45,6 +45,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     { icon: RefreshCw, label: "Renewals", href: "/renewals" },
     { icon: CreditCard, label: "Billing", href: "/billing" },
     { icon: Sparkles, label: "Recommendations", href: "/recommendations" },
+    { icon: Bell, label: "Notifications", href: "/notifications" },
     { icon: Heart, label: t('wellness.title'), href: "/health-wellness" },
     { icon: ShieldAlert, label: t('claims.title'), href: "/claims" },
     { icon: FolderOpen, label: t('common.download'), href: "/documents" },
