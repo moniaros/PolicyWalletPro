@@ -1,0 +1,922 @@
+openapi: 3.0.0
+info:
+  title: PolicyWallet Insurance Agent Portal API
+  version: 1.0.0
+  description: Comprehensive RESTful API for insurance agent portal integration with ACORD-compliant risk scoring
+  contact:
+    name: PolicyWallet Support
+    email: agents@policywall.gr
+  license:
+    name: Proprietary
+
+servers:
+  - url: https://policywall.replit.app/api
+    description: Production API
+  - url: http://localhost:5000/api
+    description: Development API
+
+security:
+  - BearerAuth: []
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token (24-hour expiration)
+
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique user identifier
+        username:
+          type: string
+          description: Username for login
+        password:
+          type: string
+          description: Hashed password (output only)
+        role:
+          type: string
+          enum: [customer, agent, admin]
+          description: User role for access control
+      required:
+        - id
+        - username
+        - role
+
+    AuthResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        token:
+          type: string
+          description: JWT token for authentication
+      required:
+        - id
+        - username
+        - token
+
+    UserProfile:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        fullName:
+          type: string
+          description: Full name in Greek or Latin characters
+        dateOfBirth:
+          type: string
+          format: date
+        ageGroup:
+          type: string
+          enum: [18-30, 31-45, 46-60, 60+]
+          description: Questionnaire age group response
+        familyStatus:
+          type: string
+          enum: [Ανύπαντρος/η, Παντρεμένος/η, Ερωτική Σχέση, Χήρος/α]
+          description: Questionnaire family status response (Greek)
+        dependents:
+          type: integer
+          minimum: 0
+          description: Number of dependent children
+        incomeRange:
+          type: string
+          enum: [<€30k, €30-60k, €60-100k, €100-150k, >€150k]
+          description: Annual household income bracket
+        healthStatus:
+          type: string
+          enum: [Άριστη, Καλή, Ικανοποιητική, Χρόνιες Παθολογίες]
+          description: Current health status (Greek)
+        emergencyFund:
+          type: string
+          enum: [Ναι καλά καλυμμένο, Μερικώς καλυμμένο, Ελάχιστο ή καμία]
+          description: Emergency savings status
+        travelFrequency:
+          type: string
+          enum: [Ποτέ, 1-2 φορές το χρόνο, 3-6 φορές το χρόνο, Μηνιαίως ή περισσότερο]
+          description: International travel frequency
+        occupationRisk:
+          type: string
+          enum: [Χαμηλός κίνδυνος, Μεσαίος κίνδυνος, Υψηλός κίνδυνος]
+          description: Occupation risk level (Greek)
+        currentCoverages:
+          type: array
+          items:
+            type: string
+            enum: [Health, Auto, Home, Life, Disability, Travel, Pet, Umbrella/Liability]
+          description: Existing insurance policies
+        chronicConditions:
+          type: array
+          items:
+            type: string
+          description: List of chronic health conditions
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - userId
+        - updatedAt
+        - createdAt
+
+    HealthCheckup:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        checkupDate:
+          type: string
+          format: date
+        provider:
+          type: string
+          description: Healthcare provider name
+        checkupType:
+          type: string
+          enum: [Annual Physical, Specialist Consultation, Lab Work, Dental, Vision, Other]
+        results:
+          type: string
+          nullable: true
+          description: Checkup results summary
+        fileUrls:
+          type: array
+          items:
+            type: string
+            format: uri
+          nullable: true
+          description: URLs to medical documents/reports
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - userId
+        - checkupDate
+        - provider
+        - createdAt
+
+    HealthMetrics:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        checkupId:
+          type: string
+          format: uuid
+        bloodPressure:
+          type: string
+          description: Format mmHg (e.g., 120/80)
+        cholesterol:
+          type: string
+          description: Total cholesterol in mg/dL
+        bmi:
+          type: number
+          format: float
+          description: Body Mass Index
+        glucose:
+          type: string
+          description: Fasting glucose in mg/dL
+        weight:
+          type: number
+          format: float
+          description: Weight in kg
+        height:
+          type: number
+          format: float
+          description: Height in cm
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - checkupId
+        - createdAt
+
+    RiskAssessment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        riskScore:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: ACORD-compliant risk score
+        riskLevel:
+          type: string
+          enum: [Low, Moderate, High]
+          description: Risk classification (0-49=Low, 50-69=Moderate, 70-100=High)
+        healthFactors:
+          type: object
+          properties:
+            age:
+              type: integer
+            bmi:
+              type: number
+              format: float
+            conditions:
+              type: array
+              items:
+                type: string
+        recommendations:
+          type: array
+          items:
+            type: string
+          description: Personalized health recommendations
+        nextCheckupDue:
+          type: string
+          format: date-time
+          description: Recommended next checkup date
+        calculatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - userId
+        - riskScore
+        - riskLevel
+        - calculatedAt
+
+    PreventiveRecommendation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        category:
+          type: string
+          enum: [Screening, Preventive, Lifestyle, Medication, Specialist]
+          description: Recommendation category
+        title:
+          type: string
+          description: Recommendation title
+        description:
+          type: string
+          description: Detailed recommendation description
+        priority:
+          type: string
+          enum: [Low, Medium, High]
+        coverageStatus:
+          type: string
+          enum: [Covered, Partially Covered, Not Covered]
+          description: Insurance coverage status
+        completedAt:
+          type: string
+          format: date-time
+          nullable: true
+          description: Completion timestamp if marked complete
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - userId
+        - category
+        - title
+        - priority
+        - createdAt
+
+    AdminStats:
+      type: object
+      properties:
+        totalUsers:
+          type: integer
+          description: Total registered users
+        activePolicies:
+          type: integer
+          description: Active insurance policies
+        pendingClaims:
+          type: integer
+          description: Pending claim submissions
+        claimsApproved:
+          type: string
+          description: Percentage of approved claims
+      required:
+        - totalUsers
+        - activePolicies
+        - pendingClaims
+        - claimsApproved
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+        code:
+          type: string
+          description: Error code
+        details:
+          type: object
+          additionalProperties: true
+      required:
+        - error
+
+paths:
+  /auth/register:
+    post:
+      summary: Register new user account
+      operationId: registerUser
+      security: []
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  minLength: 3
+                password:
+                  type: string
+                  minLength: 8
+                email:
+                  type: string
+                  format: email
+                  nullable: true
+              required:
+                - username
+                - password
+      responses:
+        '201':
+          description: User successfully registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          description: Registration failed - invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /auth/login:
+    post:
+      summary: Authenticate user and receive JWT token
+      operationId: loginUser
+      security: []
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+              required:
+                - username
+                - password
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /auth/me:
+    get:
+      summary: Get current authenticated user
+      operationId: getCurrentUser
+      tags:
+        - Authentication
+      responses:
+        '200':
+          description: Current user information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  username:
+                    type: string
+                  role:
+                    type: string
+                    enum: [customer, agent, admin]
+        '401':
+          description: Unauthorized - invalid or missing token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /profile/{userId}:
+    get:
+      summary: Get user profile
+      operationId: getUserProfile
+      tags:
+        - User Management
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: User profile retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        '404':
+          description: Profile not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      summary: Update user profile
+      operationId: updateUserProfile
+      tags:
+        - User Management
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fullName:
+                  type: string
+                dependents:
+                  type: integer
+                currentCoverages:
+                  type: array
+                  items:
+                    type: string
+                healthStatus:
+                  type: string
+      responses:
+        '200':
+          description: Profile updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        '400':
+          description: Invalid update data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /profile:
+    post:
+      summary: Create new user profile
+      operationId: createUserProfile
+      tags:
+        - User Management
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                  format: uuid
+                fullName:
+                  type: string
+                dateOfBirth:
+                  type: string
+                  format: date
+                ageGroup:
+                  type: string
+                familyStatus:
+                  type: string
+                dependents:
+                  type: integer
+                incomeRange:
+                  type: string
+              required:
+                - userId
+      responses:
+        '201':
+          description: Profile created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        '400':
+          description: Invalid profile data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /health/checkups/{userId}:
+    get:
+      summary: Get user health checkups
+      operationId: getHealthCheckups
+      tags:
+        - Health & Wellness
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: List of health checkups (most recent first)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HealthCheckup'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /health/checkups:
+    post:
+      summary: Create new health checkup record
+      operationId: createHealthCheckup
+      tags:
+        - Health & Wellness
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                  format: uuid
+                checkupDate:
+                  type: string
+                  format: date
+                provider:
+                  type: string
+                checkupType:
+                  type: string
+                results:
+                  type: string
+                  nullable: true
+                fileUrls:
+                  type: array
+                  items:
+                    type: string
+                  nullable: true
+              required:
+                - userId
+                - checkupDate
+                - provider
+      responses:
+        '201':
+          description: Checkup created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthCheckup'
+        '400':
+          description: Invalid checkup data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /health/metrics/{checkupId}:
+    get:
+      summary: Get health metrics for a checkup
+      operationId: getHealthMetrics
+      tags:
+        - Health & Wellness
+      parameters:
+        - name: checkupId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Health metrics retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthMetrics'
+        '404':
+          description: Metrics not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /health/metrics:
+    post:
+      summary: Create health metrics record
+      operationId: createHealthMetrics
+      tags:
+        - Health & Wellness
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                checkupId:
+                  type: string
+                  format: uuid
+                bloodPressure:
+                  type: string
+                cholesterol:
+                  type: string
+                bmi:
+                  type: number
+                  format: float
+                glucose:
+                  type: string
+                weight:
+                  type: number
+                height:
+                  type: number
+              required:
+                - checkupId
+      responses:
+        '201':
+          description: Metrics created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthMetrics'
+        '400':
+          description: Invalid metrics data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /health/risk-assessment/{userId}:
+    get:
+      summary: Get latest risk assessment (ACORD-compliant)
+      operationId: getRiskAssessment
+      tags:
+        - Health & Wellness
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Risk assessment retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RiskAssessment'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /health/risk-assessment:
+    post:
+      summary: Calculate new risk assessment
+      operationId: calculateRiskAssessment
+      tags:
+        - Health & Wellness
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                  format: uuid
+                healthFactors:
+                  type: object
+                  properties:
+                    age:
+                      type: integer
+                    bmi:
+                      type: number
+                    conditions:
+                      type: array
+                      items:
+                        type: string
+              required:
+                - userId
+                - healthFactors
+      responses:
+        '201':
+          description: Risk assessment calculated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RiskAssessment'
+        '400':
+          description: Invalid health factors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /health/recommendations/{userId}:
+    get:
+      summary: Get active preventive recommendations
+      operationId: getRecommendations
+      tags:
+        - Health & Wellness
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: List of active recommendations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PreventiveRecommendation'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /health/recommendations:
+    post:
+      summary: Create preventive recommendation
+      operationId: createRecommendation
+      tags:
+        - Health & Wellness
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                  format: uuid
+                category:
+                  type: string
+                  enum: [Screening, Preventive, Lifestyle, Medication, Specialist]
+                title:
+                  type: string
+                description:
+                  type: string
+                priority:
+                  type: string
+                  enum: [Low, Medium, High]
+                coverageStatus:
+                  type: string
+                  enum: [Covered, Partially Covered, Not Covered]
+              required:
+                - userId
+                - category
+                - title
+                - priority
+      responses:
+        '201':
+          description: Recommendation created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreventiveRecommendation'
+        '400':
+          description: Invalid recommendation data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /health/recommendations/{id}/complete:
+    patch:
+      summary: Mark recommendation as completed
+      operationId: completeRecommendation
+      tags:
+        - Health & Wellness
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Recommendation marked complete
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreventiveRecommendation'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /admin/stats:
+    get:
+      summary: Get admin dashboard statistics (Admin only)
+      operationId: getAdminStats
+      tags:
+        - Admin Dashboard
+      responses:
+        '200':
+          description: Admin statistics retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminStats'
+        '401':
+          description: Unauthorized - missing or invalid token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden - insufficient permissions (non-admin user)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+tags:
+  - name: Authentication
+    description: User registration, login, and token management
+  - name: User Management
+    description: User profile management with insurance questionnaire data
+  - name: Health & Wellness
+    description: Health checkups, metrics, risk assessments, and preventive recommendations
+  - name: Admin Dashboard
+    description: Admin-only analytics and platform statistics
