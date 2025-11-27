@@ -824,5 +824,42 @@
     "pending": "Pending",
     "confirmed": "Confirmed",
     "cancelled": "Cancelled"
+  },
+  "gapAnalysisQuestions": {
+    "ageGroup": "What is your age group?",
+    "familyStatusQuestion": "What is your family status?",
+    "dependentsQuestion": "Do you have dependents (children)?",
+    "currentCoveragesQuestion": "Which insurance types do you currently have?",
+    "incomeRangeQuestion": "What is your annual household income range?",
+    "healthStatusQuestion": "How would you describe your current health?",
+    "emergencyFundQuestion": "Do you have 3-6 months of emergency savings?",
+    "travelFrequencyQuestion": "How often do you travel internationally?",
+    "occupationRiskQuestion": "Would you describe your occupation as:",
+    "lifeStageRisksQuestion": "Which of these apply to your life stage?",
+    "excellent": "Excellent",
+    "good": "Good",
+    "fair": "Fair",
+    "chronicConditions": "Has chronic conditions",
+    "wellCovered": "Yes, well covered",
+    "partiallyCovered": "Partially covered",
+    "minimalOrNone": "Minimal or none",
+    "never": "Never",
+    "oneTwoTimesYear": "1-2 times/year",
+    "threeSixTimesYear": "3-6 times/year",
+    "monthlyPlus": "Monthly+",
+    "lowRiskOffice": "Low risk (office)",
+    "mediumRiskMixed": "Medium risk (mixed)",
+    "highRiskPhysical": "High risk (physical/travel)",
+    "firstHomePurchase": "First home purchase planned",
+    "youngChildren": "Young children",
+    "mortgageHolder": "Mortgage holder",
+    "highDebt": "High debt",
+    "businessOwner": "Business owner"
+  },
+  "admin": {
+    "monthlyClaims": "Monthly Claims Summary",
+    "policyPortfolio": "Policy Portfolio Analysis",
+    "riskAssessment": "Risk Assessment Report",
+    "auditTrail": "Audit Trail Export"
   }
 }

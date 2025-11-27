@@ -134,14 +134,14 @@ export default function ProfilePage() {
           </div>
 
           <div className="space-y-3">
-            <Label>Family Status *</Label>
+            <Label>{t('profile.familyStatus')} *</Label>
             <RadioGroup value={profile.familyStatus} onValueChange={(value) => handleInputChange("familyStatus", value)}>
               <div className="space-y-2">
-                {["Single", "Married", "Domestic Partner", "Widowed/Divorced"].map((status) => (
-                  <div key={status} className="flex items-center space-x-2">
-                    <RadioGroupItem value={status} id={`status-${status}`} />
-                    <Label htmlFor={`status-${status}`} className="cursor-pointer">
-                      {status}
+                {[{label: t("familyStatus.single"), val: "Single"}, {label: t("familyStatus.married"), val: "Married"}, {label: t("familyStatus.domesticPartner"), val: "Domestic Partner"}, {label: t("familyStatus.widowedDivorced"), val: "Widowed/Divorced"}].map(({label, val}) => (
+                  <div key={val} className="flex items-center space-x-2">
+                    <RadioGroupItem value={val} id={`status-${val}`} />
+                    <Label htmlFor={`status-${val}`} className="cursor-pointer">
+                      {label}
                     </Label>
                   </div>
                 ))}

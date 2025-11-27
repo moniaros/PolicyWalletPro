@@ -915,5 +915,42 @@
     "pending": "Εκκρεμμότητα",
     "confirmed": "Επιβεβαιωμένη",
     "cancelled": "Ακυρωθείσα"
+  },
+  "gapAnalysisQuestions": {
+    "ageGroup": "Ποια είναι η ηλικιακή σας ομάδα;",
+    "familyStatusQuestion": "Ποια είναι η οικογενειακή σας κατάσταση;",
+    "dependentsQuestion": "Έχετε εξαρτώμενα (παιδιά);",
+    "currentCoveragesQuestion": "Ποιοι τύποι ασφάλειας έχετε αυτή τη στιγμή;",
+    "incomeRangeQuestion": "Ποιο είναι το εύρος του ετήσιου οικογενειακού εισοδήματος;",
+    "healthStatusQuestion": "Πώς θα περιγράφατε την τρέχουσα υγεία σας;",
+    "emergencyFundQuestion": "Έχετε αποταμιεύσει 3-6 μήνες έκτακτης ανάγκης;",
+    "travelFrequencyQuestion": "Πόσο συχνά ταξιδεύετε διεθνώς;",
+    "occupationRiskQuestion": "Πώς θα περιγράφατε τον επαγγελματικό κίνδυνο;",
+    "lifeStageRisksQuestion": "Ποια από αυτά ισχύουν για το τρέχον στάδιο της ζωής σας;",
+    "excellent": "Εξαιρετική",
+    "good": "Καλή",
+    "fair": "Ικανοποιητική",
+    "chronicConditions": "Χρόνια νοσήματα",
+    "wellCovered": "Ναι, καλά καλυμμένη",
+    "partiallyCovered": "Μερικώς καλυμμένη",
+    "minimalOrNone": "Ελάχιστη ή καμία",
+    "never": "Ποτέ",
+    "oneTwoTimesYear": "1-2 φορές/έτος",
+    "threeSixTimesYear": "3-6 φορές/έτος",
+    "monthlyPlus": "Μηνιαίως ή συχνότερα",
+    "lowRiskOffice": "Χαμηλός κίνδυνος (γραφείο)",
+    "mediumRiskMixed": "Μεσαίος κίνδυνος (μικτές δραστηριότητες)",
+    "highRiskPhysical": "Υψηλός κίνδυνος (σωματική/ταξίδια)",
+    "firstHomePurchase": "Σχεδιάζω αγορά πρώτου σπιτιού",
+    "youngChildren": "Μικρά παιδιά",
+    "mortgageHolder": "Κάτοχος δανείου",
+    "highDebt": "Υψηλό χρέος",
+    "businessOwner": "Ιδιοκτήτης επιχείρησης"
+  },
+  "admin": {
+    "monthlyClaims": "Μηνιαία Περίληψη Δηλώσεων",
+    "policyPortfolio": "Ανάλυση Χαρτοφυλακίου Πολιτικών",
+    "riskAssessment": "Έκθεση Αξιολόγησης Κινδύνου",
+    "auditTrail": "Εξαγωγή Ελέγχου"
   }
 }

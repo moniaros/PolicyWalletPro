@@ -949,13 +949,13 @@ export default function UserSettingsPage() {
                             </SelectTrigger>
                             <SelectContent>
                               {[
-                                "Single",
-                                "Married",
-                                "Domestic Partner",
-                                "Widowed/Divorced",
-                              ].map((status) => (
-                                <SelectItem key={status} value={status}>
-                                  {status}
+                                {label: t("familyStatus.single"), val: "Single"},
+                                {label: t("familyStatus.married"), val: "Married"},
+                                {label: t("familyStatus.domesticPartner"), val: "Domestic Partner"},
+                                {label: t("familyStatus.widowedDivorced"), val: "Widowed/Divorced"},
+                              ].map(({label, val}) => (
+                                <SelectItem key={val} value={val}>
+                                  {label}
                                 </SelectItem>
                               ))}
                             </SelectContent>

@@ -225,13 +225,18 @@ export default function AdminDashboard() {
               <CardTitle>Available Reports</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
-              {["Monthly Claims Summary", "Policy Portfolio Analysis", "Risk Assessment Report", "Audit Trail Export"].map(
-                (report) => (
+              {[
+                {label: t("admin.monthlyClaims"), val: "monthly"},
+                {label: t("admin.policyPortfolio"), val: "portfolio"},
+                {label: t("admin.riskAssessment"), val: "risk"},
+                {label: t("admin.auditTrail"), val: "audit"}
+              ].map(
+                ({label, val}) => (
                   <div
-                    key={report}
+                    key={val}
                     className="flex items-center justify-between p-3 bg-secondary rounded-lg hover:bg-secondary/70 transition-colors cursor-pointer"
                   >
-                    <span className="text-sm font-medium">{report}</span>
+                    <span className="text-sm font-medium">{label}</span>
                     <span className="text-xs text-muted-foreground">→</span>
                   </div>
                 )

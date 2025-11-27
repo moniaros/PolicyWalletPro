@@ -30,66 +30,66 @@ interface CoverageGap {
   estimatedCost: string;
 }
 
-const questions = [
+const getQuestions = (t: any) => [
   {
     id: "ageGroup",
-    title: "What is your age group?",
+    title: t("gapAnalysisQuestions.ageGroup"),
     type: "radio",
     options: ["18-30", "31-45", "46-60", "60+"],
   },
   {
     id: "familyStatus",
-    title: "What is your family status?",
+    title: t("gapAnalysisQuestions.familyStatusQuestion"),
     type: "radio",
-    options: ["Single", "Married", "Domestic Partner", "Widowed/Divorced"],
+    options: [t("familyStatus.single"), t("familyStatus.married"), t("familyStatus.domesticPartner"), t("familyStatus.widowedDivorced")],
   },
   {
     id: "dependents",
-    title: "Do you have dependents (children)?",
+    title: t("gapAnalysisQuestions.dependentsQuestion"),
     type: "radio",
-    options: ["No dependents", "1-2 dependents", "3+ dependents"],
+    options: [t("dependents.noDependents"), t("dependents.oneTwoDependents"), t("dependents.threePlusDependents")],
   },
   {
     id: "currentCoverages",
-    title: "Which insurance types do you currently have?",
+    title: t("gapAnalysisQuestions.currentCoveragesQuestion"),
     type: "checkbox",
-    options: ["Health", "Auto", "Home", "Life", "Disability", "Travel", "Pet"],
+    options: [t("insuranceTypes.health"), t("insuranceTypes.auto"), t("insuranceTypes.home"), t("insuranceTypes.life"), t("insuranceTypes.disability"), t("insuranceTypes.travel"), t("insuranceTypes.pet")],
   },
   {
     id: "incomeRange",
-    title: "What is your annual household income range?",
+    title: t("gapAnalysisQuestions.incomeRangeQuestion"),
     type: "radio",
     options: ["<€30k", "€30-60k", "€60-100k", "€100-150k", ">€150k"],
   },
   {
     id: "healthStatus",
-    title: "How would you describe your current health?",
+    title: t("gapAnalysisQuestions.healthStatusQuestion"),
     type: "radio",
-    options: ["Excellent", "Good", "Fair", "Has chronic conditions"],
+    options: [t("gapAnalysisQuestions.excellent"), t("gapAnalysisQuestions.good"), t("gapAnalysisQuestions.fair"), t("gapAnalysisQuestions.chronicConditions")],
   },
   {
     id: "emergencyFund",
-    title: "Do you have 3-6 months of emergency savings?",
+    title: t("gapAnalysisQuestions.emergencyFundQuestion"),
     type: "radio",
-    options: ["Yes, well covered", "Partially covered", "Minimal or none"],
+    options: [t("gapAnalysisQuestions.wellCovered"), t("gapAnalysisQuestions.partiallyCovered"), t("gapAnalysisQuestions.minimalOrNone")],
   },
   {
     id: "travelFrequency",
-    title: "How often do you travel internationally?",
+    title: t("gapAnalysisQuestions.travelFrequencyQuestion"),
     type: "radio",
-    options: ["Never", "1-2 times/year", "3-6 times/year", "Monthly+"],
+    options: [t("gapAnalysisQuestions.never"), t("gapAnalysisQuestions.oneTwoTimesYear"), t("gapAnalysisQuestions.threeSixTimesYear"), t("gapAnalysisQuestions.monthlyPlus")],
   },
   {
     id: "occupationRisk",
-    title: "Would you describe your occupation as:",
+    title: t("gapAnalysisQuestions.occupationRiskQuestion"),
     type: "radio",
-    options: ["Low risk (office)", "Medium risk (mixed)", "High risk (physical/travel)"],
+    options: [t("gapAnalysisQuestions.lowRiskOffice"), t("gapAnalysisQuestions.mediumRiskMixed"), t("gapAnalysisQuestions.highRiskPhysical")],
   },
   {
     id: "lifeStageRisks",
-    title: "Which of these apply to your life stage?",
+    title: t("gapAnalysisQuestions.lifeStageRisksQuestion"),
     type: "checkbox",
-    options: ["First home purchase planned", "Young children", "Mortgage holder", "High debt", "Business owner"],
+    options: [t("gapAnalysisQuestions.firstHomePurchase"), t("gapAnalysisQuestions.youngChildren"), t("gapAnalysisQuestions.mortgageHolder"), t("gapAnalysisQuestions.highDebt"), t("gapAnalysisQuestions.businessOwner")],
   },
 ];
 
@@ -99,7 +99,7 @@ function calculateGaps(responses: GapAnalysisResponse): CoverageGap[] {
 
   // Life insurance gap
   if (
-    (responses.dependents !== "No dependents" || responses.familyStatus === "Married") &&
+    (responses.dependents !== "Χωρίς εξαρτώμενα" && responses.dependents !== "No dependents" || responses.familyStatus === "Παντρεμένος/η" || responses.familyStatus === "Married") &&
     !coverage.has("Life")
   ) {
     gaps.push({
@@ -198,6 +198,7 @@ function calculateGaps(responses: GapAnalysisResponse): CoverageGap[] {
 
 export default function GapAnalysisPage() {
   const { t } = useTranslation();
+  const questions = getQuestions(t);
   const [currentStep, setCurrentStep] = useState(0);
   
   // Map question titles to translation keys
