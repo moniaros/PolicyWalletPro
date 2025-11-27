@@ -296,12 +296,29 @@
     "fillRequired": "Please fill in all required fields"
   },
   "gapAnalysis": {
-    "title": "Analysis",
-    "fitnessTracking": "Παρακολούθηση Φυσικής Κατάστασης",
-    "stepsToday": "Βήματα Σήμερα",
-    "heartRate": "Καρδιακός Ρυθμός",
-    "bloodPressure": "Αρτηριακή Πίεση",
-    "goals": "Στόχοι"
+    "title": "Gap Analysis"
+  },
+  "renewals": {
+    "title": "Renewals",
+    "policyRenewals": "Policy Renewals",
+    "trackRenewals": "Track upcoming policy renewals and stay on top of your coverage"
+  },
+  "billing": {
+    "title": "Billing",
+    "billingPayments": "Billing & Payments",
+    "totalAnnualPremiums": "Total Annual Premiums",
+    "monthlyAverage": "Monthly Average"
+  },
+  "recommendations": {
+    "title": "Recommendations",
+    "aiPoweredRecommendations": "AI-Powered Recommendations"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "notificationsCenter": "Notifications Center"
+  },
+  "quickActions": {
+    "quickActions": "Quick Actions"
   },
   "status": {
     "success": "Success",
