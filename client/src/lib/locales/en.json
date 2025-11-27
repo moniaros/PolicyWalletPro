@@ -320,24 +320,39 @@
   "renewals": {
     "title": "Renewals",
     "policyRenewals": "Policy Renewals",
-    "trackRenewals": "Track upcoming policy renewals and stay on top of your coverage"
+    "trackRenewals": "Track upcoming policy renewals and stay on top of your coverage",
+    "daysUntilRenewal": "{{days}} days until renewal",
+    "renewalsSoon": "{{count}} policies renewing soon"
   },
   "billing": {
     "title": "Billing & Payments",
     "billingPayments": "Billing & Payments",
     "totalAnnualPremiums": "Total Annual Premiums",
-    "monthlyAverage": "Monthly Average"
+    "monthlyAverage": "Monthly Average",
+    "monthlyOverview": "This month's overview",
+    "averageMonthly": "Average Monthly",
+    "paidYTD": "Paid YTD",
+    "dueNext": "Due Next",
+    "next2DueDates": "Next 2 due dates"
   },
   "recommendations": {
     "title": "Recommendations",
-    "aiPoweredRecommendations": "AI-Powered Recommendations"
+    "aiPoweredRecommendations": "AI-Powered Recommendations",
+    "actionItems": "Action Items",
+    "potentialSavings": "Potential Savings"
   },
   "notifications": {
     "title": "Notifications",
     "notificationsCenter": "Notifications Center"
   },
   "quickActions": {
-    "quickActions": "Quick Actions"
+    "quickActions": "Quick Actions",
+    "addPolicy": "Add Policy",
+    "renewPolicy": "Renew Policy",
+    "fileClaim": "File Claim",
+    "bookAppointment": "Book Appointment",
+    "viewRecommendations": "View Recommendations",
+    "contactAgent": "Contact Agent"
   },
   "common": {
     "date": "Date",
@@ -1020,6 +1035,11 @@
     "total": "Total",
     "monthlyAvg": "/month avg",
     "save": "Save"
+  },
+  "policy": {
+    "next2DueDates": "Next 2 due dates",
+    "coverageHealthByType": "Coverage Health by Type",
+    "policyCompletenessScores": "Policy completeness and coverage health scores"
   },
   "details": {
     "experience": "Experience",

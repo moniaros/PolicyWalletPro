@@ -22,14 +22,14 @@ export function RenewalsWidget() {
           </div>
           {t('renewals.policyRenewals')}
         </CardTitle>
-        <CardDescription>2 policies renewing soon</CardDescription>
+        <CardDescription>{t('renewals.renewalsSoon', { count: upcomingRenewals.length })}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-3">
         {upcomingRenewals.map((renewal) => (
           <div key={renewal.id} className="flex items-center justify-between p-3.5 bg-gradient-to-r from-primary/5 to-transparent rounded-lg border border-primary/10 hover:bg-primary/10 transition-colors">
             <div>
               <p className="font-semibold text-sm text-foreground">{renewal.provider}</p>
-              <p className="text-xs text-muted-foreground font-medium">{renewal.daysUntil} days until renewal</p>
+              <p className="text-xs text-muted-foreground font-medium">{t('renewals.daysUntilRenewal', { days: renewal.daysUntil })}</p>
             </div>
             <Badge variant="secondary" className="bg-primary/20 text-primary border-0 font-semibold">{renewal.premium}</Badge>
           </div>
@@ -57,23 +57,23 @@ export function BillingWidget() {
           </div>
           {t('billing.title')}
         </CardTitle>
-        <CardDescription>This month's overview</CardDescription>
+        <CardDescription>{t('billing.monthlyOverview')}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
           <div className="flex justify-between items-center">
-            <span className="text-sm font-semibold text-foreground">Average Monthly</span>
+            <span className="text-sm font-semibold text-foreground">{t('billing.averageMonthly')}</span>
             <span className="text-lg font-bold text-emerald-700 dark:text-emerald-400">€87.08</span>
           </div>
           <Progress value={60} className="h-2.5 bg-emerald-100 dark:bg-emerald-900/30" />
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div className="bg-gradient-to-br from-emerald-100/50 to-emerald-50/50 dark:from-emerald-900/30 dark:to-emerald-950/20 p-3 rounded-lg border border-emerald-200/50 dark:border-emerald-800/30">
-            <p className="text-xs text-muted-foreground font-semibold uppercase">Paid YTD</p>
+            <p className="text-xs text-muted-foreground font-semibold uppercase">{t('billing.paidYTD')}</p>
             <p className="font-bold text-emerald-700 dark:text-emerald-300 text-lg mt-1">€1,045</p>
           </div>
           <div className="bg-gradient-to-br from-blue-100/50 to-blue-50/50 dark:from-blue-900/30 dark:to-blue-950/20 p-3 rounded-lg border border-blue-200/50 dark:border-blue-800/30">
-            <p className="text-xs text-muted-foreground font-semibold uppercase">Due Next</p>
+            <p className="text-xs text-muted-foreground font-semibold uppercase">{t('billing.dueNext')}</p>
             <p className="font-bold text-blue-700 dark:text-blue-300 text-lg mt-1">€145</p>
           </div>
         </div>
@@ -137,9 +137,9 @@ export function InsuranceHealthWidget() {
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-2 text-lg">
           <CheckCircle2 className="h-5 w-5 text-emerald-600" />
-          Coverage Health by Type
+          {t("policy.coverageHealthByType")}
         </CardTitle>
-        <CardDescription>{ t("details.policyCompletenessScores") }</CardDescription>
+        <CardDescription>{ t("policy.policyCompletenessScores") }</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         {categories.map((cat) => (
@@ -169,9 +169,9 @@ export function PaymentRemindersWidget() {
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-2 text-lg">
           <AlertCircle className="h-5 w-5 text-amber-600" />
-          {t('billing.title')}
+          Payment Reminders
         </CardTitle>
-        <CardDescription>{ t('policy.next2DueDates') }</CardDescription>
+        <CardDescription>{ t('billing.next2DueDates') }</CardDescription>
       </CardHeader>
       <CardContent className="space-y-2">
         {upcoming.map((payment, idx) => (
