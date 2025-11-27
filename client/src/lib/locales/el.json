@@ -259,12 +259,7 @@
     "goals": "Στόχοι"
   },
   "gapAnalysis": {
-    "title": "Ανάλυση",
-    "fitnessTracking": "Παρακολούθηση Φυσικής Κατάστασης",
-    "stepsToday": "Βήματα Σήμερα",
-    "heartRate": "Καρδιακός Ρυθμός",
-    "bloodPressure": "Αρτηριακή Πίεση",
-    "goals": "Στόχοι"
+    "title": "Ανάλυση"
   },
   "validation": {
     "required": "Το πεδίο {{fieldName}} είναι υποχρεωτικό.",

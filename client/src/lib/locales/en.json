@@ -11,9 +11,10 @@
     "active": "Active",
     "inactive": "Inactive",
     "retry": "Retry",
-    "download": "Download",
+    "download": "Documents",
     "copy": "Copy",
     "back": "Back",
+    "addPolicy": "Add New Policy",
     "submit": "Submit",
     "next": "Next",
     "welcome": "Dashboard"
@@ -248,7 +249,7 @@
     "systemMode": "System"
   },
   "wellness": {
-    "title": "Health & Wellness",
+    "title": "Wellness",
     "fitnessTracking": "Fitness Tracking",
     "stepsToday": "Steps Today",
     "heartRate": "Heart Rate",
@@ -259,6 +260,14 @@
     "required": "The {{fieldName}} field is required.",
     "invalidEmail": "Please enter a valid email address.",
     "fillRequired": "Please fill in all required fields"
+  },
+  "gapAnalysis": {
+    "title": "Analysis",
+    "fitnessTracking": "Παρακολούθηση Φυσικής Κατάστασης",
+    "stepsToday": "Βήματα Σήμερα",
+    "heartRate": "Καρδιακός Ρυθμός",
+    "bloodPressure": "Αρτηριακή Πίεση",
+    "goals": "Στόχοι"
   },
   "status": {
     "success": "Success",
