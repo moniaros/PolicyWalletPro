@@ -277,7 +277,7 @@ export default function BillingPage() {
           <div className="flex items-center gap-2 bg-white p-2 rounded-xl border shadow-sm">
             <Search className="h-4 w-4 text-muted-foreground ml-2" />
             <Input
-              placeholder="Search by provider or policy number..."
+              placeholder={t('common.searchPlaceholder')}
               className="border-0 shadow-none focus-visible:ring-0"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -296,24 +296,24 @@ export default function BillingPage() {
                     </div>
 
                     <div>
-                      <p className="text-xs text-muted-foreground uppercase">Date</p>
+                      <p className="text-xs text-muted-foreground uppercase">{t('common.date')}</p>
                       <p className="font-semibold text-sm">{format(payment.date, 'MMM dd, yyyy')}</p>
                     </div>
 
                     <div>
-                      <p className="text-xs text-muted-foreground uppercase">Amount</p>
+                      <p className="text-xs text-muted-foreground uppercase">{t('common.amount')}</p>
                       <p className="font-bold text-lg">{payment.amount}</p>
                     </div>
 
                     <div>
-                      <p className="text-xs text-muted-foreground uppercase">Method</p>
+                      <p className="text-xs text-muted-foreground uppercase">{t('common.method')}</p>
                       <p className="text-sm">{payment.method}</p>
                     </div>
 
                     <div className="flex items-center justify-between">
                       <Badge className={getStatusColor(payment.status)}>
                         {getStatusIcon(payment.status)}
-                        <span className="ml-1">{payment.status}</span>
+                        <span className="ml-1">{t(`common.${payment.status.toLowerCase()}`)}</span>
                       </Badge>
                       <Button variant="ghost" size="sm">
                         <Download className="h-4 w-4" />
@@ -339,18 +339,18 @@ export default function BillingPage() {
                       </div>
                       <div>
                         <p className="font-semibold">
-                          {method.type === "Credit Card" ? `${method.brand} ••••${method.lastFour}` : `${method.bank} Direct Debit`}
+                          {method.type === "Credit Card" ? `${method.brand} ••••${method.lastFour}` : `${method.bank} ${t('common.directDebit')}`}
                         </p>
                         <p className="text-xs text-muted-foreground">
-                          {method.type === "Credit Card" ? `Expires ${method.expiryDate}` : method.iban}
+                          {method.type === "Credit Card" ? `${t('common.expires')} ${method.expiryDate}` : method.iban}
                         </p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
                       {method.isDefault && (
-                        <Badge variant="secondary">Default</Badge>
+                        <Badge variant="secondary">{t('common.default')}</Badge>
                       )}
-                      <Button variant="outline" size="sm">Edit</Button>
+                      <Button variant="outline" size="sm">{t('common.edit')}</Button>
                     </div>
                   </div>
                 </CardContent>
@@ -360,7 +360,7 @@ export default function BillingPage() {
 
           <Button variant="outline" className="w-full">
             <CreditCard className="h-4 w-4 mr-2" />
-            Add Payment Method
+            {t('common.addPaymentMethod')}
           </Button>
         </TabsContent>
       </Tabs>

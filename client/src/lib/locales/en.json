@@ -320,6 +320,28 @@
   "quickActions": {
     "quickActions": "Quick Actions"
   },
+  "common": {
+    "date": "Date",
+    "amount": "Amount",
+    "method": "Method",
+    "status": "Status",
+    "edit": "Edit",
+    "add": "Add",
+    "delete": "Delete",
+    "view": "View",
+    "search": "Search",
+    "download": "Download",
+    "paid": "Paid",
+    "scheduled": "Scheduled",
+    "overdue": "Overdue",
+    "failed": "Failed",
+    "default": "Default",
+    "expires": "Expires",
+    "directDebit": "Direct Debit",
+    "creditCard": "Credit Card",
+    "addPaymentMethod": "Add Payment Method",
+    "searchPlaceholder": "Search by provider or policy number..."
+  },
   "status": {
     "success": "Success",
     "failed": "Failed",

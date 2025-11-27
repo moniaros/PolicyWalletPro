@@ -408,6 +408,28 @@
     "viewRecommendations": "Προβολή Συστάσεων",
     "contactAgent": "Επικοινωνία Συνεργάτη"
   },
+  "common": {
+    "date": "Ημερομηνία",
+    "amount": "Ποσό",
+    "method": "Μέθοδος",
+    "status": "Κατάσταση",
+    "edit": "Επεξεργασία",
+    "add": "Προσθήκη",
+    "delete": "Διαγραφή",
+    "view": "Προβολή",
+    "search": "Αναζήτηση",
+    "download": "Λήψη",
+    "paid": "Καταβληθέν",
+    "scheduled": "Προγραμματισμένη",
+    "overdue": "Ληξιπρόθεσμη",
+    "failed": "Αποτυχία",
+    "default": "Προεπιλεγμένη",
+    "expires": "Λήξη",
+    "directDebit": "Άμεση Χρέωση",
+    "creditCard": "Πιστωτική Κάρτα",
+    "addPaymentMethod": "Προσθήκη Μεθόδου Πληρωμής",
+    "searchPlaceholder": "Αναζήτηση ανά πάροχο ή αριθμό πολιτικής..."
+  },
   "validation": {
     "required": "Το πεδίο {{fieldName}} είναι υποχρεωτικό.",
     "invalidEmail": "Παρακαλώ εισάγετε μια έγκυρη διεύθυνση email.",
