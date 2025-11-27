@@ -1149,6 +1149,61 @@
     "petInsuranceDesc": "Pet medical emergencies can cost €1000-€5000",
     "petInsuranceRec": "Pet health insurance covering accidents, illnesses, and preventive care"
   },
+  "time": {
+    "perYear": "per year",
+    "month": "Month",
+    "jan": "Jan",
+    "feb": "Feb",
+    "mar": "Mar",
+    "apr": "Apr",
+    "may": "May",
+    "jun": "Jun",
+    "jul": "Jul",
+    "aug": "Aug",
+    "sep": "Sep",
+    "oct": "Oct",
+    "nov": "Nov",
+    "dec": "Dec"
+  },
+  "expiry": {
+    "expired": "Expired",
+    "expirestoday": "Expires Today",
+    "expirestomorrow": "Expires Tomorrow",
+    "renews": "Renews in {{days}} days",
+    "renewsmonths": "Renews in {{months}} month{{plural}}"
+  },
+  "status": {
+    "active": "Active",
+    "pending": "Pending",
+    "expired": "Expired",
+    "review_needed": "Review Needed",
+    "cancelled": "Cancelled",
+    "lapsed": "Lapsed",
+    "paid": "Paid",
+    "closed": "Closed",
+    "in_review": "In Review"
+  },
+  "insurance": {
+    "health": "Health Insurance",
+    "auto": "Auto Insurance",
+    "home": "Home Insurance",
+    "life": "Life Insurance",
+    "pet": "Pet Insurance"
+  },
+  "riskObjectLabels": {
+    "vehicle": "Vehicle",
+    "insuredPerson": "Insured Person",
+    "propertyAddress": "Property Address",
+    "lifeAssured": "Life Assured",
+    "pet": "Pet",
+    "coverage": "Coverage"
+  },
+  "admin": {
+    "monthlyClaims": "Monthly Claims",
+    "policyPortfolio": "Policy Portfolio",
+    "riskAssessment": "Risk Assessment",
+    "auditTrail": "Audit Trail"
+  },
   "questionnaire": {
     "title": "Insurance Gap Analysis Questionnaire",
     "description": "Step-by-step analysis to identify your coverage needs",

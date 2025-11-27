@@ -7,14 +7,15 @@ export function calculateDaysUntilExpiry(expiryDate: string): number {
   return Math.ceil(diff / (1000 * 60 * 60 * 24));
 }
 
-export function formatRenewalCountdown(expiryDate: string): string {
+export function formatRenewalCountdown(expiryDate: string, t?: (key: string, values?: any) => string): string {
   const days = calculateDaysUntilExpiry(expiryDate);
-  if (days < 0) return "Expired";
-  if (days === 0) return "Expires Today";
-  if (days === 1) return "Expires Tomorrow";
-  if (days <= 30) return `Renews in ${days} days`;
+  if (!t) t = (k) => k; // Fallback for non-translated usage
+  if (days < 0) return t('expiry.expired');
+  if (days === 0) return t('expiry.expirestoday');
+  if (days === 1) return t('expiry.expirestomorrow');
+  if (days <= 30) return t('expiry.renews', { days });
   const months = Math.floor(days / 30);
-  return `Renews in ${months} month${months > 1 ? 's' : ''}`;
+  return t('expiry.renewsmonths', { months, plural: months > 1 ? 's' : '' });
 }
 
 export function getStatusColor(status: string): string {

@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -8,6 +9,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 import { TrendingUp, Users, FileText, AlertTriangle, CheckCircle2, Clock } from "lucide-react";
 
 export default function AdminDashboard() {
+  const { t } = useTranslation();
   const { data: stats } = useQuery<any>({
     queryKey: ["/api/admin/stats"],
     queryFn: async () => {
@@ -18,18 +20,18 @@ export default function AdminDashboard() {
   });
 
   const claimsData = [
-    { month: "Jan", processed: 120, pending: 40, approved: 95, rejected: 25 },
-    { month: "Feb", processed: 145, pending: 35, approved: 115, rejected: 30 },
-    { month: "Mar", processed: 165, pending: 30, approved: 135, rejected: 30 },
-    { month: "Apr", processed: 190, pending: 25, approved: 155, rejected: 35 },
-    { month: "May", processed: 210, pending: 20, approved: 175, rejected: 35 },
+    { month: t("time.jan"), processed: 120, pending: 40, approved: 95, rejected: 25 },
+    { month: t("time.feb"), processed: 145, pending: 35, approved: 115, rejected: 30 },
+    { month: t("time.mar"), processed: 165, pending: 30, approved: 135, rejected: 30 },
+    { month: t("time.apr"), processed: 190, pending: 25, approved: 155, rejected: 35 },
+    { month: t("time.may"), processed: 210, pending: 20, approved: 175, rejected: 35 },
   ];
 
   const policyData = [
-    { name: "Health", value: 450 },
-    { name: "Auto", value: 380 },
-    { name: "Home", value: 290 },
-    { name: "Life", value: 210 },
+    { name: t("insurance.health"), value: 450 },
+    { name: t("insurance.auto"), value: 380 },
+    { name: t("insurance.home"), value: 290 },
+    { name: t("insurance.life"), value: 210 },
   ];
 
   const COLORS = ["#3b82f6", "#ef4444", "#f97316", "#8b5cf6"];
