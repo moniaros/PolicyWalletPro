@@ -46,7 +46,7 @@ export default function AgentsPage() {
   };
 
   return (
-    <div className="space-y-8 max-w-4xl">
+    <div className="space-y-8 max-w-full sm:max-w-4xl">
       <div>
         <h1 className="text-4xl font-bold tracking-tight">{t('agents.agentDetails')}</h1>
         <p className="text-muted-foreground mt-2 text-lg">{t('common.actions')}</p>

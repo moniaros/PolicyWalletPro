@@ -69,7 +69,7 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="space-y-8 max-w-3xl">
+    <div className="space-y-8 max-w-full sm:max-w-3xl">
       {/* Header */}
       <div className="space-y-2">
         <h1 className="text-4xl font-bold tracking-tight">{t('profile.yourProfile')}</h1>

@@ -285,7 +285,7 @@ export default function GapAnalysisPage() {
       : (responses as any)[question.id] !== "";
 
     return (
-      <div className="space-y-8 max-w-2xl mx-auto">
+      <div className="space-y-8 max-w-full sm:max-w-2xl mx-auto">
         {/* Header */}
         <div className="space-y-2">
           <h1 className="text-4xl font-bold tracking-tight">Insurance Gap Analysis</h1>
@@ -386,7 +386,7 @@ export default function GapAnalysisPage() {
   const lowGaps = gaps.filter((g) => g.priority === "low");
 
   return (
-    <div className="space-y-8 max-w-3xl mx-auto">
+    <div className="space-y-8 max-w-full sm:max-w-3xl mx-auto">
       {/* Header */}
       <div className="space-y-4">
         <h1 className="text-4xl font-bold tracking-tight">{t('gapAnalysisPage.yourInsuranceGapAnalysis')}</h1>

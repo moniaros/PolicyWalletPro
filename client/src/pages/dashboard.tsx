@@ -51,7 +51,7 @@ export default function Dashboard() {
             </Link>
           </div>
         </div>
-        <div className="absolute right-0 bottom-0 md:h-[160%] h-[140%] w-1/2 opacity-30 md:opacity-40 pointer-events-none bg-gradient-to-br from-white/10 via-white/5 to-transparent rounded-full blur-2xl group-hover:opacity-50 transition-opacity"></div>
+        <div className="absolute right-0 bottom-0 h-[140%] md:h-[160%] w-full sm:w-1/2 opacity-30 md:opacity-40 pointer-events-none bg-gradient-to-br from-white/10 via-white/5 to-transparent rounded-full blur-2xl group-hover:opacity-50 transition-opacity"></div>
       </section>
 
       {/* Quick Actions Section */}
