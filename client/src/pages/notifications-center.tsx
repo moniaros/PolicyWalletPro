@@ -135,9 +135,9 @@ export default function NotificationsCenterPage() {
     const hours = Math.floor(diff / (1000 * 60 * 60));
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
     
-    if (hours < 1) return "Now";
-    if (hours < 24) return `${hours}h ago`;
-    if (days < 7) return `${days}d ago`;
+    if (hours < 1) return t('common.now');
+    if (hours < 24) return `${hours}${t('common.hours')} ${t('common.ago')}`;
+    if (days < 7) return `${days}${t('common.days')} ${t('common.ago')}`;
     return date.toLocaleDateString();
   };
 
@@ -247,7 +247,7 @@ export default function NotificationsCenterPage() {
                           <div>
                             <div className="flex items-center gap-2">
                               <h3 className="font-bold text-base">
-                                {notification.title}
+                                {t(notification.titleKey || 'notifications.title')}
                               </h3>
                               {!notification.read && (
                                 <Badge className={getPriorityColor(notification.priority)}>
@@ -256,7 +256,7 @@ export default function NotificationsCenterPage() {
                               )}
                             </div>
                             <p className="text-sm text-muted-foreground mt-1">
-                              {notification.message}
+                              {t(notification.messageKey || 'notifications.stayUpdated')}
                             </p>
                             <p className="text-xs text-muted-foreground mt-2">
                               {formatTime(notification.timestamp)}
