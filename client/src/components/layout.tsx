@@ -19,6 +19,7 @@ import {
   Zap,
   RefreshCw,
   CreditCard,
+  Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -43,6 +44,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     { icon: FileText, label: t('policies.title'), href: "/policies" },
     { icon: RefreshCw, label: "Renewals", href: "/renewals" },
     { icon: CreditCard, label: "Billing", href: "/billing" },
+    { icon: Sparkles, label: "Recommendations", href: "/recommendations" },
     { icon: Heart, label: t('wellness.title'), href: "/health-wellness" },
     { icon: ShieldAlert, label: t('claims.title'), href: "/claims" },
     { icon: FolderOpen, label: t('common.download'), href: "/documents" },

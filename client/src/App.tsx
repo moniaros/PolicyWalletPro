@@ -24,6 +24,7 @@ import LoginPage from "@/pages/login";
 import NotFound from "@/pages/not-found";
 import RenewalsPage from "@/pages/renewals";
 import BillingPage from "@/pages/billing";
+import RecommendationsPage from "@/pages/recommendations";
 
 // Ultra-fast synchronous auth check - no useState needed
 const token = typeof window !== 'undefined' ? localStorage.getItem("auth_token") : null;
@@ -51,6 +52,7 @@ function Router() {
         <Route path="/health-wellness" component={HealthWellnessPage} />
         <Route path="/renewals" component={RenewalsPage} />
         <Route path="/billing" component={BillingPage} />
+        <Route path="/recommendations" component={RecommendationsPage} />
         <Route path="/admin" component={AdminDashboard} />
         <Route component={NotFound} />
       </Switch>
