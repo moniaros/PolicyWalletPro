@@ -1027,7 +1027,51 @@
   },
   "notifications": {
     "email": "Email",
-    "instant": "Instant"
+    "instant": "Instant",
+    "sms": "SMS",
+    "dailySummary": "Daily Summary",
+    "weeklySummary": "Weekly Summary"
+  },
+  "admin": {
+    "gdprCompliance": "GDPR Compliance",
+    "allDataRetentionPoliciesUpdated": "All data retention policies updated. Last audit"
+  },
+  "agent": {
+    "whatsappAndEmail": "WhatsApp & Email"
+  },
+  "forms": {
+    "nextStep": "Next Step",
+    "nextSteps": "Next Steps",
+    "next": "Next",
+    "previous": "Previous",
+    "currentPassword": "Current Password",
+    "loginPin": "PIN (4 digits)",
+    "cvv": "CVV",
+    "currentPasswordRequired": "Current Password *",
+    "loginPinRequired": "PIN (4 digits) *",
+    "cvvRequired": "CVV *"
+  },
+  "policy": {
+    "lobCode": "LOB Code",
+    "monthlyPremium": "Monthly Premium",
+    "id": "ID",
+    "incident": "Incident",
+    "instantActivation": "Instant activation",
+    "nextCheckupDue": "Next Checkup Due",
+    "next2DueDates": "Next 2 due dates"
+  },
+  "gap": {
+    "current": "Current",
+    "safeZone": "Safe Zone",
+    "target": "Target",
+    "currentPath": "Current Path",
+    "ytdGrowth": "YTD Growth",
+    "ytdPerformance": "YTD Performance",
+    "unprotected": "⚠️ Unprotected",
+    "protected": "✓ Protected"
+  },
+  "health": {
+    "nextCheckupDue": "Next Checkup Due"
   },
   "gapAnalysis": {
     "lifeInsurance": "Life Insurance",

@@ -172,7 +172,7 @@ export default function AgentsPage() {
             <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
               <p className="text-sm text-muted-foreground">Message Response</p>
               <p className="font-bold text-lg">Average 1 hour</p>
-              <p className="text-sm text-muted-foreground">WhatsApp & Email</p>
+              <p className="text-sm text-muted-foreground">{ t('agent.whatsappAndEmail') }</p>
             </div>
           </div>
 

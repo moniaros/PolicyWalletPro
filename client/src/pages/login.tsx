@@ -129,7 +129,7 @@ export default function LoginPage() {
               setPassword("");
             }} className="w-full">
               {/* Tab Triggers */}
-              <TabsList className="grid w-full grid-cols-1 sm:grid-cols-2 mb-6 bg-gray-100">
+              <TabsList className="grid w-full grid-cols-1 sm:grid-cols-1 sm:grid-cols-2 mb-6 bg-gray-100">
                 <TabsTrigger value="signin" className="data-[state=active]:bg-white data-[state=active]:text-blue-600">
                   {t('login.signIn')}
                 </TabsTrigger>

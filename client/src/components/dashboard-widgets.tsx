@@ -167,7 +167,7 @@ export function PaymentRemindersWidget() {
           <AlertCircle className="h-5 w-5 text-amber-600" />
           {t('billing.title')}
         </CardTitle>
-        <CardDescription>Next 2 due dates</CardDescription>
+        <CardDescription>{ t('policy.next2DueDates') }</CardDescription>
       </CardHeader>
       <CardContent className="space-y-2">
         {upcoming.map((payment, idx) => (

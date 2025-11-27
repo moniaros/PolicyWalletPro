@@ -34,7 +34,7 @@ export function SliderVisualization({ min, max, current, safe, threshold, curren
       
       <div className="grid grid-cols-1 sm:grid-cols-1 sm:grid-cols-1 sm:grid-cols-2 md:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 text-xs">
         <div>
-          <p className="text-muted-foreground">Current</p>
+          <p className="text-muted-foreground">{ t('gap.current') }</p>
           <p className="font-bold">{currency ? `€${(current/1000).toFixed(1)}k` : current}</p>
         </div>
         <div>
@@ -200,11 +200,11 @@ export function GoalTimeline({ yearsArray, targetLine, currentPath, shortfall }:
       <div className="flex gap-2">
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 bg-emerald-500 rounded-full"/>
-          <span className="text-xs">Target</span>
+          <span className="text-xs">{ t('gap.target') }</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 bg-indigo-500 rounded-full"/>
-          <span className="text-xs">Current Path</span>
+          <span className="text-xs">{ t('gap.currentPath') }</span>
         </div>
       </div>
     </div>

@@ -176,7 +176,7 @@ export default function AdminDashboard() {
           <Alert className="border-emerald-200 bg-emerald-50">
             <CheckCircle2 className="h-4 w-4 text-emerald-600" />
             <AlertDescription>
-              <strong>GDPR Compliance:</strong> All data retention policies updated. Last audit: Nov 15, 2025
+              <strong>{ t('admin.gdprCompliance') }</strong> All data retention policies updated. Last audit: Nov 15, 2025
             </AlertDescription>
           </Alert>
 

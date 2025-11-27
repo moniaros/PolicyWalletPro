@@ -181,7 +181,7 @@ export function CoveragePurchaseDialog({ recommendation, isOpen, onOpenChange }:
             <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3 flex gap-2">
               <CheckCircle2 className="h-5 w-5 text-emerald-600 flex-shrink-0 mt-0.5" />
               <div>
-                <p className="text-sm font-medium text-emerald-900">Instant activation</p>
+                <p className="text-sm font-medium text-emerald-900">{ t('policy.instantActivation') }</p>
                 <p className="text-xs text-emerald-800">Buy now and start coverage immediately</p>
               </div>
             </div>
@@ -264,7 +264,7 @@ export function CoveragePurchaseDialog({ recommendation, isOpen, onOpenChange }:
                   />
                 </div>
                 <div>
-                  <Label htmlFor="cvv">CVV *</Label>
+                  <Label htmlFor="cvv">{ t('forms.cvvRequired') }</Label>
                   <Input
                     id="cvv"
                     value={formData.cvv}

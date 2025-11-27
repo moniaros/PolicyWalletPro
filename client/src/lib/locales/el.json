@@ -1115,7 +1115,51 @@
   },
   "notifications": {
     "email": "Ηλεκτρονική Διεύθυνση",
-    "instant": "Άμεσα"
+    "instant": "Άμεσα",
+    "sms": "SMS",
+    "dailySummary": "Καθημερινή Σύνοψη",
+    "weeklySummary": "Εβδομαδιαία Σύνοψη"
+  },
+  "admin": {
+    "gdprCompliance": "Συμμόρφωση GDPR",
+    "allDataRetentionPoliciesUpdated": "Όλες οι πολιτικές διατήρησης δεδομένων ενημερώθηκαν. Τελευταία επιθεώρηση"
+  },
+  "agent": {
+    "whatsappAndEmail": "WhatsApp & Ηλεκτρονική Διεύθυνση"
+  },
+  "forms": {
+    "nextStep": "Επόμενο Βήμα",
+    "nextSteps": "Επόμενα Βήματα",
+    "next": "Επόμενο",
+    "previous": "Προηγούμενο",
+    "currentPassword": "Τρέχων Κωδικός Πρόσβασης",
+    "loginPin": "PIN Σύνδεσης (4 ψηφία)",
+    "cvv": "CVV",
+    "currentPasswordRequired": "Τρέχων Κωδικός Πρόσβασης *",
+    "loginPinRequired": "PIN Σύνδεσης (4 ψηφία) *",
+    "cvvRequired": "CVV *"
+  },
+  "policy": {
+    "lobCode": "Κώδικας Κατηγορίας",
+    "monthlyPremium": "Μηνιαίο Ασφάλιστρο",
+    "id": "ID",
+    "incident": "Περιστατικό",
+    "instantActivation": "Άμεση Ενεργοποίηση",
+    "nextCheckupDue": "Επόμενη Εξέταση Ληξιαρχείου",
+    "next2DueDates": "Επόμενες 2 Οφειλόμενες Ημερομηνίες"
+  },
+  "gap": {
+    "current": "Τρέχον",
+    "safeZone": "Ασφαλής Ζώνη",
+    "target": "Στόχος",
+    "currentPath": "Τρέχουσα Διαδρομή",
+    "ytdGrowth": "Ανάπτυξη ΈΤΥ",
+    "ytdPerformance": "Απόδοση ΈΤΥ",
+    "unprotected": "⚠️ Χωρίς Προστασία",
+    "protected": "✓ Προστατευμένο"
+  },
+  "health": {
+    "nextCheckupDue": "Επόμενη Εξέταση Ληξιαρχείου"
   },
   "gapAnalysis": {
     "lifeInsurance": "Ασφάλεια Ζωής",

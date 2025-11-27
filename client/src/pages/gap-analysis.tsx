@@ -483,7 +483,7 @@ export default function GapAnalysisPage() {
       {/* CTA Section */}
       <Card className="bg-gradient-to-r from-primary/10 to-emerald-500/10 border-primary/20">
         <CardHeader>
-          <CardTitle className="text-xl">Next Steps</CardTitle>
+          <CardTitle className="text-xl">{ t('forms.nextSteps') }</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <p className="text-base text-muted-foreground">

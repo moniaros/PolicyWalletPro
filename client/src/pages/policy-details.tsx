@@ -221,7 +221,7 @@ export default function PolicyDetailsPage() {
                        <p className="font-mono font-medium">{policy.carrierId || "N/A"}</p>
                     </div>
                     <div>
-                       <p className="text-muted-foreground text-xs uppercase">LOB Code</p>
+                       <p className="text-muted-foreground text-xs uppercase">{ t('policy.lobCode') }</p>
                        <p className="font-mono font-medium">{policy.lob || "N/A"}</p>
                     </div>
                     <div>
@@ -268,7 +268,7 @@ export default function PolicyDetailsPage() {
                           <CheckCircle2 className="h-4 w-4" />
                        </div>
                        <div>
-                          <p className="font-medium">Monthly Premium</p>
+                          <p className="font-medium">{ t('policy.monthlyPremium') }</p>
                           <p className="text-xs text-muted-foreground">{policy.details?.lastPayment}</p>
                        </div>
                     </div>
@@ -281,7 +281,7 @@ export default function PolicyDetailsPage() {
                           <CheckCircle2 className="h-4 w-4" />
                        </div>
                        <div>
-                          <p className="font-medium">Monthly Premium</p>
+                          <p className="font-medium">{ t('policy.monthlyPremium') }</p>
                           <p className="text-xs text-muted-foreground">2025-10-01</p>
                        </div>
                     </div>

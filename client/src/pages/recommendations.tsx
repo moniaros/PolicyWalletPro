@@ -213,7 +213,7 @@ export default function RecommendationsPage() {
 
       {/* Filter Tabs */}
       <Tabs defaultValue="all" onValueChange={setFilter} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-1 sm:grid-cols-1 sm:grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
+        <TabsList className="grid w-full grid-cols-1 sm:grid-cols-1 sm:grid-cols-1 sm:grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
           <TabsTrigger value="all">{t('common.all')} ({recommendationData.length})</TabsTrigger>
           <TabsTrigger value="high" className="flex items-center gap-1">
             <AlertCircle className="h-3 w-3" />

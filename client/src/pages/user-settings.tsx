@@ -246,7 +246,7 @@ export default function UserSettingsPage() {
 
       <Tabs defaultValue="personal" className="space-y-4">
         <TabsList
-          className="grid w-full grid-cols-1 sm:grid-cols-1 sm:grid-cols-2 md:grid-cols-5"
+          className="grid w-full grid-cols-1 sm:grid-cols-1 sm:grid-cols-1 sm:grid-cols-2 md:grid-cols-5"
           data-testid="settings-tabs"
         >
           <TabsTrigger value="personal">{ t("tabs.personal") }</TabsTrigger>
@@ -327,7 +327,7 @@ export default function UserSettingsPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="currentPassword">Current Password *</Label>
+                <Label htmlFor="currentPassword">{ t('forms.currentPasswordRequired') }</Label>
                 <div className="relative">
                   <Input
                     id="currentPassword"
@@ -464,7 +464,7 @@ export default function UserSettingsPage() {
               ) : (
                 <>
                   <div className="space-y-2">
-                    <Label htmlFor="loginPin">PIN (4 digits) *</Label>
+                    <Label htmlFor="loginPin">{ t('forms.loginPinRequired') }</Label>
                     <div className="relative">
                       <Input
                         id="loginPin"

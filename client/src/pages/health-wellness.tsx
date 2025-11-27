@@ -234,7 +234,7 @@ export default function HealthWellnessPage() {
 
             {riskAssessment?.nextCheckupDue && (
               <div className="pt-2 border-t">
-                <p className="text-xs text-muted-foreground">Next Checkup Due</p>
+                <p className="text-xs text-muted-foreground">{ t('health.nextCheckupDue') }</p>
                 <p className="text-sm font-semibold">
                   {new Date(riskAssessment.nextCheckupDue).toLocaleDateString()}
                 </p>

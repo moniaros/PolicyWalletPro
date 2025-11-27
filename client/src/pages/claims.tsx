@@ -125,7 +125,7 @@ export default function ClaimsPage() {
                ) : <div></div>}
                
                {wizardStep < 3 ? (
-                 <Button onClick={() => setWizardStep(wizardStep + 1)}>Next Step</Button>
+                 <Button onClick={() => setWizardStep(wizardStep + 1)}>{ t('forms.nextStep') }</Button>
                ) : (
                  <Button className="bg-emerald-600 hover:bg-emerald-700" onClick={() => setIsWizardOpen(false)}>Submit Claim</Button>
                )}

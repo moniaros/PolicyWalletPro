@@ -36,7 +36,7 @@ function renderQuickViewByType(policy: PolicyProps) {
             <span className="font-bold text-lg text-foreground">{metadata.fundValue || "€45,200"}</span>
           </div>
           <div className="flex justify-between items-center bg-emerald-50 px-2 py-1.5 rounded">
-            <span className="text-xs text-emerald-700 font-semibold flex items-center gap-1"><TrendingUp className="h-3 w-3" />YTD Growth</span>
+            <span className="text-xs text-emerald-700 font-semibold flex items-center gap-1"><TrendingUp className="h-3 w-3" />{ t('gap.ytdGrowth') }</span>
             <span className="font-bold text-emerald-700">{metadata.ytdGrowth || "+5.2%"}</span>
           </div>
         </div>
