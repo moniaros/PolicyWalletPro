@@ -1,7 +1,7 @@
 {
   "$schema": "https://vercel.com/schemas/vercel.json",
   "version": 2,
-  "buildCommand": "vite build",
+  "buildCommand": "npm run build",
   "outputDirectory": "dist/public",
   "framework": "express",
   "public": false
