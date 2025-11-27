@@ -21,7 +21,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ModeToggle } from "@/components/mode-toggle";
-import { LanguageSelector } from "@/components/language-selector";
 import { Chatbot } from "@/components/chatbot";
 import {
   Dialog,
@@ -71,8 +70,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <ScrollableNav navItems={navItems} location={location} />
 
         <div className="p-4 border-t border-border/50 space-y-4">
-          <LanguageSelector />
-          
           <div className="flex justify-between items-center px-2">
             <span className="text-xs font-medium text-muted-foreground">
               {t('settings.theme')}

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import i18n from "@/lib/i18n";
 import { Link } from "wouter";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -94,7 +95,7 @@ export default function UserSettingsPage() {
     loginPIN: localStorage.getItem("auth_pin") || "",
     biometricAuth: localStorage.getItem("auth_biometric") === "true",
     // Preferences
-    language: localStorage.getItem("app_language") || "en",
+    language: localStorage.getItem("language") || localStorage.getItem("app_language") || i18n.language || "el",
     theme: localStorage.getItem("policy-guard-theme") || "system",
     availabilityStart:
       localStorage.getItem("agent_availability_start") || "09:00",
@@ -172,6 +173,9 @@ export default function UserSettingsPage() {
 
   const handlePreferencesUpdate = () => {
     localStorage.setItem("app_language", formData.language);
+    localStorage.setItem("language", formData.language);
+    localStorage.setItem("policyguard_language", formData.language);
+    i18n.changeLanguage(formData.language);
     localStorage.setItem("policy-guard-theme", formData.theme);
     localStorage.setItem(
       "agent_availability_start",
