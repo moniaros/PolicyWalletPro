@@ -136,7 +136,7 @@ export function CoveragePurchaseDialog({ recommendation, isOpen, onOpenChange }:
                   id="quote-name"
                   value={formData.fullName}
                   onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                  placeholder="John Doe"
+                  placeholder={t("placeholders.johnDoe")}
                   data-testid="input-quote-name"
                 />
               </div>
@@ -148,7 +148,7 @@ export function CoveragePurchaseDialog({ recommendation, isOpen, onOpenChange }:
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    placeholder="your@email.com"
+                    placeholder={t("placeholders.yourEmail")}
                     data-testid="input-quote-email"
                   />
                 </div>

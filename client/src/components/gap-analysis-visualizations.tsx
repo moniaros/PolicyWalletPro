@@ -222,7 +222,7 @@ export function CareerShield({ timeline, protectedFrom, unprotectedYears, specia
   return (
     <div className="space-y-3">
       <div className="bg-slate-50 p-3 rounded-lg">
-        <p className="text-sm font-semibold mb-2">Career Protection Timeline</p>
+        <p className="text-sm font-semibold mb-2">{t('protection.careerProtectionTimeline')}</p>
         <div className="flex flex-wrap gap-1">
           {timeline.map((year) => (
             <div
@@ -244,7 +244,7 @@ export function CareerShield({ timeline, protectedFrom, unprotectedYears, specia
         <div className="bg-red-50 border border-red-200 p-3 rounded-lg">
           <p className="text-xs font-bold text-red-900 mb-1 flex items-center gap-1">
             <X className="h-4 w-4" />
-            Unprotected Years
+            {t('protection.unprotectedYears')}
           </p>
           <p className="text-sm text-red-800">{unprotectedYears.length} years ({unprotectedYears[0]} - {unprotectedYears[unprotectedYears.length - 1]})</p>
         </div>

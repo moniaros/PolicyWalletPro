@@ -1073,6 +1073,31 @@
   "health": {
     "nextCheckupDue": "Next Checkup Due"
   },
+  "files": {
+    "acceptedFormatsLabel": "Accepted file formats and size limit"
+  },
+  "onboarding": {
+    "steps": "Onboarding steps",
+    "skipTutorial": "Skip onboarding tutorial",
+    "completeAndContinue": "Complete onboarding and continue"
+  },
+  "chatbot": {
+    "askAnything": "Ask anything..."
+  },
+  "placeholders": {
+    "johnDoe": "John Doe",
+    "yourEmail": "your@email.com",
+    "providerExample": "e.g., Dr. Papadopoulos, Athens Medical Center"
+  },
+  "buttons": {
+    "skipForNow": "Skip for Now",
+    "letsGo": "Let's Go!"
+  },
+  "protection": {
+    "careerProtectionTimeline": "Career Protection Timeline",
+    "unprotectedYears": "Unprotected Years",
+    "healthRadar": "Health Radar"
+  },
   "gapAnalysis": {
     "lifeInsurance": "Life Insurance",
     "lifeInsuranceDesc": "You have dependents or family obligations without life insurance protection",

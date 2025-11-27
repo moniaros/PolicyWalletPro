@@ -43,7 +43,7 @@ export default function PoliciesPage() {
                    <UploadCloud className="h-8 w-8 mb-2 opacity-50" />
                    <span className="text-sm">{t('policies.clickOrDrag')}</span>
                 </div>
-                <p className="text-xs text-muted-foreground mt-2" aria-label="Accepted file formats and size limit">
+                <p className="text-xs text-muted-foreground mt-2" aria-label={t("files.acceptedFormatsLabel")}>
                   <strong>{t('documents.acceptedFormats')}:</strong> PDF, PNG, JPG (Max 10MB)
                 </p>
               </div>

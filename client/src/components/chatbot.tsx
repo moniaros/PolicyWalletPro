@@ -195,7 +195,7 @@ export function Chatbot() {
             <div className="p-4 border-t bg-background">
               <form onSubmit={handleSendMessage} className="flex gap-2">
                 <Input
-                  placeholder="Ask anything..."
+                  placeholder={t("chatbot.askAnything")}
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   className="rounded-full bg-secondary/50 focus-visible:ring-1"

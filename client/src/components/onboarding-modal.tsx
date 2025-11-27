@@ -82,7 +82,7 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
           </div>
 
           {/* Progress dots */}
-          <div className="flex justify-center gap-2" role="tablist" aria-label="Onboarding steps">
+          <div className="flex justify-center gap-2" role="tablist" aria-label={t("onboarding.steps")}>
             {[1, 2, 3].map((i) => (
               <button
                 key={i}
@@ -105,9 +105,9 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
             onClick={onClose}
             data-testid="button-skip"
             className="flex-1"
-            aria-label="Skip onboarding tutorial"
+            aria-label={t("onboarding.skipTutorial")}
           >
-            Skip for Now
+            {t("buttons.skipForNow")}
           </Button>
           {step < 3 ? (
             <Button
@@ -123,9 +123,9 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
               onClick={onClose}
               className="flex-1 bg-emerald-600 hover:bg-emerald-700"
               data-testid="button-finish-onboard"
-              aria-label="Complete onboarding and continue"
+              aria-label={t("onboarding.completeAndContinue")}
             >
-              Let's Go! <ArrowRight className="h-4 w-4 ml-2" />
+              {t("buttons.letsGo")} <ArrowRight className="h-4 w-4 ml-2" />
             </Button>
           )}
         </div>

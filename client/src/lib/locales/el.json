@@ -1161,6 +1161,31 @@
   "health": {
     "nextCheckupDue": "Επόμενη Εξέταση Ληξιαρχείου"
   },
+  "files": {
+    "acceptedFormatsLabel": "Αποδεκτές μορφές αρχείων και όριο μεγέθους"
+  },
+  "onboarding": {
+    "steps": "Βήματα ενσωμάτωσης",
+    "skipTutorial": "Παράλειψη εκμάθησης",
+    "completeAndContinue": "Ολοκληρώστε και συνεχίστε"
+  },
+  "chatbot": {
+    "askAnything": "Ρωτήστε οτιδήποτε..."
+  },
+  "placeholders": {
+    "johnDoe": "Ιωάννης Παπαδόπουλος",
+    "yourEmail": "το@email.σας",
+    "providerExample": "π.χ., Δρ. Παπαδόπουλος, Αθηνών Ιατρικό Κέντρο"
+  },
+  "buttons": {
+    "skipForNow": "Παράλειψη προς το παρόν",
+    "letsGo": "Ας Πάμε!"
+  },
+  "protection": {
+    "careerProtectionTimeline": "Ημερολόγιο Προστασίας Σταδιοδρομίας",
+    "unprotectedYears": "Χρόνια Χωρίς Προστασία",
+    "healthRadar": "Ραντάρ Υγείας"
+  },
   "gapAnalysis": {
     "lifeInsurance": "Ασφάλεια Ζωής",
     "lifeInsuranceDesc": "Έχετε εξαρτώμενα ή οικογενειακές υποχρεώσεις χωρίς προστασία ασφάλειας ζωής",

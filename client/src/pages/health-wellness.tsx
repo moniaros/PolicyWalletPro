@@ -138,7 +138,7 @@ export default function HealthWellnessPage() {
               <div className="grid gap-2">
                 <Label>{t('healthWellness.healthcareProvider')}</Label>
                 <Input
-                  placeholder="e.g., Dr. Papadopoulos, Athens Medical Center"
+                  placeholder={t('placeholders.providerExample')}
                   value={uploadProvider}
                   onChange={(e) => setUploadProvider(e.target.value)}
                   data-testid="input-provider"

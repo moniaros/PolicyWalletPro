@@ -274,7 +274,7 @@ export default function UserSettingsPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, fullName: e.target.value })
                   }
-                  placeholder="John Doe"
+                  placeholder={t("placeholders.johnDoe")}
                   data-testid="input-settings-fullname"
                 />
               </div>
