@@ -1011,6 +1011,18 @@
     "monthlyAvg": "/month avg",
     "save": "Save"
   },
+  "details": {
+    "experience": "Experience",
+    "impact": "Impact",
+    "category": "Category",
+    "provider": "Provider",
+    "primary": "Primary",
+    "expiration": "Expiration",
+    "proposals": "Proposals",
+    "settings": "Settings",
+    "theme": "Theme",
+    "timezone": "Timezone"
+  },
   "gapAnalysis": {
     "lifeInsurance": "Life Insurance",
     "lifeInsuranceDesc": "You have dependents or family obligations without life insurance protection",

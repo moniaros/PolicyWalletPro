@@ -238,7 +238,7 @@ export default function UserSettingsPage() {
   return (
     <div className="space-y-6 pb-10">
       <div className="space-y-2">
-        <h1 className="text-4xl font-bold tracking-tight">Settings</h1>
+        <h1 className="text-4xl font-bold tracking-tight">{ t("details.settings") }</h1>
         <p className="text-lg text-muted-foreground">
           Manage your account, security, preferences, notifications, and insurance profile
         </p>
@@ -578,7 +578,7 @@ export default function UserSettingsPage() {
               </div>
 
               <div className="space-y-3">
-                <Label>Theme</Label>
+                <Label>{ t("details.theme") }</Label>
                 <RadioGroup
                   value={formData.theme}
                   onValueChange={(val) =>
@@ -663,7 +663,7 @@ export default function UserSettingsPage() {
               </div>
 
               <div className="space-y-3">
-                <Label>Timezone</Label>
+                <Label>{ t("details.timezone") }</Label>
                 <Select
                   value={formData.timezone}
                   onValueChange={(val) =>

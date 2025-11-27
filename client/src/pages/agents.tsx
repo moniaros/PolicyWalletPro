@@ -82,7 +82,7 @@ export default function AgentsPage() {
               {/* Quick Stats */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="p-3 bg-white rounded-lg border border-emerald-100">
-                  <p className="text-xs text-muted-foreground">Experience</p>
+                  <p className="text-xs text-muted-foreground">{ t("details.experience") }</p>
                   <p className="font-bold text-lg">{currentAgent.experience}</p>
                 </div>
                 <div className="p-3 bg-white rounded-lg border border-emerald-100">

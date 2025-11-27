@@ -262,7 +262,7 @@ export default function RecommendationsPage() {
                     {/* Impact */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="bg-emerald-50 p-3 rounded-lg">
-                        <p className="text-xs text-emerald-600 uppercase font-semibold">Impact</p>
+                        <p className="text-xs text-emerald-600 uppercase font-semibold">{ t("details.impact") }</p>
                         <p className="text-sm font-semibold text-emerald-900 mt-1">{rec.impact}</p>
                       </div>
                       <div className="bg-blue-50 p-3 rounded-lg">
@@ -275,11 +275,11 @@ export default function RecommendationsPage() {
                   {/* Right: Action */}
                   <div className="flex flex-col justify-between">
                     <div>
-                      <p className="text-xs text-muted-foreground uppercase">Category</p>
+                      <p className="text-xs text-muted-foreground uppercase">{ t("details.category") }</p>
                       <Badge variant="secondary" className="mt-1">
                         {getCategoryLabel(rec.category)}
                       </Badge>
-                      <p className="text-xs text-muted-foreground uppercase mt-4">Provider</p>
+                      <p className="text-xs text-muted-foreground uppercase mt-4">{ t("details.provider") }</p>
                       <p className="font-semibold text-sm">{rec.provider}</p>
                     </div>
                     <Button className="w-full mt-6 bg-primary" data-testid={`button-recommendation-${rec.id}`}>

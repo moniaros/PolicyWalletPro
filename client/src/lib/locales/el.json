@@ -1099,6 +1099,18 @@
     "monthlyAvg": "/μήνα μ.ο.",
     "save": "Εξοικονόμηση"
   },
+  "details": {
+    "experience": "Εμπειρία",
+    "impact": "Επιπτώσεις",
+    "category": "Κατηγορία",
+    "provider": "Πάροχος",
+    "primary": "Κύρια",
+    "expiration": "Λήξη",
+    "proposals": "Προτάσεις",
+    "settings": "Ρυθμίσεις",
+    "theme": "Θέμα",
+    "timezone": "Ζώνη Ώρας"
+  },
   "gapAnalysis": {
     "lifeInsurance": "Ασφάλεια Ζωής",
     "lifeInsuranceDesc": "Έχετε εξαρτώμενα ή οικογενειακές υποχρεώσεις χωρίς προστασία ασφάλειας ζωής",

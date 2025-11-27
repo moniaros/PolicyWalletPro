@@ -94,7 +94,7 @@ export default function PolicyDetailsPage() {
       </div>
 
       {/* Overview Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="bg-primary/5 border-primary/10">
           <CardContent className="p-4 flex items-center gap-4">
              <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
@@ -143,7 +143,7 @@ export default function PolicyDetailsPage() {
 
       {/* Tabs Content */}
       <Tabs defaultValue="overview" className="w-full">
-        <TabsList className="grid w-full grid-cols-4 lg:w-[400px]">
+        <TabsList className="grid w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:w-[400px]">
           <TabsTrigger value="overview">{t('policyDetails.overview')}</TabsTrigger>
           <TabsTrigger value="billing">{t('policyDetails.billing')}</TabsTrigger>
           <TabsTrigger value="claims">{t('policyDetails.claimsTab')}</TabsTrigger>
@@ -200,7 +200,7 @@ export default function PolicyDetailsPage() {
                         </div>
                         <div className="text-right">
                            <Badge variant="outline">{beneficiary.allocation}</Badge>
-                           {beneficiary.primary && <p className="text-[10px] text-primary font-medium mt-1">Primary</p>}
+                           {beneficiary.primary && <p className="text-[10px] text-primary font-medium mt-1">{ t("details.primary") }</p>}
                         </div>
                       </div>
                     ))}
@@ -229,7 +229,7 @@ export default function PolicyDetailsPage() {
                        <p className="font-medium">{policy.paymentFrequency || "Monthly"}</p>
                     </div>
                     <div>
-                       <p className="text-muted-foreground text-xs uppercase">Expiration</p>
+                       <p className="text-muted-foreground text-xs uppercase">{ t("details.expiration") }</p>
                        <p className="font-medium">{policy.expiry}</p>
                     </div>
                  </CardContent>
@@ -390,7 +390,7 @@ export default function PolicyDetailsPage() {
 
              <Card className="bg-indigo-50 border-indigo-100">
                 <CardHeader>
-                   <CardTitle className="text-indigo-900">Proposals</CardTitle>
+                   <CardTitle className="text-indigo-900">{ t("details.proposals") }</CardTitle>
                 </CardHeader>
                 <CardContent>
                    {policy.details?.gapAnalysis?.proposals.length > 0 ? (
