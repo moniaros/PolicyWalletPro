@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -196,6 +197,7 @@ function calculateGaps(responses: GapAnalysisResponse): CoverageGap[] {
 }
 
 export default function GapAnalysisPage() {
+  const { t } = useTranslation();
   const [currentStep, setCurrentStep] = useState(0);
   const [responses, setResponses] = useState<GapAnalysisResponse>({
     ageGroup: "",
@@ -332,7 +334,7 @@ export default function GapAnalysisPage() {
               className="flex-1"
               data-testid="button-previous"
             >
-              Previous
+              {t('gapAnalysisPage.previous')}
             </Button>
           )}
           <Button
@@ -341,7 +343,7 @@ export default function GapAnalysisPage() {
             className="flex-1 bg-primary hover:bg-primary/90"
             data-testid="button-next-question"
           >
-            {currentStep === questions.length - 1 ? "View Results" : "Next"}
+            {currentStep === questions.length - 1 ? t('gapAnalysisPage.viewResults') : t('actions.next')}
           </Button>
         </div>
       </div>
@@ -358,19 +360,19 @@ export default function GapAnalysisPage() {
     <div className="space-y-8 max-w-3xl mx-auto">
       {/* Header */}
       <div className="space-y-4">
-        <h1 className="text-4xl font-bold tracking-tight">Your Insurance Gap Analysis</h1>
-        <div className="grid grid-cols-3 gap-4">
+        <h1 className="text-4xl font-bold tracking-tight">{t('gapAnalysisPage.yourInsuranceGapAnalysis')}</h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <div className="bg-red-50 p-4 rounded-lg border border-red-200">
             <div className="text-2xl font-bold text-red-600">{criticalGaps.length}</div>
-            <p className="text-sm text-red-700 font-medium">Critical Gaps</p>
+            <p className="text-sm text-red-700 font-medium">{t('gapAnalysisPage.criticalGaps')}</p>
           </div>
           <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
             <div className="text-2xl font-bold text-amber-600">{highGaps.length}</div>
-            <p className="text-sm text-amber-700 font-medium">High Priority</p>
+            <p className="text-sm text-amber-700 font-medium">{t('gapAnalysisPage.highPriority')}</p>
           </div>
           <div className="bg-emerald-50 p-4 rounded-lg border border-emerald-200">
             <div className="text-2xl font-bold text-emerald-600">{mediumGaps.length + lowGaps.length}</div>
-            <p className="text-sm text-emerald-700 font-medium">Optional</p>
+            <p className="text-sm text-emerald-700 font-medium">{t('gapAnalysisPage.optional')}</p>
           </div>
         </div>
       </div>
@@ -380,7 +382,7 @@ export default function GapAnalysisPage() {
         <div className="space-y-4">
           <h2 className="text-2xl font-bold flex items-center gap-2">
             <ShieldAlert className="h-6 w-6 text-red-600" />
-            Critical Coverage Gaps
+            {t('gapAnalysisPage.criticalCoverageGaps')}
           </h2>
           <div className="space-y-3">
             {criticalGaps.map((gap) => (

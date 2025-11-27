@@ -121,7 +121,7 @@ export default function HealthWellnessPage() {
             </DialogHeader>
             <div className="space-y-4 py-4">
               <div className="grid gap-2">
-                <Label>Checkup Type</Label>
+                <Label>{t('healthWellness.checkupType')}</Label>
                 <Select value={uploadType} onValueChange={setUploadType}>
                   <SelectTrigger>
                     <SelectValue />
@@ -136,7 +136,7 @@ export default function HealthWellnessPage() {
                 </Select>
               </div>
               <div className="grid gap-2">
-                <Label>Healthcare Provider</Label>
+                <Label>{t('healthWellness.healthcareProvider')}</Label>
                 <Input
                   placeholder="e.g., Dr. Papadopoulos, Athens Medical Center"
                   value={uploadProvider}
@@ -145,7 +145,7 @@ export default function HealthWellnessPage() {
                 />
               </div>
               <div className="grid gap-2">
-                <Label>Results & Findings (Optional)</Label>
+                <Label>{t('healthWellness.resultsFindings')}</Label>
                 <Textarea
                   placeholder="Paste findings, measurements, or key results..."
                   value={uploadResults}
@@ -156,9 +156,9 @@ export default function HealthWellnessPage() {
               </div>
               <Alert>
                 <AlertCircle className="h-4 w-4" />
-                <AlertTitle>Covered under your policy</AlertTitle>
+                <AlertTitle>{t('healthWellness.coveredUnderPolicy')}</AlertTitle>
                 <AlertDescription>
-                  Regular checkups are covered up to 100% at network providers.
+                  {t('healthWellness.regularCheckups')}
                 </AlertDescription>
               </Alert>
             </div>

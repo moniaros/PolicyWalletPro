@@ -696,7 +696,38 @@
     "claimsTab": "Αποζημιώσεις",
     "analysis": "Ανάλυση",
     "policyNotFound": "Ασφάλιση Δεν Βρέθηκε",
-    "backToPolicies": "Επιστροφή στα Ασφαλιστήρια"
+    "backToPolicies": "Επιστροφή στα Ασφαλιστήρια",
+    "claimsHistory": "Ιστορικό Δηλώσεων",
+    "noClaimsFiled": "Δεν έχουν υποβληθεί δηλώσεις ακόμα. Συνεχίστε το καλό έργο!"
+  },
+  "gapAnalysisPage": {
+    "yourInsuranceGapAnalysis": "Η Ανάλυση Κενών Ασφάλισής σας",
+    "criticalGaps": "Κρίσιμα Κενά",
+    "highPriority": "Υψηλή Προτεραιότητα",
+    "optional": "Προαιρετικό",
+    "criticalCoverageGaps": "Κρίσιμα Κενά Κάλυψης",
+    "previous": "Προηγούμενο",
+    "viewResults": "Δείτε Αποτελέσματα"
+  },
+  "healthWellness": {
+    "checkupType": "Τύπος Ελέγχου",
+    "healthcareProvider": "Πάροχος Υγειονομικής Περίθαλψης",
+    "resultsFindings": "Αποτελέσματα & Ευρήματα (Προαιρετικά)",
+    "coveredUnderPolicy": "Καλύπτεται από την πολιτική σας",
+    "regularCheckups": "Οι τακτικοί έλεγχοι καλύπτονται έως 100% σε παρόχους δικτύου."
+  },
+  "agents": {
+    "quoteRequests": "Αιτήματα Προσφοράς",
+    "messageSent": "Μήνυμα Απεστάλη!",
+    "sendMessage": "Αποστολή Μηνύματος"
+  },
+  "recommendations": {
+    "addDentalCoverage": "Προσθήκη Οδοντιατρικής Κάλυψης",
+    "addDentalRider": "Προσθήκη Οδοντιατρικού Rider",
+    "increaseLifeInsurance": "Αύξηση Ασφάλισης Ζωής",
+    "upgradeLifeInsurance": "Αναβάθμιση Ασφάλισης Ζωής",
+    "petInsuranceAdded": "Ασφάλιση Κατοικιδίων Προστέθηκε",
+    "explorePetInsurance": "Εξερεύνηση Ασφάλισης Κατοικιδίων"
   },
   "validation": {
     "required": "Το πεδίο {{fieldName}} είναι υποχρεωτικό.",

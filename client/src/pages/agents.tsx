@@ -21,27 +21,27 @@ export default function AgentsPage() {
 
   const handleCall = () => {
     window.location.href = `tel:${AGENT_PHONE}`;
-    toast.success("Opening call...", { description: `Calling ${AGENT_PHONE}` });
+    toast.success(t('agents.openingCall'), { description: `${t('agents.callingAgent')} ${AGENT_PHONE}` });
   };
 
   const handleWhatsApp = () => {
     window.open(`https://wa.me/${AGENT_WHATSAPP}?text=Hello%20${currentAgent.name}%2C%20I%20would%20like%20to%20discuss%20my%20insurance%20policies.`, "_blank");
-    toast.success("Opening WhatsApp...", { description: `Chat with ${currentAgent.name} on WhatsApp` });
+    toast.success(t('agents.openingWhatsapp'), { description: `${t('agents.chatOnWhatsapp')} ${currentAgent.name}` });
   };
 
   const handleViber = () => {
     window.location.href = `viber://contact?number=${AGENT_WHATSAPP}`;
-    toast.success("Opening Viber...", { description: `Chat with ${currentAgent.name} on Viber` });
+    toast.success(t('agents.openingViber'), { description: `${t('agents.chatOnViber')} ${currentAgent.name}` });
   };
 
   const handleEmail = () => {
     window.location.href = `mailto:${AGENT_EMAIL}?subject=Insurance%20Inquiry`;
-    toast.success("Opening email...", { description: `Email to ${currentAgent.name}` });
+    toast.success(t('agents.openingEmail'), { description: `${t('agents.emailTo')} ${currentAgent.name}` });
   };
 
   const handleMessage = () => {
     setContactSent(true);
-    toast.success("Message sent!", { description: `${currentAgent.name} will get back to you shortly.` });
+    toast.success(t('agents.messageSent'), { description: `${currentAgent.name} ${t('agents.willGetBack')}` });
     setTimeout(() => setContactSent(false), 3000);
   };
 
@@ -201,7 +201,7 @@ export default function AgentsPage() {
               "Claims Assistance",
               "Policy Reviews & Optimization",
               "Coverage Gap Analysis",
-              "Quote Requests",
+              t('agents.quoteRequests'),
               "Policy Renewals",
               "Document Support",
               "Emergency Support 24/7",
@@ -237,7 +237,7 @@ export default function AgentsPage() {
               data-testid="button-send-message"
             >
               <MessageSquare className="h-4 w-4 mr-2" />
-              {contactSent ? "Message Sent!" : "Send Message"}
+              {contactSent ? t('agents.messageSent') : t('agents.sendMessage')}
             </Button>
           </div>
 

@@ -610,7 +610,38 @@
     "claimsTab": "Claims",
     "analysis": "Analysis",
     "policyNotFound": "Policy Not Found",
-    "backToPolicies": "Back to Policies"
+    "backToPolicies": "Back to Policies",
+    "claimsHistory": "Claims History",
+    "noClaimsFiled": "No claims filed yet. Keep up the good work!"
+  },
+  "gapAnalysisPage": {
+    "yourInsuranceGapAnalysis": "Your Insurance Gap Analysis",
+    "criticalGaps": "Critical Gaps",
+    "highPriority": "High Priority",
+    "optional": "Optional",
+    "criticalCoverageGaps": "Critical Coverage Gaps",
+    "previous": "Previous",
+    "viewResults": "View Results"
+  },
+  "healthWellness": {
+    "checkupType": "Checkup Type",
+    "healthcareProvider": "Healthcare Provider",
+    "resultsFindings": "Results & Findings (Optional)",
+    "coveredUnderPolicy": "Covered under your policy",
+    "regularCheckups": "Regular checkups are covered up to 100% at network providers."
+  },
+  "agents": {
+    "quoteRequests": "Quote Requests",
+    "messageSent": "Message Sent!",
+    "sendMessage": "Send Message"
+  },
+  "recommendations": {
+    "addDentalCoverage": "Add Dental Coverage",
+    "addDentalRider": "Add Dental Rider",
+    "increaseLifeInsurance": "Increase Life Insurance Coverage",
+    "upgradeLifeInsurance": "Upgrade Life Insurance",
+    "petInsuranceAdded": "Pet Insurance Recently Added",
+    "explorePetInsurance": "Explore Pet Insurance"
   },
   "status": {
     "success": "Success",
