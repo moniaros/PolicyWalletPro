@@ -21,9 +21,9 @@ export default function PoliciesPage() {
   return (
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">{t('policies.myPolicies')}</h1>
-          <p className="text-muted-foreground mt-1">{t('policies.manageOrganize')}</p>
+        <div className="space-y-2">
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground">{t('policies.myPolicies')}</h1>
+          <p className="text-muted-foreground text-lg">{t('policies.manageOrganize')}</p>
         </div>
         <Dialog>
           <DialogTrigger asChild>

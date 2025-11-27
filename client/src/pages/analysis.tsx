@@ -10,9 +10,9 @@ export default function AnalysisPage() {
   const { t } = useTranslation();
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">{t('analysis.gapAnalysis')}</h1>
-        <p className="text-muted-foreground mt-1">{t('analysis.visualizeVisualize')}</p>
+      <div className="space-y-2">
+        <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground">{t('analysis.gapAnalysis')}</h1>
+        <p className="text-muted-foreground text-lg">{t('analysis.visualizeVisualize')}</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

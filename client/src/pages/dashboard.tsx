@@ -29,24 +29,29 @@ export default function Dashboard() {
       <OnboardingModal isOpen={showOnboarding} onClose={handleCloseOnboarding} />
       <div className="space-y-8">
       {/* Hero / Welcome Section */}
-      <section className="flex flex-col md:flex-row items-center justify-between gap-6 bg-gradient-to-br from-primary via-primary to-primary/90 rounded-3xl p-8 md:p-12 text-white shadow-2xl shadow-primary/30 relative overflow-hidden group hover:shadow-primary/40 transition-all duration-300">
+      <section className="flex flex-col md:flex-row items-center justify-between gap-6 bg-gradient-to-br from-primary via-primary to-primary/90 rounded-3xl p-8 md:p-14 text-white shadow-2xl shadow-primary/40 relative overflow-hidden group hover:shadow-primary/50 transition-all duration-300 border border-white/10">
         <div className="relative z-10 space-y-6 max-w-lg">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/20 text-white/95 text-xs font-semibold backdrop-blur-md border border-white/30 hover:bg-white/25 transition-colors">
             <Bell className="h-3.5 w-3.5" />
             <span>{t('dashboard.newUpdates', { count: notifications.length })}</span>
           </div>
-          <div className="space-y-3">
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight leading-tight">{t('dashboard.welcomeBack', { name: 'Alex' })}</h1>
-            <p className="text-white/85 text-lg leading-relaxed">{t('dashboard.healthScore')} <span className="font-extrabold text-white text-xl">92/100</span>. {t('dashboard.wellCovered')}</p>
+          <div className="space-y-4">
+            <h1 className="text-5xl md:text-6xl font-bold tracking-tight leading-tight">{t('dashboard.welcomeBack', { name: 'Alex' })}</h1>
+            <div className="flex items-center gap-3">
+              <div className="px-4 py-2 rounded-xl bg-emerald-400/30 backdrop-blur-sm">
+                <span className="text-emerald-100 text-sm font-semibold">92/100</span>
+              </div>
+              <p className="text-white/90 text-lg">{t('dashboard.wellCovered')}</p>
+            </div>
           </div>
           <div className="flex gap-3 pt-4 flex-wrap">
-            <Button className="bg-white text-primary hover:bg-white/95 shadow-lg shadow-black/20 border-0 font-semibold px-6 h-11 group transition-all hover:scale-105" data-testid="button-add-policy">
-              <Plus className="h-4 w-4 mr-2" />
+            <Button className="bg-white text-primary shadow-xl shadow-black/30 border-0 font-semibold px-7 h-12 rounded-xl" data-testid="button-add-policy">
+              <Plus className="h-5 w-5 mr-2" />
               {t('common.addPolicy')}
             </Button>
             <Link href="/analysis">
-              <Button variant="outline" className="bg-white/15 border-white/40 text-white hover:bg-white/25 hover:border-white/60 font-semibold px-6 h-11 backdrop-blur-sm transition-all hover:scale-105">
-                {t('dashboard.viewAnalysis')} <ChevronRight className="h-4 w-4 ml-1" />
+              <Button variant="outline" className="bg-white/20 border-white/40 text-white hover:bg-white/30 font-semibold px-7 h-12 rounded-xl backdrop-blur-sm">
+                {t('dashboard.viewAnalysis')} <ChevronRight className="h-5 w-5 ml-1" />
               </Button>
             </Link>
           </div>
