@@ -1,7 +1,7 @@
 {
   "$schema": "https://vercel.com/schemas/vercel.json",
   "version": 2,
-  "buildCommand": "vite build",
+  "buildCommand": "npm run build",
   "devCommand": "NODE_ENV=development tsx server/index-dev.ts",
   "installCommand": "npm install",
   "framework": "express",
