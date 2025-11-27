@@ -66,7 +66,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-background font-sans text-foreground flex flex-col md:flex-row">
       {/* Desktop Sidebar */}
-      <aside className="hidden md:flex w-64 flex-col border-r bg-background/50 backdrop-blur-md fixed h-full z-20">
+      <aside className="hidden md:flex w-64 flex-col border-r border-border/50 bg-background/60 backdrop-blur-xl fixed h-full z-20 shadow-lg shadow-black/5">
         <div className="p-6 flex items-center gap-3">
           <div className="h-8 w-8 bg-primary rounded-lg flex items-center justify-center shadow-lg shadow-primary/30">
             <ShieldIcon className="text-primary-foreground h-5 w-5" />

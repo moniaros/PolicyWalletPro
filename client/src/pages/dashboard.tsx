@@ -92,7 +92,7 @@ export default function Dashboard() {
 
         <div className="space-y-6">
            <h2 className="text-xl font-bold text-foreground">{t('dashboard.upNext')}</h2>
-           <div className="bg-white rounded-2xl p-5 shadow-sm border border-muted space-y-4">
+           <div className="bg-gradient-to-br from-white to-blue-50/50 dark:from-card dark:to-card/80 rounded-2xl p-6 shadow-sm border border-border/50 space-y-4 hover:shadow-md transition-all">
               <div className="flex items-center gap-3 text-primary">
                 <div className="bg-primary/10 p-2 rounded-lg">
                   <Calendar className="h-5 w-5" />
@@ -119,11 +119,11 @@ export default function Dashboard() {
               </Link>
            </div>
 
-           <div className="bg-emerald-50 rounded-2xl p-5 border border-emerald-100">
-              <h3 className="font-bold text-emerald-900 mb-1">{t('dashboard.healthyStreak')}</h3>
-              <p className="text-sm text-emerald-700 mb-3">{t('dashboard.noClaimsMessage', { months: 12 })}</p>
-              <div className="h-2 bg-emerald-200 rounded-full overflow-hidden">
-                <div className="h-full bg-emerald-500 w-[80%] rounded-full"></div>
+           <div className="bg-gradient-to-br from-emerald-50 to-emerald-100/50 dark:from-emerald-950/30 dark:to-emerald-900/20 rounded-2xl p-6 border border-emerald-200/50 dark:border-emerald-800/50 shadow-sm hover:shadow-md transition-all">
+              <h3 className="font-bold text-emerald-900 dark:text-emerald-100 mb-2">{t('dashboard.healthyStreak')}</h3>
+              <p className="text-sm text-emerald-700 dark:text-emerald-200 mb-4">{t('dashboard.noClaimsMessage', { months: 12 })}</p>
+              <div className="h-2.5 bg-emerald-200 dark:bg-emerald-900/50 rounded-full overflow-hidden">
+                <div className="h-full bg-gradient-to-r from-emerald-400 to-emerald-600 w-4/5 rounded-full"></div>
               </div>
            </div>
         </div>
