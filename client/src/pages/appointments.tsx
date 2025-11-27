@@ -13,7 +13,16 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Calendar as CalendarIcon, MapPin, Clock, Plus, Phone, ArrowRight, Check } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { Calendar as CalendarIcon, MapPin, Clock, Plus, Phone, ArrowRight, Check, Trash2, Edit2 } from "lucide-react";
 import { toast } from "sonner";
 
 interface BookedAppointment {
@@ -26,7 +35,7 @@ interface BookedAppointment {
   phone: string;
   date: string;
   time: string;
-  status: "pending" | "confirmed";
+  status: "pending" | "confirmed" | "cancelled";
 }
 
 export default function AppointmentsPage() {
@@ -41,6 +50,10 @@ export default function AppointmentsPage() {
   const [appointmentDate, setAppointmentDate] = useState("");
   const [appointmentTime, setAppointmentTime] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  
+  // Edit/Reschedule mode
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [cancellingId, setCancellingId] = useState<string | null>(null);
 
   useEffect(() => {
     const saved = localStorage.getItem("policyguard_booked_appointments");
@@ -64,7 +77,26 @@ export default function AppointmentsPage() {
     setSelectedService(null);
     setAppointmentDate("");
     setAppointmentTime("");
+    setEditingId(null);
     setIsOpen(true);
+  };
+
+  const handleRescheduleClick = (apt: BookedAppointment) => {
+    const policy = policies.find(p => p.id === apt.policyId);
+    if (policy) {
+      setSelectedPolicy(policy);
+      setSelectedService({
+        name: apt.serviceName,
+        provider: apt.provider,
+        location: apt.location,
+        phone: apt.phone,
+      });
+      setAppointmentDate(apt.date);
+      setAppointmentTime(apt.time);
+      setEditingId(apt.id);
+      setStep(3);
+      setIsOpen(true);
+    }
   };
 
   const handlePolicySelect = (policy: typeof policies[0]) => {
@@ -88,26 +120,58 @@ export default function AppointmentsPage() {
       return;
     }
 
-    const newAppointment: BookedAppointment = {
-      id: Date.now().toString(),
-      policyId: selectedPolicy!.id,
-      policyType: selectedPolicy!.type,
-      serviceName: selectedService.name,
-      provider: selectedService.provider,
-      location: selectedService.location,
-      phone: selectedService.phone,
-      date: appointmentDate,
-      time: appointmentTime,
-      status: "confirmed",
-    };
+    if (editingId) {
+      // Update existing
+      const updated = bookedAppointments.map(apt =>
+        apt.id === editingId
+          ? {
+              ...apt,
+              date: appointmentDate,
+              time: appointmentTime,
+              status: "confirmed" as const,
+            }
+          : apt
+      );
+      saveAppointments(updated);
+      toast.success(t("appointments.appointmentUpdated") || "Appointment rescheduled!");
+    } else {
+      // Create new
+      const newAppointment: BookedAppointment = {
+        id: Date.now().toString(),
+        policyId: selectedPolicy!.id,
+        policyType: selectedPolicy!.type,
+        serviceName: selectedService.name,
+        provider: selectedService.provider,
+        location: selectedService.location,
+        phone: selectedService.phone,
+        date: appointmentDate,
+        time: appointmentTime,
+        status: "confirmed",
+      };
+      saveAppointments([...bookedAppointments, newAppointment]);
+      toast.success(t("appointments.appointmentConfirmed") || "Appointment booked successfully!");
+    }
 
-    saveAppointments([...bookedAppointments, newAppointment]);
-    toast.success(t("appointments.appointmentConfirmed") || "Appointment booked successfully!");
     setIsOpen(false);
     setStep(1);
+    setEditingId(null);
   };
 
-  const sortedAppointments = bookedAppointments.sort(
+  const handleCancelAppointment = (id: string) => {
+    const updated = bookedAppointments.map(apt =>
+      apt.id === id ? { ...apt, status: "cancelled" as const } : apt
+    );
+    saveAppointments(updated);
+    setCancellingId(null);
+    toast.success(t("appointments.appointmentCancelled") || "Appointment cancelled");
+  };
+
+  const handleCallProvider = (phone: string) => {
+    window.location.href = `tel:${phone.replace(/\s/g, "")}`;
+  };
+
+  const activeAppointments = bookedAppointments.filter(a => a.status !== "cancelled");
+  const sortedAppointments = activeAppointments.sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
 
@@ -228,7 +292,7 @@ export default function AppointmentsPage() {
                     <div className="flex items-center justify-center w-8 h-8 bg-primary text-white rounded-full text-sm font-bold">
                       3
                     </div>
-                    {t("appointments.scheduleDateTime") || "Schedule Date & Time"}
+                    {editingId ? t("appointments.reschedule") : t("appointments.scheduleDateTime") || "Schedule Date & Time"}
                   </DialogTitle>
                 </DialogHeader>
                 <div className="space-y-6 py-4">
@@ -294,7 +358,7 @@ export default function AppointmentsPage() {
                       className="flex-1 shadow-lg shadow-primary/20"
                     >
                       <Check className="h-4 w-4 mr-2" />
-                      {t("appointments.confirmBooking") || "Confirm Booking"}
+                      {editingId ? t("appointments.reschedule") : t("appointments.confirmBooking") || "Confirm Booking"}
                     </Button>
                   </div>
                 </div>
@@ -329,14 +393,14 @@ export default function AppointmentsPage() {
           <div className="grid grid-cols-2 gap-3">
             <Card className="border-0 shadow-sm">
               <CardContent className="p-4 text-center">
-                <div className="text-2xl font-bold text-primary">{bookedAppointments.length}</div>
+                <div className="text-2xl font-bold text-primary">{activeAppointments.length}</div>
                 <p className="text-xs text-muted-foreground">{t("appointments.total")}</p>
               </CardContent>
             </Card>
             <Card className="border-0 shadow-sm">
               <CardContent className="p-4 text-center">
                 <div className="text-2xl font-bold text-emerald-600">
-                  {bookedAppointments.filter((a) => a.status === "confirmed").length}
+                  {activeAppointments.filter((a) => a.status === "confirmed").length}
                 </div>
                 <p className="text-xs text-muted-foreground">{t("appointments.confirmed")}</p>
               </CardContent>
@@ -385,25 +449,74 @@ export default function AppointmentsPage() {
                         </div>
                         <p className="text-sm font-semibold text-foreground mb-2">{apt.provider}</p>
 
-                        <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+                        <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
                           <span className="flex items-center gap-2 bg-muted/50 px-3 py-1 rounded-lg">
                             <Clock className="h-4 w-4" /> {apt.time}
                           </span>
                           <span className="flex items-center gap-2 bg-muted/50 px-3 py-1 rounded-lg">
                             <MapPin className="h-4 w-4" /> {apt.location}
                           </span>
-                          <span className="flex items-center gap-2 bg-muted/50 px-3 py-1 rounded-lg">
-                            <Phone className="h-4 w-4" /> {apt.phone}
-                          </span>
                         </div>
                       </div>
                     </div>
 
-                    {/* Action */}
-                    <Button variant="outline" size="sm" className="sm:self-start">
-                      {t("appointments.details")}
-                      <ArrowRight className="h-4 w-4 ml-2" />
-                    </Button>
+                    {/* Actions */}
+                    <div className="flex sm:flex-col gap-2 sm:items-end">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleCallProvider(apt.phone)}
+                        className="flex-1 sm:flex-none"
+                        data-testid="button-call-provider"
+                      >
+                        <Phone className="h-4 w-4 mr-1" />
+                        Call
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleRescheduleClick(apt)}
+                        className="flex-1 sm:flex-none"
+                        data-testid="button-reschedule"
+                      >
+                        <Edit2 className="h-4 w-4 mr-1" />
+                        Reschedule
+                      </Button>
+                      <AlertDialog open={cancellingId === apt.id} onOpenChange={(open) => setCancellingId(open ? apt.id : null)}>
+                        <AlertDialogAction onClick={() => setCancellingId(apt.id)} asChild>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className="flex-1 sm:flex-none text-red-600 hover:text-red-700 hover:bg-red-50"
+                            data-testid="button-cancel-appointment"
+                          >
+                            <Trash2 className="h-4 w-4 mr-1" />
+                            Cancel
+                          </Button>
+                        </AlertDialogAction>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>{t("appointments.cancelConfirm") || "Cancel Appointment?"}</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              {t("appointments.cancelMessage") || "Are you sure you want to cancel this appointment?"}
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <div className="space-y-2 my-4 p-3 bg-muted rounded-lg">
+                            <p className="text-sm"><strong>{apt.serviceName}</strong></p>
+                            <p className="text-xs text-muted-foreground">{apt.provider} • {apt.date} at {apt.time}</p>
+                          </div>
+                          <div className="flex gap-2">
+                            <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => handleCancelAppointment(apt.id)}
+                              className="bg-red-600 hover:bg-red-700"
+                            >
+                              {t("appointments.confirm") || "Cancel Appointment"}
+                            </AlertDialogAction>
+                          </div>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </div>
                   </CardContent>
                 </Card>
               ))}
