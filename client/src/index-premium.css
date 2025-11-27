@@ -1,0 +1,117 @@
+/* Premium Apple-Store Style Animations and Utilities */
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+/* Premium Card Styling */
+.premium-card {
+  @apply bg-white dark:bg-card rounded-2xl border border-border/50 shadow-sm hover:shadow-lg transition-all duration-300;
+}
+
+.premium-card:hover {
+  @apply border-primary/30 shadow-lg;
+}
+
+/* Premium Button States */
+.btn-premium {
+  @apply rounded-xl font-semibold transition-all duration-200;
+}
+
+.btn-premium:active {
+  @apply scale-95;
+}
+
+.btn-premium:focus-visible {
+  @apply ring-2 ring-primary/50 ring-offset-2;
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection Styling */
+::selection {
+  @apply bg-primary/20 text-foreground;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  @apply w-2.5;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-primary/30 rounded-full hover:bg-primary/50 transition-colors;
+}
+
+/* Input Focus Ring */
+input:focus,
+textarea:focus,
+select:focus {
+  @apply ring-2 ring-primary/30 ring-offset-1;
+}
+
+/* Responsive Typography */
+@media (max-width: 640px) {
+  h1 {
+    @apply text-3xl;
+  }
+  h2 {
+    @apply text-xl;
+  }
+}
+
+/* Dark Mode Adjustments */
+.dark {
+  color-scheme: dark;
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    @apply !transition-none !animate-none;
+  }
+}
