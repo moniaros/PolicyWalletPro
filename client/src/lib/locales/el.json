@@ -585,7 +585,38 @@
   "chatbot": {
     "welcome": "Γεια σας! Είμαι ο PolicyWallet AI assistant. Μπορώ να σας βοηθήσω να ελέγξετε την κάλυψή σας, να υποβάλετε δήλωση ή να βρείτε έναν συνεργάτη. Πώς μπορώ να σας βοηθήσω σήμερα;",
     "fileClaim": "Για να υποβάλετε μια δήλωση, πηγαίνετε στη σελίδα λεπτομερειών της συγκεκριμένης πολιτικής και κάντε κλικ 'Υποβολή Νέας Δήλωσης'. Μπορώ να σας καθοδηγήσω μέσα από τη διαδικασία ανεβάσματος εγγράφων αν θέλετε.",
-    "aiAssistant": "PolicyWallet AI"
+    "aiAssistant": "PolicyWallet AI",
+    "askAnything": "Ρωτήστε τα πάντα..."
+  },
+  "policyRecommendations": {
+    "coverageScore": "Σκορ Κάλυψης",
+    "critical": "Κρίσιμο: Προσθέστε Αυτές τις Κάλυψες",
+    "recommended": "Συνιστάται: Προσθέστε Αυτές τις Κάλυψες",
+    "saveMoney": "Εξοικονομήστε Χρήματα: Κάλυψες για Αφαίρεση",
+    "optional": "Προαιρετικό: Ωραίες Κάλυψες"
+  },
+  "documents": {
+    "searchDocuments": "Αναζήτηση εγγράφων..."
+  },
+  "agents": {
+    "openingCall": "Άνοιγμα κλήσης...",
+    "callingAgent": "Κλήση",
+    "openingWhatsapp": "Άνοιγμα WhatsApp...",
+    "chatOnWhatsapp": "Συνομιλία στο WhatsApp",
+    "openingViber": "Άνοιγμα Viber...",
+    "chatOnViber": "Συνομιλία στο Viber",
+    "openingEmail": "Άνοιγμα email...",
+    "emailTo": "Email προς",
+    "messageSent": "Μήνυμα απεστάλη!",
+    "willGetBack": "θα επικοινωνήσει μαζί σας σύντομα"
+  },
+  "profile": {
+    "lifeStageAndCoverage": "Στάδιο Ζωής & Κάλυψη",
+    "currentInsuranceCoverage": "Τρέχουσα Κάλυψη Ασφάλισης",
+    "impactsInsuranceNeeds": "Επηρεάζει τις ανάγκες ασφάλισης και την αξιολόγηση κινδύνου"
+  },
+  "gapAnalysis": {
+    "criticalCoverageGaps": "Κρίσιμα Κενά Κάλυψης"
   },
   "validation": {
     "required": "Το πεδίο {{fieldName}} είναι υποχρεωτικό.",

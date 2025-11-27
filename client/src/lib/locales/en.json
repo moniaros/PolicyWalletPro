@@ -497,7 +497,40 @@
   "chatbot": {
     "welcome": "Hi! I'm your PolicyWallet AI assistant. I can help you check your coverage, file a claim, or find an agent. How can I help you today?",
     "fileClaim": "To file a claim, go to the specific policy details page and click 'File New Claim'. I can guide you through the document upload process if you like.",
-    "aiAssistant": "PolicyWallet AI"
+    "aiAssistant": "PolicyWallet AI",
+    "askAnything": "Ask anything..."
+  },
+  "policyRecommendations": {
+    "coverageScore": "Coverage Score",
+    "critical": "Critical: Add These Coverages",
+    "recommended": "Recommended: Add These Coverages",
+    "saveMoney": "Save Money: Coverages to Drop",
+    "optional": "Optional: Nice-to-Have Coverages"
+  },
+  "documents": {
+    "searchDocuments": "Search documents..."
+  },
+  "agents": {
+    "openingCall": "Opening call...",
+    "callingAgent": "Calling",
+    "openingWhatsapp": "Opening WhatsApp...",
+    "chatOnWhatsapp": "Chat with",
+    "onWhatsapp": "on WhatsApp",
+    "openingViber": "Opening Viber...",
+    "chatOnViber": "Chat with",
+    "onViber": "on Viber",
+    "openingEmail": "Opening email...",
+    "emailTo": "Email to",
+    "messageSent": "Message sent!",
+    "willGetBack": "will get back to you shortly"
+  },
+  "profile": {
+    "lifeStageAndCoverage": "Life Stage & Coverage",
+    "currentInsuranceCoverage": "Current Insurance Coverage",
+    "impactsInsuranceNeeds": "Impacts insurance needs and risk assessment"
+  },
+  "gapAnalysis": {
+    "criticalCoverageGaps": "Critical Coverage Gaps"
   },
   "status": {
     "success": "Success",
