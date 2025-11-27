@@ -127,11 +127,11 @@ export default function HealthWellnessPage() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Annual">Annual Health Screening</SelectItem>
-                    <SelectItem value="Dental">Dental Checkup</SelectItem>
-                    <SelectItem value="Eye">Eye Exam</SelectItem>
-                    <SelectItem value="Cardiac">Cardiac Screening</SelectItem>
-                    <SelectItem value="Lab">Lab Work</SelectItem>
+                    <SelectItem value="Annual">{t('healthWellness.annualHealthScreening')}</SelectItem>
+                    <SelectItem value="Dental">{t('healthWellness.dentalCheckup')}</SelectItem>
+                    <SelectItem value="Eye">{t('healthWellness.eyeExam')}</SelectItem>
+                    <SelectItem value="Cardiac">{t('healthWellness.cardiacScreening')}</SelectItem>
+                    <SelectItem value="Lab">{t('healthWellness.labWork')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

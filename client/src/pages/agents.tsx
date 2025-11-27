@@ -179,7 +179,7 @@ export default function AgentsPage() {
           <Alert className="bg-emerald-50 border-emerald-200">
             <MapPin className="h-4 w-4 text-emerald-600" />
             <AlertDescription className="text-emerald-700">
-              <strong>Based in Athens, Greece</strong> - Serving clients across Greece and EU. Fluent in English, Greek, German, and Italian.
+              <strong>{t('agentServices.basedInAthens')}</strong> - {t('agentServices.servingClients')}
             </AlertDescription>
           </Alert>
         </CardContent>
@@ -190,21 +190,21 @@ export default function AgentsPage() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Briefcase className="h-5 w-5 text-emerald-600" />
-            Services Provided
+            {t('agentServices.servicesProvided')}
           </CardTitle>
-          <CardDescription>What you can get help with</CardDescription>
+          <CardDescription>{t('agentServices.whatYouCanGetHelp')}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {[
-              "Policy Selection & Purchase",
-              "Claims Assistance",
-              "Policy Reviews & Optimization",
-              "Coverage Gap Analysis",
+              t('agentServices.policySelection'),
+              t('agentServices.claimsAssistance'),
+              t('agentServices.policyReviews'),
+              t('agentServices.coverageGapAnalysis'),
               t('agents.quoteRequests'),
-              "Policy Renewals",
-              "Document Support",
-              "Emergency Support 24/7",
+              t('agentServices.policyRenewals'),
+              t('agentServices.documentSupport'),
+              t('agentServices.emergencySupport'),
             ].map((service, idx) => (
               <div key={idx} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
                 <div className="h-5 w-5 rounded-full bg-emerald-600 flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -220,13 +220,13 @@ export default function AgentsPage() {
       {/* Quick Contact Section */}
       <Card className="bg-gradient-to-r from-emerald-50 to-blue-50">
         <CardHeader>
-          <CardTitle>Send a Quick Message</CardTitle>
-          <CardDescription>Don't see your question answered? Send a message and we'll respond soon</CardDescription>
+          <CardTitle>{t('agentServices.sendQuickMessage')}</CardTitle>
+          <CardDescription>{t('agentServices.dontSeeQuestion')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-3">
             <textarea
-              placeholder="Tell us what you need help with..."
+              placeholder={t('agentServices.tellUsWhatNeed')}
               className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
               rows={3}
               data-testid="textarea-agent-message"

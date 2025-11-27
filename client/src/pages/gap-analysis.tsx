@@ -199,6 +199,35 @@ function calculateGaps(responses: GapAnalysisResponse): CoverageGap[] {
 export default function GapAnalysisPage() {
   const { t } = useTranslation();
   const [currentStep, setCurrentStep] = useState(0);
+  
+  // Map question titles to translation keys
+  const getQuestionTitle = (key: string) => {
+    const titleMap: { [key: string]: string } = {
+      "What is your age group?": t('gapAnalysisQuestions.ageGroup'),
+      "What is your family status?": t('gapAnalysisQuestions.familyStatus'),
+      "Do you have dependents (children)?": t('gapAnalysisQuestions.dependents'),
+      "Which insurance types do you currently have?": t('policyTypes'),
+      "What is your annual household income range?": t('gapAnalysisQuestions.incomeRange'),
+      "How would you describe your current health?": t('gapAnalysisQuestions.health'),
+      "Do you have 3-6 months of emergency savings?": t('gapAnalysisQuestions.emergencySavings'),
+      "How often do you travel internationally?": t('gapAnalysisQuestions.travelFrequency'),
+      "Would you describe your occupation as:": "Would you describe your occupation as:",
+      "Which of these apply to your life stage?": t('gapAnalysisQuestions.lifeStageRisks'),
+    };
+    return titleMap[key] || key;
+  };
+
+  const getOptionLabel = (value: string) => {
+    const optionMap: { [key: string]: string } = {
+      "First home purchase planned": t('gapAnalysisQuestions.firstHomePurchase'),
+      "Young children": t('gapAnalysisQuestions.youngChildren'),
+      "Mortgage holder": t('gapAnalysisQuestions.mortgageHolder'),
+      "High debt": t('gapAnalysisQuestions.highDebt'),
+      "Business owner": t('gapAnalysisQuestions.businessOwner'),
+    };
+    return optionMap[value] || value;
+  };
+
   const [responses, setResponses] = useState<GapAnalysisResponse>({
     ageGroup: "",
     familyStatus: "",
@@ -291,7 +320,7 @@ export default function GapAnalysisPage() {
                     <div key={option} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted cursor-pointer transition-colors">
                       <RadioGroupItem value={option} id={option} data-testid={`radio-${option}`} />
                       <Label htmlFor={option} className="cursor-pointer flex-1 font-medium text-base">
-                        {option}
+                        {getOptionLabel(option)}
                       </Label>
                     </div>
                   ))}

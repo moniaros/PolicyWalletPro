@@ -295,7 +295,7 @@ export default function PolicyDetailsPage() {
         {/* Claims Tab */}
         <TabsContent value="claims" className="space-y-4 mt-6">
           <div className="flex justify-between items-center">
-             <h3 className="text-lg font-bold">Claims History</h3>
+             <h3 className="text-lg font-bold">{t('policyDetails.claimsHistory')}</h3>
              <Button size="sm" variant="outline">{t('actions.fileNewClaim')}</Button>
           </div>
           
@@ -303,7 +303,7 @@ export default function PolicyDetailsPage() {
             <Card className="bg-muted/20 border-dashed">
                <CardContent className="flex flex-col items-center justify-center py-12 text-muted-foreground">
                   <Shield className="h-12 w-12 mb-3 opacity-20" />
-                  <p>No claims filed yet. Keep up the good work!</p>
+                  <p>{t('policyDetails.noClaimsFiled')}</p>
                </CardContent>
             </Card>
           ) : (
