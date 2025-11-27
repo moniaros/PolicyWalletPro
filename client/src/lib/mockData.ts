@@ -423,6 +423,180 @@ export const analysisData = [
   { category: "Liability", coverage: 100, risk: 60, gap: 0 },
 ];
 
+// ==================== UNDERWRITING API MOCK DATA ====================
+// API-Ready Format: Designed for seamless transition to real API endpoints
+
+export const gapAnalysisResponse = {
+  profileScore: 78,
+  riskScore: 42,
+  gaps: [
+    {
+      id: 'gap-life-dependents',
+      type: 'critical',
+      category: 'Life Insurance',
+      coverage: 'Term Life Insurance',
+      description: '2 dependents without life protection',
+      reason: 'Family financial security at risk if breadwinner unable to work',
+      riskExposure: '€500,000+',
+      estimatedAnnualCost: '€300-600',
+      priority: 100,
+      recommendation: 'Obtain 10x annual income coverage immediately',
+      actionType: 'add',
+      estimatedPremium: 35,
+      requiresUnderwriting: true,
+      roiMonths: 12
+    },
+    {
+      id: 'gap-umbrella',
+      type: 'high',
+      category: 'Liability Protection',
+      coverage: 'Umbrella/Excess Liability',
+      description: 'Insufficient liability coverage for family assets',
+      reason: 'Standard policies inadequate for high-exposure family situation',
+      riskExposure: '€1,000,000+',
+      estimatedAnnualCost: '€300-500',
+      priority: 85,
+      recommendation: 'Minimum €2M umbrella policy recommended',
+      actionType: 'add',
+      estimatedPremium: 35,
+      requiresUnderwriting: true,
+      roiMonths: 36
+    },
+    {
+      id: 'gap-emergency-fund',
+      type: 'high',
+      category: 'Financial Planning',
+      coverage: 'Emergency Reserve Fund',
+      description: 'No emergency savings = high deductible dependency risk',
+      reason: 'Without emergency fund, even small claims create hardship',
+      riskExposure: '€5,000-15,000',
+      estimatedAnnualCost: '€0 (savings)',
+      priority: 80,
+      recommendation: 'Build 3-6 months emergency fund (€3k-€15k minimum)',
+      actionType: 'optimize',
+      requiresUnderwriting: false,
+      roiMonths: 6
+    },
+    {
+      id: 'gap-bundle-savings',
+      type: 'low',
+      category: 'Premium Optimization',
+      coverage: 'Multi-policy Bundling',
+      description: 'Multiple policies with different carriers',
+      reason: 'Bundling typically saves 15-25% annually',
+      riskExposure: 'Savings opportunity',
+      estimatedAnnualCost: '-€400-600',
+      priority: 40,
+      recommendation: 'Consolidate policies with single carrier for bundling discount',
+      actionType: 'optimize',
+      estimatedPremium: -50,
+      requiresUnderwriting: false,
+      roiMonths: 1
+    }
+  ],
+  summary: 'SIGNIFICANT GAPS: Coverage at 78% adequacy. Multiple high-priority recommendations available.',
+  keyMetrics: {
+    totalExposure: '€1,505,000',
+    protectionPercentage: 78,
+    criticalGaps: 1,
+    estimatedMonthlyOptimization: 20
+  },
+  recommendations: [
+    '🟡 MODERATE RISK: Schedule comprehensive gap analysis review',
+    '👨‍👩‍👧 FAMILY FOCUS: Prioritize life insurance and income protection',
+    '✈️ TRAVEL READY: Add international medical and travel coverage'
+  ]
+};
+
+export const riskAssessmentResponse = {
+  id: 'ra-001',
+  userId: 'user-001',
+  riskScore: 42,
+  riskLevel: 'Moderate',
+  healthFactors: {
+    age: 42,
+    bmi: 25.5,
+    conditions: ['controlled diabetes'],
+    bloodPressure: '130/85',
+    cholesterol: 210
+  },
+  recommendations: [
+    'Schedule semi-annual health screening',
+    'Monitor blood pressure regularly',
+    'Maintain consistent exercise routine',
+    'Regular glucose monitoring'
+  ],
+  nextCheckupDue: new Date(Date.now() + 180 * 24 * 60 * 60 * 1000).toISOString(),
+  calculatedAt: new Date().toISOString()
+};
+
+export const preventiveRecommendationsResponse = [
+  {
+    id: 'pr-001',
+    userId: 'user-001',
+    category: 'Screening',
+    title: 'Annual Health Checkup',
+    description: 'Schedule your yearly comprehensive health screening to monitor vital health indicators.',
+    priority: 'High',
+    coverageStatus: 'Covered',
+    createdAt: new Date().toISOString(),
+    completedAt: null
+  },
+  {
+    id: 'pr-002',
+    userId: 'user-001',
+    category: 'Preventive',
+    title: 'Blood Pressure Monitoring',
+    description: 'Regular blood pressure checks help detect hypertension early.',
+    priority: 'High',
+    coverageStatus: 'Covered',
+    createdAt: new Date().toISOString(),
+    completedAt: null
+  },
+  {
+    id: 'pr-003',
+    userId: 'user-001',
+    category: 'Lifestyle',
+    title: 'Fitness & Exercise Program',
+    description: 'Engage in 150 minutes of moderate aerobic activity per week.',
+    priority: 'Medium',
+    coverageStatus: 'Partially Covered',
+    createdAt: new Date().toISOString(),
+    completedAt: null
+  }
+];
+
+export const userProfileResponse = {
+  id: 'profile-001',
+  userId: 'user-001',
+  fullName: 'Αλέξανδρος Νικολάιδης',
+  dateOfBirth: '1982-03-15',
+  ageGroup: '31-45',
+  familyStatus: 'Παντρεμένος/η',
+  dependents: 2,
+  incomeRange: '€60-100k',
+  healthStatus: 'Καλή',
+  emergencyFund: 'Μερικώς καλυμμένο',
+  travelFrequency: '1-2 φορές το χρόνο',
+  occupationRisk: 'Χαμηλός κίνδυνος (γραφειακή εργασία)',
+  currentCoverages: ['Health', 'Auto', 'Home', 'Investment Life'],
+  chronicConditions: ['controlled diabetes'],
+  createdAt: '2024-01-01T00:00:00Z',
+  updatedAt: new Date().toISOString()
+};
+
+export const adminStatsResponse = {
+  totalUsers: 2400,
+  activePolicies: 1800,
+  pendingClaims: 240,
+  claimsApproved: '92%',
+  claimsDenied: '5%',
+  claimsPending: '3%',
+  averagePolicyValue: '€450',
+  totalPremiumCollected: '€1,080,000',
+  renewalRate: '88%'
+};
+
 export const notifications = [
   {
     id: 1,
