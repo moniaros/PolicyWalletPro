@@ -90,11 +90,11 @@ function renderQuickViewByType(policy: PolicyProps) {
       return (
         <div className="space-y-2">
           <div className="flex justify-between items-center">
-            <span className="text-xs text-muted-foreground uppercase font-semibold">Insured Person</span>
+            <span className="text-xs text-muted-foreground uppercase font-semibold">{t('policyCard.insuredPerson')}</span>
             <span className="font-semibold text-sm text-foreground">{metadata.insuredPerson || "Primary Member"}</span>
           </div>
           <div className="flex justify-between items-center bg-purple-50 px-2 py-1.5 rounded">
-            <span className="text-xs text-purple-700 uppercase font-semibold">Hospital Class</span>
+            <span className="text-xs text-purple-700 uppercase font-semibold">{t('policyCard.hospitalClass')}</span>
             <span className="font-bold text-purple-900">{metadata.hospitalClass || "A-Class"}</span>
           </div>
         </div>
@@ -104,12 +104,12 @@ function renderQuickViewByType(policy: PolicyProps) {
       return (
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <p className="text-xs text-muted-foreground uppercase font-semibold mb-1">Coverage</p>
+            <p className="text-xs text-muted-foreground uppercase font-semibold mb-1">{t('policyCard.coverage')}</p>
             <p className="font-semibold text-sm text-foreground">{policy.coverage}</p>
           </div>
           <div>
             <p className="text-xs text-muted-foreground uppercase font-semibold mb-1 flex items-center gap-1">
-              <DollarSign className="h-3 w-3" />Premium
+              <DollarSign className="h-3 w-3" />{t('policyCard.premium')}
             </p>
             <p className="font-semibold text-sm text-foreground">{policy.premium}</p>
           </div>
@@ -119,6 +119,7 @@ function renderQuickViewByType(policy: PolicyProps) {
 }
 
 export default function PolicyCard({ policy, index = 0 }: { policy: PolicyProps, index?: number }) {
+  const { t } = useTranslation();
   const expiryStatus = getExpiryStatus(policy.expiry);
   const renewalText = formatRenewalCountdown(policy.expiry);
   const hasOpenClaim = policy.details?.claims?.some((c: any) => c.status !== "Paid");
@@ -168,7 +169,7 @@ export default function PolicyCard({ policy, index = 0 }: { policy: PolicyProps,
           {/* Row 2: Policy Number & Renewal Countdown */}
           <div className="grid grid-cols-2 gap-3 pt-2">
             <div>
-              <p className="text-xs text-muted-foreground uppercase tracking-wider font-bold mb-1.5">Policy No.</p>
+              <p className="text-xs text-muted-foreground uppercase tracking-wider font-bold mb-1.5">{t('policyCard.policyNo')}</p>
               <p className="font-mono text-sm bg-gradient-to-br from-secondary/80 to-secondary/60 text-foreground py-2 px-2.5 rounded-lg font-semibold border border-secondary/40" data-testid={`policy-number-${policy.id}`}>{policy.policyNumber}</p>
             </div>
             <div>

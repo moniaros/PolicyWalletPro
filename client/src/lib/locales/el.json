@@ -618,6 +618,42 @@
   "gapAnalysis": {
     "criticalCoverageGaps": "Κρίσιμα Κενά Κάλυψης"
   },
+  "login": {
+    "emailOrUsername": "Email ή Όνομα Χρήστη",
+    "password": "Κωδικός Πρόσβασης",
+    "signIn": "Σύνδεση",
+    "signUp": "Εγγραφή",
+    "demoEmail": "Demo: demo@example.com",
+    "demoPassword": "Demo: password",
+    "welcome": "Καλώς ήρθατε!",
+    "signedIn": "Έχετε συνδεθεί επιτυχώς",
+    "accountCreated": "Ο λογαριασμός σας δημιουργήθηκε"
+  },
+  "policyCard": {
+    "insuredPerson": "Ασφαλισμένο Πρόσωπο",
+    "hospitalClass": "Κατηγορία Νοσοκομείου",
+    "coverage": "Κάλυψη",
+    "premium": "Ασφάλιστρο",
+    "policyNo": "Αριθ. Πολιτικής"
+  },
+  "claims": {
+    "fileNewClaim": "Υποβολή Νέας Δήλωσης",
+    "submitClaim": "Υποβολή Δήλωσης",
+    "pastClaims": "Προηγούμενες Δηλώσεις"
+  },
+  "documents": {
+    "acceptedFormats": "Αποδεκτές Μορφές",
+    "download": "Λήψη"
+  },
+  "admin": {
+    "monthlyClaimsSummary": "Μηνιαία Περίληψη Δηλώσεων",
+    "policyPortfolioAnalysis": "Ανάλυση Χαρτοφυλακίου Πολιτικής",
+    "riskAssessmentReport": "Έκθεση Αξιολόγησης Κινδύνου",
+    "auditTrailExport": "Εξαγωγή Ίχνους Ελέγχου"
+  },
+  "policyRecommendations": {
+    "add": "Προσθήκη"
+  },
   "validation": {
     "required": "Το πεδίο {{fieldName}} είναι υποχρεωτικό.",
     "invalidEmail": "Παρακαλώ εισάγετε μια έγκυρη διεύθυνση email.",

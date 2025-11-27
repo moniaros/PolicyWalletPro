@@ -44,7 +44,7 @@ export default function PoliciesPage() {
                    <span className="text-sm">{t('policies.clickOrDrag')}</span>
                 </div>
                 <p className="text-xs text-muted-foreground mt-2" aria-label="Accepted file formats and size limit">
-                  <strong>Accepted formats:</strong> PDF, PNG, JPG (Max 10MB)
+                  <strong>{t('documents.acceptedFormats')}:</strong> PDF, PNG, JPG (Max 10MB)
                 </p>
               </div>
               <div className="grid gap-2">

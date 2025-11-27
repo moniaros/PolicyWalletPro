@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
+import { useTranslation } from "react-i18next";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -25,6 +26,7 @@ const passwordValidator = (password: string): string | null => {
 const errorValidator = (val: string): string | null => null;
 
 export default function LoginPage() {
+  const { t } = useTranslation();
   const [, setLocation] = useLocation();
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
@@ -51,8 +53,8 @@ export default function LoginPage() {
     onSuccess: (data) => {
       localStorage.setItem("auth_token", data.token || "demo-token");
       localStorage.setItem("user_id", data.id);
-      toast.success("Welcome!", {
-        description: isLogin ? "You're signed in successfully" : "Your account has been created"
+      toast.success(t('login.welcome'), {
+        description: isLogin ? t('login.signedIn') : t('login.accountCreated')
       });
       setLocation("/");
     },
@@ -129,10 +131,10 @@ export default function LoginPage() {
               {/* Tab Triggers */}
               <TabsList className="grid w-full grid-cols-2 mb-6 bg-gray-100">
                 <TabsTrigger value="signin" className="data-[state=active]:bg-white data-[state=active]:text-blue-600">
-                  Sign In
+                  {t('login.signIn')}
                 </TabsTrigger>
                 <TabsTrigger value="signup" className="data-[state=active]:bg-white data-[state=active]:text-emerald-600">
-                  Sign Up
+                  {t('login.signUp')}
                 </TabsTrigger>
               </TabsList>
 
@@ -147,24 +149,24 @@ export default function LoginPage() {
                   )}
 
                   <FormInputWithValidation
-                    label="Email or Username"
+                    label={t('login.emailOrUsername')}
                     type="email"
                     placeholder="you@example.com"
                     value={email}
                     onChange={setEmail}
                     validator={emailValidator}
-                    hint="Demo: demo@example.com"
+                    hint={t('login.demoEmail')}
                     testId="input-email-signin"
                   />
 
                   <FormInputWithValidation
-                    label="Password"
+                    label={t('login.password')}
                     type="password"
                     placeholder="••••••••"
                     value={password}
                     onChange={setPassword}
                     validator={passwordValidator}
-                    hint="Demo: password"
+                    hint={t('login.demoPassword')}
                     testId="input-password-signin"
                   />
 

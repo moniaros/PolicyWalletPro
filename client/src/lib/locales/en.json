@@ -532,6 +532,42 @@
   "gapAnalysis": {
     "criticalCoverageGaps": "Critical Coverage Gaps"
   },
+  "login": {
+    "emailOrUsername": "Email or Username",
+    "password": "Password",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "demoEmail": "Demo: demo@example.com",
+    "demoPassword": "Demo: password",
+    "welcome": "Welcome!",
+    "signedIn": "You're signed in successfully",
+    "accountCreated": "Your account has been created"
+  },
+  "policyCard": {
+    "insuredPerson": "Insured Person",
+    "hospitalClass": "Hospital Class",
+    "coverage": "Coverage",
+    "premium": "Premium",
+    "policyNo": "Policy No"
+  },
+  "claims": {
+    "fileNewClaim": "File New Claim",
+    "submitClaim": "Submit Claim",
+    "pastClaims": "Past Claims"
+  },
+  "documents": {
+    "acceptedFormats": "Accepted formats",
+    "download": "Download"
+  },
+  "admin": {
+    "monthlyClaimsSummary": "Monthly Claims Summary",
+    "policyPortfolioAnalysis": "Policy Portfolio Analysis",
+    "riskAssessmentReport": "Risk Assessment Report",
+    "auditTrailExport": "Audit Trail Export"
+  },
+  "policyRecommendations": {
+    "add": "Add"
+  },
   "status": {
     "success": "Success",
     "failed": "Failed",
