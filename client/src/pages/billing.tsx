@@ -183,7 +183,7 @@ export default function BillingPage() {
                   <div>
                     <p className="text-sm text-emerald-600 font-medium uppercase">{t('billing.paidThisYear')}</p>
                     <p className="text-3xl font-bold text-emerald-900 mt-1">{billingData.overview.totalPaidThisYear}</p>
-                    <p className="text-xs text-emerald-700 mt-2">12 payments completed</p>
+                    <p className="text-xs text-emerald-700 mt-2">12 {t('billing_trends.paymentsCompleted')}</p>
                   </div>
                   <CheckCircle2 className="h-12 w-12 text-emerald-400 opacity-50" />
                 </div>
@@ -212,7 +212,7 @@ export default function BillingPage() {
                 {t('billing.premiumPaymentTrends')}
               </CardTitle>
               <CardDescription>
-                Your 12-month payment history at a glance
+                {t('billing.paymentHistoryDescription')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -220,7 +220,7 @@ export default function BillingPage() {
               <div className="space-y-4">
                 <div>
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-sm font-medium">Health Insurance (NN Hellas)</span>
+                    <span className="text-sm font-medium">{t('billing_trends.healthInsurance')}</span>
                     <span className="text-sm text-muted-foreground">€145/month</span>
                   </div>
                   <Progress value={75} className="h-2" />
@@ -228,7 +228,7 @@ export default function BillingPage() {
 
                 <div>
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-sm font-medium">Auto Insurance (Generali)</span>
+                    <span className="text-sm font-medium">{t('billing_trends.autoInsurance')}</span>
                     <span className="text-sm text-muted-foreground">€160/month</span>
                   </div>
                   <Progress value={85} className="h-2" />
@@ -236,7 +236,7 @@ export default function BillingPage() {
 
                 <div>
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-sm font-medium">Home Insurance (Ergo)</span>
+                    <span className="text-sm font-medium">{t('billing_trends.homeInsurance')}</span>
                     <span className="text-sm text-muted-foreground">€150/year</span>
                   </div>
                   <Progress value={12} className="h-2" />

@@ -110,13 +110,13 @@ export default function RecommendationsPage() {
 
   const getCategoryLabel = (category: string) => {
     switch (category) {
-      case "coverage-gap": return "Coverage Gap";
-      case "life-event": return "Life Event";
-      case "savings-opportunity": return "Cost Savings";
-      case "market-opportunity": return "New Opportunity";
-      case "renewal-optimization": return "Renewal Strategy";
-      case "wellness": return "Wellness";
-      default: return "Recommendation";
+      case "coverage-gap": return t('recommendations_categories.coverageGap');
+      case "life-event": return t('recommendations_categories.lifeEvent');
+      case "savings-opportunity": return t('recommendations_categories.savingsOpportunity');
+      case "market-opportunity": return t('recommendations_categories.marketOpportunity');
+      case "renewal-optimization": return t('recommendations_categories.renewalOptimization');
+      case "wellness": return t('recommendations_categories.wellness');
+      default: return t('common.new');
     }
   };
 
@@ -144,7 +144,7 @@ export default function RecommendationsPage() {
               <div>
                 <p className="text-sm text-red-600 font-medium uppercase">{t('recommendations.actionItems')}</p>
                 <p className="text-3xl font-bold text-red-900 mt-1">{highPriorityCount}</p>
-                <p className="text-xs text-red-700 mt-2">High-priority recommendations</p>
+                <p className="text-xs text-red-700 mt-2">{t('recommendations.highPriorityRecs')}</p>
               </div>
               <AlertCircle className="h-12 w-12 text-red-400 opacity-50" />
             </div>
@@ -181,29 +181,29 @@ export default function RecommendationsPage() {
       {/* Priority Score */}
       <Card>
         <CardHeader>
-          <CardTitle>Your Recommendation Priority Score</CardTitle>
+          <CardTitle>{t('recommendations_pages.priorityScore')}</CardTitle>
           <CardDescription>
-            Based on coverage gaps, renewals, and market opportunities
+            {t('recommendations_pages.basedOnGaps')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
             <div className="flex justify-between items-center mb-2">
-              <span className="font-medium">Immediate Action Required</span>
+              <span className="font-medium">{t('recommendations_priority.immediateAction')}</span>
               <span className="text-sm font-semibold">2 items</span>
             </div>
             <Progress value={33} className="h-3" />
           </div>
           <div>
             <div className="flex justify-between items-center mb-2">
-              <span className="font-medium">Within 30 Days</span>
+              <span className="font-medium">{t('recommendations_priority.within30Days')}</span>
               <span className="text-sm font-semibold">3 items</span>
             </div>
             <Progress value={50} className="h-3" />
           </div>
           <div>
             <div className="flex justify-between items-center mb-2">
-              <span className="font-medium">Review & Explore</span>
+              <span className="font-medium">{t('recommendations_priority.reviewExplore')}</span>
               <span className="text-sm font-semibold">1 item</span>
             </div>
             <Progress value={17} className="h-3" />
@@ -214,18 +214,18 @@ export default function RecommendationsPage() {
       {/* Filter Tabs */}
       <Tabs defaultValue="all" onValueChange={setFilter} className="space-y-6">
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="all">All ({recommendationData.length})</TabsTrigger>
+          <TabsTrigger value="all">{t('common.all')} ({recommendationData.length})</TabsTrigger>
           <TabsTrigger value="high" className="flex items-center gap-1">
             <AlertCircle className="h-3 w-3" />
-            High (2)
+            {t('recommendations.high')} (2)
           </TabsTrigger>
           <TabsTrigger value="medium" className="flex items-center gap-1">
             <Zap className="h-3 w-3" />
-            Medium (3)
+            {t('recommendations.medium')} (3)
           </TabsTrigger>
           <TabsTrigger value="low" className="flex items-center gap-1">
             <TrendingUp className="h-3 w-3" />
-            Low (1)
+            {t('recommendations.low')} (1)
           </TabsTrigger>
         </TabsList>
 

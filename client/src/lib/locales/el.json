@@ -478,6 +478,38 @@
     "paymentDue": "Πληρωμή Ληξιπρόθεσμη",
     "paymentMessage": "€145 πληρωμή για ασφάλιση υγείας NN Hellas ληξιπρόθεσμη στις 1 Δεκεμβρίου."
   },
+  "recommendations_categories": {
+    "coverageGap": "Κενό Κάλυψης",
+    "lifeEvent": "Γεγονός Ζωής",
+    "savingsOpportunity": "Ευκαιρία Εξοικονόμησης",
+    "marketOpportunity": "Νέα Ευκαιρία",
+    "renewalOptimization": "Στρατηγική Ανανέωσης",
+    "wellness": "Wellness"
+  },
+  "recommendations_priority": {
+    "immediateAction": "Άμεση Δράση Απαιτούμενη",
+    "within30Days": "Εντός 30 Ημερών",
+    "reviewExplore": "Ανασκόπηση & Εξερεύνηση"
+  },
+  "recommendations_pages": {
+    "priorityScore": "Το Σκορ Προτεραιότητας των Συστάσεών σας",
+    "basedOnGaps": "Βάσει κενών κάλυψης, ανανεώσεων και ευκαιριών αγοράς"
+  },
+  "billing_trends": {
+    "healthInsurance": "Ασφάλιση Υγείας (NN Hellas)",
+    "autoInsurance": "Ασφάλιση Αυτοκινήτου (Generali)",
+    "homeInsurance": "Ασφάλιση Κατοικίας (Ergo)",
+    "paymentsCompleted": "πληρωμές ολοκληρώθηκαν"
+  },
+  "billing": {
+    "paymentHistoryDescription": "Ιστορικό πληρωμών 12 μηνών με μια ματιά"
+  },
+  "recommendations": {
+    "highPriorityRecs": "Συστάσεις υψηλής προτεραιότητας",
+    "high": "Υψηλή",
+    "medium": "Μεσαία",
+    "low": "Χαμηλή"
+  },
   "validation": {
     "required": "Το πεδίο {{fieldName}} είναι υποχρεωτικό.",
     "invalidEmail": "Παρακαλώ εισάγετε μια έγκυρη διεύθυνση email.",

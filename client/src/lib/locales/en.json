@@ -390,6 +390,38 @@
     "paymentDue": "Payment Due",
     "paymentMessage": "€145 payment for NN Hellas health insurance due December 1st."
   },
+  "recommendations_categories": {
+    "coverageGap": "Coverage Gap",
+    "lifeEvent": "Life Event",
+    "savingsOpportunity": "Cost Savings",
+    "marketOpportunity": "New Opportunity",
+    "renewalOptimization": "Renewal Strategy",
+    "wellness": "Wellness"
+  },
+  "recommendations_priority": {
+    "immediateAction": "Immediate Action Required",
+    "within30Days": "Within 30 Days",
+    "reviewExplore": "Review & Explore"
+  },
+  "recommendations_pages": {
+    "priorityScore": "Your Recommendation Priority Score",
+    "basedOnGaps": "Based on coverage gaps, renewals, and market opportunities"
+  },
+  "billing_trends": {
+    "healthInsurance": "Health Insurance (NN Hellas)",
+    "autoInsurance": "Auto Insurance (Generali)",
+    "homeInsurance": "Home Insurance (Ergo)",
+    "paymentsCompleted": "payments completed"
+  },
+  "billing": {
+    "paymentHistoryDescription": "Your 12-month payment history at a glance"
+  },
+  "recommendations": {
+    "highPriorityRecs": "High-priority recommendations",
+    "high": "High",
+    "medium": "Medium",
+    "low": "Low"
+  },
   "status": {
     "success": "Success",
     "failed": "Failed",
