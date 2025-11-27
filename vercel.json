@@ -4,7 +4,7 @@
   "buildCommand": "vite build && esbuild server/index-prod.ts --platform=node --packages=external --bundle --format=esm --outfile=dist/index.js",
   "devCommand": "NODE_ENV=development tsx server/index-dev.ts",
   "installCommand": "npm install",
-  "framework": "other",
+  "framework": "express",
   "public": false,
   "env": {
     "DATABASE_URL": "@database_url",
