@@ -7,14 +7,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { storageUtils } from '@/lib/storage-utils';
 
 export function LanguageSelector() {
   const { i18n } = useTranslation();
 
   const handleLanguageChange = (lang: string) => {
     i18n.changeLanguage(lang);
-    storageUtils.setLanguage(lang);
+    localStorage.setItem('language', lang);
+    localStorage.setItem('policyguard_language', lang);
   };
 
   return (

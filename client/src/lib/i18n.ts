@@ -10,7 +10,7 @@ i18n
       en: { translation: enTranslations },
       el: { translation: elTranslations },
     },
-    lng: localStorage.getItem('language') || 'el',
+    lng: localStorage.getItem('language') || localStorage.getItem('policyguard_language') || 'el',
     fallbackLng: 'el',
     interpolation: {
       escapeValue: false,
