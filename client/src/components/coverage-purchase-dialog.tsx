@@ -195,7 +195,7 @@ export function CoveragePurchaseDialog({ recommendation, isOpen, onOpenChange }:
                     <RadioGroupItem value="monthly" id="plan-monthly" />
                     <Label htmlFor="plan-monthly" className="flex-1 cursor-pointer">
                       <div className="flex justify-between items-center w-full">
-                        <span className="font-medium">Monthly</span>
+                        <span className="font-medium">{t("ui.monthly")}</span>
                         <span className="text-sm font-bold text-primary">€{monthlyPrice}/month</span>
                       </div>
                       <p className="text-xs text-muted-foreground">No commitment, cancel anytime</p>
@@ -221,7 +221,7 @@ export function CoveragePurchaseDialog({ recommendation, isOpen, onOpenChange }:
                     <Label htmlFor="plan-yearly" className="flex-1 cursor-pointer">
                       <div className="flex justify-between items-center w-full">
                         <div>
-                          <span className="font-medium">Yearly</span>
+                          <span className="font-medium">{t("ui.yearly")}</span>
                           <span className="ml-2 text-xs bg-blue-200 text-blue-900 px-2 py-0.5 rounded">Save 12%</span>
                         </div>
                         <span className="text-sm font-bold text-blue-600">€{(monthlyPrice * 10.5 * 0.88).toFixed(2)}</span>
@@ -258,7 +258,7 @@ export function CoveragePurchaseDialog({ recommendation, isOpen, onOpenChange }:
                     id="expiry"
                     value={formData.expiryDate}
                     onChange={(e) => setFormData({ ...formData, expiryDate: e.target.value })}
-                    placeholder="MM/YY"
+                    placeholder={t("ui.mmYy")}
                     maxLength={5}
                     data-testid="input-expiry"
                   />

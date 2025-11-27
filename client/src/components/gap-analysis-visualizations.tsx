@@ -42,7 +42,7 @@ export function SliderVisualization({ min, max, current, safe, threshold, curren
           <p className="font-bold text-emerald-700">{currency ? `€${(safe/1000).toFixed(1)}k` : safe}</p>
         </div>
         <div>
-          <p className="text-muted-foreground">Status</p>
+          <p className="text-muted-foreground">{t("ui.status")}</p>
           <p className={`font-bold ${isSafe ? "text-emerald-700" : "text-red-700"}`}>
             {isSafe ? "✓ Safe" : "⚠ At Risk"}
           </p>

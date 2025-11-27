@@ -209,7 +209,7 @@ export function NotificationsPreferences() {
         <TabsList className="grid w-full grid-cols-1 sm:grid-cols-1 sm:grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
           <TabsTrigger value="email">{ t("notifications.email") }</TabsTrigger>
           <TabsTrigger value="in-app">In-App</TabsTrigger>
-          <TabsTrigger value="sms">SMS</TabsTrigger>
+          <TabsTrigger value="sms">{ t("ui.sms") }</TabsTrigger>
         </TabsList>
 
         {/* Email Tab */}

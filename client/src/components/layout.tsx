@@ -140,7 +140,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </div>
                 <div className="bg-white p-4 rounded-xl border border-red-100 shadow-sm flex items-center justify-between">
                   <div>
-                    <p className="font-bold text-lg">Police</p>
+                    <p className="font-bold text-lg">{t("ui.policies")}</p>
                     <p className="text-sm text-muted-foreground">
                       Emergency Services
                     </p>

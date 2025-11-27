@@ -686,7 +686,7 @@ export default function UserSettingsPage() {
                     <SelectItem value="Europe/Berlin">
                       Berlin (CET/CEST)
                     </SelectItem>
-                    <SelectItem value="UTC">UTC</SelectItem>
+                    <SelectItem value="UTC">{ t("ui.utc") }</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

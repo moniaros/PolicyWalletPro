@@ -292,7 +292,7 @@ export default function LoginPage() {
                   )}
 
                   <FormInputWithValidation
-                    label="Email Address"
+                    label={t("ui.emailAddress")}
                     type="email"
                     placeholder="you@example.com"
                     value={email}
@@ -303,7 +303,7 @@ export default function LoginPage() {
                   />
 
                   <FormInputWithValidation
-                    label="Password"
+                    label={t("ui.password")}
                     type="password"
                     placeholder="••••••••"
                     value={password}

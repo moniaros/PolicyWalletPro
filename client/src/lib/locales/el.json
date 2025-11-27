@@ -1186,6 +1186,23 @@
     "unprotectedYears": "Χρόνια Χωρίς Προστασία",
     "healthRadar": "Ραντάρ Υγείας"
   },
+  "ui": {
+    "close": "Κλείσιμο",
+    "sidebar": "Πλευρική Γραμμή",
+    "more": "Περισσότερα",
+    "previous": "Προηγούμενο",
+    "next": "Επόμενο",
+    "monthly": "Μηνιαίο",
+    "yearly": "Ετήσιο",
+    "policies": "Πολιτικές",
+    "recommendations": "Συστάσεις",
+    "status": "Κατάσταση",
+    "emailAddress": "Διεύθυνση Ηλεκτρονικής Διεύθυνσης",
+    "password": "Κωδικός Πρόσβασης",
+    "mmYy": "MM/ΕΕ",
+    "utc": "UTC",
+    "sms": "SMS"
+  },
   "gapAnalysis": {
     "lifeInsurance": "Ασφάλεια Ζωής",
     "lifeInsuranceDesc": "Έχετε εξαρτώμενα ή οικογενειακές υποχρεώσεις χωρίς προστασία ασφάλειας ζωής",

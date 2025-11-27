@@ -1098,6 +1098,23 @@
     "unprotectedYears": "Unprotected Years",
     "healthRadar": "Health Radar"
   },
+  "ui": {
+    "close": "Close",
+    "sidebar": "Sidebar",
+    "more": "More",
+    "previous": "Previous",
+    "next": "Next",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "policies": "Policies",
+    "recommendations": "Recommendations",
+    "status": "Status",
+    "emailAddress": "Email Address",
+    "password": "Password",
+    "mmYy": "MM/YY",
+    "utc": "UTC",
+    "sms": "SMS"
+  },
   "gapAnalysis": {
     "lifeInsurance": "Life Insurance",
     "lifeInsuranceDesc": "You have dependents or family obligations without life insurance protection",
