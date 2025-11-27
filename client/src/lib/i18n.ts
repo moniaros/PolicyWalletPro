@@ -11,9 +11,12 @@ i18n
       el: { translation: elTranslations },
     },
     lng: localStorage.getItem('language') || 'el',
-    fallbackLng: 'en',
+    fallbackLng: 'el',
     interpolation: {
       escapeValue: false,
+    },
+    react: {
+      useSuspense: false,
     },
   });
 

@@ -1,4 +1,5 @@
 import { Link } from "wouter";
+import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { Download, AlertCircle, CheckCircle2, Eye, Clock, DollarSign, AlertTriangle, TrendingUp, MapPin, Phone, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -23,6 +24,7 @@ interface PolicyProps {
 }
 
 function renderQuickViewByType(policy: PolicyProps) {
+  const { t } = useTranslation();
   const metadata = policy.quickViewMetadata || {};
   
   switch(policy.type) {
@@ -30,7 +32,7 @@ function renderQuickViewByType(policy: PolicyProps) {
       return (
         <div className="space-y-2">
           <div className="flex justify-between items-center">
-            <span className="text-xs text-muted-foreground uppercase font-semibold">Fund Value</span>
+            <span className="text-xs text-muted-foreground uppercase font-semibold">{t('insurance.sumInsured')}</span>
             <span className="font-bold text-lg text-foreground">{metadata.fundValue || "€45,200"}</span>
           </div>
           <div className="flex justify-between items-center bg-emerald-50 px-2 py-1.5 rounded">
@@ -44,12 +46,12 @@ function renderQuickViewByType(policy: PolicyProps) {
       return (
         <div className="space-y-2">
           <div className="bg-blue-50 px-3 py-2 rounded-md">
-            <p className="text-xs text-blue-600 uppercase font-semibold">License Plate</p>
-            <p className="font-mono font-bold text-blue-900 text-lg">{metadata.licensePlate || "YZA-1234"}</p>
+            <p className="text-xs text-blue-600 uppercase font-semibold">{t('auto.licensePlate')}</p>
+            <p className="font-mono font-bold text-blue-900 text-lg">{metadata.licensePlate || "ΥΖΑ-1234"}</p>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-xs text-muted-foreground uppercase font-semibold">Coverage</span>
-            <span className="font-semibold text-sm text-foreground">{metadata.coverageTier || "Full Casco"}</span>
+            <span className="text-xs text-muted-foreground uppercase font-semibold">{t('insurance.coverage')}</span>
+            <span className="font-semibold text-sm text-foreground">{metadata.coverageTier || t('auto.fullCasco')}</span>
           </div>
         </div>
       );
@@ -60,12 +62,12 @@ function renderQuickViewByType(policy: PolicyProps) {
           <div className="flex items-start gap-2 bg-amber-50 px-2 py-1.5 rounded">
             <MapPin className="h-4 w-4 text-amber-700 shrink-0 mt-0.5" />
             <div className="min-w-0">
-              <p className="text-xs text-amber-700 uppercase font-semibold">Property</p>
-              <p className="text-sm font-semibold text-amber-900 truncate">{metadata.propertyAddress || "Akadimias 10, Athens"}</p>
+              <p className="text-xs text-amber-700 uppercase font-semibold">{t('home.propertyAddress')}</p>
+              <p className="text-sm font-semibold text-amber-900 truncate">{metadata.propertyAddress || "Ακαδημίας 10, Αθήνα"}</p>
             </div>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-xs text-muted-foreground uppercase font-semibold">Sum Insured</span>
+            <span className="text-xs text-muted-foreground uppercase font-semibold">{t('insurance.sumInsured')}</span>
             <span className="font-bold text-foreground">{metadata.sumInsured || "€465,000"}</span>
           </div>
         </div>

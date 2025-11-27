@@ -1,0 +1,1177 @@
+
+{
+  "common": {
+    "loading": "Loading...",
+    "close": "Close",
+    "actions": "Actions",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "all": "All",
+    "active": "Active",
+    "inactive": "Inactive",
+    "retry": "Retry",
+    "download": "Download",
+    "copy": "Copy"
+  },
+  "nav": {
+    "overview": "Cockpit",
+    "dashboard": "Dashboard",
+    "growth": "Growth & Sales",
+    "bookOfBusiness": "Book of Business",
+    "marketingHub": "Marketing Hub",
+    "intelligence": "Business Intelligence",
+    "operations": "Agency Operations",
+    "executiveAnalytics": "Executive Report",
+    "crm": "CRM",
+    "customersAndLeads": "Customers & Leads",
+    "leadsDashboard": "Lead Performance",
+    "importPolicyAI": "AI Policy Scanner",
+    "automationRules": "Automation Rules",
+    "campaigns": "Campaigns",
+    "campaignAnalytics": "Campaign ROI",
+    "socialPosts": "Social Composer",
+    "socialAds": "Ad Campaigns",
+    "website": "Microsite",
+    "micrositeBuilder": "Site Builder",
+    "news": "Content Feed",
+    "testimonials": "Reputation Mgmt",
+    "management": "Agency Management",
+    "userManagement": "User Access",
+    "billing": "Billing & Plans",
+    "support": "Brand Academy",
+    "settings": "Settings",
+    "profile": "My Profile",
+    "appSettings": "System Config",
+    "leadGen": "Lead Generation",
+    "gapAnalysis": "AI Policy Scanner",
+    "policyIntelligence": "Policy Intelligence",
+    "customers": "Client Directory",
+    "socialComposer": "Content Studio",
+    "analytics": "Analytics",
+    "automation": "Automations",
+    "templates": "Templates",
+    "eventLog": "Event Log",
+    "salesPipeline": "Sales Pipeline",
+    "leadsInbox": "Inbox & Triage",
+    "opportunityPipeline": "Deals Board",
+    "myDay": "My Day",
+    "tasks": "Task Manager",
+    "opportunitiesHub": "Opportunity Hub",
+    "content": "Content"
+  },
+  "header": {
+    "search": "Search...",
+    "online": "Online",
+    "offline": "Offline",
+    "logout": "Log Out",
+    "socials": "Social Media Links"
+  },
+  "dashboard": {
+    "basedOn": "Based on",
+    "reviews": "reviews",
+    "recentReviews": "Recent Reviews",
+    "showUnreplied": "Show Unreplied Only",
+    "stars": "Stars",
+    "replyPosted": "Reply Posted Successfully",
+    "generatingReply": "Generating Reply...",
+    "generateAiReply": "Generate AI Reply",
+    "yourReply": "Your Reply",
+    "postReply": "Post Reply",
+    "kpis": {
+      "newInquiriesToday": "New Inquiries",
+      "newInquiriesSubtitle": "Today",
+      "overdueFollowUps": "Overdue Follow-ups",
+      "overdueFollowUpsSubtitle": "Action Required",
+      "unreadMessages": "Unread Messages",
+      "unreadMessagesSubtitle": "Inbox",
+      "newPortalSubmissions": "New Submissions",
+      "newPortalSubmissionsSubtitle": "Claims & Requests",
+      "adPerformance": "Ad Performance",
+      "adPerformanceSubtitle": "CPL: €{spend} / {leads} Leads",
+      "activePortalUsers": "Active Portal Users",
+      "activePortalUsersSubtitle": "Logged in Today",
+      "upsellOpportunities": "Upsell Opps",
+      "crossSellOpportunities": "Cross-Sell Opps",
+      "viewAll": "View All",
+      "followUp": "Follow-up"
+    },
+    "emptyStates": {
+      "noReviews": "No reviews found.",
+      "allReplied": "Great job! You've replied to all reviews."
+    },
+    "errors": {
+        "noApiKey": "API Key missing. Please configure it in Settings.",
+        "dataFetchFailed": "Failed to load dashboard data.",
+        "replyGenerationFailed": "Failed to generate AI reply.",
+        "replyPostFailed": "Failed to post reply."
+    }
+  },
+  "login": {
+    "title": "Sign in to your account",
+    "subtitle": "Enterprise Insurance Management Platform",
+    "emailLabel": "Email address",
+    "emailPlaceholder": "you@agency.com",
+    "passwordLabel": "Password",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot your password?",
+    "loginButton": "Sign in",
+    "authenticating": "Authenticating...",
+    "errorInvalidCredentials": "Invalid email or password. Please try again."
+  },
+  "onboarding": {
+    "title": "Welcome, {name}!",
+    "subtitle": "Let's get your agency set up for success.",
+    "features": {
+      "crm": { "title": "Smart CRM", "description": "Manage clients & policies." },
+      "gapAnalysis": { "title": "AI Policy Scanner", "description": "Detect coverage gaps automatically." },
+      "social": { "title": "Social Studio", "description": "Create & schedule content." }
+    },
+    "checklist": {
+      "title": "Setup Checklist",
+      "profile": "Complete your agent profile",
+      "policy": "Run your first policy scan",
+      "campaign": "Draft a social media post",
+      "allDone": "🎉 All set! You are ready to grow your business.",
+      "getStarted": "Go to Dashboard"
+    }
+  },
+  "validation": {
+    "required": "The {fieldName} field is required.",
+    "invalidEmail": "Please enter a valid email address.",
+    "policyNumberRequired": "Policy Number is required."
+  },
+  "statusLabels": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "expired": "Expired",
+    "new": "New",
+    "contacted": "Contacted",
+    "qualified": "Qualified",
+    "closed": "Closed",
+    "rejected": "Rejected",
+    "proposal": "Proposal",
+    "won": "Won",
+    "lost": "Lost",
+    "negotiation": "Negotiation",
+    "prospecting": "Prospecting",
+    "success": "Success",
+    "failure": "Failure"
+  },
+  "policyTypes": {
+    "auto": "Auto Insurance",
+    "home": "Home Insurance",
+    "life": "Life Insurance",
+    "health": "Health Insurance",
+    "business": "Business Insurance"
+  },
+  "timelineTypes": {
+    "note": "Note",
+    "call": "Call Log",
+    "email": "Email",
+    "meeting": "Meeting",
+    "policy_update": "Policy Update",
+    "claim": "Claim",
+    "system": "System Event"
+  },
+  "profile": {
+    "title": "My Profile",
+    "change": "Change",
+    "updateSuccess": "Profile updated successfully.",
+    "personalInfo": "Personal Information",
+    "profilePhoto": "Profile Photo",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "jobTitle": "Job Title",
+    "department": "Department",
+    "contactDetails": "Contact Details",
+    "officeLocation": "Office Location",
+    "workPhone": "Work Phone",
+    "mobilePhone": "Mobile Phone",
+    "digitalSignature": "Digital Signature",
+    "signatureDescription": "This signature will be used for digital documents and automated emails.",
+    "roleAndPermissions": "Role & Permissions",
+    "roleTitle": "Role",
+    "permissionsScope": "Permissions Scope",
+    "licensesAndCertifications": "Licenses & Certifications",
+    "licenseType": "License Type",
+    "licenseNumber": "License Number",
+    "expirationDate": "Expiration Date",
+    "status": "Status",
+    "recentActivity": "Recent Activity",
+    "noActivity": "No recent activity found."
+  },
+  "licenseStatus": {
+    "valid": "Valid",
+    "expired": "Expired",
+    "pending_review": "Pending Review"
+  },
+  "settings": {
+    "title": "Settings",
+    "nav": {
+      "general": "General",
+      "security": "Security",
+      "notifications": "Notifications",
+      "integrations": "Integrations",
+      "audit": "Audit Log"
+    },
+    "general": {
+      "title": "General Settings",
+      "timezone": "Timezone",
+      "dateFormat": "Date Format"
+    },
+    "appearance": {
+      "title": "Appearance",
+      "darkMode": "Dark Mode",
+      "lightMode": "Light Mode"
+    },
+    "security": {
+      "title": "Security & Login",
+      "twoFactor": "Two-Factor Authentication",
+      "twoFactorDesc": "Add an extra layer of security to your account.",
+      "enable2FA": "Enable 2FA",
+      "changePassword": "Change Password",
+      "lastLogin": "Last login: {date}"
+    },
+    "notifications": {
+      "title": "Notification Preferences",
+      "enableLabel": "Enable Desktop Notifications",
+      "description": "Receive real-time alerts for important updates.",
+      "previewLink": "Preview Demo Notification",
+      "enabledSuccess": "Notifications enabled successfully.",
+      "permissionDenied": "Notification permission was denied. Please enable it in your browser settings.",
+      "permissionDeniedWarning": {
+        "title": "Notifications Blocked",
+        "description": "You have blocked notifications for this site. To receive alerts, you need to manually update your browser settings.",
+        "chrome": "Google Chrome",
+        "chromeSteps": "Click the lock icon 🔒 in the address bar > Site Settings > Notifications > Allow.",
+        "safari": "Safari",
+        "safariSteps": "Safari > Settings for This Website > Pop-up Windows > Allow.",
+        "edge": "Microsoft Edge",
+        "learnMore": "Learn more for"
+      },
+      "demo": {
+        "title": "New Lead Assigned",
+        "body": "John Doe is interested in Auto Insurance. High value potential."
+      },
+      "eventGroups": {
+        "important": "Critical Alerts",
+        "optional": "Optional Updates"
+      },
+      "events": {
+        "new_lead": { "label": "New Lead Assigned", "description": "When a new lead enters your inbox." },
+        "quote_request": { "label": "Quote Request", "description": "When a client requests a new quote." },
+        "follow_up_due": { "label": "Follow-up Due", "description": "Reminder for scheduled follow-ups." },
+        "overdue_action": { "label": "Overdue Actions", "description": "Alerts for overdue tasks." },
+        "customer_reply": { "label": "Customer Reply", "description": "Incoming messages from clients." },
+        "policy_renewal": { "label": "Policy Renewal", "description": "Upcoming policy expirations." },
+        "claim_submitted": { "label": "Claim Submitted", "description": "New FNOL or claim updates." },
+        "new_message": { "label": "New Message", "description": "Chat or email messages." },
+        "task_upcoming": { "label": "Task Upcoming", "description": "15 min before a task is due." },
+        "opportunity_flagged": { "label": "Opportunity Flagged", "description": "AI detected risk or opportunity." },
+        "system_announcement": { "label": "System Announcements", "description": "Maintenance and feature updates." },
+        "client_birthday": { "label": "Client Birthdays", "description": "Daily birthday reminders." },
+        "first_login_of_day": { "label": "Morning Briefing", "description": "Daily summary on login." },
+        "campaign_results": { "label": "Campaign Results", "description": "Weekly performance summary." }
+      }
+    },
+    "setup": {
+      "title": "API & Integration Setup",
+      "googleClientId": "Google Client ID",
+      "googleClientIdPlaceholder": "Enter your Google Client ID",
+      "geminiApiKey": "Gemini API Key",
+      "geminiApiKeyPlaceholder": "Enter your Gemini API Key",
+      "saveButton": "Save Keys",
+      "saveSuccess": "API Keys saved successfully."
+    },
+    "socialConnections": {
+      "title": "Social Media Connections",
+      "modalTitle": "Connect {platform}",
+      "permissionsTitle": "Required Permissions:",
+      "complianceText": "We only request permissions necessary to publish posts and read analytics on your behalf. We will never post without your explicit action.",
+      "cancel": "Cancel",
+      "allow": "Authorize App",
+      "statusConnected": "Connected",
+      "statusNotConnected": "Not Connected",
+      "disconnectButton": "Disconnect",
+      "connectButton": "Connect",
+      "platforms": {
+        "facebook": { "tooltip": "Connect to your Business Page to auto-post content and track engagement.", "scopes": ["public_profile", "pages_show_list", "pages_read_engagement", "pages_manage_posts"] },
+        "instagram": { "tooltip": "Connect your Professional Account to schedule posts and reels.", "scopes": ["instagram_basic", "instagram_content_publish"] },
+        "linkedin": { "tooltip": "Connect your Personal Profile or Company Page.", "scopes": ["r_liteprofile", "r_emailaddress", "w_member_social"] },
+        "x": { "tooltip": "Connect your X account for real-time updates.", "scopes": ["tweet.read", "tweet.write", "users.read"] }
+      }
+    },
+    "integrations": {
+      "gbp": "Google Business Profile",
+      "connectButton": "Connect Account",
+      "statusNotConnected": "Not connected",
+      "statusConnectedTo": "Connected to: {businessName}",
+      "statusFetchingProfiles": "Fetching business profiles...",
+      "statusNoAccounts": "No business accounts found.",
+      "warningNoAccounts": "No Google Business accounts associated with this login.",
+      "statusFetchingLocations": "Fetching locations...",
+      "statusNoLocations": "No locations found.",
+      "warningNoLocations": "No locations found for this account.",
+      "successConnected": "Successfully connected to {businessName}",
+      "statusApiError": "API Error",
+      "errorApi": "Failed to connect to Google Business API.",
+      "errorNoClientId": "Please configure your Google Client ID first.",
+      "errorGapiNotLoaded": "Google API Client not loaded.",
+      "statusConnecting": "Connecting...",
+      "statusFailed": "Connection Failed",
+      "errorSignIn": "Sign-in was cancelled or failed."
+    },
+    "audit": {
+      "title": "Audit Log",
+      "description": "View a detailed log of all system activities and user actions for compliance purposes.",
+      "viewFullLog": "View Full Log"
+    }
+  },
+  "crm": {
+    "customers": "Customers",
+    "recentLeads": "Recent Leads",
+    "addCustomer": "Add Customer",
+    "editCustomer": "Edit Customer",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirmDelete": "Are you sure you want to delete this customer?",
+    "searchAll": "Search customers, leads, policies...",
+    "convert": "Convert to Customer",
+    "viewProfile": "View Profile",
+    "edit": "Edit",
+    "delete": "Delete",
+    "name": "Name",
+    "status": "Status",
+    "potentialValue": "Potential Value",
+    "campaign": "Campaign",
+    "form": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "phone": "Phone",
+      "address": "Address",
+      "dob": "Date of Birth",
+      "policies": "Policies",
+      "policyNumber": "Policy Number",
+      "insurer": "Insurer",
+      "premium": "Premium",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "addPolicy": "Add Policy",
+      "noPolicies": "No policies added yet.",
+      "communicationPreferences": "Communication Preferences"
+    }
+  },
+  "customer": {
+    "sms": "SMS",
+    "attachments": "Attachments",
+    "attachmentSize": "({size} KB)",
+    "annotationPlaceholder": "Add a note...",
+    "saveAnnotation": "Save Note",
+    "flagEvent": "Flag",
+    "unflagEvent": "Unflag",
+    "noTimeline": "No timeline events recorded.",
+    "changeAddressTitle": "Change Address",
+    "attentionFlagTitle": "Set Attention Flag",
+    "attentionReason": "Reason",
+    "attentionReasonPlaceholder": "e.g., High churn risk, Pending complaint...",
+    "editProfile": "Edit Profile",
+    "addEventTitle": "Add Timeline Event",
+    "eventType": "Event Type",
+    "eventDetails": "Details",
+    "eventDetailsPlaceholder": "Describe the interaction...",
+    "uploadAttachment": "Upload file (optional)",
+    "analysisFor": "Analysis for:",
+    "analysisDate": "Analyzed on {date}",
+    "coverages": "Coverages",
+    "consent": {
+      "title": "Consent Management (GDPR)",
+      "gdprConsent": "General Data Processing Consent",
+      "marketingConsent": "Marketing Communication Consent",
+      "consentExpiredWarning": "Consent is older than 6 months. Please renew.",
+      "dateGranted": "Date Granted",
+      "channel": "Channel",
+      "channelOptions": {
+        "email": "Email",
+        "sms": "SMS",
+        "phone": "Phone",
+        "web_form": "Web Form",
+        "in_person": "In Person",
+        "paper_form": "Paper Form"
+      }
+    },
+    "review": {
+        "title": "AI Findings Review",
+        "description": "The AI has identified potential opportunities or gaps. Please review and confirm.",
+        "confirm": "Confirm",
+        "dismiss": "Dismiss",
+        "edit": "Edit",
+        "save": "Save",
+        "cancel": "Cancel"
+    },
+    "opportunities": {
+        "title": "Actionable Opportunities",
+        "callNow": "Call Now",
+        "sendEmail": "Send Email"
+    }
+  },
+  "gapAnalysis": {
+    "title": "AI Policy Scanner",
+    "subtitle": "Upload a policy document to detect coverage gaps and upsell opportunities.",
+    "step1": "1. Upload Policy Document",
+    "step2": "2. Customer Needs Analysis",
+    "dragDrop": "Drag and drop file here, or",
+    "browse": "browse",
+    "fileTypes": "Supports PDF, JPG, PNG",
+    "fetchingPolicy": "Extracting policy data...",
+    "analyzing": "Analyzing for risk gaps...",
+    "userNeedsTitle": "Client Context & Needs",
+    "userNeedsPlaceholder": "Describe the client's situation (e.g., 'Young family, just bought a house in a seismic zone, worried about inflation')...",
+    "analyzeGaps": "Analyze Gaps",
+    "resultsTitle": "Analysis Results",
+    "startOver": "Start Over",
+    "extractedInfo": "Extracted Policy Information",
+    "policyHolder": "Policyholder",
+    "insuredItems": "Insured Items",
+    "riskScore": "Risk Score",
+    "riskScoreSubtitle": "Based on coverage gaps vs needs",
+    "coverageGaps": "Critical Coverage Gaps",
+    "upsellTitle": "Upsell Opportunities",
+    "crossSellTitle": "Cross-Sell Opportunities",
+    "financialImpact": "Cost of Risk",
+    "costOfImplementation": "Cost of Insurance",
+    "benefit": "Client Benefit",
+    "estimatedValue": "Est. Premium",
+    "current": "Current",
+    "recommended": "Recommended",
+    "salesScript": "Sales Script",
+    "copyScript": "Copy Script",
+    "scriptCopied": "Copied!",
+    "saveSuccess": "Analysis saved to customer profile.",
+    "dataReviewModal": {
+        "title": "Review Extracted Data",
+        "description": "Please verify the data extracted by AI before saving.",
+        "approveAndSave": "Approve & Save",
+        "saveSuccess": "Policy data synced successfully.",
+        "saveError": "Failed to save policy data.",
+        "sections": {
+            "policyholder": "Policyholder Info",
+            "policyDetails": "Policy Details",
+            "coverages": "Coverages",
+            "beneficiaries": "Beneficiaries"
+        },
+        "fields": {
+            "policyholderName": "Full Name",
+            "address": "Address",
+            "policyNumber": "Policy Number",
+            "insurer": "Insurer",
+            "effectiveDate": "Effective Date",
+            "expirationDate": "Expiration Date",
+            "coverageType": "Coverage Type",
+            "coverageLimit": "Limit",
+            "addCoverage": "Add Coverage Row",
+            "beneficiaryName": "Beneficiary Name",
+            "addBeneficiary": "Add Beneficiary"
+        }
+    },
+    "priority": {
+        "Critical": "Critical",
+        "High": "High",
+        "Medium": "Medium",
+        "Low": "Low"
+    },
+    "errors": {
+        "parsingFailed": "Failed to extract data from the document. Please ensure the image is clear.",
+        "analysisFailed": "AI analysis failed. Please try again."
+    }
+  },
+  "leads": {
+    "searchPlaceholder": "Search leads...",
+    "allStatuses": "All Statuses",
+    "allSources": "All Sources",
+    "source": "Source",
+    "createdDate": "Date Created",
+    "viewDetails": "View Details",
+    "leadDetails": "Lead Details",
+    "policyInterest": "Policy Interest",
+    "noLeadsFound": "No leads found matching your criteria."
+  },
+  "pipeline": {
+    "title": "Opportunity Pipeline",
+    "inboxTitle": "Leads Inbox",
+    "inboxDescription": "Manage incoming inquiries and convert them into opportunities.",
+    "noNewLeads": "No new leads in the inbox.",
+    "createOpportunity": "Create Opportunity",
+    "opportunityCreated": "Opportunity created successfully.",
+    "stages": {
+        "new": "New",
+        "contacted": "Contacted",
+        "proposal": "Proposal",
+        "won": "Won",
+        "lost": "Lost"
+    },
+    "kpis": {
+        "newLeads": "New Leads",
+        "proposalsSent": "Proposals Sent",
+        "wonCount": "Deals Won",
+        "wonGwp": "Won Premium",
+        "conversionRate": "Conversion Rate"
+    },
+    "myDay": {
+        "tasksToday": "Tasks Due Today",
+        "overdue": "Overdue Opportunities",
+        "dueToday": "Follow-up Today",
+        "noDueDate": "No Follow-up Date"
+    },
+    "quickActions": {
+        "leftVm": "Left Voicemail",
+        "badTiming": "Bad Timing",
+        "wrongNumber": "Wrong Number"
+    },
+    "disposition": "Quick Disposition",
+    "familyBundle": "Family Bundle",
+    "opportunitiesHub": {
+        "title": "Opportunities Hub",
+        "description": "Centralized view of all verified AI-detected upsell and cross-sell opportunities.",
+        "opportunities": "Total Opportunities",
+        "pipelineValue": "Pipeline Value",
+        "noOpportunities": "No opportunities found.",
+        "noOpportunitiesSub": "Run the AI Policy Scanner to identify new sales opportunities.",
+        "goToScanner": "Go to Scanner",
+        "aiPitch": "AI Pitch",
+        "pitchTitle": "Smart Pitch Generator",
+        "pitchSubtitle": "AI-Generated Message for WhatsApp/Viber",
+        "generating": "Generating persuasive script...",
+        "close": "Close",
+        "copy": "Copy Text",
+        "errorGenerating": "Could not generate script. Please try again.",
+        "marketHook": {
+            "home": "recent tax incentives for home insurance",
+            "health": "rising healthcare costs and hospital wait times",
+            "auto": "increased fines for uninsured vehicles"
+        }
+    }
+  },
+  "tasks": {
+    "title": "Tasks",
+    "addTask": "Add Task",
+    "addTaskTitle": "Create New Task",
+    "taskTitle": "Task Title",
+    "taskTitlePlaceholder": "e.g., Call client about renewal",
+    "dueDate": "Due Date",
+    "noTasks": "No tasks found.",
+    "noCompletedTasks": "No completed tasks.",
+    "sections": {
+        "todo": "To Do",
+        "completed": "Completed"
+    },
+    "filters": {
+        "all": "All",
+        "incomplete": "To Do",
+        "completed": "Done"
+    }
+  },
+  "leadsDashboard": {
+    "kpis": {
+        "totalLeads": "Total Leads",
+        "newLeads": "New Leads",
+        "conversionRate": "Conversion Rate",
+        "closedDeals": "Closed Deals"
+    },
+    "charts": {
+        "sourceTitle": "Leads by Source",
+        "funnelTitle": "Lead Status Funnel"
+    }
+  },
+  "campaigns": {
+    "create": "Create Campaign",
+    "wizard": {
+        "chooseTemplate": "Choose Template"
+    }
+  },
+  "campaignAnalytics": {
+    "title": "Campaign Analytics",
+    "noData": "No analytics data available for the selected filters.",
+    "filters": {
+        "campaign": "Campaign",
+        "allCampaigns": "All Campaigns",
+        "network": "Network",
+        "allNetworks": "All Networks",
+        "period": "Time Period",
+        "last7": "Last 7 Days",
+        "last30": "Last 30 Days",
+        "last90": "Last 90 Days",
+        "language": "Language",
+        "allLanguages": "All Languages"
+    },
+    "kpis": {
+        "totalSpend": "Total Spend",
+        "totalImpressions": "Impressions",
+        "ctr": "CTR",
+        "totalConversions": "Conversions"
+    },
+    "charts": {
+        "performanceTitle": "Performance Over Time",
+        "impressions": "Impressions",
+        "clicks": "Clicks",
+        "conversions": "Conversions",
+        "spendTitle": "Spend by Network"
+    }
+  },
+  "micrositeBuilder": {
+    "siteSettings": "Site Settings",
+    "editSiteSettings": "Edit Settings",
+    "addBlock": "Add Block",
+    "settings": {
+        "siteTitle": "Site Title",
+        "themeColor": "Theme Color",
+        "contactEmail": "Contact Email",
+        "contactPhone": "Contact Phone",
+        "address": "Address",
+        "facebookUrl": "Facebook URL",
+        "linkedinUrl": "LinkedIn URL",
+        "xUrl": "X (Twitter) URL"
+    },
+    "content": {
+        "manageNews": "Manage News",
+        "manageTestimonials": "Manage Testimonials",
+        "newsList": "News Articles",
+        "addNews": "Add Article",
+        "editNews": "Edit Article",
+        "testimonialsList": "Testimonials"
+    },
+    "footer": {
+        "contactUs": "Contact Us",
+        "followUs": "Follow Us",
+        "copyright": "All rights reserved."
+    }
+  },
+  "news": {
+    "title": "Industry News & Insights",
+    "noArticles": "No articles available at the moment.",
+    "publishedOn": "Published on {date}",
+    "by": "by",
+    "backToList": "Back to News",
+    "tags": "Tags",
+    "share": "Share this article",
+    "shareOn": "Share on {platform}",
+    "copyLink": "Copy Link",
+    "linkCopied": "Link copied to clipboard!"
+  },
+  "testimonials": {
+    "title": "Testimonials",
+    "add": "Add Testimonial",
+    "approved": "Approved",
+    "pending": "Pending",
+    "reject": "Reject",
+    "approve": "Approve",
+    "noApproved": "No approved testimonials yet.",
+    "noPending": "No testimonials pending moderation.",
+    "form": {
+        "title": "Submit a Testimonial",
+        "yourQuote": "Your Quote",
+        "yourQuotePlaceholder": "Share your experience...",
+        "rating": "Rating",
+        "submit": "Submit",
+        "success": "Testimonial submitted for review."
+    }
+  },
+  "userManagement": {
+    "inviteUser": "Invite User",
+    "users": "Users",
+    "auditLogs": "Audit Logs",
+    "role": "Role",
+    "admin": "Admin",
+    "agent": "Agent",
+    "removeUser": "Remove",
+    "cannotRemoveSelf": "You cannot remove your own account.",
+    "confirmRemove": "Are you sure you want to remove {userName}?",
+    "inviteModalTitle": "Invite New User",
+    "sendInvite": "Send Invitation",
+    "bulkActions": {
+        "selected": "{count} selected",
+        "changeRoleTo": "Change Role To...",
+        "deleteSelected": "Delete Selected"
+    },
+    "filters": {
+        "searchByNameEmail": "Search by name or email...",
+        "allRoles": "All Roles",
+        "searchLogs": "Search logs...",
+        "allActions": "All Actions"
+    },
+    "log": {
+        "timestamp": "Timestamp",
+        "actor": "Actor",
+        "header_action": "Action",
+        "target": "Target",
+        "details": "Details",
+        "actions": {
+            "user_invited": "User Invited",
+            "user_removed": "User Removed",
+            "role_changed": "Role Changed",
+            "policy_sync": "Policy Synced",
+            "gap_analysis_run": "Gap Analysis Run",
+            "policy_review_approved": "Policy Data Approved"
+        }
+    }
+  },
+  "billing": {
+    "title": "Billing & Subscription",
+    "subtitle": "Manage your plan, payment methods, and AI credit usage.",
+    "tabs": {
+      "overview": "Overview",
+      "plans": "Plans",
+      "history": "Invoice History"
+    },
+    "overview": {
+      "currentPlan": "Current Plan",
+      "planActive": "Active",
+      "renewalDate": "Renews on",
+      "manageSubscription": "Manage Subscription",
+      "aiCredits": "AI Credit Usage",
+      "seats": "Seats Used",
+      "storage": "Storage",
+      "paymentMethod": "Payment Method",
+      "cardEnding": "Visa ending in {last4}",
+      "expires": "Expires {date}",
+      "updatePayment": "Update"
+    },
+    "flexBudget": {
+      "title": "Flex-Budget Overage",
+      "description": "Enable dynamic scaling. Automatically approve extra credits up to a monthly cap you define.",
+      "currentUsage": "Current Cycle Overage",
+      "alert": "{percent}% of budget cap used",
+      "budgetCap": "Monthly Overage Cap",
+      "budgetCapDesc": "Hard limit. AI features will pause if this is reached."
+    },
+    "plans": {
+      "monthly": "/ month",
+      "current": "Current Plan",
+      "upgrade": "Upgrade",
+      "contactSales": "Contact Sales",
+      "starter": {
+        "name": "Starter",
+        "desc": "Essential tools for solo agents."
+      },
+      "pro": {
+        "name": "Pro",
+        "desc": "Advanced AI & automation for growing agencies."
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "desc": "Custom solutions for large brokerages."
+      },
+      "features": {
+        "crm": "Full CRM Access",
+        "leads": "Lead Management",
+        "support": "Email Support",
+        "ai": "AI Content Generation",
+        "social": "Social Media Tools",
+        "users": "Up to {count} Users",
+        "api": "API Access",
+        "custom": "Custom Integrations"
+      }
+    },
+    "history": {
+      "date": "Date",
+      "invoice": "Invoice",
+      "amount": "Amount",
+      "status": "Status",
+      "paid": "Paid",
+      "noInvoices": "No invoices found."
+    },
+    "alerts": {
+      "approachingLimit": "⚠️ Warning: You have used {percent}% of your monthly overage budget.",
+      "limitReached": "🚫 Limit Reached: AI services have been paused to prevent overage.",
+      "usageSimulated": "Simulated AI Activity: +€{cost}"
+    }
+  },
+  "support": {
+    "title": "Digital Brand Academy",
+    "description": "Master the art of digital presence. Tools and training to turn your agency into a trusted brand.",
+    "gamification": {
+      "rank": "Current Rank",
+      "xp": "XP",
+      "nextLevel": "Next Level",
+      "completed": "Completed",
+      "rookie": "Digital Rookie",
+      "agent": "Digital Agent",
+      "pro": "Market Authority",
+      "expert": "Industry Leader"
+    },
+    "academy": {
+      "title": "Sales Training Center",
+      "subtitle": "Enterprise-grade curriculum designed to scale your book of business.",
+      "modules": "Training Modules",
+      "tools": "Digital Tools",
+      "startCourse": "Resume Learning",
+      "readArticle": "Start Module",
+      "duration": "{minutes} min",
+      "xpReward": "+{xp} XP"
+    },
+    "quiz": {
+        "title": "Knowledge Check",
+        "submit": "Submit Answer",
+        "successMessage": "Correct! You have mastered this module. +{xp} XP earned!",
+        "wrongAnswer": "Incorrect. Review the content and try again."
+    },
+    "tabs": {
+      "foundation": "Foundation",
+      "growth": "Growth",
+      "mastery": "Mastery"
+    },
+    "photoTool": {
+      "title": "AI Headshot Studio",
+      "description": "Upload a casual selfie and let our AI transform it into a professional corporate headshot.",
+      "upload": "Upload Selfie",
+      "generate": "Generate Headshot",
+      "styles": {
+        "corporate": "Corporate Executive",
+        "modern": "Modern Agent",
+        "friendly": "Friendly Advisor"
+      }
+    },
+    "socialGuide": {
+      "title": "Brand Building Curriculum",
+      "platforms": {
+        "linkedin": {
+          "title": "LinkedIn Authority",
+          "checklist": [
+            "Headline: Use keywords like 'Risk Advisor' not just 'Agent'.",
+            "About Section: Tell a story about why you protect families.",
+            "Featured: Pin your best client case studies or articles."
+          ]
+        },
+        "instagram": {
+          "title": "Instagram Visuals",
+          "checklist": [
+            "Bio Link: Use a Linktree to your Quote Page and WhatsApp.",
+            "Stories: Share daily 'Behind the Scenes' at the office.",
+            "Reels: Post 15s tips on insurance savings."
+          ]
+        },
+        "facebook": {
+          "title": "Facebook Community",
+          "checklist": [
+            "Cover Photo: Showcase your team or local office.",
+            "Reviews: Actively request reviews after every policy signed.",
+            "Groups: Join local community groups to offer helpful advice."
+          ]
+        },
+        "x": {
+          "title": "X (Twitter) Real-time",
+          "checklist": [
+            "Pinned Tweet: Your current best offer or introduction.",
+            "Engagement: Reply to local news about weather/traffic with safety tips."
+          ]
+        }
+      }
+    },
+    "courses": {
+      "c1": {
+        "title": "Compliance & Digital Ethics (IDD)",
+        "desc": "Essential regulations for insurance professionals on social media. Avoiding misleading financial advice.",
+        "tag": "Compliance",
+        "duration": "15m",
+        "xp": 50,
+        "level": "foundation",
+        "sections": [
+          {
+            "title": "The 'Two-Click' Rule",
+            "body": "Transparency is not just good ethics; it's the law (IDD & GDPR). In many jurisdictions, your license number and official business name must be visible within 'two clicks' of any promotional post.\n\nPro Tip: Update your LinkedIn and Instagram bio today to include: 'License #: 12345 | Agency: AgentOS'. This ensures every post is compliant by default."
+          },
+          {
+            "title": "Forbidden Terminology",
+            "body": "Avoid absolutes that create liability. Never use words like: 'Best price', 'Guaranteed returns', 'Free', or 'All-inclusive'. These imply certainty in an uncertain industry.\n\nInstead use: 'Competitive rates', 'Comprehensive options', 'Quote at no cost', 'Estimated returns'. Precision builds trust and protects your license."
+          },
+          {
+            "title": "Client Privacy & Data",
+            "body": "Never post photos of a client's car accident or house fire without explicit, written permission, even if you blur the license plate. It creates a perception of exploiting tragedy for profit. Always focus on the 'after' story: the check delivery, the repaired home, the satisfied family."
+          }
+        ],
+        "quiz": {
+            "question": "Where must your insurance license number be visible on social media?",
+            "options": [
+                "It doesn't need to be visible.",
+                "Only on your website's footer.",
+                "Within 'two clicks' of any promotional post (e.g., in your Bio).",
+                "Only in paid advertisements."
+            ],
+            "correctIndex": 2
+        }
+      },
+      "c2": {
+        "title": "The Annual Review: Cross-Selling",
+        "desc": "Transform a service call into a sales opportunity. How to pivot from Auto to Life/Home.",
+        "tag": "Sales Skills",
+        "duration": "20m",
+        "xp": 150,
+        "level": "growth",
+        "sections": [
+          {
+            "title": "The Philosophy of the Review",
+            "body": "Most agents only call to renew or collect payment. This is a mistake. The Annual Review is your greatest retention and cross-sell tool. It frames you as an advisor, not a bill collector."
+          },
+          {
+            "title": "The Pivot Script",
+            "body": "Script: 'Before we finalize the car renewal, I noticed you mentioned a new baby on Facebook – congratulations! Many of my clients in your stage overlook income protection. If something happens, the car is insured, but is your paycheck?'\n\nThis is a soft, logic-based pivot that highlights a gap without being aggressive."
+          },
+          {
+            "title": "Handling the 'I'm busy' Objection",
+            "body": "Client: 'I don't have time for a meeting.'\n\nAgent: 'I understand. Let's do this: I will email you a 1-page summary of where you might be exposed to risk based on inflation this year. If you see anything concerning, we talk for 5 minutes. Fair?'"
+          }
+        ],
+        "quiz": {
+            "question": "What is the best time to introduce a cross-sell opportunity?",
+            "options": [
+                "When the client is angry about a claim.",
+                "During the Annual Review, triggered by a life event.",
+                "In a cold email blast.",
+                "Immediately after sending the bill."
+            ],
+            "correctIndex": 1
+        }
+      },
+      "c3": {
+        "title": "LinkedIn Prospecting Mastery",
+        "desc": "Find high-value commercial clients using Boolean search and non-salesy outreach.",
+        "tag": "Social Selling",
+        "duration": "25m",
+        "xp": 100,
+        "level": "foundation",
+        "sections": [
+          {
+            "title": "The Profile Funnel",
+            "body": "Your profile is a landing page. Your banner image should state your value proposition (e.g., 'Protecting Business Owners from Liability'). Your headline must answer 'What problem do I solve?', not just your job title."
+          },
+          {
+            "title": "Boolean Search Logic",
+            "body": "Stop scrolling and start searching. Use Boolean logic to find decision-makers.\n\nTemplate: (Owner OR Founder OR CEO) AND (Construction OR Manufacturing) AND 'Athens' NOT 'Assistant'.\n\nThis filters out gatekeepers and targets the check-writers directly."
+          },
+          {
+            "title": "The Connection Request",
+            "body": "Generic requests get ignored. Contextual requests get accepted.\n\nScript: 'Hi [Name], I noticed we're both connected to [Mutual Contact] and I've been following [Company]'s expansion. I share insights on risk management for growing firms and would love to connect. No sales pitch.'"
+          }
+        ],
+        "quiz": {
+            "question": "Which search string would best target business owners in Construction?",
+            "options": [
+                "Construction workers in Athens",
+                "Owner OR CEO AND Construction",
+                "People who like construction",
+                "Managers at construction sites"
+            ],
+            "correctIndex": 1
+        }
+      },
+      "c4": {
+        "title": "Video Prospecting (Loom/Vidyard)",
+        "desc": "Break through the inbox noise. How to record 1:1 personalized videos that get responses.",
+        "tag": "Marketing",
+        "duration": "18m",
+        "xp": 200,
+        "level": "mastery",
+        "sections": [
+          {
+            "title": "Why Video Works",
+            "body": "Text is easily ignored. A human face is not. Video establishes trust before the first handshake. It proves you are real, local, and professional. Open rates for video emails are 3x higher than text."
+          },
+          {
+            "title": "The 30-Second Structure",
+            "body": "1. The Hook (0-5s): Hold up a whiteboard with their name or open their website on your screen.\n2. The Value (5-20s): 'I noticed your fleet has expanded, which usually impacts premiums by...'\n3. The Ask (20-30s): 'I have an idea to mitigate this. Open to a 5-min chat?'"
+          }
+        ],
+        "quiz": {
+            "question": "What is the most important part of a video message?",
+            "options": [
+                "High production quality (4K resolution).",
+                "The first 5 seconds (The Hook).",
+                "Wearing a suit and tie.",
+                "Talking for at least 5 minutes."
+            ],
+            "correctIndex": 1
+        }
+      }
+    }
+  },
+  "executive": {
+    "agencyGrowth": "Agency Growth (Premium & Policies)",
+    "productMix": "Product Portfolio Mix",
+    "claimsTrend": "Claims Trend (Last 6 Months)",
+    "leadFunnel": "Lead Conversion Funnel",
+    "campaignRoi": "Marketing Campaign ROI",
+    "riskExposure": "Risk Exposure Analysis",
+    "kpis": {
+        "totalGwpWon": "GWP Won (Pipeline)",
+        "totalGwpWonSubtitle": "Total new premium",
+        "pipelineValue": "Open Pipeline",
+        "pipelineValueSubtitle": "Estimated GWP",
+        "leadToWonRate": "Lead Win Rate",
+        "leadToWonRateSubtitle": "{wonCount} wins from {leadCount} leads",
+        "avgCpa": "Avg. Cost Per Sale",
+        "avgCpaSubtitle": "{spend} spend / {count} wins",
+        "micrositeFunnelRate": "Site Conversion",
+        "micrositeFunnelRateSubtitle": "{leads} leads / {pageviews} visits",
+        "avgReplyTime": "Avg. Reply Time",
+        "avgReplyTimeSubtitle": "Time to first response",
+        "crossSellLeads": "Cross-Sell Leads",
+        "crossSellLeadsSubtitle": "From existing customers"
+    }
+  },
+  "automationRules": {
+    "title": "Automation Rules",
+    "overview": {
+        "title": "Overview",
+        "totalRules": "Total Rules",
+        "activeRules": "Active Rules",
+        "avgSuccessRate": "Avg. Success Rate"
+    },
+    "categories": {
+        "lead_conversion": "Lead Conversion",
+        "communication_automation": "Communication"
+    },
+    "searchPlaceholder": "Search rules...",
+    "noRules": "No automation rules found.",
+    "table": {
+        "ruleName": "Rule Name",
+        "category": "Category",
+        "lastExecuted": "Last Run",
+        "successRate": "Success Rate"
+    },
+    "actions": {
+        "edit": "Edit",
+        "duplicate": "Duplicate",
+        "delete": "Delete",
+        "test": "Test Rule"
+    },
+    "deleteConfirm": {
+        "title": "Delete Rule",
+        "message": "Are you sure you want to delete rule \"{ruleName}\"? This action cannot be undone."
+    },
+    "templates": {
+        "title": "Message Templates",
+        "description": "Manage the templates used by your automation rules.",
+        "create": "Create Template",
+        "edit": "Edit Template",
+        "channels": {
+            "email": "Email",
+            "sms": "SMS",
+            "viber": "Viber",
+            "whatsapp": "WhatsApp"
+        },
+        "noTemplates": "No templates found.",
+        "form": {
+            "namePlaceholder": "Template Name",
+            "content": "Message Content",
+            "placeholders": "Available Placeholders",
+            "preview": "Live Preview"
+        }
+    },
+    "settings": {
+        "title": "Automation Settings",
+        "description": "Configure connection details for your communication channels.",
+        "saveButton": "Save Settings",
+        "enableChannel": "Enable Channel",
+        "testButton": "Test Connection",
+        "testingConnection": "Testing...",
+        "connectionSuccess": "Connected!",
+        "connectionFailed": "Connection Failed",
+        "channels": {
+            "email": { "title": "Email (SMTP)", "host": "SMTP Host", "port": "Port", "username": "Username", "password": "Password", "fromAddress": "From Address" },
+            "sms": { "title": "SMS Provider", "apiKey": "API Key", "apiSecret": "API Secret", "senderId": "Sender ID" },
+            "viber": { "title": "Viber Business", "apiKey": "API Key", "senderName": "Sender Name" },
+            "whatsapp": { "title": "WhatsApp Business", "apiKey": "API Key", "phoneNumberId": "Phone Number ID" }
+        }
+    },
+    "eventLog": {
+        "title": "Automation Event Log",
+        "description": "Track the history of all automated actions performed by the system.",
+        "noEvents": "No automation events found.",
+        "kpis": {
+            "totalEvents": "Total Events",
+            "successRate": "Success Rate",
+            "messagesSent": "Messages Sent",
+            "conversions": "Auto-Conversions"
+        },
+        "table": {
+            "timestamp": "Time",
+            "rule": "Rule",
+            "status": "Status",
+            "details": "Details"
+        },
+        "filters": {
+            "allRules": "All Rules",
+            "allChannels": "All Channels",
+            "last7Days": "Last 7 Days",
+            "last30Days": "Last 30 Days"
+        },
+        "charts": {
+            "conversionImpact": "Automation Impact on Conversion"
+        }
+    },
+    "testing": {
+        "title": "Test Rule",
+        "selectLead": "Select a sample lead to test against:",
+        "runTest": "Run Simulation",
+        "results": "Simulation Results",
+        "ruleWouldRun": "✅ Rule WOULD execute",
+        "ruleWouldNotRun": "❌ Rule WOULD NOT execute",
+        "conditionsCheck": "Conditions Check:",
+        "passed": "Passed",
+        "failed": "Failed",
+        "conditionEval": "{field} {operator} {value}",
+        "actualValue": "Actual value: {value}",
+        "actionPreview": "Action Preview:",
+        "templateNotFound": "Error: Template not found",
+        "noActions": "No actions defined.",
+        "backToSelection": "Test Another Lead"
+    }
+  },
+  "leadCapture": {
+    "title": "Get a Free Insurance Quote",
+    "subtitle": "Protect what matters most with our comprehensive coverage plans.",
+    "submitButton": "Get My Quote",
+    "invalidCampaign": "Campaign Not Found",
+    "thankYouTitle": "Thank You!",
+    "thankYouMessage": "We've received your details. An agent will contact you shortly with your personalized quote.",
+    "form": {
+        "name": "Full Name",
+        "email": "Email Address",
+        "phone": "Phone Number"
+    },
+    "magnets": {
+        "home": {
+            "badge": "Property Owner Special",
+            "title": "Reduce Your ENFIA Tax by 10%",
+            "subtitle": "Get certified home insurance that qualifies for the state tax reduction. Protect your property from fire and earthquake while saving money.",
+            "benefit1": "Direct 10% ENFIA Reduction",
+            "benefit2": "Full Earthquake Coverage",
+            "benefit3": "Immediate Certificate Issuance"
+        },
+        "health": {
+            "badge": "Family Health Plan",
+            "title": "Premium Healthcare Without the Wait",
+            "subtitle": "Secure access to the top private hospitals for you and your family. Skip the public queues and get the care you deserve.",
+            "benefit1": "Access to Top Private Hospitals",
+            "benefit2": "No Waiting Lists",
+            "benefit3": "Direct Settlement (No Cash Needed)"
+        },
+        "auto": {
+            "badge": "Driver Protection",
+            "title": "Complete Road Safety & Value",
+            "subtitle": "More than just mandatory insurance. Get roadside assistance, glass breakage, and legal protection included.",
+            "benefit1": "24/7 Roadside Assistance",
+            "benefit2": "Crystal Breakage Included",
+            "benefit3": "Uninsured Driver Protection"
+        }
+    }
+  },
+  "sitemap": {
+    "title": "Sitemap",
+    "intro": "Overview of all pages and content.",
+    "pages": "Main Pages",
+    "newsArticles": "News Articles"
+  }
+}
