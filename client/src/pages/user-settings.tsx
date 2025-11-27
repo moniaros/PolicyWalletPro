@@ -240,7 +240,7 @@ export default function UserSettingsPage() {
       <div className="space-y-2">
         <h1 className="text-4xl font-bold tracking-tight">Settings</h1>
         <p className="text-lg text-muted-foreground">
-          Manage your account, security, preferences, and insurance profile
+          Manage your account, security, preferences, notifications, and insurance profile
         </p>
       </div>
 
