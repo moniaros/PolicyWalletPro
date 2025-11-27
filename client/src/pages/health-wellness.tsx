@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -15,6 +16,7 @@ import { Activity, Heart, TrendingUp, AlertCircle, Check, FileUp, Plus, Calendar
 const DEMO_USER_ID = "demo-user-001"; // Demo user for testing
 
 export default function HealthWellnessPage() {
+  const { t } = useTranslation();
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [uploadType, setUploadType] = useState("Annual");
   const [uploadProvider, setUploadProvider] = useState("");
@@ -103,19 +105,19 @@ export default function HealthWellnessPage() {
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">Health Wellness</h1>
-          <p className="text-muted-foreground mt-1">Track checkups, get personalized preventive recommendations, and manage your health proactively.</p>
+          <h1 className="text-4xl font-bold tracking-tight text-foreground">{t('health.healthWellness')}</h1>
+          <p className="text-muted-foreground mt-2 text-lg">{t('health.uploadCheckup')}</p>
         </div>
         <Dialog open={isUploadOpen} onOpenChange={setIsUploadOpen}>
           <DialogTrigger asChild>
-            <Button className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-md shadow-emerald-200">
+            <Button className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-200 font-semibold h-11 px-6">
               <FileUp className="h-4 w-4 mr-2" />
-              Upload Checkup Results
+              {t('health.uploadCheckup')}
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[500px]">
             <DialogHeader>
-              <DialogTitle>Upload Checkup Results</DialogTitle>
+              <DialogTitle>{t('health.uploadCheckup')}</DialogTitle>
             </DialogHeader>
             <div className="space-y-4 py-4">
               <div className="grid gap-2">

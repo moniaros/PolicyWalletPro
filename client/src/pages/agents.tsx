@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { agents } from "@/lib/mockData";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -13,6 +14,7 @@ const AGENT_WHATSAPP = "306956338110"; // Without +
 const AGENT_EMAIL = "agent@policyguard.gr";
 
 export default function AgentsPage() {
+  const { t } = useTranslation();
   const [contactSent, setContactSent] = useState(false);
   // Using first agent as current agent
   const currentAgent = agents[0];
@@ -46,8 +48,8 @@ export default function AgentsPage() {
   return (
     <div className="space-y-8 max-w-4xl">
       <div>
-        <h1 className="text-4xl font-bold tracking-tight">Your Insurance Agent</h1>
-        <p className="text-muted-foreground mt-2">Get in touch anytime - multiple ways to connect</p>
+        <h1 className="text-4xl font-bold tracking-tight">{t('agents.agentDetails')}</h1>
+        <p className="text-muted-foreground mt-2 text-lg">{t('common.actions')}</p>
       </div>
 
       {/* Main Agent Card */}

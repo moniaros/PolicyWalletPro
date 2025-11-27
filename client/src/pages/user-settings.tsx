@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "wouter";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -43,6 +44,7 @@ import {
 } from "@/lib/insurance-analyst-data";
 
 export default function UserSettingsPage() {
+  const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [settingsPIN, setSettingsPIN] = useState(false);
