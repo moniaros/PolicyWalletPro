@@ -136,22 +136,24 @@ export default function PolicyCard({ policy, index = 0 }: { policy: PolicyProps,
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
+      whileHover={{ y: -4 }}
     >
-      <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 border-muted group bg-white h-full flex flex-col">
+      <Card className="overflow-hidden hover:shadow-2xl transition-all duration-300 border-muted/50 group bg-white h-full flex flex-col hover:border-primary/20 relative">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
         {/* Header: Product Info + Status Badge */}
-        <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-3 border-b bg-gradient-to-r from-white to-muted/10">
+        <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-4 border-b bg-gradient-to-r from-white to-muted/5 relative z-10">
           <div className="flex items-center gap-3 flex-1">
-            <div className={`h-12 w-12 rounded-lg flex items-center justify-center shrink-0 ${policy.color}`}>
-              <policy.icon className="h-6 w-6" />
+            <div className={`h-14 w-14 rounded-xl flex items-center justify-center shrink-0 ${policy.color} shadow-md`}>
+              <policy.icon className="h-7 w-7" />
             </div>
             <div className="min-w-0 flex-1">
               <h3 className="font-bold text-base leading-tight text-foreground">{policy.type}</h3>
-              <p className="text-xs text-muted-foreground mt-0.5 truncate">{policy.provider}</p>
+              <p className="text-xs text-muted-foreground mt-1 truncate font-medium">{policy.provider}</p>
             </div>
           </div>
           <Badge 
             variant="outline" 
-            className={`${getStatusColor(policy.status)} font-medium text-xs ml-2 shrink-0 border`}
+            className={`${getStatusColor(policy.status)} font-semibold text-xs ml-2 shrink-0 border px-2.5 py-1`}
             data-testid={`status-badge-${policy.id}`}
           >
             {policy.status === "Active" ? <CheckCircle2 className="h-3 w-3 mr-1" /> : <AlertCircle className="h-3 w-3 mr-1" />}
@@ -159,22 +161,22 @@ export default function PolicyCard({ policy, index = 0 }: { policy: PolicyProps,
           </Badge>
         </CardHeader>
 
-        <CardContent className="pt-4 pb-3 flex-1 space-y-3">
+        <CardContent className="pt-5 pb-4 flex-1 space-y-4 relative z-10">
           {/* Type-Specific Quick View */}
           {renderQuickViewByType(policy)}
 
           {/* Row 2: Policy Number & Renewal Countdown */}
-          <div className="grid grid-cols-2 gap-3 pt-1">
+          <div className="grid grid-cols-2 gap-3 pt-2">
             <div>
-              <p className="text-xs text-muted-foreground uppercase tracking-wide font-semibold mb-1">Policy No.</p>
-              <p className="font-mono text-xs bg-secondary/60 text-foreground py-1.5 px-2 rounded font-medium" data-testid={`policy-number-${policy.id}`}>{policy.policyNumber}</p>
+              <p className="text-xs text-muted-foreground uppercase tracking-wider font-bold mb-1.5">Policy No.</p>
+              <p className="font-mono text-sm bg-gradient-to-br from-secondary/80 to-secondary/60 text-foreground py-2 px-2.5 rounded-lg font-semibold border border-secondary/40" data-testid={`policy-number-${policy.id}`}>{policy.policyNumber}</p>
             </div>
             <div>
-              <p className="text-xs text-muted-foreground uppercase tracking-wide font-semibold mb-1 flex items-center gap-1">
-                <Clock className="h-3 w-3" />
+              <p className="text-xs text-muted-foreground uppercase tracking-wider font-bold mb-1.5 flex items-center gap-1">
+                <Clock className="h-3.5 w-3.5" />
                 Renews
               </p>
-              <div className={`text-xs font-semibold py-1.5 px-2 rounded ${expiryColorClass} inline-block`} data-testid={`renewal-countdown-${policy.id}`}>
+              <div className={`text-xs font-bold py-2 px-2.5 rounded-lg ${expiryColorClass} inline-block border`} data-testid={`renewal-countdown-${policy.id}`}>
                 {renewalText}
               </div>
             </div>
@@ -206,12 +208,12 @@ export default function PolicyCard({ policy, index = 0 }: { policy: PolicyProps,
         </CardContent>
 
         {/* Footer: Action Buttons */}
-        <CardFooter className="bg-gradient-to-r from-muted/40 to-muted/20 p-3 flex gap-2 border-t">
+        <CardFooter className="bg-gradient-to-r from-primary/5 via-muted/10 to-muted/5 p-4 flex gap-2 border-t border-muted/30 relative z-10">
           <Link href={`/policies/${policy.id}`} className="flex-1">
             <Button 
               variant="outline" 
               size="sm" 
-              className="w-full h-8 text-xs hover:bg-white hover:shadow-sm border-primary/20 text-primary hover:text-primary bg-white font-medium"
+              className="w-full h-9 text-xs hover:bg-primary hover:text-white border-primary/30 text-primary bg-white font-semibold transition-all hover:shadow-md"
               data-testid={`button-details-${policy.id}`}
             >
               <Eye className="h-3.5 w-3.5 mr-1.5" />
@@ -221,7 +223,7 @@ export default function PolicyCard({ policy, index = 0 }: { policy: PolicyProps,
           <Button 
             variant="ghost" 
             size="sm" 
-            className="flex-1 h-8 text-xs hover:bg-white hover:shadow-sm font-medium" 
+            className="flex-1 h-9 text-xs hover:bg-primary/10 hover:text-primary font-semibold transition-all" 
             data-testid={`button-docs-${policy.id}`}
           >
             <Download className="h-3.5 w-3.5 mr-1.5" />

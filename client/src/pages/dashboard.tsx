@@ -28,27 +28,29 @@ export default function Dashboard() {
       <OnboardingModal isOpen={showOnboarding} onClose={() => setShowOnboarding(false)} />
       <div className="space-y-8">
       {/* Hero / Welcome Section */}
-      <section className="flex flex-col md:flex-row items-center justify-between gap-6 bg-primary rounded-3xl p-6 md:p-10 text-white shadow-xl shadow-primary/20 relative overflow-hidden">
-        <div className="relative z-10 space-y-4 max-w-lg">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white/90 text-xs font-medium backdrop-blur-sm border border-white/10">
-            <Bell className="h-3 w-3" />
+      <section className="flex flex-col md:flex-row items-center justify-between gap-6 bg-gradient-to-br from-primary via-primary to-primary/90 rounded-3xl p-8 md:p-12 text-white shadow-2xl shadow-primary/30 relative overflow-hidden group hover:shadow-primary/40 transition-all duration-300">
+        <div className="relative z-10 space-y-6 max-w-lg">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/20 text-white/95 text-xs font-semibold backdrop-blur-md border border-white/30 hover:bg-white/25 transition-colors">
+            <Bell className="h-3.5 w-3.5" />
             <span>{t('dashboard.newUpdates', { count: notifications.length })}</span>
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold tracking-tight">{t('dashboard.welcomeBack', { name: 'Alex' })}</h1>
-          <p className="text-white/80 text-lg">{t('dashboard.healthScore')} <span className="font-bold text-white">92/100</span>. {t('dashboard.wellCovered')}</p>
-          <div className="flex gap-3 pt-2">
-            <Button className="bg-white text-primary hover:bg-white/90 shadow-sm border-0" data-testid="button-add-policy">
+          <div className="space-y-3">
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tight leading-tight">{t('dashboard.welcomeBack', { name: 'Alex' })}</h1>
+            <p className="text-white/85 text-lg leading-relaxed">{t('dashboard.healthScore')} <span className="font-extrabold text-white text-xl">92/100</span>. {t('dashboard.wellCovered')}</p>
+          </div>
+          <div className="flex gap-3 pt-4 flex-wrap">
+            <Button className="bg-white text-primary hover:bg-white/95 shadow-lg shadow-black/20 border-0 font-semibold px-6 h-11 group transition-all hover:scale-105" data-testid="button-add-policy">
               <Plus className="h-4 w-4 mr-2" />
               {t('common.addPolicy')}
             </Button>
             <Link href="/analysis">
-              <Button variant="outline" className="bg-transparent border-white/30 text-white hover:bg-white/10 hover:text-white hover:border-white/50">
-                {t('dashboard.viewAnalysis')}
+              <Button variant="outline" className="bg-white/15 border-white/40 text-white hover:bg-white/25 hover:border-white/60 font-semibold px-6 h-11 backdrop-blur-sm transition-all hover:scale-105">
+                {t('dashboard.viewAnalysis')} <ChevronRight className="h-4 w-4 ml-1" />
               </Button>
             </Link>
           </div>
         </div>
-        <div className="absolute right-0 bottom-0 md:h-[140%] h-[120%] w-1/2 opacity-20 md:opacity-100 pointer-events-none bg-gradient-to-br from-primary/50 via-primary/30 to-transparent rounded-full"></div>
+        <div className="absolute right-0 bottom-0 md:h-[160%] h-[140%] w-1/2 opacity-30 md:opacity-40 pointer-events-none bg-gradient-to-br from-white/10 via-white/5 to-transparent rounded-full blur-2xl group-hover:opacity-50 transition-opacity"></div>
       </section>
 
       {/* Upcoming Section */}
