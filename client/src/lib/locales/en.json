@@ -333,7 +333,8 @@
     "averageMonthly": "Average Monthly",
     "paidYTD": "Paid YTD",
     "dueNext": "Due Next",
-    "next2DueDates": "Next 2 due dates"
+    "next2DueDates": "Next 2 due dates",
+    "potentialSavings": "€495-1,062/year"
   },
   "recommendations": {
     "title": "Recommendations",
@@ -1039,7 +1040,23 @@
   "policy": {
     "next2DueDates": "Next 2 due dates",
     "coverageHealthByType": "Coverage Health by Type",
-    "policyCompletenessScores": "Policy completeness and coverage health scores"
+    "policyCompletenessScores": "Policy completeness and coverage health scores",
+    "insuranceTypes": {
+      "health": "Health Insurance",
+      "auto": "Motor Insurance",
+      "home": "Home & Property",
+      "travel": "Travel Insurance",
+      "liability": "Liability Coverage"
+    },
+    "coverageStatus": {
+      "excellent": "Excellent",
+      "good": "Good",
+      "fair": "Fair",
+      "poor": "Poor"
+    },
+    "paymentReminders": "Payment Reminders",
+    "scheduled": "Scheduled",
+    "paymentDue": "Payment Due"
   },
   "details": {
     "experience": "Experience",

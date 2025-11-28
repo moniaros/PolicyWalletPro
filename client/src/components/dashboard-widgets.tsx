@@ -108,7 +108,7 @@ export function RecommendationsWidget() {
           </div>
           <div className="flex items-center justify-between">
             <span className="text-sm">{t('recommendations.potentialSavings')}</span>
-            <span className="font-bold">€495-1,062/yr</span>
+            <span className="font-bold">{t('billing.potentialSavings')}</span>
           </div>
         </div>
         <Progress value={33} className="h-2" />
@@ -127,9 +127,9 @@ export function InsuranceHealthWidget() {
   const { t } = useTranslation();
   
   const categories = [
-    { label: "Health", score: 98, status: "Excellent" },
-    { label: "Auto", score: 85, status: "Good" },
-    { label: "Home", score: 72, status: "Fair" },
+    { key: "health", score: 98 },
+    { key: "auto", score: 85 },
+    { key: "home", score: 72 },
   ];
 
   return (
@@ -143,9 +143,9 @@ export function InsuranceHealthWidget() {
       </CardHeader>
       <CardContent className="space-y-4">
         {categories.map((cat) => (
-          <div key={cat.label}>
+          <div key={cat.key}>
             <div className="flex justify-between items-center mb-1">
-              <span className="text-sm font-medium">{cat.label}</span>
+              <span className="text-sm font-medium">{t(`policy.insuranceTypes.${cat.key}`)}</span>
               <span className="text-xs font-bold text-muted-foreground">{cat.score}%</span>
             </div>
             <Progress value={cat.score} className="h-2" />
@@ -169,7 +169,7 @@ export function PaymentRemindersWidget() {
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-2 text-lg">
           <AlertCircle className="h-5 w-5 text-amber-600" />
-          Payment Reminders
+          {t("policy.paymentReminders")}
         </CardTitle>
         <CardDescription>{ t('billing.next2DueDates') }</CardDescription>
       </CardHeader>

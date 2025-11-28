@@ -1151,6 +1151,27 @@
     "cvvRequired": "CVV *"
   },
   "policy": {
+    "next2DueDates": "Επόμενα 2 δεδουλευμένα",
+    "coverageHealthByType": "Κατάσταση Κάλυψης κατά Τύπο",
+    "policyCompletenessScores": "Βαθμολογία πληρότητας ασφάλισης και κατάστασης κάλυψης",
+    "insuranceTypes": {
+      "health": "Υγειονομική Ασφάλιση",
+      "auto": "Ασφάλιση Αυτοκινήτου",
+      "home": "Ασφάλιση Κατοικίας",
+      "travel": "Ασφάλιση Ταξιδίων",
+      "liability": "Ασφάλιση Ευθύνης"
+    },
+    "coverageStatus": {
+      "excellent": "Εξαιρετική",
+      "good": "Καλή",
+      "fair": "Ικανοποιητική",
+      "poor": "Ανεπαρκής"
+    },
+    "paymentReminders": "Υπενθυμίσεις Πληρωμής",
+    "scheduled": "Προγραμματισμένη",
+    "paymentDue": "Δεδουλευμένη Πληρωμή"
+  },
+  "old_policy": {
     "lobCode": "Κώδικας Κατηγορίας",
     "monthlyPremium": "Μηνιαίο Ασφάλιστρο",
     "id": "ID",
