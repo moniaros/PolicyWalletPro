@@ -154,9 +154,11 @@
   },
   "insurers": {
     "nnhellas": "NN Hellas",
+    "nnHellas": "NN Hellas",
     "generali": "Generali",
     "ergo": "ERGO",
-    "ethnikiasfalistiki": "Ethniki Asfalistiki"
+    "ethnikiasfalistiki": "Ethniki Asfalistiki",
+    "ethniki": "Ethniki Asfalistiki"
   },
   "claims": {
     "fileNewClaim": "File New Claim",

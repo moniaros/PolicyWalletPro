@@ -30,7 +30,7 @@ const renewalData = [
   {
     id: 1,
     policyNumber: "NN-ORANGE-992",
-    provider: "NN Hellas",
+    providerKey: "nnHellas",
     typeKey: "health",
     currentExpiry: new Date(2025, 11, 31),
     renewalDate: new Date(2025, 11, 31),
@@ -45,7 +45,7 @@ const renewalData = [
   {
     id: 2,
     policyNumber: "GEN-SPEED-882",
-    provider: "Generali",
+    providerKey: "generali",
     typeKey: "auto",
     currentExpiry: new Date(2025, 11, 15),
     renewalDate: new Date(2025, 11, 15),
@@ -60,7 +60,7 @@ const renewalData = [
   {
     id: 3,
     policyNumber: "ERG-HOME-445",
-    provider: "Ergo",
+    providerKey: "ergo",
     typeKey: "home",
     currentExpiry: new Date(2026, 2, 20),
     renewalDate: new Date(2026, 2, 20),
@@ -75,7 +75,7 @@ const renewalData = [
   {
     id: 4,
     policyNumber: "ETH-LIFE-223",
-    provider: "Ethniki",
+    providerKey: "ethniki",
     typeKey: "life",
     currentExpiry: new Date(2026, 5, 1),
     renewalDate: new Date(2026, 5, 1),
@@ -345,7 +345,7 @@ export default function RenewalsPage() {
                           </div>
                           <div>
                             <h3 className="font-semibold text-base">{t(`policyTypes.${renewal.typeKey}`)}</h3>
-                            <p className="text-sm text-muted-foreground">{renewal.provider}</p>
+                            <p className="text-sm text-muted-foreground">{t(`insurers.${renewal.providerKey}`)}</p>
                             <p className="text-xs text-muted-foreground font-mono">{renewal.policyNumber}</p>
                           </div>
                         </div>
