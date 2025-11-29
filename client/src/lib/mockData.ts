@@ -4,6 +4,7 @@ export const policies = [
   {
     id: 1,
     type: "Health",
+    productName: "NN Orange Health Premium",
     lob: "HLT", // ACORD Line of Business Code
     provider: "NN Hellas",
     carrierId: "NN-GR-001",
@@ -16,6 +17,10 @@ export const policies = [
     icon: Heart,
     color: "text-orange-500 bg-orange-50",
     status: "Active",
+    vehicleReg: null,
+    groupRegistryNumber: null,
+    groupInsuranceDate: null,
+    uploadedDocs: ["Policy Schedule 2025.pdf", "Medical Network List.pdf"],
     quickViewMetadata: {
       insuredPerson: "Σοφία Νικολάιδης",
       hospitalClass: "A-Class (Μονόκλινο)",
@@ -87,6 +92,7 @@ export const policies = [
   {
     id: 2,
     type: "Auto",
+    productName: "Generali Full Kasko Premium",
     lob: "AUT",
     provider: "Generali",
     carrierId: "GEN-IT-GR",
@@ -99,6 +105,10 @@ export const policies = [
     icon: Car,
     color: "text-red-600 bg-red-50",
     status: "Active",
+    vehicleReg: "YZA-1234",
+    groupRegistryNumber: null,
+    groupInsuranceDate: null,
+    uploadedDocs: ["Green Card 2025.pdf", "Vehicle Registration.pdf"],
     quickViewMetadata: {
       licensePlate: "YZA-1234",
       carModel: "Toyota Yaris",
@@ -162,6 +172,7 @@ export const policies = [
   {
     id: 3,
     type: "Home & Liability",
+    productName: "Ergo Home Complete Protection",
     lob: "HOM",
     provider: "Ergo",
     carrierId: "ERG-DE-GR",
@@ -174,6 +185,10 @@ export const policies = [
     icon: Home,
     color: "text-red-700 bg-red-50",
     status: "Active",
+    vehicleReg: null,
+    groupRegistryNumber: null,
+    groupInsuranceDate: null,
+    uploadedDocs: ["Home Insurance Schedule.pdf", "Property Valuation.pdf"],
     quickViewMetadata: {
       propertyAddress: "Ακαδημίας 10, Κολωνάκι, Αθήνα",
       sumInsured: "€465,000",
@@ -221,6 +236,7 @@ export const policies = [
   {
     id: 4,
     type: "Investment Life",
+    productName: "Ethniki Unit-Linked Pension Plan",
     lob: "LIF",
     provider: "Ethniki Asfalistiki",
     carrierId: "ETH-GR",
@@ -233,6 +249,10 @@ export const policies = [
     icon: Briefcase,
     color: "text-blue-600 bg-blue-50",
     status: "Active",
+    vehicleReg: null,
+    groupRegistryNumber: "GRP-ETH-2015-001",
+    groupInsuranceDate: "2015-01-01",
+    uploadedDocs: ["Life Policy Contract.pdf", "Fund Allocation Statement.pdf", "Tax Certificate 2024.pdf"],
     quickViewMetadata: {
       fundValue: "€45,200",
       ytdGrowth: "+5.2%",
@@ -284,6 +304,7 @@ export const policies = [
   {
     id: 5,
     type: "Pet Insurance",
+    productName: "Ergo Pet Care Plus",
     lob: "PET",
     provider: "Ergo",
     carrierId: "ERG-DE-GR",
@@ -296,6 +317,10 @@ export const policies = [
     icon: Dog,
     color: "text-amber-600 bg-amber-50",
     status: "Review Needed",
+    vehicleReg: null,
+    groupRegistryNumber: null,
+    groupInsuranceDate: null,
+    uploadedDocs: ["Pet Vaccination Record.pdf"],
     quickViewMetadata: {
       petName: "Μάξιμος",
       petType: "Golden Retriever",
