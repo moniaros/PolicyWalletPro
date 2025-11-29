@@ -223,7 +223,7 @@ export default function AppointmentsPage() {
             </Button>
           </DialogTrigger>
           
-          <DialogContent className="sm:max-w-[600px]">
+          <DialogContent className="sm:max-w-[700px] max-h-[85vh] overflow-hidden flex flex-col">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2">
                 <div className="flex items-center justify-center w-8 h-8 bg-primary text-white rounded-full text-sm font-bold">
@@ -240,31 +240,132 @@ export default function AppointmentsPage() {
 
             {/* STEP 1: SELECT POLICY */}
             {step === 1 && (
-              <div className="space-y-3 py-4">
-                {policies.map((policy) => (
-                  <Card
-                    key={policy.id}
-                    className="cursor-pointer border-2 hover:border-primary transition-colors"
-                    onClick={() => handlePolicySelect(policy)}
-                    data-testid={`card-policy-${policy.id}`}
-                  >
-                    <CardContent className="p-4 flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className={`p-3 rounded-lg ${policy.color}`}>
-                          {policy.icon && <policy.icon className="h-6 w-6" />}
+              <div className="space-y-3 py-4 overflow-y-auto flex-1">
+                {policies.map((policy) => {
+                  const getDuration = () => {
+                    const start = new Date(policy.effectiveDate);
+                    const end = new Date(policy.expiry);
+                    const months = Math.round((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24 * 30));
+                    return months >= 12 ? `${Math.round(months / 12)} ${t("appointments.policyYears")}` : `${months} ${t("appointments.policyMonths")}`;
+                  };
+                  
+                  const getInsurerName = () => {
+                    const insurerKey = `insurers.${policy.provider.toLowerCase().replace(/\s+/g, '')}`;
+                    const translated = t(insurerKey);
+                    return translated !== insurerKey ? translated : policy.provider;
+                  };
+                  
+                  const handleDocumentClick = (e: React.MouseEvent, doc: string) => {
+                    e.stopPropagation();
+                    toast.info(t("documents.downloadingFile", { filename: doc }));
+                  };
+                  
+                  return (
+                    <Card
+                      key={policy.id}
+                      className="cursor-pointer border-2 hover:border-primary transition-colors"
+                      onClick={() => handlePolicySelect(policy)}
+                      data-testid={`card-policy-${policy.id}`}
+                    >
+                      <CardContent className="p-4">
+                        {/* Header: Icon, Product Name, Status */}
+                        <div className="flex items-start justify-between gap-3 mb-3">
+                          <div className="flex items-center gap-3">
+                            <div className={`p-3 rounded-lg flex-shrink-0 ${policy.color}`}>
+                              {policy.icon && <policy.icon className="h-6 w-6" />}
+                            </div>
+                            <div>
+                              <h3 className="font-semibold text-base">{policy.productName || policy.type}</h3>
+                              <p className="text-sm text-muted-foreground">{getInsurerName()}</p>
+                            </div>
+                          </div>
+                          <Badge variant={policy.status === "Active" ? "default" : "secondary"} className="flex-shrink-0">
+                            {t(`appointments.status${policy.status.replace(/\s+/g, '')}`)}
+                          </Badge>
                         </div>
-                        <div>
-                          <h3 className="font-semibold">{policy.type}</h3>
-                          <p className="text-sm text-muted-foreground">{policy.provider}</p>
-                          <p className="text-xs text-muted-foreground mt-1">{policy.policyNumber}</p>
+
+                        {/* Policy Details Grid */}
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm border-t pt-3">
+                          {/* Policy Number */}
+                          <div className="space-y-0.5">
+                            <p className="text-xs text-muted-foreground">{t("appointments.policyNumber")}</p>
+                            <p className="font-medium text-foreground">{policy.policyNumber}</p>
+                          </div>
+                          
+                          {/* Policy Type */}
+                          <div className="space-y-0.5">
+                            <p className="text-xs text-muted-foreground">{t("appointments.policyType")}</p>
+                            <p className="font-medium text-foreground">{policy.type}</p>
+                          </div>
+                          
+                          {/* Duration */}
+                          <div className="space-y-0.5">
+                            <p className="text-xs text-muted-foreground">{t("appointments.policyDuration")}</p>
+                            <p className="font-medium text-foreground">{getDuration()}</p>
+                          </div>
+                          
+                          {/* Start Date */}
+                          <div className="space-y-0.5">
+                            <p className="text-xs text-muted-foreground">{t("appointments.startDate")}</p>
+                            <p className="font-medium text-foreground">{new Date(policy.effectiveDate).toLocaleDateString("el-GR")}</p>
+                          </div>
+                          
+                          {/* Expiry Date */}
+                          <div className="space-y-0.5">
+                            <p className="text-xs text-muted-foreground">{t("appointments.expiryDate")}</p>
+                            <p className="font-medium text-foreground">{new Date(policy.expiry).toLocaleDateString("el-GR")}</p>
+                          </div>
+                          
+                          {/* Vehicle Reg (if Auto policy) */}
+                          {policy.vehicleReg && (
+                            <div className="space-y-0.5">
+                              <p className="text-xs text-muted-foreground">{t("appointments.vehicleReg")}</p>
+                              <p className="font-medium text-foreground">{policy.vehicleReg}</p>
+                            </div>
+                          )}
+                          
+                          {/* Group Registry Number (if exists) */}
+                          {policy.groupRegistryNumber && (
+                            <div className="space-y-0.5">
+                              <p className="text-xs text-muted-foreground">{t("appointments.groupRegistryNumber")}</p>
+                              <p className="font-medium text-foreground">{policy.groupRegistryNumber}</p>
+                            </div>
+                          )}
+                          
+                          {/* Group Insurance Date (if exists) */}
+                          {policy.groupInsuranceDate && (
+                            <div className="space-y-0.5">
+                              <p className="text-xs text-muted-foreground">{t("appointments.groupInsuranceDate")}</p>
+                              <p className="font-medium text-foreground">{new Date(policy.groupInsuranceDate).toLocaleDateString("el-GR")}</p>
+                            </div>
+                          )}
                         </div>
-                      </div>
-                      <Badge variant={policy.status === "Active" ? "default" : "secondary"}>
-                        {policy.status}
-                      </Badge>
-                    </CardContent>
-                  </Card>
-                ))}
+                        
+                        {/* Uploaded Documents - Interactive Buttons */}
+                        {policy.uploadedDocs && policy.uploadedDocs.length > 0 && (
+                          <div className="mt-3 pt-3 border-t">
+                            <p className="text-xs text-muted-foreground mb-1.5">{t("appointments.uploadedDocs")} ({policy.uploadedDocs.length})</p>
+                            <div className="flex flex-wrap gap-1.5">
+                              {policy.uploadedDocs.map((doc: string, idx: number) => (
+                                <Button
+                                  key={idx}
+                                  variant="outline"
+                                  size="sm"
+                                  className="h-7 text-xs font-normal gap-1.5"
+                                  onClick={(e) => handleDocumentClick(e, doc)}
+                                  data-testid={`button-doc-download-${policy.id}-${idx}`}
+                                >
+                                  <FileText className="h-3 w-3" />
+                                  {doc}
+                                </Button>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </CardContent>
+                    </Card>
+                  );
+                })}
               </div>
             )}
 

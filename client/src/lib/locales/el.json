@@ -149,6 +149,12 @@
     "life": "Κλάδος Ζωής",
     "pet": "Ασφάλεια Κατοικιδίων"
   },
+  "insurers": {
+    "nnhellas": "NN Hellas",
+    "generali": "Generali",
+    "ergo": "ERGO",
+    "ethnikiasfalistiki": "Εθνική Ασφαλιστική"
+  },
   "claims": {
     "fileNewClaim": "Υποβολή Νέας Δήλωσης",
     "submitClaim": "Υποβολή Δήλωσης",
@@ -230,7 +236,22 @@
     "filterConfirmed": "Επιβεβαιωμένα",
     "filterPending": "Εκκρεμή",
     "filterCancelled": "Ακυρωμένα",
-    "call": "Κλήση"
+    "call": "Κλήση",
+    "policyNumber": "Αριθμός Ασφαλιστηρίου",
+    "policyType": "Κλάδος Ασφάλισης",
+    "policyDuration": "Διάρκεια",
+    "policyYears": "έτη",
+    "policyMonths": "μήνες",
+    "startDate": "Ημερομηνία Έναρξης",
+    "expiryDate": "Ημερομηνία Λήξης",
+    "vehicleReg": "Αρ. Κυκλοφορίας",
+    "groupRegistryNumber": "Αρ. Μητρώου Ομάδας",
+    "groupInsuranceDate": "Ημ/νία Ομαδικής Ασφάλισης",
+    "uploadedDocs": "Ανεβασμένα Έγγραφα",
+    "statusActive": "Ενεργό",
+    "statusReviewNeeded": "Απαιτείται Έλεγχος",
+    "statusExpired": "Ληγμένο",
+    "statusPending": "Εκκρεμές"
   },
   "analysis": {
     "title": "Ανάλυση Ασφαλιστικού κενού",
@@ -656,7 +677,9 @@
   },
   "documents": {
     "acceptedFormats": "Αποδεκτές Μορφές",
-    "download": "Λήψη"
+    "download": "Λήψη",
+    "downloadStarting": "Εκκίνηση λήψης...",
+    "downloadingFile": "Λήψη {{filename}}..."
   },
   "policyCard": {
     "insuredPerson": "Ασφαλισμένο Πρόσωπο",

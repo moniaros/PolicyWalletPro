@@ -152,6 +152,12 @@
     "life": "Life Insurance",
     "pet": "Pet Insurance"
   },
+  "insurers": {
+    "nnhellas": "NN Hellas",
+    "generali": "Generali",
+    "ergo": "ERGO",
+    "ethnikiasfalistiki": "Ethniki Asfalistiki"
+  },
   "claims": {
     "fileNewClaim": "File New Claim",
     "submitClaim": "Submit Claim",
@@ -233,7 +239,22 @@
     "filterConfirmed": "Confirmed",
     "filterPending": "Pending",
     "filterCancelled": "Cancelled",
-    "call": "Call"
+    "call": "Call",
+    "policyNumber": "Policy Number",
+    "policyType": "Policy Type",
+    "policyDuration": "Duration",
+    "policyYears": "years",
+    "policyMonths": "months",
+    "startDate": "Start Date",
+    "expiryDate": "Expiry Date",
+    "vehicleReg": "Vehicle Reg.",
+    "groupRegistryNumber": "Group Registry No.",
+    "groupInsuranceDate": "Group Insurance Date",
+    "uploadedDocs": "Uploaded Documents",
+    "statusActive": "Active",
+    "statusReviewNeeded": "Review Needed",
+    "statusExpired": "Expired",
+    "statusPending": "Pending"
   },
   "analysis": {
     "title": "Gap Analysis",
@@ -665,7 +686,9 @@
   },
   "documents": {
     "acceptedFormats": "Accepted formats",
-    "download": "Download"
+    "download": "Download",
+    "downloadStarting": "Starting download...",
+    "downloadingFile": "Downloading {{filename}}..."
   },
   "policyCard": {
     "insuredPerson": "Insured Person",
