@@ -37,7 +37,8 @@
     "cancel": "Cancel",
     "save": "Save",
     "close": "Close",
-    "new": "New"
+    "new": "New",
+    "swipeToScroll": "Swipe to explore more"
   },
   "dashboard": {
     "statusExcellent": "Excellent",

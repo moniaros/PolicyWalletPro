@@ -34,7 +34,8 @@
     "cancel": "Ακύρωση",
     "save": "Αποθήκευση",
     "close": "Κλείσιμο",
-    "new": "Νέα"
+    "new": "Νέα",
+    "swipeToScroll": "Σύρετε για περισσότερα"
   },
   "dashboard": {
     "statusExcellent": "Εξαιρετικό",
