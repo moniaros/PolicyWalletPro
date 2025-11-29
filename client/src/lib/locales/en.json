@@ -1394,5 +1394,592 @@
     "goToDashboard": "Go to Dashboard",
     "stepOf": "Step {{step}} of {{total}}",
     "back": "Back"
+  },
+  "appointmentTypes": {
+    "selectServiceType": "Select Service Type",
+    "estimatedDuration": "Est. Duration",
+    "urgency": {
+      "routine": "Routine",
+      "urgent": "Urgent",
+      "emergency": "Emergency"
+    },
+    "health": {
+      "preauth": {
+        "name": "Pre-Authorization Request",
+        "description": "Hospital admission approval for planned treatments"
+      },
+      "specialist": {
+        "name": "Specialist Referral",
+        "description": "Book appointment with in-network specialist"
+      },
+      "diagnostic": {
+        "name": "Diagnostic Test Scheduling",
+        "description": "Lab work, imaging, MRI, CT scans"
+      },
+      "surgery": {
+        "name": "Surgery Pre-Approval",
+        "description": "Elective procedure authorization"
+      },
+      "secondOpinion": {
+        "name": "Second Opinion Consultation",
+        "description": "Alternative diagnosis review"
+      },
+      "reimbursement": {
+        "name": "Reimbursement Claim",
+        "description": "Out-of-network expense reimbursement"
+      },
+      "coverage": {
+        "name": "Coverage Verification",
+        "description": "Check treatment eligibility and limits"
+      },
+      "wellness": {
+        "name": "Wellness Check-up",
+        "description": "Annual preventive care examination"
+      },
+      "mental": {
+        "name": "Mental Health Consultation",
+        "description": "Psychology or psychiatry appointment"
+      },
+      "chronic": {
+        "name": "Chronic Care Management",
+        "description": "Ongoing treatment plan review"
+      }
+    },
+    "auto": {
+      "accident": {
+        "name": "Accident Claim Assessment",
+        "description": "Vehicle damage inspection after collision"
+      },
+      "glass": {
+        "name": "Windshield/Glass Replacement",
+        "description": "Scheduled repair at partner workshop"
+      },
+      "theft": {
+        "name": "Theft Report & Claim",
+        "description": "Vehicle theft claim initiation"
+      },
+      "roadside": {
+        "name": "Roadside Assistance Follow-up",
+        "description": "Post-breakdown service review"
+      },
+      "valuation": {
+        "name": "Vehicle Valuation",
+        "description": "Pre-renewal or claim value assessment"
+      },
+      "modification": {
+        "name": "Policy Modification",
+        "description": "Add/remove driver, change coverage"
+      },
+      "greencard": {
+        "name": "Green Card Request",
+        "description": "International travel documentation"
+      },
+      "bonusMalus": {
+        "name": "Bonus-Malus Dispute",
+        "description": "Premium calculation review"
+      },
+      "legal": {
+        "name": "Legal Assistance",
+        "description": "Accident liability consultation"
+      },
+      "totalLoss": {
+        "name": "Total Loss Settlement",
+        "description": "Vehicle write-off processing"
+      }
+    },
+    "home": {
+      "damage": {
+        "name": "Property Damage Inspection",
+        "description": "Post-incident damage assessment"
+      },
+      "water": {
+        "name": "Water Damage Claim",
+        "description": "Flood or leak damage evaluation"
+      },
+      "fire": {
+        "name": "Fire Damage Assessment",
+        "description": "Fire/smoke damage survey"
+      },
+      "theft": {
+        "name": "Burglary/Theft Report",
+        "description": "Security breach claim"
+      },
+      "natural": {
+        "name": "Natural Disaster Claim",
+        "description": "Earthquake, storm damage"
+      },
+      "liability": {
+        "name": "Liability Incident Review",
+        "description": "Third-party injury on property"
+      },
+      "emergency": {
+        "name": "Emergency Repair",
+        "description": "Urgent repair service dispatch"
+      },
+      "valuation": {
+        "name": "Property Valuation Update",
+        "description": "Coverage adequacy review"
+      },
+      "security": {
+        "name": "Security System Installation",
+        "description": "Premium discount qualification"
+      },
+      "contents": {
+        "name": "Contents Inventory Update",
+        "description": "Valuable items documentation"
+      }
+    },
+    "life": {
+      "beneficiary": {
+        "name": "Beneficiary Change",
+        "description": "Update designated beneficiaries"
+      },
+      "loan": {
+        "name": "Policy Loan Application",
+        "description": "Cash value withdrawal"
+      },
+      "underwriting": {
+        "name": "Medical Underwriting Review",
+        "description": "Health status reassessment"
+      },
+      "payment": {
+        "name": "Payment Arrangement",
+        "description": "Payment plan modification"
+      },
+      "increase": {
+        "name": "Coverage Increase Request",
+        "description": "Sum assured enhancement"
+      },
+      "surrender": {
+        "name": "Policy Surrender Consultation",
+        "description": "Early termination discussion"
+      },
+      "maturity": {
+        "name": "Maturity Claim",
+        "description": "End-of-term benefit claim"
+      },
+      "death": {
+        "name": "Death Benefit Claim",
+        "description": "Beneficiary claim initiation"
+      },
+      "tax": {
+        "name": "Tax Certificate Request",
+        "description": "Annual tax documentation"
+      },
+      "assignment": {
+        "name": "Policy Assignment",
+        "description": "Collateral/ownership transfer"
+      }
+    },
+    "travel": {
+      "emergency": {
+        "name": "Medical Emergency Abroad",
+        "description": "Emergency assistance coordination"
+      },
+      "cancellation": {
+        "name": "Trip Cancellation Claim",
+        "description": "Pre-departure cancellation reimbursement"
+      },
+      "luggage": {
+        "name": "Lost Luggage Claim",
+        "description": "Baggage delay/loss compensation"
+      },
+      "delay": {
+        "name": "Flight Delay Compensation",
+        "description": "Travel disruption claim"
+      },
+      "repatriation": {
+        "name": "Medical Repatriation",
+        "description": "Return transport arrangement"
+      },
+      "cash": {
+        "name": "Emergency Cash Advance",
+        "description": "Funds transfer abroad"
+      },
+      "legal": {
+        "name": "Legal Assistance Abroad",
+        "description": "International legal support"
+      },
+      "document": {
+        "name": "Document Replacement",
+        "description": "Lost passport/ID assistance"
+      },
+      "extension": {
+        "name": "Extended Stay Coverage",
+        "description": "Trip extension policy update"
+      },
+      "medical": {
+        "name": "Post-Trip Medical Claim",
+        "description": "Treatment expense reimbursement"
+      }
+    },
+    "pet": {
+      "vet": {
+        "name": "Veterinary Clinic Visit",
+        "description": "General vet appointment"
+      },
+      "surgery": {
+        "name": "Pet Surgery",
+        "description": "Surgical procedure for pet"
+      },
+      "emergency": {
+        "name": "Pet Emergency",
+        "description": "Urgent veterinary care"
+      },
+      "claim": {
+        "name": "Pet Treatment Claim",
+        "description": "Veterinary expense reimbursement"
+      }
+    }
+  },
+  "fields": {
+    "hospitalName": "Hospital Name",
+    "admissionDate": "Admission Date",
+    "diagnosis": "Diagnosis",
+    "treatmentType": "Treatment Type",
+    "estimatedCost": "Estimated Cost",
+    "referringPhysician": "Referring Physician",
+    "specialtyType": "Specialty Type",
+    "symptoms": "Symptoms",
+    "previousTreatments": "Previous Treatments",
+    "testType": "Test Type",
+    "fastingRequired": "Fasting Required",
+    "surgeryType": "Surgery Type",
+    "surgeonName": "Surgeon Name",
+    "scheduledDate": "Scheduled Date",
+    "estimatedStay": "Estimated Hospital Stay",
+    "currentDiagnosis": "Current Diagnosis",
+    "currentTreatment": "Current Treatment",
+    "concernsQuestions": "Concerns & Questions",
+    "treatmentDate": "Treatment Date",
+    "providerName": "Provider Name",
+    "totalAmount": "Total Amount",
+    "bankAccount": "Bank Account (IBAN)",
+    "treatmentDescription": "Treatment Description",
+    "checkupType": "Check-up Type",
+    "preferredDate": "Preferred Date",
+    "sessionType": "Session Type",
+    "preferredTherapistGender": "Preferred Therapist Gender",
+    "chronicCondition": "Chronic Condition",
+    "currentMedications": "Current Medications",
+    "lastVisitDate": "Last Visit Date",
+    "accidentDate": "Accident Date",
+    "accidentLocation": "Accident Location",
+    "accidentDescription": "Accident Description",
+    "thirdPartyInvolved": "Third Party Involved",
+    "policeReportNumber": "Police Report Number",
+    "anyInjuries": "Any Injuries",
+    "glassType": "Glass Type",
+    "damageDescription": "Damage Description",
+    "preferredWorkshop": "Preferred Workshop",
+    "theftDate": "Theft Date",
+    "theftLocation": "Theft Location",
+    "lastSeenCondition": "Last Seen Condition",
+    "keysInPossession": "Keys in Possession",
+    "incidentType": "Incident Type",
+    "serviceDate": "Service Date",
+    "satisfactionRating": "Satisfaction Rating",
+    "valuationType": "Valuation Type",
+    "currentMileage": "Current Mileage",
+    "vehicleModifications": "Vehicle Modifications",
+    "modificationType": "Modification Type",
+    "effectiveDate": "Effective Date",
+    "modificationDetails": "Modification Details",
+    "travelCountries": "Travel Countries",
+    "travelStartDate": "Travel Start Date",
+    "travelEndDate": "Travel End Date",
+    "disputeReason": "Dispute Reason",
+    "claimReference": "Claim Reference",
+    "previousInsurer": "Previous Insurer",
+    "legalMatter": "Legal Matter",
+    "incidentDescription": "Incident Description",
+    "courtDate": "Court Date",
+    "claimNumber": "Claim Number",
+    "preferredSettlement": "Preferred Settlement",
+    "vehicleLocation": "Vehicle Location",
+    "damageDate": "Damage Date",
+    "damageType": "Damage Type",
+    "affectedAreas": "Affected Areas",
+    "estimatedDamage": "Estimated Damage Value",
+    "incidentDate": "Incident Date",
+    "waterSource": "Water Source",
+    "affectedRooms": "Affected Rooms",
+    "waterStopped": "Water Stopped",
+    "fireOrigin": "Fire Origin",
+    "fireDepartmentCalled": "Fire Department Called",
+    "propertyHabitable": "Property Habitable",
+    "alternativeAccommodationNeeded": "Alternative Accommodation Needed",
+    "stolenItems": "Stolen Items Description",
+    "forcedEntry": "Forced Entry",
+    "securitySystemActive": "Security System Active",
+    "eventDate": "Event Date",
+    "eventType": "Event Type",
+    "injuredPartyName": "Injured Party Name",
+    "injuryDescription": "Injury Description",
+    "witnessPresent": "Witness Present",
+    "emergencyType": "Emergency Type",
+    "urgencyLevel": "Urgency Level",
+    "valuationReason": "Valuation Reason",
+    "lastValuationDate": "Last Valuation Date",
+    "majorChanges": "Major Changes Since Last Valuation",
+    "installationType": "Installation Type",
+    "updateType": "Update Type",
+    "itemsDescription": "Items Description",
+    "estimatedValue": "Estimated Value",
+    "changeType": "Change Type",
+    "beneficiaryName": "Beneficiary Name",
+    "relationship": "Relationship",
+    "allocationPercent": "Allocation Percentage",
+    "loanAmount": "Loan Amount",
+    "loanPurpose": "Loan Purpose",
+    "reviewReason": "Review Reason",
+    "changeDetails": "Change Details",
+    "newPaymentDetails": "New Payment Details",
+    "currentSumAssured": "Current Sum Assured",
+    "requestedSumAssured": "Requested Sum Assured",
+    "increaseReason": "Reason for Increase",
+    "surrenderReason": "Surrender Reason",
+    "confirmUnderstanding": "I understand the implications",
+    "paymentOption": "Payment Option",
+    "dateOfDeath": "Date of Death",
+    "causeOfDeath": "Cause of Death",
+    "claimantName": "Claimant Name",
+    "claimantRelation": "Claimant Relationship",
+    "taxYear": "Tax Year",
+    "deliveryMethod": "Delivery Method",
+    "assignmentType": "Assignment Type",
+    "assigneeName": "Assignee Name",
+    "assigneeDetails": "Assignee Details",
+    "currentLocation": "Current Location",
+    "localContact": "Local Contact Number",
+    "tripDates": "Trip Dates",
+    "cancellationReason": "Cancellation Reason",
+    "totalTripCost": "Total Trip Cost",
+    "refundReceived": "Refund Already Received",
+    "airlineReference": "Airline Reference Number",
+    "contentsDescription": "Contents Description",
+    "flightNumber": "Flight Number",
+    "scheduledTime": "Scheduled Time",
+    "actualTime": "Actual Time",
+    "delayHours": "Delay (Hours)",
+    "expensesIncurred": "Expenses Incurred",
+    "medicalCondition": "Medical Condition",
+    "attendingPhysician": "Attending Physician",
+    "transportType": "Transport Type",
+    "amountNeeded": "Amount Needed",
+    "cashAdvanceReason": "Reason for Cash Advance",
+    "collectionMethod": "Collection Method",
+    "legalIssue": "Legal Issue Description",
+    "detainedStatus": "Currently Detained",
+    "languageAssistance": "Language Assistance Needed",
+    "documentType": "Document Type",
+    "urgency": "Urgency",
+    "currentEndDate": "Current End Date",
+    "newEndDate": "New End Date",
+    "extensionReason": "Extension Reason",
+    "treatmentLocation": "Treatment Location",
+    "totalExpenses": "Total Expenses",
+    "petName": "Pet Name",
+    "visitReason": "Visit Reason",
+    "preferredClinic": "Preferred Clinic",
+    "veterinarian": "Veterinarian",
+    "emergencyDescription": "Emergency Description",
+    "clinicName": "Clinic Name",
+    "options": {
+      "inpatient": "Inpatient",
+      "outpatient": "Outpatient",
+      "daycase": "Day Case",
+      "cardiology": "Cardiology",
+      "orthopedics": "Orthopedics",
+      "dermatology": "Dermatology",
+      "neurology": "Neurology",
+      "gastroenterology": "Gastroenterology",
+      "ophthalmology": "Ophthalmology",
+      "ent": "ENT (Ear, Nose, Throat)",
+      "urology": "Urology",
+      "bloodwork": "Blood Work",
+      "mri": "MRI",
+      "ctscan": "CT Scan",
+      "xray": "X-Ray",
+      "ultrasound": "Ultrasound",
+      "ecg": "ECG/EKG",
+      "annualCheckup": "Annual Check-up",
+      "executiveCheckup": "Executive Check-up",
+      "cardiacScreening": "Cardiac Screening",
+      "cancerScreening": "Cancer Screening",
+      "initialConsult": "Initial Consultation",
+      "followUp": "Follow-up Session",
+      "crisisIntervention": "Crisis Intervention",
+      "noPreference": "No Preference",
+      "male": "Male",
+      "female": "Female",
+      "windshield": "Windshield",
+      "rearWindow": "Rear Window",
+      "sideWindow": "Side Window",
+      "mirror": "Mirror",
+      "breakdown": "Breakdown",
+      "flatTire": "Flat Tire",
+      "outOfFuel": "Out of Fuel",
+      "batteryDead": "Dead Battery",
+      "lockedOut": "Locked Out",
+      "excellent": "Excellent",
+      "good": "Good",
+      "average": "Average",
+      "poor": "Poor",
+      "veryPoor": "Very Poor",
+      "preRenewal": "Pre-Renewal",
+      "claimRelated": "Claim Related",
+      "vehicleSale": "Vehicle Sale",
+      "addDriver": "Add Driver",
+      "removeDriver": "Remove Driver",
+      "changeCoverage": "Change Coverage",
+      "changeVehicle": "Change Vehicle",
+      "liabilityDispute": "Liability Dispute",
+      "compensationClaim": "Compensation Claim",
+      "criminalDefense": "Criminal Defense",
+      "cashPayout": "Cash Payout",
+      "vehicleReplacement": "Vehicle Replacement",
+      "structural": "Structural",
+      "electrical": "Electrical",
+      "plumbing": "Plumbing",
+      "appliance": "Appliance",
+      "burstPipe": "Burst Pipe",
+      "roofLeak": "Roof Leak",
+      "applianceLeak": "Appliance Leak",
+      "flooding": "Flooding",
+      "neighborProperty": "Neighbor Property",
+      "earthquake": "Earthquake",
+      "storm": "Storm",
+      "hail": "Hail",
+      "flood": "Flood",
+      "lightning": "Lightning",
+      "plumbingEmergency": "Plumbing Emergency",
+      "electricalEmergency": "Electrical Emergency",
+      "lockout": "Lockout",
+      "heatingFailure": "Heating Failure",
+      "immediate": "Immediate",
+      "withinToday": "Within Today",
+      "within24hrs": "Within 24 Hours",
+      "within48hrs": "Within 48 Hours",
+      "policyRenewal": "Policy Renewal",
+      "coverageUpdate": "Coverage Update",
+      "alarmSystem": "Alarm System",
+      "cctvCameras": "CCTV Cameras",
+      "smartLocks": "Smart Locks",
+      "completeSystem": "Complete Security System",
+      "addItems": "Add Items",
+      "removeItems": "Remove Items",
+      "fullReview": "Full Inventory Review",
+      "addBeneficiary": "Add Beneficiary",
+      "removeBeneficiary": "Remove Beneficiary",
+      "updateAllocation": "Update Allocation",
+      "spouse": "Spouse",
+      "child": "Child",
+      "parent": "Parent",
+      "sibling": "Sibling",
+      "other": "Other",
+      "healthChange": "Health Status Change",
+      "occupationChange": "Occupation Change",
+      "lifestyleChange": "Lifestyle Change",
+      "changeFrequency": "Change Payment Frequency",
+      "changeMethod": "Change Payment Method",
+      "suspendPayments": "Suspend Payments",
+      "lumpSum": "Lump Sum",
+      "annuity": "Annuity",
+      "partialWithdrawal": "Partial Withdrawal",
+      "email": "Email",
+      "postalMail": "Postal Mail",
+      "download": "Download",
+      "collateral": "Collateral Assignment",
+      "absoluteAssignment": "Absolute Assignment",
+      "medicalEmergency": "Medical Emergency",
+      "accident": "Accident",
+      "hospitalization": "Hospitalization",
+      "illness": "Illness",
+      "familyEmergency": "Family Emergency",
+      "workCommitment": "Work Commitment",
+      "lostLuggage": "Lost Luggage",
+      "delayedLuggage": "Delayed Luggage",
+      "damagedLuggage": "Damaged Luggage",
+      "airAmbulance": "Air Ambulance",
+      "commercialFlight": "Commercial Flight",
+      "groundTransport": "Ground Transport",
+      "westernUnion": "Western Union",
+      "bankTransfer": "Bank Transfer",
+      "embassy": "Embassy Collection",
+      "passport": "Passport",
+      "nationalId": "National ID",
+      "visa": "Visa"
+    }
+  },
+  "docs": {
+    "referralLetter": "Referral Letter",
+    "medicalReport": "Medical Report",
+    "doctorPrescription": "Doctor's Prescription",
+    "surgicalPlan": "Surgical Plan",
+    "preOpTests": "Pre-Operative Tests",
+    "anesthesiaConsent": "Anesthesia Consent Form",
+    "medicalRecords": "Medical Records",
+    "testResults": "Test Results",
+    "currentPrescriptions": "Current Prescriptions",
+    "invoices": "Invoices",
+    "receipts": "Receipts",
+    "medicationList": "Medication List",
+    "previousLabResults": "Previous Lab Results",
+    "accidentPhotos": "Accident Photos",
+    "policeReport": "Police Report",
+    "accidentDeclaration": "Accident Declaration Form",
+    "damagePhotos": "Damage Photos",
+    "vehicleRegistration": "Vehicle Registration",
+    "vehicleKeys": "Vehicle Keys",
+    "serviceHistory": "Service History",
+    "vehiclePhotos": "Vehicle Photos",
+    "driverLicense": "Driver's License",
+    "previousPolicyDocs": "Previous Policy Documents",
+    "claimsHistory": "Claims History",
+    "legalDocuments": "Legal Documents",
+    "purchaseInvoice": "Purchase Invoice",
+    "repairEstimates": "Repair Estimates",
+    "damageVideos": "Damage Videos",
+    "fireReport": "Fire Department Report",
+    "inventoryList": "Inventory List",
+    "itemReceipts": "Item Receipts",
+    "weatherReport": "Weather Report",
+    "incidentReport": "Incident Report",
+    "witnessStatements": "Witness Statements",
+    "propertyDeed": "Property Deed",
+    "renovationReceipts": "Renovation Receipts",
+    "itemPhotos": "Item Photos",
+    "appraisals": "Appraisals",
+    "identityDocument": "Identity Document",
+    "signedForm": "Signed Request Form",
+    "bankStatement": "Bank Statement",
+    "doctorLetter": "Doctor's Letter",
+    "bankDetails": "Bank Account Details",
+    "financialStatement": "Financial Statement",
+    "medicalQuestionnaire": "Medical Questionnaire",
+    "signedSurrenderForm": "Signed Surrender Form",
+    "taxCertificate": "Tax Certificate",
+    "deathCertificate": "Death Certificate",
+    "claimantId": "Claimant Identity Document",
+    "policyDocument": "Policy Document",
+    "assignmentForm": "Assignment Form",
+    "assigneeId": "Assignee Identity Document",
+    "loanAgreement": "Loan Agreement",
+    "bookingConfirmation": "Booking Confirmation",
+    "cancellationProof": "Cancellation Proof",
+    "medicalCertificate": "Medical Certificate",
+    "airlineReport": "Airline Report (PIR)",
+    "boardingPass": "Boarding Pass",
+    "flightDocumentation": "Flight Documentation",
+    "expenseReceipts": "Expense Receipts",
+    "doctorRecommendation": "Doctor's Recommendation",
+    "passportCopy": "Passport Copy",
+    "passportPhotos": "Passport Photos",
+    "petVaccinationRecord": "Pet Vaccination Record",
+    "vetDiagnosis": "Veterinary Diagnosis",
+    "surgeryEstimate": "Surgery Estimate",
+    "vetInvoice": "Veterinary Invoice",
+    "prescriptions": "Prescriptions"
   }
 }

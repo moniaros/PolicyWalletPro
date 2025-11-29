@@ -1401,5 +1401,592 @@
     "goToDashboard": "Μετάβαση στον Πίνακα Ελέγχου",
     "stepOf": "Βήμα {{step}} από {{total}}",
     "back": "Πίσω"
+  },
+  "appointmentTypes": {
+    "selectServiceType": "Επιλέξτε Τύπο Υπηρεσίας",
+    "estimatedDuration": "Εκτ. Διάρκεια",
+    "urgency": {
+      "routine": "Τακτικό",
+      "urgent": "Επείγον",
+      "emergency": "Έκτακτο"
+    },
+    "health": {
+      "preauth": {
+        "name": "Αίτηση Προέγκρισης",
+        "description": "Έγκριση εισαγωγής για προγραμματισμένες θεραπείες"
+      },
+      "specialist": {
+        "name": "Παραπομπή σε Ειδικό",
+        "description": "Κλείστε ραντεβού με συμβεβλημένο ειδικό"
+      },
+      "diagnostic": {
+        "name": "Προγραμματισμός Διαγνωστικών",
+        "description": "Εργαστηριακές εξετάσεις, απεικονιστικά, MRI, CT"
+      },
+      "surgery": {
+        "name": "Προέγκριση Χειρουργείου",
+        "description": "Έγκριση προγραμματισμένης επέμβασης"
+      },
+      "secondOpinion": {
+        "name": "Δεύτερη Γνώμη",
+        "description": "Εναλλακτική αξιολόγηση διάγνωσης"
+      },
+      "reimbursement": {
+        "name": "Αίτηση Αποζημίωσης",
+        "description": "Επιστροφή εξόδων εκτός δικτύου"
+      },
+      "coverage": {
+        "name": "Επαλήθευση Κάλυψης",
+        "description": "Έλεγχος επιλεξιμότητας θεραπείας και ορίων"
+      },
+      "wellness": {
+        "name": "Προληπτικός Έλεγχος",
+        "description": "Ετήσια προληπτική εξέταση"
+      },
+      "mental": {
+        "name": "Ψυχολογική Υποστήριξη",
+        "description": "Ραντεβού με ψυχολόγο ή ψυχίατρο"
+      },
+      "chronic": {
+        "name": "Διαχείριση Χρόνιας Πάθησης",
+        "description": "Αναθεώρηση θεραπευτικού σχεδίου"
+      }
+    },
+    "auto": {
+      "accident": {
+        "name": "Αξιολόγηση Ατυχήματος",
+        "description": "Επιθεώρηση ζημιών οχήματος μετά από σύγκρουση"
+      },
+      "glass": {
+        "name": "Αντικατάσταση Κρυστάλλων",
+        "description": "Προγραμματισμένη επισκευή σε συνεργείο"
+      },
+      "theft": {
+        "name": "Αναφορά Κλοπής",
+        "description": "Έναρξη αξίωσης για κλοπή οχήματος"
+      },
+      "roadside": {
+        "name": "Παρακολούθηση Οδικής Βοήθειας",
+        "description": "Αξιολόγηση υπηρεσίας μετά από βλάβη"
+      },
+      "valuation": {
+        "name": "Εκτίμηση Οχήματος",
+        "description": "Αποτίμηση πριν την ανανέωση ή αξίωση"
+      },
+      "modification": {
+        "name": "Τροποποίηση Συμβολαίου",
+        "description": "Προσθήκη/αφαίρεση οδηγού, αλλαγή κάλυψης"
+      },
+      "greencard": {
+        "name": "Αίτηση Πράσινης Κάρτας",
+        "description": "Έγγραφα για διεθνή ταξίδια"
+      },
+      "bonusMalus": {
+        "name": "Αμφισβήτηση Bonus-Malus",
+        "description": "Αναθεώρηση υπολογισμού ασφαλίστρου"
+      },
+      "legal": {
+        "name": "Νομική Υποστήριξη",
+        "description": "Συμβουλή για ευθύνη ατυχήματος"
+      },
+      "totalLoss": {
+        "name": "Ολική Καταστροφή",
+        "description": "Διεκπεραίωση διαγραφής οχήματος"
+      }
+    },
+    "home": {
+      "damage": {
+        "name": "Επιθεώρηση Ζημιών",
+        "description": "Αξιολόγηση ζημιών μετά από περιστατικό"
+      },
+      "water": {
+        "name": "Ζημιά από Νερό",
+        "description": "Αξιολόγηση ζημιών από πλημμύρα ή διαρροή"
+      },
+      "fire": {
+        "name": "Ζημιά από Πυρκαγιά",
+        "description": "Επιθεώρηση ζημιών από φωτιά/καπνό"
+      },
+      "theft": {
+        "name": "Αναφορά Διάρρηξης",
+        "description": "Αξίωση για παραβίαση ασφάλειας"
+      },
+      "natural": {
+        "name": "Φυσική Καταστροφή",
+        "description": "Ζημιά από σεισμό, καταιγίδα"
+      },
+      "liability": {
+        "name": "Περιστατικό Ευθύνης",
+        "description": "Τραυματισμός τρίτου στο ακίνητο"
+      },
+      "emergency": {
+        "name": "Επείγουσα Επισκευή",
+        "description": "Αποστολή υπηρεσίας επείγουσας επισκευής"
+      },
+      "valuation": {
+        "name": "Ενημέρωση Αποτίμησης",
+        "description": "Έλεγχος επάρκειας κάλυψης"
+      },
+      "security": {
+        "name": "Εγκατάσταση Συστήματος Ασφαλείας",
+        "description": "Έκπτωση ασφαλίστρου"
+      },
+      "contents": {
+        "name": "Ενημέρωση Περιεχομένων",
+        "description": "Τεκμηρίωση πολύτιμων αντικειμένων"
+      }
+    },
+    "life": {
+      "beneficiary": {
+        "name": "Αλλαγή Δικαιούχου",
+        "description": "Ενημέρωση ορισμένων δικαιούχων"
+      },
+      "loan": {
+        "name": "Αίτηση Δανείου Συμβολαίου",
+        "description": "Ανάληψη αξίας εξαγοράς"
+      },
+      "underwriting": {
+        "name": "Ιατρική Επανεξέταση",
+        "description": "Επαναξιολόγηση κατάστασης υγείας"
+      },
+      "payment": {
+        "name": "Ρύθμιση Πληρωμής",
+        "description": "Τροποποίηση σχεδίου πληρωμής"
+      },
+      "increase": {
+        "name": "Αίτηση Αύξησης Κάλυψης",
+        "description": "Αύξηση ασφαλισμένου κεφαλαίου"
+      },
+      "surrender": {
+        "name": "Εξαγορά Συμβολαίου",
+        "description": "Συζήτηση πρόωρης λύσης"
+      },
+      "maturity": {
+        "name": "Αξίωση Λήξης",
+        "description": "Αξίωση παροχής λήξης"
+      },
+      "death": {
+        "name": "Αξίωση Θανάτου",
+        "description": "Έναρξη αξίωσης δικαιούχου"
+      },
+      "tax": {
+        "name": "Φορολογική Βεβαίωση",
+        "description": "Ετήσια φορολογική τεκμηρίωση"
+      },
+      "assignment": {
+        "name": "Εκχώρηση Συμβολαίου",
+        "description": "Μεταβίβαση εγγύησης/ιδιοκτησίας"
+      }
+    },
+    "travel": {
+      "emergency": {
+        "name": "Ιατρική Επείγουσα Ανάγκη",
+        "description": "Συντονισμός επείγουσας βοήθειας"
+      },
+      "cancellation": {
+        "name": "Ακύρωση Ταξιδιού",
+        "description": "Αποζημίωση ακύρωσης πριν την αναχώρηση"
+      },
+      "luggage": {
+        "name": "Απώλεια Αποσκευών",
+        "description": "Αποζημίωση καθυστέρησης/απώλειας"
+      },
+      "delay": {
+        "name": "Καθυστέρηση Πτήσης",
+        "description": "Αξίωση διακοπής ταξιδιού"
+      },
+      "repatriation": {
+        "name": "Ιατρικός Επαναπατρισμός",
+        "description": "Διευθέτηση μεταφοράς επιστροφής"
+      },
+      "cash": {
+        "name": "Έκτακτη Αποστολή Χρημάτων",
+        "description": "Μεταφορά χρημάτων στο εξωτερικό"
+      },
+      "legal": {
+        "name": "Νομική Βοήθεια στο Εξωτερικό",
+        "description": "Διεθνής νομική υποστήριξη"
+      },
+      "document": {
+        "name": "Αντικατάσταση Εγγράφων",
+        "description": "Βοήθεια για χαμένο διαβατήριο/ταυτότητα"
+      },
+      "extension": {
+        "name": "Επέκταση Κάλυψης",
+        "description": "Ενημέρωση για παράταση ταξιδιού"
+      },
+      "medical": {
+        "name": "Ιατρική Αξίωση Μετά το Ταξίδι",
+        "description": "Αποζημίωση εξόδων θεραπείας"
+      }
+    },
+    "pet": {
+      "vet": {
+        "name": "Επίσκεψη σε Κτηνίατρο",
+        "description": "Γενικό κτηνιατρικό ραντεβού"
+      },
+      "surgery": {
+        "name": "Χειρουργείο Κατοικίδιου",
+        "description": "Χειρουργική επέμβαση για κατοικίδιο"
+      },
+      "emergency": {
+        "name": "Έκτακτη Ανάγκη Κατοικίδιου",
+        "description": "Επείγουσα κτηνιατρική φροντίδα"
+      },
+      "claim": {
+        "name": "Αξίωση Θεραπείας Κατοικίδιου",
+        "description": "Αποζημίωση κτηνιατρικών εξόδων"
+      }
+    }
+  },
+  "fields": {
+    "hospitalName": "Όνομα Νοσοκομείου",
+    "admissionDate": "Ημερομηνία Εισαγωγής",
+    "diagnosis": "Διάγνωση",
+    "treatmentType": "Τύπος Θεραπείας",
+    "estimatedCost": "Εκτιμώμενο Κόστος",
+    "referringPhysician": "Παραπέμπων Ιατρός",
+    "specialtyType": "Τύπος Ειδικότητας",
+    "symptoms": "Συμπτώματα",
+    "previousTreatments": "Προηγούμενες Θεραπείες",
+    "testType": "Τύπος Εξέτασης",
+    "fastingRequired": "Απαιτείται Νηστεία",
+    "surgeryType": "Τύπος Χειρουργείου",
+    "surgeonName": "Όνομα Χειρουργού",
+    "scheduledDate": "Προγραμματισμένη Ημερομηνία",
+    "estimatedStay": "Εκτιμώμενη Διάρκεια Νοσηλείας",
+    "currentDiagnosis": "Τρέχουσα Διάγνωση",
+    "currentTreatment": "Τρέχουσα Θεραπεία",
+    "concernsQuestions": "Ανησυχίες & Ερωτήσεις",
+    "treatmentDate": "Ημερομηνία Θεραπείας",
+    "providerName": "Όνομα Παρόχου",
+    "totalAmount": "Συνολικό Ποσό",
+    "bankAccount": "Τραπεζικός Λογαριασμός (IBAN)",
+    "treatmentDescription": "Περιγραφή Θεραπείας",
+    "checkupType": "Τύπος Ελέγχου",
+    "preferredDate": "Προτιμώμενη Ημερομηνία",
+    "sessionType": "Τύπος Συνεδρίας",
+    "preferredTherapistGender": "Προτιμώμενο Φύλο Θεραπευτή",
+    "chronicCondition": "Χρόνια Πάθηση",
+    "currentMedications": "Τρέχουσα Φαρμακευτική Αγωγή",
+    "lastVisitDate": "Ημερομηνία Τελευταίας Επίσκεψης",
+    "accidentDate": "Ημερομηνία Ατυχήματος",
+    "accidentLocation": "Τοποθεσία Ατυχήματος",
+    "accidentDescription": "Περιγραφή Ατυχήματος",
+    "thirdPartyInvolved": "Εμπλοκή Τρίτου",
+    "policeReportNumber": "Αριθμός Αστυνομικής Αναφοράς",
+    "anyInjuries": "Τυχόν Τραυματισμοί",
+    "glassType": "Τύπος Κρυστάλλου",
+    "damageDescription": "Περιγραφή Ζημιάς",
+    "preferredWorkshop": "Προτιμώμενο Συνεργείο",
+    "theftDate": "Ημερομηνία Κλοπής",
+    "theftLocation": "Τοποθεσία Κλοπής",
+    "lastSeenCondition": "Κατάσταση Τελευταίας Θέασης",
+    "keysInPossession": "Κλειδιά στην Κατοχή σας",
+    "incidentType": "Τύπος Περιστατικού",
+    "serviceDate": "Ημερομηνία Υπηρεσίας",
+    "satisfactionRating": "Βαθμολογία Ικανοποίησης",
+    "valuationType": "Τύπος Εκτίμησης",
+    "currentMileage": "Τρέχοντα Χιλιόμετρα",
+    "vehicleModifications": "Τροποποιήσεις Οχήματος",
+    "modificationType": "Τύπος Τροποποίησης",
+    "effectiveDate": "Ημερομηνία Έναρξης",
+    "modificationDetails": "Λεπτομέρειες Τροποποίησης",
+    "travelCountries": "Χώρες Ταξιδιού",
+    "travelStartDate": "Ημερομηνία Έναρξης Ταξιδιού",
+    "travelEndDate": "Ημερομηνία Λήξης Ταξιδιού",
+    "disputeReason": "Λόγος Αμφισβήτησης",
+    "claimReference": "Αναφορά Αξίωσης",
+    "previousInsurer": "Προηγούμενη Ασφαλιστική",
+    "legalMatter": "Νομικό Ζήτημα",
+    "incidentDescription": "Περιγραφή Περιστατικού",
+    "courtDate": "Ημερομηνία Δικαστηρίου",
+    "claimNumber": "Αριθμός Αξίωσης",
+    "preferredSettlement": "Προτιμώμενος Διακανονισμός",
+    "vehicleLocation": "Τοποθεσία Οχήματος",
+    "damageDate": "Ημερομηνία Ζημιάς",
+    "damageType": "Τύπος Ζημιάς",
+    "affectedAreas": "Επηρεαζόμενες Περιοχές",
+    "estimatedDamage": "Εκτιμώμενη Αξία Ζημιάς",
+    "incidentDate": "Ημερομηνία Περιστατικού",
+    "waterSource": "Πηγή Νερού",
+    "affectedRooms": "Επηρεαζόμενα Δωμάτια",
+    "waterStopped": "Το Νερό Σταμάτησε",
+    "fireOrigin": "Εστία Πυρκαγιάς",
+    "fireDepartmentCalled": "Κλήση Πυροσβεστικής",
+    "propertyHabitable": "Κατοικήσιμο Ακίνητο",
+    "alternativeAccommodationNeeded": "Απαιτείται Εναλλακτική Στέγαση",
+    "stolenItems": "Περιγραφή Κλεμμένων Αντικειμένων",
+    "forcedEntry": "Βίαιη Είσοδος",
+    "securitySystemActive": "Ενεργό Σύστημα Ασφαλείας",
+    "eventDate": "Ημερομηνία Συμβάντος",
+    "eventType": "Τύπος Συμβάντος",
+    "injuredPartyName": "Όνομα Τραυματία",
+    "injuryDescription": "Περιγραφή Τραυματισμού",
+    "witnessPresent": "Παρουσία Μάρτυρα",
+    "emergencyType": "Τύπος Έκτακτης Ανάγκης",
+    "urgencyLevel": "Επίπεδο Επείγοντος",
+    "valuationReason": "Λόγος Εκτίμησης",
+    "lastValuationDate": "Ημερομηνία Τελευταίας Εκτίμησης",
+    "majorChanges": "Σημαντικές Αλλαγές",
+    "installationType": "Τύπος Εγκατάστασης",
+    "updateType": "Τύπος Ενημέρωσης",
+    "itemsDescription": "Περιγραφή Αντικειμένων",
+    "estimatedValue": "Εκτιμώμενη Αξία",
+    "changeType": "Τύπος Αλλαγής",
+    "beneficiaryName": "Όνομα Δικαιούχου",
+    "relationship": "Σχέση",
+    "allocationPercent": "Ποσοστό Κατανομής",
+    "loanAmount": "Ποσό Δανείου",
+    "loanPurpose": "Σκοπός Δανείου",
+    "reviewReason": "Λόγος Επανεξέτασης",
+    "changeDetails": "Λεπτομέρειες Αλλαγής",
+    "newPaymentDetails": "Νέα Στοιχεία Πληρωμής",
+    "currentSumAssured": "Τρέχον Ασφαλισμένο Κεφάλαιο",
+    "requestedSumAssured": "Αιτούμενο Ασφαλισμένο Κεφάλαιο",
+    "increaseReason": "Λόγος Αύξησης",
+    "surrenderReason": "Λόγος Εξαγοράς",
+    "confirmUnderstanding": "Κατανοώ τις συνέπειες",
+    "paymentOption": "Επιλογή Πληρωμής",
+    "dateOfDeath": "Ημερομηνία Θανάτου",
+    "causeOfDeath": "Αιτία Θανάτου",
+    "claimantName": "Όνομα Αιτούντος",
+    "claimantRelation": "Σχέση Αιτούντος",
+    "taxYear": "Φορολογικό Έτος",
+    "deliveryMethod": "Μέθοδος Παράδοσης",
+    "assignmentType": "Τύπος Εκχώρησης",
+    "assigneeName": "Όνομα Εκδοχέα",
+    "assigneeDetails": "Στοιχεία Εκδοχέα",
+    "currentLocation": "Τρέχουσα Τοποθεσία",
+    "localContact": "Τοπικός Αριθμός Επικοινωνίας",
+    "tripDates": "Ημερομηνίες Ταξιδιού",
+    "cancellationReason": "Λόγος Ακύρωσης",
+    "totalTripCost": "Συνολικό Κόστος Ταξιδιού",
+    "refundReceived": "Επιστροφή που Έχετε Λάβει",
+    "airlineReference": "Αριθμός Αναφοράς Αεροπορικής",
+    "contentsDescription": "Περιγραφή Περιεχομένων",
+    "flightNumber": "Αριθμός Πτήσης",
+    "scheduledTime": "Προγραμματισμένη Ώρα",
+    "actualTime": "Πραγματική Ώρα",
+    "delayHours": "Καθυστέρηση (Ώρες)",
+    "expensesIncurred": "Έξοδα που Προέκυψαν",
+    "medicalCondition": "Ιατρική Κατάσταση",
+    "attendingPhysician": "Θεράπων Ιατρός",
+    "transportType": "Τύπος Μεταφοράς",
+    "amountNeeded": "Απαιτούμενο Ποσό",
+    "cashAdvanceReason": "Λόγος Προκαταβολής",
+    "collectionMethod": "Μέθοδος Παραλαβής",
+    "legalIssue": "Περιγραφή Νομικού Ζητήματος",
+    "detainedStatus": "Υπό Κράτηση",
+    "languageAssistance": "Απαιτείται Διερμηνεία",
+    "documentType": "Τύπος Εγγράφου",
+    "urgency": "Επείγον",
+    "currentEndDate": "Τρέχουσα Ημερομηνία Λήξης",
+    "newEndDate": "Νέα Ημερομηνία Λήξης",
+    "extensionReason": "Λόγος Επέκτασης",
+    "treatmentLocation": "Τοποθεσία Θεραπείας",
+    "totalExpenses": "Συνολικά Έξοδα",
+    "petName": "Όνομα Κατοικίδιου",
+    "visitReason": "Λόγος Επίσκεψης",
+    "preferredClinic": "Προτιμώμενη Κλινική",
+    "veterinarian": "Κτηνίατρος",
+    "emergencyDescription": "Περιγραφή Έκτακτης Ανάγκης",
+    "clinicName": "Όνομα Κλινικής",
+    "options": {
+      "inpatient": "Νοσηλεία",
+      "outpatient": "Εξωτερικός Ασθενής",
+      "daycase": "Ημερήσια Περίθαλψη",
+      "cardiology": "Καρδιολογία",
+      "orthopedics": "Ορθοπεδική",
+      "dermatology": "Δερματολογία",
+      "neurology": "Νευρολογία",
+      "gastroenterology": "Γαστρεντερολογία",
+      "ophthalmology": "Οφθαλμολογία",
+      "ent": "ΩΡΛ (Ωτορινολαρυγγολογία)",
+      "urology": "Ουρολογία",
+      "bloodwork": "Αιματολογικές Εξετάσεις",
+      "mri": "Μαγνητική Τομογραφία",
+      "ctscan": "Αξονική Τομογραφία",
+      "xray": "Ακτινογραφία",
+      "ultrasound": "Υπέρηχος",
+      "ecg": "Ηλεκτροκαρδιογράφημα",
+      "annualCheckup": "Ετήσιος Έλεγχος",
+      "executiveCheckup": "Executive Έλεγχος",
+      "cardiacScreening": "Καρδιολογικός Έλεγχος",
+      "cancerScreening": "Έλεγχος για Καρκίνο",
+      "initialConsult": "Αρχική Συνεδρία",
+      "followUp": "Επαναληπτική Συνεδρία",
+      "crisisIntervention": "Κρίση - Παρέμβαση",
+      "noPreference": "Χωρίς Προτίμηση",
+      "male": "Άνδρας",
+      "female": "Γυναίκα",
+      "windshield": "Παρμπρίζ",
+      "rearWindow": "Πίσω Παράθυρο",
+      "sideWindow": "Πλαϊνό Παράθυρο",
+      "mirror": "Καθρέπτης",
+      "breakdown": "Βλάβη",
+      "flatTire": "Σκασμένο Λάστιχο",
+      "outOfFuel": "Έλλειψη Καυσίμου",
+      "batteryDead": "Νεκρή Μπαταρία",
+      "lockedOut": "Κλείδωμα Εκτός",
+      "excellent": "Εξαιρετικό",
+      "good": "Καλό",
+      "average": "Μέτριο",
+      "poor": "Κακό",
+      "veryPoor": "Πολύ Κακό",
+      "preRenewal": "Πριν την Ανανέωση",
+      "claimRelated": "Σχετικό με Αξίωση",
+      "vehicleSale": "Πώληση Οχήματος",
+      "addDriver": "Προσθήκη Οδηγού",
+      "removeDriver": "Αφαίρεση Οδηγού",
+      "changeCoverage": "Αλλαγή Κάλυψης",
+      "changeVehicle": "Αλλαγή Οχήματος",
+      "liabilityDispute": "Διαφορά Ευθύνης",
+      "compensationClaim": "Αξίωση Αποζημίωσης",
+      "criminalDefense": "Ποινική Υπεράσπιση",
+      "cashPayout": "Μετρητά",
+      "vehicleReplacement": "Αντικατάσταση Οχήματος",
+      "structural": "Δομικό",
+      "electrical": "Ηλεκτρολογικό",
+      "plumbing": "Υδραυλικό",
+      "appliance": "Συσκευή",
+      "burstPipe": "Σπασμένος Σωλήνας",
+      "roofLeak": "Διαρροή Οροφής",
+      "applianceLeak": "Διαρροή Συσκευής",
+      "flooding": "Πλημμύρα",
+      "neighborProperty": "Γειτονικό Ακίνητο",
+      "earthquake": "Σεισμός",
+      "storm": "Καταιγίδα",
+      "hail": "Χαλάζι",
+      "flood": "Πλημμύρα",
+      "lightning": "Κεραυνός",
+      "plumbingEmergency": "Υδραυλική Έκτακτη Ανάγκη",
+      "electricalEmergency": "Ηλεκτρολογική Έκτακτη Ανάγκη",
+      "lockout": "Κλείδωμα",
+      "heatingFailure": "Βλάβη Θέρμανσης",
+      "immediate": "Άμεσα",
+      "withinToday": "Εντός Σήμερα",
+      "within24hrs": "Εντός 24 Ωρών",
+      "within48hrs": "Εντός 48 Ωρών",
+      "policyRenewal": "Ανανέωση Συμβολαίου",
+      "coverageUpdate": "Ενημέρωση Κάλυψης",
+      "alarmSystem": "Σύστημα Συναγερμού",
+      "cctvCameras": "Κάμερες CCTV",
+      "smartLocks": "Έξυπνες Κλειδαριές",
+      "completeSystem": "Ολοκληρωμένο Σύστημα Ασφαλείας",
+      "addItems": "Προσθήκη Αντικειμένων",
+      "removeItems": "Αφαίρεση Αντικειμένων",
+      "fullReview": "Πλήρης Επανεξέταση Απογραφής",
+      "addBeneficiary": "Προσθήκη Δικαιούχου",
+      "removeBeneficiary": "Αφαίρεση Δικαιούχου",
+      "updateAllocation": "Ενημέρωση Κατανομής",
+      "spouse": "Σύζυγος",
+      "child": "Παιδί",
+      "parent": "Γονέας",
+      "sibling": "Αδελφός/ή",
+      "other": "Άλλο",
+      "healthChange": "Αλλαγή Κατάστασης Υγείας",
+      "occupationChange": "Αλλαγή Επαγγέλματος",
+      "lifestyleChange": "Αλλαγή Τρόπου Ζωής",
+      "changeFrequency": "Αλλαγή Συχνότητας Πληρωμής",
+      "changeMethod": "Αλλαγή Μεθόδου Πληρωμής",
+      "suspendPayments": "Αναστολή Πληρωμών",
+      "lumpSum": "Εφάπαξ",
+      "annuity": "Ισόβια Σύνταξη",
+      "partialWithdrawal": "Μερική Ανάληψη",
+      "email": "Email",
+      "postalMail": "Ταχυδρομείο",
+      "download": "Λήψη",
+      "collateral": "Εκχώρηση ως Εγγύηση",
+      "absoluteAssignment": "Απόλυτη Εκχώρηση",
+      "medicalEmergency": "Ιατρική Επείγουσα Ανάγκη",
+      "accident": "Ατύχημα",
+      "hospitalization": "Νοσηλεία",
+      "illness": "Ασθένεια",
+      "familyEmergency": "Οικογενειακή Έκτακτη Ανάγκη",
+      "workCommitment": "Επαγγελματική Υποχρέωση",
+      "lostLuggage": "Χαμένες Αποσκευές",
+      "delayedLuggage": "Καθυστερημένες Αποσκευές",
+      "damagedLuggage": "Κατεστραμμένες Αποσκευές",
+      "airAmbulance": "Αεροδιακομιδή",
+      "commercialFlight": "Εμπορική Πτήση",
+      "groundTransport": "Χερσαία Μεταφορά",
+      "westernUnion": "Western Union",
+      "bankTransfer": "Τραπεζική Μεταφορά",
+      "embassy": "Παραλαβή από Πρεσβεία",
+      "passport": "Διαβατήριο",
+      "nationalId": "Ταυτότητα",
+      "visa": "Βίζα"
+    }
+  },
+  "docs": {
+    "referralLetter": "Παραπεμπτικό",
+    "medicalReport": "Ιατρική Έκθεση",
+    "doctorPrescription": "Ιατρική Συνταγή",
+    "surgicalPlan": "Χειρουργικό Πλάνο",
+    "preOpTests": "Προεγχειρητικές Εξετάσεις",
+    "anesthesiaConsent": "Συγκατάθεση Αναισθησίας",
+    "medicalRecords": "Ιατρικό Ιστορικό",
+    "testResults": "Αποτελέσματα Εξετάσεων",
+    "currentPrescriptions": "Τρέχουσες Συνταγές",
+    "invoices": "Τιμολόγια",
+    "receipts": "Αποδείξεις",
+    "medicationList": "Κατάλογος Φαρμάκων",
+    "previousLabResults": "Προηγούμενα Εργαστηριακά",
+    "accidentPhotos": "Φωτογραφίες Ατυχήματος",
+    "policeReport": "Αστυνομική Αναφορά",
+    "accidentDeclaration": "Δήλωση Ατυχήματος",
+    "damagePhotos": "Φωτογραφίες Ζημιάς",
+    "vehicleRegistration": "Άδεια Κυκλοφορίας",
+    "vehicleKeys": "Κλειδιά Οχήματος",
+    "serviceHistory": "Ιστορικό Σέρβις",
+    "vehiclePhotos": "Φωτογραφίες Οχήματος",
+    "driverLicense": "Δίπλωμα Οδήγησης",
+    "previousPolicyDocs": "Έγγραφα Προηγούμενου Συμβολαίου",
+    "claimsHistory": "Ιστορικό Αξιώσεων",
+    "legalDocuments": "Νομικά Έγγραφα",
+    "purchaseInvoice": "Τιμολόγιο Αγοράς",
+    "repairEstimates": "Εκτιμήσεις Επισκευής",
+    "damageVideos": "Βίντεο Ζημιάς",
+    "fireReport": "Αναφορά Πυροσβεστικής",
+    "inventoryList": "Κατάλογος Απογραφής",
+    "itemReceipts": "Αποδείξεις Αντικειμένων",
+    "weatherReport": "Μετεωρολογική Αναφορά",
+    "incidentReport": "Αναφορά Περιστατικού",
+    "witnessStatements": "Καταθέσεις Μαρτύρων",
+    "propertyDeed": "Συμβόλαιο Ακινήτου",
+    "renovationReceipts": "Αποδείξεις Ανακαίνισης",
+    "itemPhotos": "Φωτογραφίες Αντικειμένων",
+    "appraisals": "Εκτιμήσεις",
+    "identityDocument": "Έγγραφο Ταυτότητας",
+    "signedForm": "Υπογεγραμμένη Αίτηση",
+    "bankStatement": "Τραπεζικό Αντίγραφο",
+    "doctorLetter": "Επιστολή Ιατρού",
+    "bankDetails": "Τραπεζικά Στοιχεία",
+    "financialStatement": "Οικονομική Κατάσταση",
+    "medicalQuestionnaire": "Ιατρικό Ερωτηματολόγιο",
+    "signedSurrenderForm": "Υπογεγραμμένη Αίτηση Εξαγοράς",
+    "taxCertificate": "Φορολογική Βεβαίωση",
+    "deathCertificate": "Πιστοποιητικό Θανάτου",
+    "claimantId": "Ταυτότητα Αιτούντος",
+    "policyDocument": "Ασφαλιστήριο Συμβόλαιο",
+    "assignmentForm": "Έντυπο Εκχώρησης",
+    "assigneeId": "Ταυτότητα Εκδοχέα",
+    "loanAgreement": "Σύμβαση Δανείου",
+    "bookingConfirmation": "Επιβεβαίωση Κράτησης",
+    "cancellationProof": "Απόδειξη Ακύρωσης",
+    "medicalCertificate": "Ιατρικό Πιστοποιητικό",
+    "airlineReport": "Αναφορά Αεροπορικής (PIR)",
+    "boardingPass": "Κάρτα Επιβίβασης",
+    "flightDocumentation": "Έγγραφα Πτήσης",
+    "expenseReceipts": "Αποδείξεις Εξόδων",
+    "doctorRecommendation": "Σύσταση Ιατρού",
+    "passportCopy": "Αντίγραφο Διαβατηρίου",
+    "passportPhotos": "Φωτογραφίες Διαβατηρίου",
+    "petVaccinationRecord": "Βιβλιάριο Εμβολιασμού",
+    "vetDiagnosis": "Κτηνιατρική Διάγνωση",
+    "surgeryEstimate": "Εκτίμηση Χειρουργείου",
+    "vetInvoice": "Κτηνιατρικό Τιμολόγιο",
+    "prescriptions": "Συνταγές"
   }
 }
