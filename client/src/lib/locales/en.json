@@ -1,4 +1,39 @@
 {
+  "brand": {
+    "name": "PolicyWallet",
+    "tagline": "Your Insurance Wallet"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "policies": "Policies",
+    "renewals": "Renewals",
+    "billing": "Billing",
+    "recommendations": "Recommendations",
+    "notifications": "Notifications",
+    "wellness": "Wellness",
+    "claims": "Claims",
+    "documents": "Documents",
+    "appointments": "Appointments",
+    "analysis": "Analysis",
+    "agents": "Agents",
+    "settings": "Settings",
+    "admin": "Admin",
+    "more": "More",
+    "menu": "Menu"
+  },
+  "emergency": {
+    "title": "Emergency Assistance",
+    "sos": "Emergency SOS",
+    "sosShort": "Emergency",
+    "generalEmergency": "General Emergency",
+    "call112": "Call 112",
+    "medicalEmergency": "Medical Emergency",
+    "ambulanceFirstAid": "Ambulance & First Aid",
+    "roadsideAssist": "Roadside Assist",
+    "roadsideExpress": "Generali Express (24/7)",
+    "police": "Police",
+    "emergencyServices": "Emergency Services"
+  },
   "common": {
     "date": "Date",
     "amount": "Amount",
@@ -45,7 +80,8 @@
     "viewAll": "View All",
     "dueSoon": "Due Soon",
     "upcoming": "Upcoming",
-    "urgent": "Urgent"
+    "urgent": "Urgent",
+    "loading": "Loading..."
   },
   "dashboard": {
     "statusExcellent": "Excellent",
@@ -509,7 +545,17 @@
     "fair": "Fair"
   },
   "chatbot": {
-    "askAnything": "Ask anything..."
+    "askAnything": "Ask anything...",
+    "greeting": "Hello! I'm PolicyWallet AI assistant. How can I help you with your insurance policies today?",
+    "online": "Online",
+    "aiAssistant": "PolicyWallet AI",
+    "typing": "Typing...",
+    "healthResponse": "Your NN Health policy covers 100% of visits to A-list hospitals and unlimited doctor visits. You also have a free annual checkup available!",
+    "autoResponse": "For car accidents, first ensure everyone is safe. Then, call Generali Roadside Assistance at 18118. Your policy covers full damages.",
+    "petResponse": "Max is covered under your Ergo Pet policy. You have €2,000 annual limit for vet expenses. Need to file a claim for a recent visit?",
+    "agentResponse": "Your dedicated agent is Maria K. You can reach her directly through the 'Agents' tab in the sidebar, or I can schedule a call for you.",
+    "claimResponse": "To file a claim, go to the specific policy details page and click 'File New Claim'. I can guide you through the document upload process if you like.",
+    "defaultResponse": "I can help with that. Could you specify which policy you're asking about? (Health, Auto, Home, Life, or Pet)"
   },
   "policyRecommendations": {
     "add": "Add",

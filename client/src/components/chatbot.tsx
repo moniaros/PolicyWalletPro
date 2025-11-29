@@ -70,31 +70,35 @@ export function Chatbot() {
   const generateResponse = (text: string): string => {
     const lower = text.toLowerCase();
 
-    if (lower.includes("health") || lower.includes("doctor")) {
-      return "Your NN Health policy covers 100% of visits to A-list hospitals and unlimited doctor visits. You also have a free annual checkup available!";
+    if (lower.includes("health") || lower.includes("doctor") || lower.includes("υγεία") || lower.includes("γιατρό")) {
+      return t('chatbot.healthResponse');
     }
     if (
       lower.includes("car") ||
       lower.includes("auto") ||
-      lower.includes("accident")
+      lower.includes("accident") ||
+      lower.includes("αυτοκίνητο") ||
+      lower.includes("ατύχημα")
     ) {
-      return "For car accidents, first ensure everyone is safe. Then, call Generali Roadside Assistance at 18118. Your policy (GEN-SPEED-882) covers full damages.";
+      return t('chatbot.autoResponse');
     }
     if (
       lower.includes("pet") ||
       lower.includes("dog") ||
-      lower.includes("max")
+      lower.includes("max") ||
+      lower.includes("κατοικίδιο") ||
+      lower.includes("σκύλος")
     ) {
-      return "Max is covered under your Ergo Pet policy. You have €2,000 annual limit for vet expenses. Need to file a claim for a recent visit?";
+      return t('chatbot.petResponse');
     }
-    if (lower.includes("agent") || lower.includes("contact")) {
-      return "Your dedicated agent is Maria K. You can reach her directly through the 'Agents' tab in the sidebar, or I can schedule a call for you.";
+    if (lower.includes("agent") || lower.includes("contact") || lower.includes("συνεργάτης") || lower.includes("επικοινωνία")) {
+      return t('chatbot.agentResponse');
     }
-    if (lower.includes("claim")) {
-      return "To file a claim, go to the specific policy details page and click 'File New Claim'. I can guide you through the document upload process if you like.";
+    if (lower.includes("claim") || lower.includes("αξίωση") || lower.includes("δήλωση")) {
+      return t('chatbot.claimResponse');
     }
 
-    return "I can help with that. Could you specify which policy you're asking about? (Health, Auto, Home, Life, or Pet)";
+    return t('chatbot.defaultResponse');
   };
 
   return (
@@ -114,14 +118,14 @@ export function Chatbot() {
                   <Bot className="h-5 w-5" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-sm">PolicyWallet AI</h3>
+                  <h3 className="font-bold text-sm">{t('chatbot.aiAssistant')}</h3>
                   <div className="flex items-center gap-1.5">
                     <span className="relative flex h-2 w-2">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                       <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                     </span>
                     <span className="text-[10px] font-medium opacity-90">
-                      Online
+                      {t('chatbot.online')}
                     </span>
                   </div>
                 </div>
