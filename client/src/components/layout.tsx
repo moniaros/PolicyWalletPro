@@ -177,9 +177,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <Button
                 size="icon"
                 variant="destructive"
-                className="rounded-full h-8 w-8"
+                className="rounded-full h-11 w-11"
               >
-                <ShieldAlert className="h-4 w-4" />
+                <ShieldAlert className="h-5 w-5" />
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[400px] border-red-200 bg-red-50" aria-describedby="mobile-emergency-dialog-description">
