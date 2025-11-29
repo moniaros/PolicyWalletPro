@@ -12,16 +12,16 @@ import { FormInputWithValidation } from "@/components/form-input-with-validation
 import { SignupFlowModal } from "@/components/signup-flow-modal";
 import { toast } from "sonner";
 
-const emailValidator = (email: string): string | null => {
-  if (!email) return "Email is required"; 
+const createEmailValidator = (t: any) => (email: string): string | null => {
+  if (!email) return t('login.emailRequired'); 
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-    return "Please enter a valid email";
+    return t('login.validEmail');
   return null;
 };
 
-const passwordValidator = (password: string): string | null => {
-  if (!password) return "Password is required";
-  if (password.length < 6) return "Password must be at least 6 characters";
+const createPasswordValidator = (t: any) => (password: string): string | null => {
+  if (!password) return t('login.passwordRequired');
+  if (password.length < 6) return t('login.passwordLength');
   return null;
 };
 
@@ -32,10 +32,10 @@ const partnerLogos = [
   { name: "Ethniki", color: "from-emerald-500 to-emerald-600" },
 ];
 
-const trustStats = [
-  { value: "250,000+", label: "Greeks Trust Us", icon: Users },
-  { value: "€2.3M", label: "Claims Processed Monthly", icon: TrendingUp },
-  { value: "€495", label: "Avg. Annual Savings", icon: Award },
+const getTrustStats = (t: any) => [
+  { value: "250,000+", labelKey: 'login.greeksTrustUs', icon: Users },
+  { value: "€2.3M", labelKey: 'login.claimsProcessed', icon: TrendingUp },
+  { value: "€495", labelKey: 'login.avgSavings', icon: Award },
 ];
 
 export default function LoginPage() {
@@ -78,9 +78,13 @@ export default function LoginPage() {
     },
     onError: (err: any) => {
       setError(err.message);
-      toast.error("Authentication failed", { description: err.message });
+      toast.error(t('notifications.authenticationFailed'), { description: err.message });
     },
   });
+
+  const emailValidator = createEmailValidator(t);
+  const passwordValidator = createPasswordValidator(t);
+  const trustStats = getTrustStats(t);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -110,8 +114,8 @@ export default function LoginPage() {
       
       setLocation("/");
     } catch (err) {
-      toast.error("Sign In Failed", {
-        description: `Could not connect to ${provider}. Please try again.`
+      toast.error(t('login.signInFailed'), {
+        description: t('login.couldNotConnect', { provider })
       });
     } finally {
       setSocialLoading(null);
@@ -141,17 +145,17 @@ export default function LoginPage() {
         <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-center gap-4 md:gap-8 text-sm">
           <div className="flex items-center gap-2">
             <ShieldCheck className="h-4 w-4" />
-            <span className="font-medium">GDPR Certified</span>
+            <span className="font-medium">{t('login.gdprCertified')}</span>
           </div>
           <div className="hidden sm:block h-4 w-px bg-white/30" />
           <div className="flex items-center gap-2">
             <Shield className="h-4 w-4" />
-            <span className="font-medium">ISO 27001 Security</span>
+            <span className="font-medium">{t('login.isoSecurity')}</span>
           </div>
           <div className="hidden sm:block h-4 w-px bg-white/30" />
           <div className="flex items-center gap-2">
             <Award className="h-4 w-4" />
-            <span className="font-medium">Bank of Greece Licensed</span>
+            <span className="font-medium">{t('login.bankLicensed')}</span>
           </div>
         </div>
       </div>
@@ -172,22 +176,22 @@ export default function LoginPage() {
                 <Shield className="text-blue-600 h-8 w-8" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold">PolicyWallet</h1>
-                <p className="text-blue-100 text-sm">Your Insurance Command Center</p>
+                <h1 className="text-3xl font-bold">{t('brand.name')}</h1>
+                <p className="text-blue-100 text-sm">{t('login.tagline')}</p>
               </div>
             </div>
 
             {/* Main Value Proposition */}
             <div className="space-y-4">
               <Badge className="bg-white/20 text-white border-0 text-sm px-4 py-1.5 hover:bg-white/30">
-                Trusted by 250,000+ Greeks
+                {t('login.trustedBy', { count: '250,000+' })}
               </Badge>
               <h2 className="text-4xl lg:text-5xl font-bold leading-tight">
-                Manage 4 insurers in ONE app.
-                <span className="text-emerald-300"> Never miss a renewal.</span>
+                {t('login.heroTitle', { count: 4 })}
+                <span className="text-emerald-300"> {t('login.heroHighlight')}</span>
               </h2>
               <p className="text-xl text-blue-100 leading-relaxed">
-                Save up to <span className="font-bold text-emerald-300">€1,500/year</span> with AI-powered gap analysis and personalized recommendations.
+                {t('login.heroDescription', { amount: '€1,500' })}
               </p>
             </div>
 
@@ -196,14 +200,14 @@ export default function LoginPage() {
               {trustStats.map((stat, i) => (
                 <div key={i} className="text-center">
                   <div className="text-2xl lg:text-3xl font-bold">{stat.value}</div>
-                  <div className="text-xs text-blue-100 mt-1">{stat.label}</div>
+                  <div className="text-xs text-blue-100 mt-1">{t(stat.labelKey)}</div>
                 </div>
               ))}
             </div>
 
             {/* Partner Logos */}
             <div className="pt-6 border-t border-white/20">
-              <p className="text-sm text-blue-100 mb-4">Recommended by leading insurers:</p>
+              <p className="text-sm text-blue-100 mb-4">{t('login.recommendedBy')}</p>
               <div className="flex flex-wrap gap-3">
                 {partnerLogos.map((partner, i) => (
                   <div key={i} className={`px-4 py-2 rounded-lg bg-gradient-to-r ${partner.color} text-white text-sm font-semibold shadow-lg`}>
@@ -226,7 +230,7 @@ export default function LoginPage() {
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
-                    <h3 className="font-bold text-lg">Maria Papadopoulou</h3>
+                    <h3 className="font-bold text-lg">{t('login.agentName')}</h3>
                     <div className="flex">
                       {[1,2,3,4,5].map((star) => (
                         <Star key={star} className="h-3 w-3 fill-yellow-400 text-yellow-400" />
@@ -252,9 +256,9 @@ export default function LoginPage() {
             {/* Social Proof Quote */}
             <div className="bg-white/5 rounded-xl p-4 border border-white/10">
               <p className="text-blue-100 italic text-sm">
-                "Maria helped me find €800 in savings I didn't know existed. The app makes managing my family's 6 policies effortless."
+                "{t('login.testimonial')}"
               </p>
-              <p className="text-white font-medium text-sm mt-2">— Kostas D., Athens</p>
+              <p className="text-white font-medium text-sm mt-2">— {t('login.testimonialAuthor')}</p>
             </div>
           </div>
         </div>
@@ -265,12 +269,12 @@ export default function LoginPage() {
             <Card className="shadow-2xl border-0 overflow-hidden">
               <CardHeader className="space-y-3 text-center pb-6 bg-gradient-to-r from-slate-50 to-blue-50">
                 <CardTitle className="text-2xl font-bold text-slate-800">
-                  {isLogin ? "Welcome Back" : "Get Started Free"}
+                  {isLogin ? t('login.welcomeBack') : t('login.getStartedFree')}
                 </CardTitle>
                 <CardDescription className="text-slate-600">
                   {isLogin 
-                    ? "Sign in to access your insurance dashboard" 
-                    : "Create your account in 60 seconds"}
+                    ? t('login.signInDescription') 
+                    : t('login.signUpDescription')}
                 </CardDescription>
               </CardHeader>
 
@@ -371,7 +375,7 @@ export default function LoginPage() {
                         ) : (
                           <>
                             <Chrome className="h-5 w-5 mr-2 text-red-500" />
-                            Continue with Gmail
+                            {t('login.continueWithGmail')}
                           </>
                         )}
                       </Button>
@@ -392,7 +396,7 @@ export default function LoginPage() {
                         ) : (
                           <>
                             <Apple className="h-5 w-5 mr-2 text-black" />
-                            Continue with Apple
+                            {t('login.continueWithApple')}
                           </>
                         )}
                       </Button>
@@ -424,7 +428,7 @@ export default function LoginPage() {
                         value={email}
                         onChange={setEmail}
                         validator={emailValidator}
-                        hint="We'll keep it simple. More later if you want."
+                        hint={t('login.keepItSimple')}
                         testId="input-email-signup"
                       />
 
@@ -455,7 +459,7 @@ export default function LoginPage() {
                             {t('login.creatingAccount')}
                           </>
                         ) : (
-                          "Create Free Account"
+                          t('login.createFreeAccount')
                         )}
                       </Button>
                     </form>
@@ -465,8 +469,8 @@ export default function LoginPage() {
                       <div className="flex items-start gap-3">
                         <Shield className="h-5 w-5 text-emerald-600 mt-0.5" />
                         <div>
-                          <p className="text-sm font-medium text-emerald-800">Your data is encrypted & GDPR protected</p>
-                          <p className="text-xs text-emerald-600 mt-1">Maria will guide you through setup</p>
+                          <p className="text-sm font-medium text-emerald-800">{t('login.dataProtected')}</p>
+                          <p className="text-xs text-emerald-600 mt-1">{t('login.mariaGuide')}</p>
                         </div>
                       </div>
                     </div>
@@ -499,7 +503,7 @@ export default function LoginPage() {
                         ) : (
                           <>
                             <Chrome className="h-5 w-5 mr-2 text-red-500" />
-                            Sign up with Gmail
+                            {t('login.signUpWithGmail')}
                           </>
                         )}
                       </Button>
@@ -520,7 +524,7 @@ export default function LoginPage() {
                         ) : (
                           <>
                             <Apple className="h-5 w-5 mr-2 text-black" />
-                            Sign up with Apple
+                            {t('login.signUpWithApple')}
                           </>
                         )}
                       </Button>
@@ -528,8 +532,8 @@ export default function LoginPage() {
 
                     {/* Terms */}
                     <p className="text-xs text-center text-muted-foreground mt-6">
-                      By creating an account, you agree to our{" "}
-                      <span className="text-primary font-semibold hover:underline cursor-pointer">Terms of Service</span>
+                      {t('login.termsText')}{" "}
+                      <span className="text-primary font-semibold hover:underline cursor-pointer">{t('login.termsOfService')}</span>
                     </p>
                   </TabsContent>
                 </Tabs>
@@ -540,17 +544,17 @@ export default function LoginPage() {
             <div className="mt-8 flex flex-wrap items-center justify-center gap-4 text-xs text-muted-foreground">
               <div className="flex items-center gap-1">
                 <Shield className="h-4 w-4" />
-                <span>256-bit SSL</span>
+                <span>{t('login.sslSecurity')}</span>
               </div>
               <div className="hidden sm:block">•</div>
               <div className="flex items-center gap-1">
                 <CheckCircle className="h-4 w-4 text-emerald-500" />
-                <span>GDPR Compliant</span>
+                <span>{t('login.gdprCompliant')}</span>
               </div>
               <div className="hidden sm:block">•</div>
               <div className="flex items-center gap-1">
                 <Phone className="h-4 w-4" />
-                <span>24/7 Support</span>
+                <span>{t('login.support247')}</span>
               </div>
             </div>
           </div>

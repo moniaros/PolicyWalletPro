@@ -40,7 +40,7 @@ export default function Dashboard() {
           {/* Agent Recommendation Pill - Only show if not dismissed */}
           {showRecommendation && (
             <AgentRecommendationPill 
-              recommendation="I noticed your auto and home insurance are with different providers. Bundling them could save you €300/year. Want me to get you some quotes?"
+              recommendation={t('dashboard.agentRecommendation', { amount: '€300' })}
               onDismiss={() => setShowRecommendation(false)}
             />
           )}
@@ -114,7 +114,7 @@ export default function Dashboard() {
           {/* Dashboard Widgets Section */}
           <section>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold">Your Insurance Overview</h2>
+              <h2 className="text-xl font-bold">{t('dashboard.insuranceOverview')}</h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               <RenewalsWidget />
@@ -182,7 +182,7 @@ export default function Dashboard() {
                 <div className="h-2.5 bg-emerald-200 rounded-full overflow-hidden">
                   <div className="h-full bg-gradient-to-r from-emerald-400 to-emerald-600 w-4/5 rounded-full"></div>
                 </div>
-                <p className="text-xs text-emerald-600 mt-2">Keep it up! Your premium may decrease at renewal.</p>
+                <p className="text-xs text-emerald-600 mt-2">{t('dashboard.premiumDecrease')}</p>
               </Card>
 
               {/* Agent Quick Access (Mobile-friendly) */}
@@ -195,8 +195,8 @@ export default function Dashboard() {
                     <div className="absolute -bottom-0.5 -right-0.5 h-4 w-4 bg-emerald-400 rounded-full border-2 border-white" />
                   </div>
                   <div className="flex-1">
-                    <p className="font-semibold text-sm">Maria is online</p>
-                    <p className="text-xs text-muted-foreground">Your insurance specialist</p>
+                    <p className="font-semibold text-sm">{t('dashboard.mariaOnline')}</p>
+                    <p className="text-xs text-muted-foreground">{t('dashboard.insuranceSpecialist')}</p>
                   </div>
                   <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700">
                     <MessageCircle className="h-4 w-4" />
