@@ -354,6 +354,12 @@
     "claimsProcessed": "Claims Processed Monthly",
     "avgSavings": "Avg. Annual Savings",
     "recommendedBy": "Recommended by leading insurers:",
+    "partners": {
+      "nnHellas": "NN Hellas",
+      "generali": "Generali",
+      "ergo": "ERGO",
+      "ethniki": "Ethniki"
+    },
     "agentName": "Maria Papadopoulou",
     "agentSpecialist": "Your Personal Insurance Specialist",
     "agentStats": "15+ years experience | 4,200+ policies managed",

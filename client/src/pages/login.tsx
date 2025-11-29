@@ -25,11 +25,11 @@ const createPasswordValidator = (t: any) => (password: string): string | null =>
   return null;
 };
 
-const partnerLogos = [
-  { name: "NN Hellas", color: "from-orange-500 to-orange-600" },
-  { name: "Generali", color: "from-red-500 to-red-600" },
-  { name: "ERGO", color: "from-blue-600 to-blue-700" },
-  { name: "Ethniki", color: "from-emerald-500 to-emerald-600" },
+const getPartnerLogos = (t: any) => [
+  { name: t('login.partners.nnHellas'), color: "from-orange-500 to-orange-600" },
+  { name: t('login.partners.generali'), color: "from-red-500 to-red-600" },
+  { name: t('login.partners.ergo'), color: "from-blue-600 to-blue-700" },
+  { name: t('login.partners.ethniki'), color: "from-emerald-500 to-emerald-600" },
 ];
 
 const getTrustStats = (t: any) => [
@@ -209,7 +209,7 @@ export default function LoginPage() {
             <div className="pt-6 border-t border-white/20">
               <p className="text-sm text-blue-100 mb-4">{t('login.recommendedBy')}</p>
               <div className="flex flex-wrap gap-3">
-                {partnerLogos.map((partner, i) => (
+                {getPartnerLogos(t).map((partner, i) => (
                   <div key={i} className={`px-4 py-2 rounded-lg bg-gradient-to-r ${partner.color} text-white text-sm font-semibold shadow-lg`}>
                     {partner.name}
                   </div>

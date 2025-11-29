@@ -351,6 +351,12 @@
     "claimsProcessed": "Αποζημιώσεις ανά Μήνα",
     "avgSavings": "Μέση Ετήσια Εξοικονόμηση",
     "recommendedBy": "Συνιστάται από κορυφαίες ασφαλιστικές:",
+    "partners": {
+      "nnHellas": "NN Hellas",
+      "generali": "Generali",
+      "ergo": "ERGO",
+      "ethniki": "Εθνική"
+    },
     "agentName": "Μαρία Παπαδοπούλου",
     "agentSpecialist": "Η Προσωπική σας Ασφαλιστική Σύμβουλος",
     "agentStats": "15+ χρόνια εμπειρίας | 4.200+ συμβόλαια",
