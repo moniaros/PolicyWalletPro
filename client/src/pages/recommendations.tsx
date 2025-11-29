@@ -12,72 +12,72 @@ const recommendationData = [
     id: 1,
     category: "coverage-gap",
     priority: "high",
-    title: "Add Dental Coverage",
-    description: "Your health policy covers basic dental, but extended procedures (orthodontics, implants) are excluded.",
-    insight: "Dental work costs €800-5,000 per procedure. A dedicated dental rider costs only €15/month.",
-    impact: "Protects against €50,000+ in potential out-of-pocket costs",
-    savings: "€15/month additional premium",
-    action: "Add Dental Rider",
+    titleKey: "addDentalTitle",
+    descriptionKey: "addDentalDesc",
+    insightKey: "addDentalInsight",
+    impactKey: "addDentalImpact",
+    savings: "€15",
+    actionKey: "addDentalAction",
     provider: "NN Hellas"
   },
   {
     id: 2,
     category: "life-event",
     priority: "high",
-    title: "Increase Life Insurance Coverage",
-    description: "Your current life coverage (€100k) may not adequately cover your family's needs with dependents.",
-    insight: "Financial experts recommend 8-10x annual income. You need €400-500k coverage.",
-    impact: "Ensures family financial security",
-    savings: "€45/month for €250k additional coverage",
-    action: "Upgrade Life Insurance",
+    titleKey: "increaseLifeTitle",
+    descriptionKey: "increaseLifeDesc",
+    insightKey: "increaseLifeInsight",
+    impactKey: "increaseLifeImpact",
+    savings: "€45",
+    actionKey: "increaseLifeAction",
     provider: "Generali"
   },
   {
     id: 3,
     category: "savings-opportunity",
     priority: "medium",
-    title: "Bundle Discount Available",
-    description: "By combining home + auto with same provider, you qualify for 10-15% bundle discount.",
-    insight: "Moving your Ergo home policy to your auto insurer could save €180-270/year.",
-    impact: "€15-22/month savings with identical coverage",
-    savings: "€180-270/year",
-    action: "Review Bundling Option",
+    titleKey: "bundleDiscountTitle",
+    descriptionKey: "bundleDiscountDesc",
+    insightKey: "bundleDiscountInsight",
+    impactKey: "bundleDiscountImpact",
+    savings: "€180-270",
+    actionKey: "bundleDiscountAction",
     provider: "Generali"
   },
   {
     id: 4,
     category: "market-opportunity",
     priority: "medium",
-    title: "Pet Insurance Recently Added",
-    description: "You don't have pet insurance, but vet costs are rising 8% annually in Greece.",
-    insight: "Average vet emergency: €1,500-3,000. Pet insurance starts at €12/month.",
-    impact: "Covers veterinary emergencies and routine care",
-    savings: "€12/month for €2,500 annual coverage",
-    action: "Explore Pet Insurance",
-    provider: "New Policy"
+    titleKey: "petInsuranceTitle",
+    descriptionKey: "petInsuranceDesc",
+    insightKey: "petInsuranceInsight",
+    impactKey: "petInsuranceImpact",
+    savings: "€12",
+    actionKey: "petInsuranceAction",
+    provider: "NN Hellas"
   },
   {
     id: 5,
     category: "renewal-optimization",
     priority: "medium",
-    title: "Auto Policy Renewal in 18 Days",
-    description: "Your Generali auto insurance renews Dec 15. Get quotes from competitors 30+ days before.",
-    insight: "Comparing 3 quotes typically saves 15-25% on annual premiums.",
-    impact: "Potential €400-800 savings on renewal",
-    savings: "€35-67/month savings",
-    action: "Get Renewal Quotes",
+    titleKey: "autoRenewalTitle",
+    descriptionKey: "autoRenewalDesc",
+    insightKey: "autoRenewalInsight",
+    impactKey: "autoRenewalImpact",
+    savings: "€400-800",
+    actionKey: "autoRenewalAction",
     provider: "Generali"
   },
   {
     id: 6,
     category: "wellness",
     priority: "low",
-    title: "Maximize Wellness Benefits",
-    description: "Your health policy includes free annual checkup + fitness reimbursement (€300/year).",
-    insight: "Only 22% of policyholders use these benefits. You haven't claimed yet this year.",
-    impact: "Access €300 fitness/wellness benefit",
-    savings: "€300 value with no additional cost",
-    action: "Claim Wellness Benefit",
+    titleKey: "wellnessTitle",
+    descriptionKey: "wellnessDesc",
+    insightKey: "wellnessInsight",
+    impactKey: "wellnessImpact",
+    savings: "€300",
+    actionKey: "wellnessAction",
     provider: "NN Hellas"
   }
 ];
@@ -121,7 +121,8 @@ export default function RecommendationsPage() {
   };
 
   const highPriorityCount = recommendationData.filter(r => r.priority === "high").length;
-  const potentialSavings = "€495-1,062/year";
+  const mediumPriorityCount = recommendationData.filter(r => r.priority === "medium").length;
+  const lowPriorityCount = recommendationData.filter(r => r.priority === "low").length;
 
   return (
     <div className="space-y-8 pb-10">
@@ -156,7 +157,7 @@ export default function RecommendationsPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-emerald-600 font-medium uppercase">{t('recommendations.potentialSavings')}</p>
-                <p className="text-2xl font-bold text-emerald-900 mt-1">{potentialSavings}</p>
+                <p className="text-2xl font-bold text-emerald-900 mt-1">{t('recommendations.savingsRange')}</p>
                 <p className="text-xs text-emerald-700 mt-2">{t('recommendations.ifImplemented')}</p>
               </div>
               <TrendingUp className="h-12 w-12 text-emerald-400 opacity-50" />
@@ -190,21 +191,21 @@ export default function RecommendationsPage() {
           <div>
             <div className="flex justify-between items-center mb-2">
               <span className="font-medium">{t('recommendations_priority.immediateAction')}</span>
-              <span className="text-sm font-semibold">2 items</span>
+              <span className="text-sm font-semibold">{t('recommendations.itemCount', { count: highPriorityCount })}</span>
             </div>
             <Progress value={33} className="h-3" />
           </div>
           <div>
             <div className="flex justify-between items-center mb-2">
               <span className="font-medium">{t('recommendations_priority.within30Days')}</span>
-              <span className="text-sm font-semibold">3 items</span>
+              <span className="text-sm font-semibold">{t('recommendations.itemCount', { count: mediumPriorityCount })}</span>
             </div>
             <Progress value={50} className="h-3" />
           </div>
           <div>
             <div className="flex justify-between items-center mb-2">
               <span className="font-medium">{t('recommendations_priority.reviewExplore')}</span>
-              <span className="text-sm font-semibold">1 item</span>
+              <span className="text-sm font-semibold">{t('recommendations.itemCount', { count: lowPriorityCount })}</span>
             </div>
             <Progress value={17} className="h-3" />
           </div>
@@ -217,15 +218,15 @@ export default function RecommendationsPage() {
           <TabsTrigger value="all">{t('common.all')} ({recommendationData.length})</TabsTrigger>
           <TabsTrigger value="high" className="flex items-center gap-1">
             <AlertCircle className="h-3 w-3" />
-            {t('recommendations.high')} (2)
+            {t('recommendations.high')} ({highPriorityCount})
           </TabsTrigger>
           <TabsTrigger value="medium" className="flex items-center gap-1">
             <Zap className="h-3 w-3" />
-            {t('recommendations.medium')} (3)
+            {t('recommendations.medium')} ({mediumPriorityCount})
           </TabsTrigger>
           <TabsTrigger value="low" className="flex items-center gap-1">
             <TrendingUp className="h-3 w-3" />
-            {t('recommendations.low')} (1)
+            {t('recommendations.low')} ({lowPriorityCount})
           </TabsTrigger>
         </TabsList>
 
@@ -241,12 +242,12 @@ export default function RecommendationsPage() {
                         {getPriorityIcon(rec.priority)}
                         <div>
                           <div className="flex items-center gap-2">
-                            <h3 className="font-bold text-lg">{rec.title}</h3>
+                            <h3 className="font-bold text-lg">{t(`recommendations_items.${rec.titleKey}`)}</h3>
                             <Badge className={getPriorityColor(rec.priority)}>
-                              {rec.priority.charAt(0).toUpperCase() + rec.priority.slice(1)} Priority
+                              {t(`priority.${rec.priority}`)}
                             </Badge>
                           </div>
-                          <p className="text-sm text-muted-foreground mt-1">{rec.description}</p>
+                          <p className="text-sm text-muted-foreground mt-1">{t(`recommendations_items.${rec.descriptionKey}`)}</p>
                         </div>
                       </div>
                     </div>
@@ -254,8 +255,8 @@ export default function RecommendationsPage() {
                     {/* Details */}
                     <div className="space-y-2 bg-accent/50 p-4 rounded-lg">
                       <div>
-                        <p className="text-xs text-muted-foreground uppercase font-semibold">Key Insight</p>
-                        <p className="text-sm text-foreground mt-1">{rec.insight}</p>
+                        <p className="text-xs text-muted-foreground uppercase font-semibold">{t('recommendations.keyInsight')}</p>
+                        <p className="text-sm text-foreground mt-1">{t(`recommendations_items.${rec.insightKey}`)}</p>
                       </div>
                     </div>
 
@@ -263,10 +264,10 @@ export default function RecommendationsPage() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="bg-emerald-50 p-3 rounded-lg">
                         <p className="text-xs text-emerald-600 uppercase font-semibold">{ t("details.impact") }</p>
-                        <p className="text-sm font-semibold text-emerald-900 mt-1">{rec.impact}</p>
+                        <p className="text-sm font-semibold text-emerald-900 mt-1">{t(`recommendations_items.${rec.impactKey}`)}</p>
                       </div>
                       <div className="bg-blue-50 p-3 rounded-lg">
-                        <p className="text-xs text-blue-600 uppercase font-semibold">Cost/Savings</p>
+                        <p className="text-xs text-blue-600 uppercase font-semibold">{t('recommendations.costSavings')}</p>
                         <p className="text-sm font-semibold text-blue-900 mt-1">{rec.savings}</p>
                       </div>
                     </div>
@@ -283,7 +284,7 @@ export default function RecommendationsPage() {
                       <p className="font-semibold text-sm">{rec.provider}</p>
                     </div>
                     <Button className="w-full mt-6 bg-primary" data-testid={`button-recommendation-${rec.id}`}>
-                      {rec.action}
+                      {t(`recommendations_items.${rec.actionKey}`)}
                       <ArrowRight className="h-4 w-4 ml-2" />
                     </Button>
                   </div>
@@ -299,15 +300,15 @@ export default function RecommendationsPage() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <CheckCircle2 className="h-5 w-5 text-primary" />
-            Ready to Optimize Your Coverage?
+            {t('recommendations.readyToOptimize')}
           </CardTitle>
           <CardDescription>
-            Our insurance specialists are available to discuss these recommendations
+            {t('recommendations.specialistsAvailable')}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Button className="bg-primary">
-            Schedule Consultation
+            {t('recommendations.scheduleConsultation')}
             <ArrowRight className="h-4 w-4 ml-2" />
           </Button>
         </CardContent>

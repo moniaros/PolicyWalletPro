@@ -15,7 +15,7 @@ localPort = 5000
 externalPort = 80
 
 [[ports]]
-localPort = 34293
+localPort = 35451
 externalPort = 3001
 
 [[ports]]
@@ -48,3 +48,4 @@ waitForPort = 5000
 
 [agent]
 mockupState = "FULLSTACK"
+expertMode = true

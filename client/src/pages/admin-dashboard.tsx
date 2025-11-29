@@ -39,67 +39,67 @@ export default function AdminDashboard() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">Admin Dashboard</h1>
-        <p className="text-muted-foreground mt-1">Enterprise insurance platform analytics and management.</p>
+        <h1 className="text-3xl font-bold tracking-tight text-foreground" data-testid="text-admin-dashboard-title">{t('admin.dashboard')}</h1>
+        <p className="text-muted-foreground mt-1" data-testid="text-admin-dashboard-desc">{t('admin.enterpriseInsurance')}</p>
       </div>
 
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card>
+        <Card data-testid="card-total-users">
           <CardContent className="p-6">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-3">
               <div>
-                <p className="text-sm text-muted-foreground font-medium">Total Users</p>
+                <p className="text-sm text-muted-foreground font-medium">{t('admin.totalUsers')}</p>
                 <p className="text-3xl font-bold mt-2">{stats?.totalUsers || "2.4k"}</p>
-                <p className="text-xs text-emerald-600 mt-1">↑ 12% from last month</p>
+                <p className="text-xs text-emerald-600 mt-1">↑ 12% {t('admin.fromLastMonth')}</p>
               </div>
-              <div className="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                <Users className="h-6 w-6 text-blue-600" />
+              <div className="h-12 w-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center flex-shrink-0">
+                <Users className="h-6 w-6 text-blue-600 dark:text-blue-400" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card data-testid="card-active-policies">
           <CardContent className="p-6">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-3">
               <div>
-                <p className="text-sm text-muted-foreground font-medium">Active Policies</p>
+                <p className="text-sm text-muted-foreground font-medium">{t('admin.activePolicies')}</p>
                 <p className="text-3xl font-bold mt-2">{stats?.activePolicies || "1.8k"}</p>
-                <p className="text-xs text-emerald-600 mt-1">↑ 8% from last month</p>
+                <p className="text-xs text-emerald-600 mt-1">↑ 8% {t('admin.fromLastMonth')}</p>
               </div>
-              <div className="h-12 w-12 bg-emerald-100 rounded-lg flex items-center justify-center">
-                <FileText className="h-6 w-6 text-emerald-600" />
+              <div className="h-12 w-12 bg-emerald-100 dark:bg-emerald-900 rounded-lg flex items-center justify-center flex-shrink-0">
+                <FileText className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card data-testid="card-pending-claims">
           <CardContent className="p-6">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-3">
               <div>
-                <p className="text-sm text-muted-foreground font-medium">Pending Claims</p>
+                <p className="text-sm text-muted-foreground font-medium">{t('admin.pendingClaims')}</p>
                 <p className="text-3xl font-bold mt-2">{stats?.pendingClaims || "240"}</p>
-                <p className="text-xs text-amber-600 mt-1">⚠ 5% increase</p>
+                <p className="text-xs text-amber-600 mt-1">⚠ 5% {t('admin.increasePercent')}</p>
               </div>
-              <div className="h-12 w-12 bg-amber-100 rounded-lg flex items-center justify-center">
-                <Clock className="h-6 w-6 text-amber-600" />
+              <div className="h-12 w-12 bg-amber-100 dark:bg-amber-900 rounded-lg flex items-center justify-center flex-shrink-0">
+                <Clock className="h-6 w-6 text-amber-600 dark:text-amber-400" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card data-testid="card-claims-approved">
           <CardContent className="p-6">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-3">
               <div>
-                <p className="text-sm text-muted-foreground font-medium">Claims Approved</p>
+                <p className="text-sm text-muted-foreground font-medium">{t('admin.claimsApproved')}</p>
                 <p className="text-3xl font-bold mt-2">{stats?.claimsApproved || "92%"}</p>
-                <p className="text-xs text-emerald-600 mt-1">↑ 2% from last month</p>
+                <p className="text-xs text-emerald-600 mt-1">↑ 2% {t('admin.fromLastMonth')}</p>
               </div>
-              <div className="h-12 w-12 bg-emerald-100 rounded-lg flex items-center justify-center">
-                <CheckCircle2 className="h-6 w-6 text-emerald-600" />
+              <div className="h-12 w-12 bg-emerald-100 dark:bg-emerald-900 rounded-lg flex items-center justify-center flex-shrink-0">
+                <CheckCircle2 className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
               </div>
             </div>
           </CardContent>
@@ -168,24 +168,24 @@ export default function AdminDashboard() {
         </TabsList>
 
         <TabsContent value="alerts" className="space-y-4">
-          <Alert>
+          <Alert data-testid="alert-high-claims">
             <AlertTriangle className="h-4 w-4" />
             <AlertDescription>
-              <strong>High Claims Volume:</strong> 240 pending claims exceeds target of 200. Recommend prioritizing reviews.
+              <strong>{t('admin.highClaimsVolume')}</strong> {t('admin.highClaimsDesc')}
             </AlertDescription>
           </Alert>
 
-          <Alert className="border-emerald-200 bg-emerald-50">
+          <Alert className="border-emerald-200 bg-emerald-50 dark:bg-emerald-950 dark:border-emerald-800" data-testid="alert-gdpr">
             <CheckCircle2 className="h-4 w-4 text-emerald-600" />
             <AlertDescription>
-              <strong>{ t('admin.gdprCompliance') }</strong> All data retention policies updated. Last audit: Nov 15, 2025
+              <strong>{t('admin.gdprCompliance')}</strong> {t('admin.gdprAuditDate')} Nov 15, 2025
             </AlertDescription>
           </Alert>
 
-          <Alert>
+          <Alert data-testid="alert-payment">
             <AlertTriangle className="h-4 w-4" />
             <AlertDescription>
-              <strong>Payment Processing:</strong> Stripe integration pending - 3 test transactions queued
+              <strong>{t('admin.paymentProcessing')}</strong> {t('admin.paymentPendingDesc')}
             </AlertDescription>
           </Alert>
         </TabsContent>

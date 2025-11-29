@@ -53,7 +53,7 @@ export default function ProfilePage() {
       !profile.incomeRange ||
       !profile.healthStatus
     ) {
-      toast.error("Please fill in all required fields");
+      toast.error(t("validation.fillRequiredFields"));
       return;
     }
 
@@ -61,10 +61,10 @@ export default function ProfilePage() {
       // Save to localStorage for now (would be API call in production)
       localStorage.setItem("userProfile", JSON.stringify(profile));
       setSaved(true);
-      toast.success("Profile saved successfully!");
+      toast.success(t("profile.savedSuccessfully"));
       setTimeout(() => setSaved(false), 3000);
     } catch (error) {
-      toast.error("Failed to save profile");
+      toast.error(t("profile.saveFailed"));
     }
   };
 
@@ -99,7 +99,7 @@ export default function ProfilePage() {
               <Label htmlFor="fullName">{t('profile.fullName')}</Label>
               <Input
                 id="fullName"
-                placeholder="Ιωάννης Παπαδόπουλος"
+                placeholder={t('placeholders.fullName')}
                 value={profile.fullName}
                 onChange={(e) => handleInputChange("fullName", e.target.value)}
                 data-testid="input-fullname"
@@ -232,7 +232,7 @@ export default function ProfilePage() {
           </div>
 
           <div className="space-y-3">
-            <Label>Chronic Conditions (if applicable)</Label>
+            <Label>{t('profile.chronicConditions')}</Label>
             <div className="space-y-2">
               {[t("healthConditions.hypertension"), t("healthConditions.diabetes"), t("healthConditions.heartDisease"), t("healthConditions.mentalHealth"), t("healthConditions.respiratory"), t("healthConditions.other")].map((condition) => (
                 <div key={condition} className="flex items-center space-x-2">
@@ -348,14 +348,14 @@ export default function ProfilePage() {
       <div className="flex gap-3">
         <Button onClick={handleSave} className="flex-1 bg-primary hover:bg-primary/90" size="lg" data-testid="button-save-profile">
           <CheckCircle2 className="h-4 w-4 mr-2" />
-          Save Profile
+          {t('profile.saveProfile')}
         </Button>
       </div>
 
       <Alert className="bg-blue-50 border-blue-200">
         <AlertCircle className="h-4 w-4 text-blue-600" />
         <AlertDescription className="text-blue-700">
-          Your profile helps us identify coverage gaps and recommend missing policies. This information is used only to improve your recommendations and is protected by strict privacy policies.
+          {t('profile.privacyNote')}
         </AlertDescription>
       </Alert>
     </div>

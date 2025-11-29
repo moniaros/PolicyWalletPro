@@ -5,72 +5,83 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, AlertCircle, CheckCircle2, Clock, DollarSign, Bell, ArrowRight } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
-import { format, differenceInDays } from "date-fns";
 
 const renewalData = [
   {
     id: 1,
     policyNumber: "NN-ORANGE-992",
     provider: "NN Hellas",
-    type: "Health Insurance",
+    typeKey: "health",
     currentExpiry: new Date(2025, 11, 31),
     renewalDate: new Date(2025, 11, 31),
-    premium: "€145.00/month",
-    status: "Due Soon",
+    premiumAmount: 145,
+    premiumPeriodKey: "monthly",
+    statusKey: "dueSoon",
     daysUntilRenewal: 35,
     lastRenewed: "2024-12-31",
     autoRenew: true,
-    paymentMethod: "Credit Card ***1234"
+    paymentMethodKey: "creditCard"
   },
   {
     id: 2,
     policyNumber: "GEN-SPEED-882",
     provider: "Generali",
-    type: "Auto Insurance",
+    typeKey: "auto",
     currentExpiry: new Date(2025, 11, 15),
     renewalDate: new Date(2025, 11, 15),
-    premium: "€320.00 (Semi-Annual)",
-    status: "Due Soon",
+    premiumAmount: 320,
+    premiumPeriodKey: "semiAnnual",
+    statusKey: "dueSoon",
     daysUntilRenewal: 18,
     lastRenewed: "2024-06-15",
     autoRenew: true,
-    paymentMethod: "Direct Debit"
+    paymentMethodKey: "directDebit"
   },
   {
     id: 3,
     policyNumber: "ERG-HOME-445",
     provider: "Ergo",
-    type: "Home Insurance",
+    typeKey: "home",
     currentExpiry: new Date(2026, 2, 20),
     renewalDate: new Date(2026, 2, 20),
-    premium: "€180.00/year",
-    status: "Upcoming",
+    premiumAmount: 180,
+    premiumPeriodKey: "annual",
+    statusKey: "upcoming",
     daysUntilRenewal: 115,
     lastRenewed: "2024-03-20",
     autoRenew: true,
-    paymentMethod: "Credit Card ***5678"
+    paymentMethodKey: "creditCard"
   }
 ];
 
 export default function RenewalsPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [selectedRenewal, setSelectedRenewal] = useState<typeof renewalData[0] | null>(null);
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "Due Soon": return "bg-red-100 text-red-800 border-red-200";
-      case "Urgent": return "bg-red-100 text-red-800 border-red-200";
-      case "Upcoming": return "bg-yellow-100 text-yellow-800 border-yellow-200";
+  const formatLocalizedDate = (date: Date) => {
+    const locale = i18n.language === 'el' ? 'el-GR' : 'en-US';
+    return new Intl.DateTimeFormat(locale, { 
+      year: 'numeric', 
+      month: 'short', 
+      day: 'numeric' 
+    }).format(date);
+  };
+
+  const getStatusColor = (statusKey: string) => {
+    switch (statusKey) {
+      case "dueSoon": 
+      case "urgent": return "bg-red-100 text-red-800 border-red-200";
+      case "upcoming": return "bg-yellow-100 text-yellow-800 border-yellow-200";
       default: return "bg-emerald-100 text-emerald-800 border-emerald-200";
     }
   };
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case "Due Soon":
-      case "Urgent":
+  const getStatusIcon = (statusKey: string) => {
+    switch (statusKey) {
+      case "dueSoon":
+      case "urgent":
         return <AlertCircle className="h-4 w-4" />;
-      case "Upcoming":
+      case "upcoming":
         return <Clock className="h-4 w-4" />;
       default:
         return <CheckCircle2 className="h-4 w-4" />;
@@ -155,20 +166,20 @@ export default function RenewalsPage() {
                   <div className="space-y-4">
                     <div className="flex items-start justify-between">
                       <div>
-                        <h3 className="font-bold text-lg">{renewal.type}</h3>
+                        <h3 className="font-bold text-lg">{t(`policyTypes.${renewal.typeKey}`)}</h3>
                         <p className="text-sm text-muted-foreground">{renewal.provider}</p>
                         <p className="text-xs text-muted-foreground font-mono mt-1">{renewal.policyNumber}</p>
                       </div>
-                      <Badge className={getStatusColor(renewal.status)}>
-                        {getStatusIcon(renewal.status)}
-                        <span className="ml-1">{renewal.status}</span>
+                      <Badge className={getStatusColor(renewal.statusKey)}>
+                        {getStatusIcon(renewal.statusKey)}
+                        <span className="ml-1">{t(`common.${renewal.statusKey}`)}</span>
                       </Badge>
                     </div>
 
                     <div className="space-y-2">
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-muted-foreground">{t('renewals.daysUntilRenewal')}</span>
-                        <span className="font-bold text-lg">{renewal.daysUntilRenewal} {t('renewals.daysUntilRenewal').split(' ').pop()}</span>
+                        <span className="text-muted-foreground">{t('renewals.timeUntilRenewal')}</span>
+                        <span className="font-bold text-lg">{t('renewals.daysCount', { count: renewal.daysUntilRenewal })}</span>
                       </div>
                       <Progress 
                         value={getProgressPercentage(renewal.daysUntilRenewal)} 
@@ -179,11 +190,11 @@ export default function RenewalsPage() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                       <div>
                         <p className="text-xs text-muted-foreground uppercase">{t('renewals.renewalDate')}</p>
-                        <p className="font-semibold text-sm">{format(renewal.renewalDate, 'MMM dd, yyyy')}</p>
+                        <p className="font-semibold text-sm">{formatLocalizedDate(renewal.renewalDate)}</p>
                       </div>
                       <div>
                         <p className="text-xs text-muted-foreground uppercase">{t('billing.amount')}</p>
-                        <p className="font-semibold text-sm">{renewal.premium}</p>
+                        <p className="font-semibold text-sm">€{renewal.premiumAmount} ({t(`billing.${renewal.premiumPeriodKey}`)})</p>
                       </div>
                     </div>
                   </div>
@@ -195,7 +206,7 @@ export default function RenewalsPage() {
                         <CheckCircle2 className="h-5 w-5 text-emerald-600 mt-0.5 flex-shrink-0" />
                         <div>
                           <p className="text-sm font-medium">{t('renewals.autoRenewal')}</p>
-                          <p className="text-xs text-muted-foreground">{renewal.autoRenew ? t('notificationPreferences.alwaysOn') : "Manual renewal required"}</p>
+                          <p className="text-xs text-muted-foreground">{renewal.autoRenew ? t('notificationPreferences.alwaysOn') : t('renewals.manualRenewalRequired')}</p>
                         </div>
                       </div>
 
@@ -203,7 +214,7 @@ export default function RenewalsPage() {
                         <DollarSign className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                         <div>
                           <p className="text-sm font-medium">{t('billing.paymentMethod')}</p>
-                          <p className="text-xs text-muted-foreground">{renewal.paymentMethod}</p>
+                          <p className="text-xs text-muted-foreground">{t(`common.${renewal.paymentMethodKey}`)}</p>
                         </div>
                       </div>
 
@@ -211,7 +222,7 @@ export default function RenewalsPage() {
                         <Calendar className="h-5 w-5 text-blue-500 mt-0.5 flex-shrink-0" />
                         <div>
                           <p className="text-sm font-medium">{t('renewals.lastRenewed')}</p>
-                          <p className="text-xs text-muted-foreground">{format(new Date(renewal.lastRenewed), 'MMM dd, yyyy')}</p>
+                          <p className="text-xs text-muted-foreground">{formatLocalizedDate(new Date(renewal.lastRenewed))}</p>
                         </div>
                       </div>
                     </div>
@@ -242,10 +253,10 @@ export default function RenewalsPage() {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3 text-sm">
-          <p>• <strong>{t('renewals.autoRenewal')}:</strong> Never miss a renewal date - your coverage stays uninterrupted</p>
-          <p>• <strong>Review Before Renewal:</strong> Check if your coverage still meets your needs before auto-renewal</p>
-          <p>• <strong>Compare Options:</strong> You can request quotes from other insurers up to 60 days before expiry</p>
-          <p>• <strong>{t('billing.updatePaymentMethod')}:</strong> Ensure your payment method is valid to avoid renewal delays</p>
+          <p>• <strong>{t('renewals.autoRenewal')}:</strong> {t('renewals.tipAutoRenewal')}</p>
+          <p>• <strong>{t('renewals.reviewBeforeRenewal')}:</strong> {t('renewals.tipReviewBeforeRenewal')}</p>
+          <p>• <strong>{t('renewals.compareOptions')}:</strong> {t('renewals.tipCompareOptions')}</p>
+          <p>• <strong>{t('billing.updatePaymentMethod')}:</strong> {t('renewals.tipUpdatePayment')}</p>
         </CardContent>
       </Card>
     </div>

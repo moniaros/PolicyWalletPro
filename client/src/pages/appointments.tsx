@@ -117,7 +117,7 @@ export default function AppointmentsPage() {
 
   const handleConfirmAppointment = () => {
     if (!appointmentDate || !appointmentTime) {
-      toast.error(t("appointments.errorSelectDateTime") || "Please select date and time");
+      toast.error(t("appointments.errorSelectDateTime"));
       return;
     }
 
@@ -128,7 +128,7 @@ export default function AppointmentsPage() {
           : apt
       );
       saveAppointments(updated);
-      toast.success(t("appointments.appointmentUpdated") || "Appointment rescheduled!");
+      toast.success(t("appointments.appointmentUpdated"));
     } else {
       const newAppointment: BookedAppointment = {
         id: Date.now().toString(),
@@ -147,7 +147,7 @@ export default function AppointmentsPage() {
         coveredByInsurance: true,
       };
       saveAppointments([...bookedAppointments, newAppointment]);
-      toast.success(t("appointments.appointmentConfirmed") || "Appointment booked successfully!");
+      toast.success(t("appointments.appointmentConfirmed"));
     }
 
     setIsOpen(false);
@@ -168,7 +168,7 @@ export default function AppointmentsPage() {
         apt.id === appointmentToCancel.id ? { ...apt, status: "cancelled" as const } : apt
       );
       saveAppointments(updated);
-      toast.success(t("appointments.appointmentCancelled") || "Appointment cancelled");
+      toast.success(t("appointments.appointmentCancelled"));
     }
     setCancelConfirmOpen(false);
     setAppointmentToCancel(null);
@@ -217,9 +217,9 @@ export default function AppointmentsPage() {
         </div>
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogTrigger asChild>
-            <Button size="lg" className="shadow-lg shadow-primary/20" onClick={handleRequestAppointment}>
+            <Button size="lg" className="shadow-lg shadow-primary/20" onClick={handleRequestAppointment} data-testid="button-request-appointment">
               <Plus className="h-5 w-5 mr-2" />
-              {t("appointments.requestAppointment") || "Request Appointment"}
+              {t("appointments.requestAppointment")}
             </Button>
           </DialogTrigger>
           
@@ -229,10 +229,10 @@ export default function AppointmentsPage() {
                 <div className="flex items-center justify-center w-8 h-8 bg-primary text-white rounded-full text-sm font-bold">
                   {step}
                 </div>
-                {step === 1 && (t("appointments.selectPolicy") || "Select Your Policy")}
-                {step === 2 && (t("appointments.selectService") || "Select Service")}
-                {step === 3 && (t("appointments.scheduleDateTime") || "Schedule Date & Time")}
-                {step === 4 && (editingId ? t("appointments.confirmDetails") : t("appointments.additionalInfo") || "Additional Information")}
+                {step === 1 && t("appointments.selectPolicy")}
+                {step === 2 && t("appointments.selectService")}
+                {step === 3 && t("appointments.scheduleDateTime")}
+                {step === 4 && (editingId ? t("appointments.confirmDetails") : t("appointments.additionalInfo"))}
                 {step === 2 && selectedPolicy && <span className="text-primary ml-2">({selectedPolicy.type})</span>}
               </DialogTitle>
               <DialogDescription className="sr-only">Booking wizard step {step}</DialogDescription>
@@ -281,10 +281,10 @@ export default function AppointmentsPage() {
                     >
                       <CardContent className="p-4">
                         <div className="flex items-start justify-between mb-2">
-                          <h3 className="font-semibold flex items-center gap-2">
+                          <h3 className="font-semibold flex items-center gap-2 flex-wrap">
                             {service.name}
                             <Badge variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200">
-                              {t("appointments.inNetwork") || "In-Network"}
+                              {t("appointments.inNetwork")}
                             </Badge>
                           </h3>
                         </div>
@@ -360,10 +360,10 @@ export default function AppointmentsPage() {
               <>
                 <div className="space-y-4 py-4">
                   <div className="space-y-2">
-                    <label className="text-sm font-semibold">{t("appointments.reasonForVisit") || "Reason for Visit"}</label>
+                    <label className="text-sm font-semibold">{t("appointments.reasonForVisit")}</label>
                     <input
                       type="text"
-                      placeholder={t("appointments.reasonPlaceholder") || "e.g., Annual checkup, follow-up..."}
+                      placeholder={t("appointments.reasonPlaceholder")}
                       value={appointmentReason}
                       onChange={(e) => setAppointmentReason(e.target.value)}
                       className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
@@ -372,9 +372,9 @@ export default function AppointmentsPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-sm font-semibold">{t("appointments.appointmentNotes") || "Additional Notes"}</label>
+                    <label className="text-sm font-semibold">{t("appointments.appointmentNotes")}</label>
                     <textarea
-                      placeholder={t("appointments.notesPlaceholder") || "Any allergies, medications, or notes for the provider..."}
+                      placeholder={t("appointments.notesPlaceholder")}
                       value={appointmentNotes}
                       onChange={(e) => setAppointmentNotes(e.target.value)}
                       rows={3}
@@ -383,15 +383,15 @@ export default function AppointmentsPage() {
                     />
                   </div>
 
-                  <Card className="bg-blue-50 border-blue-200">
+                  <Card className="bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800">
                     <CardContent className="p-3 text-sm space-y-1">
                       <div className="flex items-start gap-2">
                         <CheckCircle2 className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                        <span className="text-blue-900">{t("appointments.coveredByInsurance") || "This appointment is covered by your insurance"}</span>
+                        <span className="text-blue-900 dark:text-blue-100">{t("appointments.coveredByInsurance")}</span>
                       </div>
                       <div className="flex items-start gap-2">
                         <Network className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                        <span className="text-blue-900">{t("appointments.inNetworkProvider") || "In-network provider - no referral needed"}</span>
+                        <span className="text-blue-900 dark:text-blue-100">{t("appointments.inNetworkProvider")}</span>
                       </div>
                     </CardContent>
                   </Card>
@@ -400,8 +400,8 @@ export default function AppointmentsPage() {
                     <Button variant="outline" onClick={() => setStep(3)} className="flex-1">
                       ← {t("common.back")}
                     </Button>
-                    <Button onClick={handleConfirmAppointment} className="flex-1 shadow-lg shadow-primary/20">
-                      {editingId ? t("appointments.updateAppointment") : t("appointments.confirmBooking") || "Confirm"}
+                    <Button onClick={handleConfirmAppointment} className="flex-1 shadow-lg shadow-primary/20" data-testid="button-confirm-booking">
+                      {editingId ? t("appointments.updateAppointment") : t("appointments.confirmBooking")}
                     </Button>
                   </div>
                 </div>
@@ -418,7 +418,7 @@ export default function AppointmentsPage() {
             <div className="flex-1">
               <input
                 type="text"
-                placeholder={t("appointments.searchPlaceholder") || "Search by service, provider, or location..."}
+                placeholder={t("appointments.searchPlaceholder")}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
@@ -464,7 +464,7 @@ export default function AppointmentsPage() {
             <Card className="border-0 shadow-sm">
               <CardContent className="p-4 text-center">
                 <div className="text-2xl font-bold text-primary">{bookedAppointments.filter(a => a.status !== "cancelled").length}</div>
-                <p className="text-xs text-muted-foreground">{t("appointments.total") || "Total"}</p>
+                <p className="text-xs text-muted-foreground">{t("appointments.total")}</p>
               </CardContent>
             </Card>
             <Card className="border-0 shadow-sm">
@@ -486,9 +486,9 @@ export default function AppointmentsPage() {
                 <CalendarIcon className="h-12 w-12 text-muted-foreground/30 mx-auto mb-4" />
                 <h3 className="font-semibold text-lg mb-2">{t("appointments.noAppointments")}</h3>
                 <p className="text-muted-foreground mb-4">{t("appointments.requestNew")}</p>
-                <Button onClick={handleRequestAppointment} size="sm">
+                <Button onClick={handleRequestAppointment} size="sm" data-testid="button-book-now">
                   <Plus className="h-4 w-4 mr-2" />
-                  {t("appointments.bookNow") || "Book Now"}
+                  {t("appointments.bookNow")}
                 </Button>
               </CardContent>
             </Card>
@@ -521,9 +521,9 @@ export default function AppointmentsPage() {
                             <h3 className="font-bold text-lg">{apt.serviceName}</h3>
                             <Badge variant="secondary" className="text-xs h-6">{apt.policyType}</Badge>
                             <Badge className={`text-xs h-6 ${apt.status === "confirmed" ? "bg-emerald-100 text-emerald-800" : apt.status === "pending" ? "bg-amber-100 text-amber-800" : "bg-red-100 text-red-800"}`}>
-                              {apt.status === "confirmed" ? "✓ " : ""}{t(`appointments.${apt.status}`) || apt.status}
+                              {apt.status === "confirmed" ? "✓ " : ""}{t(`appointments.${apt.status}`)}
                             </Badge>
-                            {isUrgent && <Badge className="text-xs h-6 bg-amber-100 text-amber-800"><AlertCircle className="h-3 w-3 mr-1" />{t("appointments.upcoming") || "Upcoming"}</Badge>}
+                            {isUrgent && <Badge className="text-xs h-6 bg-amber-100 text-amber-800"><AlertCircle className="h-3 w-3 mr-1" />{t("appointments.upcoming")}</Badge>}
                           </div>
                           <p className="text-sm font-semibold text-foreground mb-2">{apt.provider}</p>
                           {apt.reason && <p className="text-xs text-muted-foreground mb-2"><FileText className="h-3 w-3 inline mr-1" />{apt.reason}</p>}
@@ -534,20 +534,20 @@ export default function AppointmentsPage() {
                             <span className="flex items-center gap-2 bg-muted/50 px-3 py-1 rounded-lg">
                               <MapPin className="h-4 w-4" /> {apt.location}
                             </span>
-                            {apt.inNetwork && <Badge variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200"><Network className="h-3 w-3 mr-1" />{t("appointments.inNetwork") || "In-Network"}</Badge>}
+                            {apt.inNetwork && <Badge variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200"><Network className="h-3 w-3 mr-1" />{t("appointments.inNetwork")}</Badge>}
                           </div>
                         </div>
                       </div>
 
                       <div className="flex sm:flex-col gap-2 sm:items-end">
                         <Button size="sm" variant="outline" onClick={() => handleCallProvider(apt.phone)} data-testid="button-call-provider">
-                          <Phone className="h-4 w-4 mr-1" /> Call
+                          <Phone className="h-4 w-4 mr-1" /> {t("appointments.call")}
                         </Button>
                         <Button size="sm" variant="outline" onClick={() => handleRescheduleClick(apt)} data-testid="button-reschedule">
-                          <Edit2 className="h-4 w-4 mr-1" /> Reschedule
+                          <Edit2 className="h-4 w-4 mr-1" /> {t("appointments.reschedule")}
                         </Button>
                         <Button size="sm" variant="ghost" className="text-red-600 hover:text-red-700 hover:bg-red-50" onClick={() => handleCancelAppointment(apt)} data-testid="button-cancel-appointment">
-                          <Trash2 className="h-4 w-4 mr-1" /> Cancel
+                          <Trash2 className="h-4 w-4 mr-1" /> {t("appointments.cancel")}
                         </Button>
                       </div>
                     </CardContent>
@@ -563,9 +563,9 @@ export default function AppointmentsPage() {
       <Dialog open={cancelConfirmOpen} onOpenChange={setCancelConfirmOpen}>
         <DialogContent className="sm:max-w-[400px]">
           <DialogHeader>
-            <DialogTitle>{t("appointments.cancelConfirm") || "Cancel Appointment?"}</DialogTitle>
+            <DialogTitle>{t("appointments.cancelConfirm")}</DialogTitle>
             <DialogDescription>
-              {t("appointments.cancelMessage") || "Are you sure you want to cancel this appointment?"}
+              {t("appointments.cancelMessage")}
             </DialogDescription>
           </DialogHeader>
           {appointmentToCancel && (
@@ -580,7 +580,7 @@ export default function AppointmentsPage() {
               {t("common.cancel")}
             </Button>
             <Button onClick={confirmCancel} className="flex-1 bg-red-600 hover:bg-red-700" data-testid="button-confirm-cancel">
-              {t("appointments.confirm") || "Cancel Appointment"}
+              {t("appointments.confirm")}
             </Button>
           </div>
         </DialogContent>

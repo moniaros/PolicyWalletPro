@@ -34,13 +34,18 @@
     "uploadResults": "Upload Results",
     "previous": "Previous",
     "submit": "Submit",
+    "active": "Active",
+    "expired": "Expired",
     "cancel": "Cancel",
     "save": "Save",
     "close": "Close",
     "new": "New",
     "swipeToScroll": "Swipe to explore more",
     "quickActions": "Quick Actions",
-    "viewAll": "View All"
+    "viewAll": "View All",
+    "dueSoon": "Due Soon",
+    "upcoming": "Upcoming",
+    "urgent": "Urgent"
   },
   "dashboard": {
     "statusExcellent": "Excellent",
@@ -87,7 +92,11 @@
     "life": "Life Insurance",
     "business": "Business Insurance",
     "pet": "Pet Insurance",
-    "marine": "Marine Insurance"
+    "marine": "Marine Insurance",
+    "homeliability": "Home & Liability Insurance",
+    "investmentlife": "Investment Life Insurance",
+    "petinsurance": "Pet Insurance",
+    "doctorcivilliability": "Doctor Civil Liability Insurance"
   },
   "insurance": {
     "health": "Health Insurance",
@@ -154,7 +163,8 @@
     "filterAll": "All",
     "filterConfirmed": "Confirmed",
     "filterPending": "Pending",
-    "filterCancelled": "Cancelled"
+    "filterCancelled": "Cancelled",
+    "call": "Call"
   },
   "analysis": {
     "title": "Gap Analysis",
@@ -185,13 +195,26 @@
     "nextCheckupDue": "Next Checkup Due"
   },
   "profile": {
+    "yourProfile": "Your Profile",
+    "helpUnderstand": "Help us understand your situation to provide personalized recommendations",
+    "profileUpdated": "Your profile has been updated successfully",
+    "personalInfo": "Personal Information",
+    "basicDetails": "Basic details about you",
+    "fullName": "Full Name",
+    "dateOfBirth": "Date of Birth",
+    "ageGroup": "Age Group",
     "dependents": "Number of Dependents",
     "incomeRange": "Annual Household Income",
     "emergencyFund": "Emergency Fund Status",
     "healthStatus": "Health Status",
     "travelFrequency": "Travel Frequency",
     "occupationRisk": "Occupation Risk",
-    "familyStatus": "Family Status"
+    "familyStatus": "Family Status",
+    "chronicConditions": "Chronic Conditions (if applicable)",
+    "saveProfile": "Save Profile",
+    "savedSuccessfully": "Profile saved successfully!",
+    "saveFailed": "Failed to save profile",
+    "privacyNote": "Your profile helps us identify coverage gaps and recommend missing policies. This information is used only to improve your recommendations and is protected by strict privacy policies."
   },
   "agents": {
     "quoteRequests": "Quote Requests",
@@ -234,7 +257,8 @@
   "validation": {
     "required": "The {{fieldName}} field is required.",
     "invalidEmail": "Please enter a valid email address.",
-    "fillRequired": "Please fill in all required fields"
+    "fillRequired": "Please fill in all required fields",
+    "fillRequiredFields": "Please fill in all required fields"
   },
   "gapAnalysis": {
     "lifeInsurance": "Life Insurance",
@@ -268,17 +292,84 @@
     "policyRenewals": "Policy Renewals",
     "trackRenewals": "Track upcoming policy renewals and stay on top of your coverage",
     "daysUntilRenewal": "{{days}} days until renewal",
-    "renewalsSoon": "{{count}} policies renewing soon"
+    "renewalsSoon": "{{count}} policies renewing soon",
+    "manualRenewalRequired": "Manual renewal required",
+    "autoRenewal": "Auto Renewal",
+    "renewalDate": "Renewal Date",
+    "lastRenewed": "Last Renewed",
+    "viewPolicy": "View Policy",
+    "renewNow": "Renew Now",
+    "proTips": "Pro Tips",
+    "reviewBeforeRenewal": "Review Before Renewal",
+    "compareOptions": "Compare Options",
+    "tipAutoRenewal": "Never miss a renewal date - your coverage stays uninterrupted",
+    "tipReviewBeforeRenewal": "Check if your coverage still meets your needs before auto-renewal",
+    "tipCompareOptions": "You can request quotes from other insurers up to 60 days before expiry",
+    "tipUpdatePayment": "Ensure your payment method is valid to avoid renewal delays",
+    "timeUntilRenewal": "Time Until Renewal",
+    "daysCount": "{{count}} days",
+    "dueThisMonth": "Due This Month",
+    "upcoming90Days": "Upcoming (90 Days)",
+    "autoRenewEnabled": "Auto-Renew Enabled",
+    "paymentMethod": "Payment Method"
   },
   "billing": {
-    "paymentHistoryDescription": "Your 12-month payment history at a glance"
+    "paymentHistoryDescription": "Your 12-month payment history at a glance",
+    "paymentStatus": "Payment Status",
+    "paid": "Paid",
+    "reserve": "Reserve",
+    "monthly": "Monthly",
+    "semiAnnual": "Semi-Annual",
+    "annual": "Annual"
   },
   "recommendations": {
     "addDental": "Add Dental Coverage",
     "increaseLife": "Increase Life Insurance Coverage",
     "bundleDiscount": "Bundle Discount Available",
     "petInsurance": "Pet Insurance Recently Added",
-    "maximizeWellness": "Maximize Wellness Benefits"
+    "maximizeWellness": "Maximize Wellness Benefits",
+    "keyInsight": "Key Insight",
+    "costSavings": "Cost/Savings",
+    "readyToOptimize": "Ready to Optimize Your Coverage?",
+    "specialistsAvailable": "Our insurance specialists are available to discuss these recommendations",
+    "scheduleConsultation": "Schedule Consultation",
+    "high": "High Priority",
+    "medium": "Medium Priority",
+    "low": "Low Priority",
+    "savingsRange": "€495-1,062/year",
+    "itemCount": "{{count}} items"
+  },
+  "recommendations_items": {
+    "addDentalTitle": "Add Dental Coverage",
+    "addDentalDesc": "Your health policy covers basic dental, but extended procedures (orthodontics, implants) are excluded.",
+    "addDentalInsight": "Dental work costs €800-5,000 per procedure. A dedicated dental rider costs only €15/month.",
+    "addDentalImpact": "Protects against €50,000+ in potential out-of-pocket costs",
+    "addDentalAction": "Add Dental Rider",
+    "increaseLifeTitle": "Increase Life Insurance Coverage",
+    "increaseLifeDesc": "Your current life coverage (€100k) may not adequately cover your family's needs with dependents.",
+    "increaseLifeInsight": "Financial experts recommend 8-10x annual income. You need €400-500k coverage.",
+    "increaseLifeImpact": "Ensures family financial security",
+    "increaseLifeAction": "Upgrade Life Insurance",
+    "bundleDiscountTitle": "Bundle Discount Available",
+    "bundleDiscountDesc": "By combining home + auto with same provider, you qualify for 10-15% bundle discount.",
+    "bundleDiscountInsight": "Moving your Ergo home policy to your auto insurer could save €180-270/year.",
+    "bundleDiscountImpact": "€15-22/month savings with identical coverage",
+    "bundleDiscountAction": "Review Bundling Option",
+    "petInsuranceTitle": "Pet Insurance Recommended",
+    "petInsuranceDesc": "You don't have pet insurance, but vet costs are rising 8% annually in Greece.",
+    "petInsuranceInsight": "Average vet emergency: €1,500-3,000. Pet insurance starts at €12/month.",
+    "petInsuranceImpact": "Covers veterinary emergencies and routine care",
+    "petInsuranceAction": "Explore Pet Insurance",
+    "autoRenewalTitle": "Auto Policy Renewal in 18 Days",
+    "autoRenewalDesc": "Your Generali auto insurance renews Dec 15. Get quotes from competitors 30+ days before.",
+    "autoRenewalInsight": "Comparing 3 quotes typically saves 15-25% on annual premiums.",
+    "autoRenewalImpact": "Potential €400-800 savings on renewal",
+    "autoRenewalAction": "Get Renewal Quotes",
+    "wellnessTitle": "Maximize Wellness Benefits",
+    "wellnessDesc": "Your health policy includes free annual checkup + fitness reimbursement (€300/year).",
+    "wellnessInsight": "Only 22% of policyholders use these benefits. You haven't claimed yet this year.",
+    "wellnessImpact": "Access €300 fitness/wellness benefit",
+    "wellnessAction": "Claim Wellness Benefit"
   },
   "notifications": {
     "autoInsuranceRenewal": "Auto Insurance Renewal Due",
@@ -462,17 +553,30 @@
     "policyNo": "Policy No"
   },
   "admin": {
-    "monthlyClaims": "Monthly Claims",
-    "policyPortfolio": "Policy Portfolio",
-    "riskAssessment": "Risk Assessment",
-    "auditTrail": "Audit Trail",
-    "dashboard": "Admin Dashboard",
-    "enterpriseInsurance": "Enterprise insurance platform analytics and management",
+    "monthlyClaims": "Monthly Claims Report",
+    "policyPortfolio": "Policy Portfolio Analysis",
+    "riskAssessment": "Risk Assessment Report",
+    "auditTrail": "Audit Trail Log",
+    "dashboard": "Administrative Dashboard",
+    "enterpriseInsurance": "Enterprise insurance platform analytics and management.",
     "totalUsers": "Total Users",
+    "activePolicies": "Active Policies",
+    "pendingClaims": "Pending Claims",
+    "claimsApproved": "Claims Approved",
     "dataCompliance": "Data Compliance",
-    "gdprCompliance": "GDPR Compliance",
+    "gdprCompliance": "GDPR Compliance:",
     "gdprRequirements": "GDPR Requirements",
-    "securityRequirements": "Security Requirements"
+    "securityRequirements": "Security Requirements",
+    "availableReports": "Available Reports",
+    "fromLastMonth": "from last month",
+    "increasePercent": "increase",
+    "highClaimsVolume": "High Claims Volume:",
+    "highClaimsDesc": "Pending claims exceed target. Recommend prioritizing reviews.",
+    "gdprAuditDate": "All data retention policies updated. Last audit:",
+    "paymentProcessing": "Payment Processing:",
+    "paymentPendingDesc": "Integration pending - test transactions queued",
+    "approved": "Approved",
+    "rejected": "Rejected"
   },
   "actions": {
     "viewResults": "View Results",
@@ -507,7 +611,14 @@
     "policyNotFound": "Policy Not Found",
     "backToPolicies": "Back to Policies",
     "claimsHistory": "Claims History",
-    "noClaimsFiled": "No claims filed yet. Keep up the good work!"
+    "noClaimsFiled": "No claims filed yet. Keep up the good work!",
+    "quoteRequestSent": "Quote request sent to agent!",
+    "redirectingToAgent": "Redirecting to agent contact form...",
+    "completeYourProfile": "Complete Your Profile",
+    "profileRequiredForGapAnalysis": "Personalized gap analysis requires your profile information. Visit the Profile page to get started.",
+    "completeProfile": "Complete Profile",
+    "viewQuote": "View Quote",
+    "noNewProposals": "No new proposals. Your coverage is optimal!"
   },
   "gapAnalysisPage": {
     "yourInsuranceGapAnalysis": "Your Insurance Gap Analysis",
@@ -528,7 +639,26 @@
     "dentalCheckup": "Dental Checkup",
     "eyeExam": "Eye Exam",
     "cardiacScreening": "Cardiac Screening",
-    "labWork": "Lab Work"
+    "labWork": "Lab Work",
+    "healthRiskScore": "Health Risk Score",
+    "riskLevel": "Risk Level",
+    "keyFactors": "Key Factors",
+    "noMajorConditions": "No major health conditions reported",
+    "recommendedActions": "Recommended Actions",
+    "allCompleted": "All recommendations completed!",
+    "checkupHistory": "Checkup History",
+    "noCheckups": "No checkups uploaded yet",
+    "uploadFirst": "Upload your first checkup result to get started.",
+    "checkup": "Checkup",
+    "uploaded": "Uploaded",
+    "viewDetails": "View Details",
+    "coverageInfo": "Coverage Information",
+    "coverageDesc": "Your health policy covers preventive screenings 100%. Annual checkups and vaccinations are fully covered at network providers.",
+    "nextSteps": "Next Steps",
+    "nextStepsDesc": "Complete your recommended actions and upload results to get a personalized health risk assessment and savings opportunities.",
+    "moderate": "Moderate",
+    "low": "Low",
+    "high": "High"
   },
   "agentServices": {
     "servicesProvided": "Services Provided",
@@ -695,7 +825,9 @@
   "placeholders": {
     "johnDoe": "John Doe",
     "yourEmail": "your@email.com",
-    "providerExample": "e.g., Dr. Papadopoulos, Athens Medical Center"
+    "providerExample": "e.g., Dr. Papadopoulos, Athens Medical Center",
+    "fullName": "John Papadopoulos",
+    "pasteFindings": "Paste or type your checkup results..."
   },
   "messages": {
     "noActiveClaims": "No active claims. You're all good!",
@@ -802,7 +934,20 @@
     "theme": "Theme",
     "timezone": "Timezone",
     "customizeAppExperience": "Customize your app experience",
-    "policyCompletenessScores": "Policy completeness scores"
+    "policyCompletenessScores": "Policy completeness scores",
+    "technicalData": "Technical Data",
+    "carrierId": "Carrier ID",
+    "paymentFreq": "Payment Frequency",
+    "notAvailable": "N/A",
+    "monthly": "Monthly",
+    "pendingPayment": "Pending Payment",
+    "dueOn": "Due on",
+    "payNow": "Pay Now",
+    "paymentHistory": "Payment History",
+    "adjuster": "Adjuster",
+    "unassigned": "Unassigned",
+    "relation": "Relation",
+    "dob": "Date of Birth"
   },
   "agent": {
     "whatsappAndEmail": "WhatsApp & Email"
@@ -973,6 +1118,9 @@
     "highestImpact": "HIGHEST IMPACT",
     "highPriority": "HIGH PRIORITY",
     "niceToHave": "NICE-TO-HAVE",
+    "high": "High Priority",
+    "medium": "Medium Priority",
+    "low": "Low Priority",
     "letsAddIt": "Let's Add It",
     "learnMore": "Learn More",
     "recommendedByMaria": "Recommended by Maria",

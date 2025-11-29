@@ -75,10 +75,10 @@ export default function PolicyDetailsPage() {
             </Button>
           </Link>
           <div className="space-y-1">
-            <div className="flex items-center gap-3">
-              <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground">{policy.type} Insurance</h1>
+            <div className="flex items-center gap-3 flex-wrap">
+              <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground" data-testid="text-policy-title">{t(`policyTypes.${policy.type.toLowerCase().replace(/[^a-z]/g, '')}`, policy.type)}</h1>
               <Badge variant={policy.status === "Active" ? "secondary" : "destructive"} className={`${policy.status === "Active" ? "bg-emerald-100 text-emerald-800" : ""}`}>
-                {policy.status}
+                {t(`common.${policy.status.toLowerCase()}`)}
               </Badge>
             </div>
             <p className="text-muted-foreground">{policy.provider} • {policy.policyNumber}</p>
@@ -212,24 +212,24 @@ export default function PolicyDetailsPage() {
                  <CardHeader>
                     <CardTitle className="text-lg flex items-center gap-2">
                        <FileText className="h-5 w-5 text-primary" />
-                       Technical Data
+                       {t('details.technicalData')}
                     </CardTitle>
                  </CardHeader>
                  <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                     <div>
-                       <p className="text-muted-foreground text-xs uppercase">Carrier ID</p>
-                       <p className="font-mono font-medium">{policy.carrierId || "N/A"}</p>
+                       <p className="text-muted-foreground text-xs uppercase">{t('details.carrierId')}</p>
+                       <p className="font-mono font-medium">{policy.carrierId || t('details.notAvailable')}</p>
                     </div>
                     <div>
-                       <p className="text-muted-foreground text-xs uppercase">{ t('policy.lobCode') }</p>
-                       <p className="font-mono font-medium">{policy.lob || "N/A"}</p>
+                       <p className="text-muted-foreground text-xs uppercase">{t('policy.lobCode')}</p>
+                       <p className="font-mono font-medium">{policy.lob || t('details.notAvailable')}</p>
                     </div>
                     <div>
-                       <p className="text-muted-foreground text-xs uppercase">Payment Freq</p>
-                       <p className="font-medium">{policy.paymentFrequency || "Monthly"}</p>
+                       <p className="text-muted-foreground text-xs uppercase">{t('details.paymentFreq')}</p>
+                       <p className="font-medium">{policy.paymentFrequency || t('details.monthly')}</p>
                     </div>
                     <div>
-                       <p className="text-muted-foreground text-xs uppercase">{ t("details.expiration") }</p>
+                       <p className="text-muted-foreground text-xs uppercase">{t("details.expiration")}</p>
                        <p className="font-medium">{policy.expiry}</p>
                     </div>
                  </CardContent>
@@ -246,21 +246,21 @@ export default function PolicyDetailsPage() {
                <CardDescription>{t('cardDescriptions.managePaymentsHistory')}</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="bg-yellow-50 border border-yellow-100 rounded-xl p-4 mb-6 flex items-center justify-between">
+              <div className="bg-yellow-50 dark:bg-yellow-950 border border-yellow-100 dark:border-yellow-800 rounded-xl p-4 mb-6 flex items-center justify-between gap-4 flex-wrap">
                  <div className="flex items-center gap-3">
                     <AlertTriangle className="h-5 w-5 text-yellow-600" />
                     <div>
-                       <p className="font-bold text-yellow-900">Pending Payment</p>
-                       <p className="text-sm text-yellow-700">Due on {policy.details?.nextPaymentDue}</p>
+                       <p className="font-bold text-yellow-900 dark:text-yellow-100">{t('details.pendingPayment')}</p>
+                       <p className="text-sm text-yellow-700 dark:text-yellow-300">{t('details.dueOn')} {policy.details?.nextPaymentDue}</p>
                     </div>
                  </div>
                  <div className="text-right">
-                    <p className="font-bold text-lg text-yellow-900">${policy.details?.pendingPayments > 0 ? policy.details?.pendingPayments : policy.premium.replace('/mo', '')}</p>
-                    <Button size="sm" className="mt-1 h-7 text-xs bg-yellow-600 hover:bg-yellow-700 border-none text-white">Pay Now</Button>
+                    <p className="font-bold text-lg text-yellow-900 dark:text-yellow-100">${policy.details?.pendingPayments > 0 ? policy.details?.pendingPayments : policy.premium.replace('/mo', '')}</p>
+                    <Button size="sm" className="mt-1 h-7 text-xs bg-yellow-600 hover:bg-yellow-700 border-none text-white" data-testid="button-pay-now">{t('details.payNow')}</Button>
                  </div>
               </div>
 
-              <h3 className="font-semibold mb-3 text-sm uppercase text-muted-foreground tracking-wider">Payment History</h3>
+              <h3 className="font-semibold mb-3 text-sm uppercase text-muted-foreground tracking-wider">{t('details.paymentHistory')}</h3>
               <div className="space-y-2">
                  <div className="flex justify-between items-center p-3 border rounded-lg bg-white">
                     <div className="flex items-center gap-3">
@@ -320,14 +320,14 @@ export default function PolicyDetailsPage() {
                                 </Badge>
                              </div>
                              <div className="text-xs text-muted-foreground space-y-1">
-                                <p>ID: <span className="font-mono">{claim.id}</span> • Incident: {claim.incidentDate}</p>
-                                <p>Adjuster: {claim.adjuster || "Unassigned"}</p>
+                                <p>{t('policy.id')}: <span className="font-mono">{claim.id}</span> • {t('policy.incident')}: {claim.incidentDate}</p>
+                                <p>{t('details.adjuster')}: {claim.adjuster || t('details.unassigned')}</p>
                              </div>
                           </div>
                           <div className="text-right">
                              <p className="font-bold text-lg">{claim.amount}</p>
-                             <p className="text-xs text-muted-foreground">Paid: {claim.paidAmount}</p>
-                             <p className="text-xs text-muted-foreground">Reserve: {claim.reserveAmount}</p>
+                             <p className="text-xs text-muted-foreground">{t('billing.paid')}: {claim.paidAmount}</p>
+                             <p className="text-xs text-muted-foreground">{t('billing.reserve')}: {claim.reserveAmount}</p>
                           </div>
                         </div>
                         
@@ -359,7 +359,7 @@ export default function PolicyDetailsPage() {
                 <DynamicGapRecommendations 
                   analysis={enhancedGapAnalysis}
                   onQuoteRequest={() => {
-                    toast.success("Quote request sent to agent!");
+                    toast.success(t('policyDetails.quoteRequestSent'));
                   }}
                 />
              )}
@@ -368,44 +368,44 @@ export default function PolicyDetailsPage() {
                 <PolicyRecommendations 
                   analysis={gapAnalysis} 
                   onContactAgent={() => {
-                    toast.info("Redirecting to agent contact form...");
+                    toast.info(t('policyDetails.redirectingToAgent'));
                   }}
                 />
              ) : (
-                <Card className="bg-blue-50 border-blue-200">
+                <Card className="bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800">
                    <CardContent className="pt-6">
                       <div className="text-center space-y-3">
                          <AlertCircle className="h-12 w-12 text-blue-600 mx-auto" />
-                         <h3 className="font-semibold text-lg">Complete Your Profile</h3>
+                         <h3 className="font-semibold text-lg text-blue-900 dark:text-blue-100">{t('policyDetails.completeYourProfile')}</h3>
                          <p className="text-sm text-muted-foreground">
-                            Personalized gap analysis requires your profile information. Visit the Profile page to get started.
+                            {t('policyDetails.profileRequiredForGapAnalysis')}
                          </p>
                          <Link href="/profile">
-                            <Button className="mt-2">Complete Profile</Button>
+                            <Button className="mt-2" data-testid="button-complete-profile">{t('policyDetails.completeProfile')}</Button>
                          </Link>
                       </div>
                    </CardContent>
                 </Card>
              )}
 
-             <Card className="bg-indigo-50 border-indigo-100">
+             <Card className="bg-indigo-50 dark:bg-indigo-950 border-indigo-100 dark:border-indigo-800">
                 <CardHeader>
-                   <CardTitle className="text-indigo-900">{ t("details.proposals") }</CardTitle>
+                   <CardTitle className="text-indigo-900 dark:text-indigo-100">{t("details.proposals")}</CardTitle>
                 </CardHeader>
                 <CardContent>
                    {policy.details?.gapAnalysis?.proposals.length > 0 ? (
                       <ul className="space-y-3">
                          {policy.details?.gapAnalysis?.proposals.map((prop: string, i: number) => (
-                            <li key={i} className="bg-white p-3 rounded-lg shadow-sm border border-indigo-100 text-sm">
-                               <p className="font-medium text-indigo-900">{prop}</p>
-                               <Button size="sm" variant="ghost" className="mt-2 w-full text-xs text-indigo-600 hover:bg-indigo-50 h-7">
-                                  View Quote
+                            <li key={i} className="bg-white dark:bg-indigo-900 p-3 rounded-lg shadow-sm border border-indigo-100 dark:border-indigo-700 text-sm">
+                               <p className="font-medium text-indigo-900 dark:text-indigo-100">{prop}</p>
+                               <Button size="sm" variant="ghost" className="mt-2 w-full text-xs text-indigo-600 dark:text-indigo-300 h-7" data-testid={`button-view-quote-${i}`}>
+                                  {t('policyDetails.viewQuote')}
                                </Button>
                             </li>
                          ))}
                       </ul>
                    ) : (
-                      <p className="text-sm text-indigo-800">No new proposals. Your coverage is optimal!</p>
+                      <p className="text-sm text-indigo-800 dark:text-indigo-200">{t('policyDetails.noNewProposals')}</p>
                    )}
                 </CardContent>
              </Card>

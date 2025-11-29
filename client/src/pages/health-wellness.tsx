@@ -168,7 +168,7 @@ export default function HealthWellnessPage() {
                 onClick={() => setIsUploadOpen(false)}
                 data-testid="button-cancel"
               >
-                Cancel
+                {t('common.cancel')}
               </Button>
               <Button
                 onClick={() => uploadCheckupMutation.mutate()}
@@ -176,7 +176,7 @@ export default function HealthWellnessPage() {
                 className="bg-emerald-600 hover:bg-emerald-700"
                 data-testid="button-upload-checkup"
               >
-                {uploadCheckupMutation.isPending ? "Uploading..." : "Upload Results"}
+                {uploadCheckupMutation.isPending ? t('common.uploading') : t('common.uploadResults')}
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -185,11 +185,11 @@ export default function HealthWellnessPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* Risk Assessment Card */}
-        <Card className={`lg:col-span-1 border ${getRiskColor(riskAssessment?.riskScore)} shadow-md`}>
+        <Card className={`lg:col-span-1 border ${getRiskColor(riskAssessment?.riskScore)} shadow-md`} data-testid="card-risk-assessment">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <AlertCircle className="h-5 w-5" />
-              Health Risk Score
+              {t('healthWellness.healthRiskScore')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -197,14 +197,14 @@ export default function HealthWellnessPage() {
               <div className={`inline-block px-6 py-3 rounded-full text-3xl font-bold ${getRiskBadgeColor(riskAssessment?.riskScore)}`}>
                 {riskAssessment?.riskScore || 45}
               </div>
-              <p className="text-xs text-muted-foreground mt-2">{ t("health.riskAssessmentScore") }</p>
+              <p className="text-xs text-muted-foreground mt-2">{t("health.riskAssessmentScore")}</p>
             </div>
 
             <div className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span className="font-medium">{ t("health.riskLevel") }</span>
+              <div className="flex justify-between text-sm flex-wrap gap-2">
+                <span className="font-medium">{t('healthWellness.riskLevel')}</span>
                 <Badge variant="outline" className={getRiskBadgeColor(riskAssessment?.riskScore)}>
-                  {riskAssessment?.riskLevel || "Moderate"}
+                  {riskAssessment?.riskLevel || t('healthWellness.moderate')}
                 </Badge>
               </div>
               <Progress
@@ -213,8 +213,8 @@ export default function HealthWellnessPage() {
               />
             </div>
 
-            <div className="bg-white/50 p-3 rounded-lg">
-              <p className="text-xs font-medium text-muted-foreground mb-2">Key Factors</p>
+            <div className="bg-white/50 dark:bg-white/10 p-3 rounded-lg">
+              <p className="text-xs font-medium text-muted-foreground mb-2">{t('healthWellness.keyFactors')}</p>
               <ul className="space-y-1 text-xs">
                 {riskAssessment?.healthFactors?.conditions?.length ? (
                   riskAssessment.healthFactors.conditions.map((c: string, i: number) => (
@@ -226,7 +226,7 @@ export default function HealthWellnessPage() {
                 ) : (
                   <li className="flex items-center gap-1">
                     <span className="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-                    No major health conditions
+                    {t('healthWellness.noMajorConditions')}
                   </li>
                 )}
               </ul>
@@ -246,9 +246,9 @@ export default function HealthWellnessPage() {
         {/* Preventive Recommendations */}
         <div className="lg:col-span-2 space-y-6">
           <div>
-            <h2 className="text-xl font-bold flex items-center gap-2 mb-4">
+            <h2 className="text-xl font-bold flex items-center gap-2 mb-4 flex-wrap">
               <Zap className="h-5 w-5 text-primary" />
-              Recommended Actions
+              {t('healthWellness.recommendedActions')}
             </h2>
 
             {recsLoading ? (
@@ -302,7 +302,7 @@ export default function HealthWellnessPage() {
                   <Card className="bg-muted/20 border-dashed">
                     <CardContent className="flex flex-col items-center justify-center py-8 text-muted-foreground">
                       <CheckCircle2 className="h-10 w-10 mb-2 opacity-20" />
-                      <p className="text-sm">All recommendations completed!</p>
+                      <p className="text-sm">{t('healthWellness.allCompleted')}</p>
                     </CardContent>
                   </Card>
                 )}
@@ -314,9 +314,9 @@ export default function HealthWellnessPage() {
 
       {/* Checkup History */}
       <div className="space-y-4">
-        <h2 className="text-xl font-bold flex items-center gap-2">
+        <h2 className="text-xl font-bold flex items-center gap-2 flex-wrap">
           <Calendar className="h-5 w-5 text-primary" />
-          Checkup History
+          {t('healthWellness.checkupHistory')}
         </h2>
 
         {checkupsLoading ? (
@@ -343,8 +343,8 @@ export default function HealthWellnessPage() {
                         </div>
 
                         <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-1">
-                            <h3 className="font-bold">{checkup.checkupType} Checkup</h3>
+                          <div className="flex items-center gap-2 mb-1 flex-wrap">
+                            <h3 className="font-bold">{checkup.checkupType} {t('healthWellness.checkup')}</h3>
                             <Badge variant="secondary" className="text-[10px]">
                               {checkup.provider}
                             </Badge>
@@ -353,13 +353,13 @@ export default function HealthWellnessPage() {
                             <p className="text-sm text-muted-foreground">{checkup.results.substring(0, 100)}...</p>
                           )}
                           <p className="text-xs text-muted-foreground mt-2">
-                            {new Date(checkup.createdAt).toLocaleDateString()} • Uploaded
+                            {new Date(checkup.createdAt).toLocaleDateString()} • {t('healthWellness.uploaded')}
                           </p>
                         </div>
                       </div>
 
                       <Button variant="outline" size="sm" data-testid={`button-view-checkup-${checkup.id}`}>
-                        View Details
+                        {t('healthWellness.viewDetails')}
                       </Button>
                     </div>
                   </CardContent>
@@ -367,9 +367,10 @@ export default function HealthWellnessPage() {
               ))
             ) : (
               <Card className="bg-muted/20 border-dashed">
-                <CardContent className="flex flex-col items-center justify-center py-12 text-muted-foreground">
+                <CardContent className="flex flex-col items-center justify-center py-12 text-muted-foreground text-center">
                   <Activity className="h-12 w-12 mb-3 opacity-20" />
-                  <p>No checkups uploaded yet Upload your first checkup result to get started.</p>
+                  <p>{t('healthWellness.noCheckups')}</p>
+                  <p className="text-sm mt-1">{t('healthWellness.uploadFirst')}</p>
                 </CardContent>
               </Card>
             )}
@@ -379,27 +380,27 @@ export default function HealthWellnessPage() {
 
       {/* Health Insights */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Card className="bg-emerald-50 border-emerald-100">
+        <Card className="bg-emerald-50 dark:bg-emerald-950 border-emerald-100 dark:border-emerald-800" data-testid="card-coverage-info">
           <CardHeader>
-            <CardTitle className="text-emerald-900 flex items-center gap-2">
+            <CardTitle className="text-emerald-900 dark:text-emerald-100 flex items-center gap-2 flex-wrap">
               <Heart className="h-5 w-5" />
-              Coverage Info
+              {t('healthWellness.coverageInfo')}
             </CardTitle>
           </CardHeader>
-          <CardContent className="text-sm text-emerald-800">
-            <p>Your health policy covers preventive screenings 100%. Annual checkups and vaccinations are fully covered at network providers.</p>
+          <CardContent className="text-sm text-emerald-800 dark:text-emerald-200">
+            <p>{t('healthWellness.coverageDesc')}</p>
           </CardContent>
         </Card>
 
-        <Card className="bg-blue-50 border-blue-100">
+        <Card className="bg-blue-50 dark:bg-blue-950 border-blue-100 dark:border-blue-800" data-testid="card-next-steps">
           <CardHeader>
-            <CardTitle className="text-blue-900 flex items-center gap-2">
+            <CardTitle className="text-blue-900 dark:text-blue-100 flex items-center gap-2 flex-wrap">
               <Target className="h-5 w-5" />
-              Next Steps
+              {t('healthWellness.nextSteps')}
             </CardTitle>
           </CardHeader>
-          <CardContent className="text-sm text-blue-800">
-            <p>Complete your recommended actions and upload results to get a personalized health risk assessment and savings opportunities.</p>
+          <CardContent className="text-sm text-blue-800 dark:text-blue-200">
+            <p>{t('healthWellness.nextStepsDesc')}</p>
           </CardContent>
         </Card>
       </div>
