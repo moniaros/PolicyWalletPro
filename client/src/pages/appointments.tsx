@@ -14,7 +14,7 @@ import {
   DialogTrigger,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { Calendar as CalendarIcon, MapPin, Clock, Plus, Phone, Trash2, Edit2, AlertCircle, CheckCircle2, Network, FileText, Stethoscope, Timer, ChevronRight, Building2 } from "lucide-react";
+import { Calendar as CalendarIcon, MapPin, Clock, Plus, Phone, Trash2, Edit2, AlertCircle, CheckCircle2, Network, FileText, Stethoscope, Timer, ChevronRight, Building2, Sun, Sunset, Moon, CreditCard, Shield, Bell, User, Mail, MessageSquare, Info, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 
 interface BookedAppointment {
@@ -505,24 +505,74 @@ export default function AppointmentsPage() {
             {/* STEP 4: SELECT DATE & TIME */}
             {step === 4 && selectedPolicy && selectedService && (
               <>
-                <div className="space-y-6 py-4">
-                  <Card className="border-primary/20 bg-primary/5">
-                    <CardContent className="p-4 space-y-2 text-sm">
-                      <div><p className="text-xs text-muted-foreground">{t("appointments.policy")}</p><p className="font-semibold">{selectedPolicy.type}</p></div>
-                      <div><p className="text-xs text-muted-foreground">{t("appointments.service")}</p><p className="font-semibold">{selectedServiceType ? getTranslatedServiceName(selectedServiceType) : selectedService?.name}</p></div>
-                      <div><p className="text-xs text-muted-foreground">{t("appointments.provider")}</p><p className="font-semibold">{selectedService?.name}</p></div>
-                      {selectedUrgency && (
-                        <div className="flex items-center gap-2">
-                          <p className="text-xs text-muted-foreground">{t("appointments.urgencyLevel")}:</p>
-                          <Badge variant="outline" className={`text-xs ${getUrgencyColor(selectedUrgency)}`}>
-                            {t(`appointmentTypes.urgency.${selectedUrgency}`)}
-                          </Badge>
-                        </div>
-                      )}
-                    </CardContent>
-                  </Card>
+                <div className="space-y-5 py-4 max-h-[70vh] overflow-y-auto">
+                  {/* Progress Indicator */}
+                  <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
+                    <span className="flex items-center gap-1">
+                      <span className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-medium">4</span>
+                      <span className="hidden sm:inline">{t("appointments.step")} 4 {t("appointments.of")} 5</span>
+                    </span>
+                  </div>
 
-                  <div className="bg-white dark:bg-background p-3 rounded-lg border flex justify-center">
+                  {/* Section Header */}
+                  <div className="text-center space-y-1">
+                    <h3 className="font-semibold text-lg flex items-center justify-center gap-2">
+                      <CalendarIcon className="h-5 w-5 text-primary" />
+                      {t("appointments.selectDateTime")}
+                    </h3>
+                    <p className="text-sm text-muted-foreground">{t("appointments.choosePreferredSlot")}</p>
+                  </div>
+
+                  {/* Compact Summary */}
+                  <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <Stethoscope className="h-5 w-5 text-primary" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-sm truncate">{selectedServiceType ? getTranslatedServiceName(selectedServiceType) : ""}</p>
+                      <p className="text-xs text-muted-foreground truncate flex items-center gap-1">
+                        <Building2 className="h-3 w-3" />
+                        {selectedService?.name}
+                      </p>
+                    </div>
+                    {selectedUrgency && (
+                      <Badge variant="outline" className={`text-xs flex-shrink-0 ${getUrgencyColor(selectedUrgency)}`}>
+                        {t(`appointmentTypes.urgency.${selectedUrgency}`)}
+                      </Badge>
+                    )}
+                  </div>
+
+                  {/* Quick Date Selection */}
+                  <div className="space-y-2">
+                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{t("appointments.quickSelect")}</label>
+                    <div className="grid grid-cols-3 gap-2">
+                      {[
+                        { label: t("appointments.today"), days: 0 },
+                        { label: t("appointments.tomorrow"), days: 1 },
+                        { label: t("appointments.thisWeek"), days: 3 },
+                      ].map(({ label, days }) => {
+                        const targetDate = new Date();
+                        targetDate.setDate(targetDate.getDate() + days);
+                        const dateStr = `${targetDate.getFullYear()}-${String(targetDate.getMonth() + 1).padStart(2, "0")}-${String(targetDate.getDate()).padStart(2, "0")}`;
+                        const isSelected = appointmentDate === dateStr;
+                        return (
+                          <Button
+                            key={days}
+                            variant={isSelected ? "default" : "outline"}
+                            size="sm"
+                            className="min-h-[44px]"
+                            onClick={() => setAppointmentDate(dateStr)}
+                            data-testid={`button-quick-date-${days}`}
+                          >
+                            {label}
+                          </Button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Calendar */}
+                  <div className="bg-card p-3 rounded-lg border flex justify-center">
                     <DayPicker
                       mode="single"
                       selected={appointmentDate ? new Date(appointmentDate) : undefined}
@@ -535,26 +585,84 @@ export default function AppointmentsPage() {
                         }
                       }}
                       className="p-0"
-                      disabled={(date) => date < new Date()}
+                      disabled={(date) => date < new Date() || date.getDay() === 0}
                     />
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="text-sm font-semibold">{t("appointments.appointmentTime")}</label>
-                    <input
-                      type="time"
-                      value={appointmentTime}
-                      onChange={(e) => setAppointmentTime(e.target.value)}
-                      className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 min-h-[44px]"
-                      data-testid="input-appointment-time"
-                    />
+                  {/* Time Selection */}
+                  <div className="space-y-3">
+                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{t("appointments.selectTime")}</label>
+                    
+                    {/* Time Period Tabs */}
+                    <div className="grid grid-cols-3 gap-2 mb-3">
+                      {[
+                        { period: "morning", icon: Sun, times: ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30"] },
+                        { period: "afternoon", icon: Sunset, times: ["12:00", "12:30", "13:00", "14:00", "14:30", "15:00"] },
+                        { period: "evening", icon: Moon, times: ["16:00", "16:30", "17:00", "17:30", "18:00", "18:30"] },
+                      ].map(({ period, icon: Icon }) => (
+                        <div key={period} className="text-center">
+                          <div className="flex flex-col items-center gap-1 p-2 rounded-lg bg-muted/30">
+                            <Icon className="h-4 w-4 text-muted-foreground" />
+                            <span className="text-xs text-muted-foreground">{t(`appointments.${period}`)}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Time Slots Grid */}
+                    <div className="grid grid-cols-4 gap-2">
+                      {["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "14:00", "14:30", "15:00", "16:00", "17:00"].map((time) => {
+                        const isSelected = appointmentTime === time;
+                        return (
+                          <Button
+                            key={time}
+                            variant={isSelected ? "default" : "outline"}
+                            size="sm"
+                            className={`min-h-[44px] text-sm font-medium ${isSelected ? "ring-2 ring-primary ring-offset-2" : ""}`}
+                            onClick={() => setAppointmentTime(time)}
+                            data-testid={`button-time-${time.replace(":", "")}`}
+                          >
+                            {time}
+                          </Button>
+                        );
+                      })}
+                    </div>
                   </div>
 
-                  <div className="flex gap-2">
-                    <Button variant="outline" onClick={() => setStep(3)} className="flex-1 min-h-[44px]" data-testid="button-back-step3">
+                  {/* Selected Slot Summary */}
+                  {(appointmentDate || appointmentTime) && (
+                    <Card className="border-primary/30 bg-primary/5">
+                      <CardContent className="p-3">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+                            <Clock className="h-5 w-5 text-primary" />
+                          </div>
+                          <div className="flex-1">
+                            <p className="text-xs text-muted-foreground">{t("appointments.selectedSlot")}</p>
+                            <p className="font-semibold">
+                              {appointmentDate ? new Date(appointmentDate).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : t("appointments.noDateSelected")}
+                              {appointmentTime && ` • ${appointmentTime}`}
+                            </p>
+                          </div>
+                          {appointmentDate && appointmentTime && (
+                            <CheckCircle2 className="h-5 w-5 text-green-500" />
+                          )}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {/* Navigation Buttons */}
+                  <div className="flex gap-3 pt-2">
+                    <Button variant="outline" onClick={() => setStep(3)} className="flex-1 min-h-[48px]" data-testid="button-back-step3">
                       ← {t("common.back")}
                     </Button>
-                    <Button onClick={() => setStep(5)} className="flex-1 shadow-lg shadow-primary/20 min-h-[44px]" data-testid="button-next-step5">
+                    <Button 
+                      onClick={() => setStep(5)} 
+                      className="flex-1 min-h-[48px] shadow-lg shadow-primary/20"
+                      disabled={!appointmentDate || !appointmentTime}
+                      data-testid="button-next-step5"
+                    >
                       {t("common.next")} →
                     </Button>
                   </div>
@@ -565,58 +673,179 @@ export default function AppointmentsPage() {
             {/* STEP 5: ADDITIONAL INFO & CONFIRM */}
             {step === 5 && selectedPolicy && selectedService && appointmentDate && appointmentTime && (
               <>
-                <div className="space-y-4 py-4">
-                  <Card className="border-primary/20 bg-primary/5">
-                    <CardContent className="p-3 space-y-1 text-sm">
-                      <div className="flex justify-between"><span className="text-muted-foreground">{t("appointments.service")}</span><span className="font-semibold">{selectedServiceType ? getTranslatedServiceName(selectedServiceType) : ""}</span></div>
-                      <div className="flex justify-between"><span className="text-muted-foreground">{t("appointments.provider")}</span><span className="font-semibold">{selectedService?.name}</span></div>
-                      <div className="flex justify-between"><span className="text-muted-foreground">{t("appointments.date")}</span><span className="font-semibold">{appointmentDate}</span></div>
-                      <div className="flex justify-between"><span className="text-muted-foreground">{t("appointments.time")}</span><span className="font-semibold">{appointmentTime}</span></div>
+                <div className="space-y-5 py-4 max-h-[70vh] overflow-y-auto">
+                  {/* Progress Indicator */}
+                  <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
+                    <span className="flex items-center gap-1">
+                      <span className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-medium">5</span>
+                      <span className="hidden sm:inline">{t("appointments.step")} 5 {t("appointments.of")} 5</span>
+                    </span>
+                  </div>
+
+                  {/* Section Header */}
+                  <div className="text-center space-y-1">
+                    <div className="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto mb-2">
+                      <Sparkles className="h-6 w-6 text-green-600 dark:text-green-400" />
+                    </div>
+                    <h3 className="font-semibold text-lg">{t("appointments.reviewAndConfirm")}</h3>
+                    <p className="text-sm text-muted-foreground">{t("appointments.almostDone")}</p>
+                  </div>
+
+                  {/* Appointment Summary Card */}
+                  <Card className="border-2 border-primary/20 overflow-hidden">
+                    <div className="bg-gradient-to-r from-primary/10 to-primary/5 px-4 py-2 border-b">
+                      <h4 className="font-medium text-sm flex items-center gap-2">
+                        <FileText className="h-4 w-4 text-primary" />
+                        {t("appointments.appointmentSummary")}
+                      </h4>
+                    </div>
+                    <CardContent className="p-4 space-y-4">
+                      {/* Service & Provider */}
+                      <div className="flex items-start gap-3">
+                        <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                          <Stethoscope className="h-5 w-5 text-primary" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-semibold">{selectedServiceType ? getTranslatedServiceName(selectedServiceType) : ""}</p>
+                          <p className="text-sm text-muted-foreground flex items-center gap-1">
+                            <Building2 className="h-3 w-3" />
+                            {selectedService?.name}
+                          </p>
+                        </div>
+                        {selectedUrgency && (
+                          <Badge variant="outline" className={`text-xs ${getUrgencyColor(selectedUrgency)}`}>
+                            {t(`appointmentTypes.urgency.${selectedUrgency}`)}
+                          </Badge>
+                        )}
+                      </div>
+
+                      {/* Divider */}
+                      <div className="border-t border-dashed" />
+
+                      {/* Date & Time */}
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-9 h-9 rounded-lg bg-muted flex items-center justify-center">
+                            <CalendarIcon className="h-4 w-4 text-muted-foreground" />
+                          </div>
+                          <div>
+                            <p className="text-xs text-muted-foreground">{t("appointments.date")}</p>
+                            <p className="font-medium text-sm">
+                              {new Date(appointmentDate).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="w-9 h-9 rounded-lg bg-muted flex items-center justify-center">
+                            <Clock className="h-4 w-4 text-muted-foreground" />
+                          </div>
+                          <div>
+                            <p className="text-xs text-muted-foreground">{t("appointments.time")}</p>
+                            <p className="font-medium text-sm">{appointmentTime}</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Location */}
+                      <div className="flex items-center gap-3 p-2 bg-muted/30 rounded-lg">
+                        <MapPin className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                        <p className="text-sm">{selectedService?.location}</p>
+                      </div>
                     </CardContent>
                   </Card>
 
-                  <div className="space-y-2">
-                    <label className="text-sm font-semibold">{t("appointments.reasonForVisit")}</label>
-                    <input
-                      type="text"
-                      placeholder={t("appointments.reasonPlaceholder")}
-                      value={appointmentReason}
-                      onChange={(e) => setAppointmentReason(e.target.value)}
-                      className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 min-h-[44px]"
-                      data-testid="input-appointment-reason"
-                    />
+                  {/* Visit Details Form */}
+                  <div className="space-y-4">
+                    <h4 className="font-medium text-sm flex items-center gap-2 text-muted-foreground">
+                      <MessageSquare className="h-4 w-4" />
+                      {t("appointments.visitDetails")}
+                    </h4>
+
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">{t("appointments.reasonForVisit")}</label>
+                      <input
+                        type="text"
+                        placeholder={t("appointments.reasonPlaceholder")}
+                        value={appointmentReason}
+                        onChange={(e) => setAppointmentReason(e.target.value)}
+                        className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 min-h-[48px] bg-background"
+                        data-testid="input-appointment-reason"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">{t("appointments.appointmentNotes")}</label>
+                      <textarea
+                        placeholder={t("appointments.notesPlaceholder")}
+                        value={appointmentNotes}
+                        onChange={(e) => setAppointmentNotes(e.target.value)}
+                        rows={3}
+                        className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none bg-background"
+                        data-testid="textarea-appointment-notes"
+                      />
+                    </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="text-sm font-semibold">{t("appointments.appointmentNotes")}</label>
-                    <textarea
-                      placeholder={t("appointments.notesPlaceholder")}
-                      value={appointmentNotes}
-                      onChange={(e) => setAppointmentNotes(e.target.value)}
-                      rows={3}
-                      className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
-                      data-testid="textarea-appointment-notes"
-                    />
-                  </div>
-
-                  <Card className="bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800">
-                    <CardContent className="p-3 text-sm space-y-1">
-                      <div className="flex items-start gap-2">
-                        <CheckCircle2 className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                        <span className="text-blue-900 dark:text-blue-100">{t("appointments.coveredByInsurance")}</span>
+                  {/* Insurance & Coverage Card */}
+                  <Card className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 border-green-200 dark:border-green-800">
+                    <CardContent className="p-4">
+                      <div className="flex items-start gap-3">
+                        <div className="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/50 flex items-center justify-center flex-shrink-0">
+                          <Shield className="h-5 w-5 text-green-600 dark:text-green-400" />
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-semibold text-green-900 dark:text-green-100 flex items-center gap-2">
+                            {t("appointments.insuranceCoverage")}
+                            <Badge className="bg-green-600 text-white text-xs">{t("appointments.fullyCovaried")}</Badge>
+                          </h4>
+                          <p className="text-sm text-green-700 dark:text-green-300 mt-1">{t("appointments.noOutOfPocket")}</p>
+                        </div>
                       </div>
-                      <div className="flex items-start gap-2">
-                        <Network className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                        <span className="text-blue-900 dark:text-blue-100">{t("appointments.inNetworkProvider")}</span>
+
+                      <div className="mt-4 pt-3 border-t border-green-200 dark:border-green-800 grid grid-cols-2 gap-3">
+                        <div className="flex items-center gap-2 text-sm text-green-800 dark:text-green-200">
+                          <CheckCircle2 className="h-4 w-4 text-green-600 flex-shrink-0" />
+                          <span>{t("appointments.inNetwork")}</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-green-800 dark:text-green-200">
+                          <CreditCard className="h-4 w-4 text-green-600 flex-shrink-0" />
+                          <span>{t("appointments.coveredByInsurance")}</span>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
 
-                  <div className="flex gap-2">
-                    <Button variant="outline" onClick={() => setStep(4)} className="flex-1 min-h-[44px]" data-testid="button-back-step4">
+                  {/* What to Expect */}
+                  <div className="bg-muted/30 rounded-lg p-4 space-y-3">
+                    <h4 className="font-medium text-sm flex items-center gap-2">
+                      <Info className="h-4 w-4 text-muted-foreground" />
+                      {t("appointments.whatToExpect")}
+                    </h4>
+                    <div className="space-y-2">
+                      {[
+                        { icon: User, text: t("appointments.bringId") },
+                        { icon: Clock, text: t("appointments.arriveEarly") },
+                        { icon: Bell, text: t("appointments.confirmationSent") },
+                      ].map(({ icon: Icon, text }, idx) => (
+                        <div key={idx} className="flex items-center gap-3 text-sm text-muted-foreground">
+                          <Icon className="h-4 w-4 flex-shrink-0" />
+                          <span>{text}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Navigation Buttons */}
+                  <div className="flex gap-3 pt-2">
+                    <Button variant="outline" onClick={() => setStep(4)} className="flex-1 min-h-[48px]" data-testid="button-back-step4">
                       ← {t("common.back")}
                     </Button>
-                    <Button onClick={handleConfirmAppointment} className="flex-1 shadow-lg shadow-primary/20 min-h-[44px]" data-testid="button-confirm-booking">
+                    <Button 
+                      onClick={handleConfirmAppointment} 
+                      className="flex-1 min-h-[48px] shadow-lg shadow-primary/20 bg-gradient-to-r from-primary to-primary/90"
+                      data-testid="button-confirm-booking"
+                    >
+                      <CheckCircle2 className="h-4 w-4 mr-2" />
                       {editingId ? t("appointments.updateAppointment") : t("appointments.confirmBooking")}
                     </Button>
                   </div>

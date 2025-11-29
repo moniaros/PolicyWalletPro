@@ -39,6 +39,31 @@ Cross-platform insurance policy wallet for Greek/European insurers (Ethniki, Gen
 3. ✅ **Mobile Bottom Nav** - min-h-[44px] on all navigation items
 4. ✅ **Responsive Layouts** - flex-col md:flex-row patterns throughout
 
+### Enhanced Appointment Booking Wizard (Latest)
+**5-Step Professional Booking Flow:**
+1. ✅ **Step 1: Policy Selection** - Choose from active insurance policies
+2. ✅ **Step 2: Service Type Selection** - 50 appointment types (10 per policy category) with urgency badges, duration estimates, full i18n
+3. ✅ **Step 3: Provider Selection** - In-network provider cards with urgency level selector
+4. ✅ **Step 4: Date & Time Selection** (Enhanced)
+   - Progress indicator showing step 4 of 5
+   - Compact service/provider summary with urgency badge
+   - Quick date selection buttons (Today, Tomorrow, This Week)
+   - Visual calendar with disabled past dates and Sundays
+   - Time period icons (Morning/Afternoon/Evening)
+   - Visual time slot grid with 12 preset options
+   - Selected slot summary card with formatted date
+   - 48px touch targets on all buttons
+5. ✅ **Step 5: Review & Confirm** (Enhanced)
+   - Sparkle icon celebration header
+   - Professional appointment summary card with gradient header
+   - Service, provider, date/time with icons
+   - Location display with map pin
+   - Visit details form (reason + notes)
+   - Insurance coverage card with green gradient
+   - "Fully Covered" badge and no out-of-pocket messaging
+   - "What to Expect" section with 3 helpful tips
+   - Gradient confirm button with checkmark icon
+
 ### NEW COMPETITIVE FEATURES (Turn 2-3)
 1. ✅ **Policy Renewal Tracker** (`/renewals`)
    - Calendar-based renewal timeline
