@@ -9,6 +9,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Shield, AlertCircle, Mail, Lock, Chrome, Apple, Loader2, CheckCircle, Users, TrendingUp, MessageCircle, Phone, Star, Award, ShieldCheck } from "lucide-react";
 import { FormInputWithValidation } from "@/components/form-input-with-validation";
+import { SignupFlowModal } from "@/components/signup-flow-modal";
 import { toast } from "sonner";
 
 const emailValidator = (email: string): string | null => {
@@ -45,6 +46,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [socialLoading, setSocialLoading] = useState<string | null>(null);
+  const [showSignupFlow, setShowSignupFlow] = useState(false);
 
   const mutation = useMutation({
     mutationFn: async () => {
@@ -68,7 +70,11 @@ export default function LoginPage() {
       toast.success(t('login.welcome'), {
         description: isLogin ? t('login.signedIn') : t('login.accountCreated')
       });
-      setLocation("/");
+      if (!isLogin) {
+        setShowSignupFlow(true);
+      } else {
+        setLocation("/");
+      }
     },
     onError: (err: any) => {
       setError(err.message);
@@ -112,7 +118,23 @@ export default function LoginPage() {
     }
   };
 
+  const handleSignupFlowComplete = () => {
+    setShowSignupFlow(false);
+    localStorage.setItem("signup_flow_completed", "true");
+    setLocation("/");
+  };
+
   return (
+    <>
+      <SignupFlowModal 
+        isOpen={showSignupFlow} 
+        onClose={() => {
+          setShowSignupFlow(false);
+          setLocation("/");
+        }}
+        onComplete={handleSignupFlowComplete}
+      />
+      
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-emerald-50">
       {/* Trust Banner - Top */}
       <div className="bg-gradient-to-r from-blue-600 via-blue-700 to-emerald-600 text-white py-3 px-4">
@@ -211,16 +233,16 @@ export default function LoginPage() {
                       ))}
                     </div>
                   </div>
-                  <p className="text-blue-100 text-sm">Your dedicated insurance specialist</p>
-                  <p className="text-white/80 text-sm mt-2">12 years experience • Athens • 1,200+ clients helped</p>
-                  <div className="flex items-center gap-3 mt-3">
+                  <p className="text-blue-100 text-sm" data-testid="text-agent-role">{t('login.agentSpecialist')}</p>
+                  <p className="text-white/80 text-sm mt-2" data-testid="text-agent-stats">{t('login.agentStats')}</p>
+                  <div className="flex items-center gap-3 mt-3 flex-wrap">
                     <div className="flex items-center gap-1 text-xs text-emerald-300">
                       <div className="h-2 w-2 bg-emerald-400 rounded-full animate-pulse" />
-                      <span>Online Now</span>
+                      <span data-testid="text-agent-online">{t('login.onlineNow')}</span>
                     </div>
-                    <Button size="sm" variant="secondary" className="h-8 text-xs bg-white/20 hover:bg-white/30 border-0">
+                    <Button size="sm" variant="secondary" className="h-8 text-xs bg-white/20 hover:bg-white/30 border-0" data-testid="button-chat-agent">
                       <MessageCircle className="h-3 w-3 mr-1" />
-                      Chat with Maria
+                      {t('login.chatWithMaria')}
                     </Button>
                   </div>
                 </div>
@@ -535,5 +557,6 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }
