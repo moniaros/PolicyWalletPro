@@ -105,20 +105,12 @@ export default function AppointmentsPage() {
 
   const getFieldLabel = (labelKey: string): string => {
     const key = labelKey.replace("fields.", "");
-    const translated = t(`fields.${key}`, { defaultValue: "" });
-    if (!translated || translated === `fields.${key}`) {
-      return key.split(/(?=[A-Z])/).join(" ").replace(/^./, (c) => c.toUpperCase());
-    }
-    return translated;
+    return t(`fields.${key}`);
   };
 
   const getOptionLabel = (labelKey: string): string => {
     const key = labelKey.replace("fields.options.", "");
-    const translated = t(`fields.options.${key}`, { defaultValue: "" });
-    if (!translated || translated === `fields.options.${key}`) {
-      return key.split(/(?=[A-Z])/).join(" ").replace(/^./, (c) => c.toUpperCase());
-    }
-    return translated;
+    return t(`fields.options.${key}`);
   };
 
   const renderFormField = (field: any) => {
@@ -250,6 +242,14 @@ export default function AppointmentsPage() {
       setAppointmentTime(apt.time);
       setAppointmentReason(apt.reason || "");
       setAppointmentNotes(apt.notes || "");
+      setSelectedUrgency(apt.urgency || "routine");
+      setFormData(apt.formData || {});
+      const serviceType = appointmentServiceTypes[apt.policyType]?.find(
+        (st: AppointmentServiceType) => st.id === apt.serviceTypeId
+      );
+      if (serviceType) {
+        setSelectedServiceType(serviceType);
+      }
       setEditingId(apt.id);
       setStep(4);
       setIsOpen(true);
