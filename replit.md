@@ -59,10 +59,16 @@ Cross-platform insurance policy wallet for Greek/European insurers (Ethniki, Gen
    - Service, provider, date/time with icons
    - Location display with map pin
    - Visit details form (reason + notes)
+   - **Dynamic Service-Specific Forms**: renderFormField() supporting 6 input types
+     - Uses shadcn components: Input, Textarea, Select, Checkbox, Label
+     - Supports: text, textarea, select, checkbox, date, phone fields
+     - formData state persisted with booked appointments
+     - Full i18n with fields.* and fields.options.* translation keys
    - Insurance coverage card with green gradient
    - "Fully Covered" badge and no out-of-pocket messaging
    - "What to Expect" section with 3 helpful tips
    - Gradient confirm button with checkmark icon
+   - **Mobile UX**: Sticky bottom button (48px) + header icon button for quick access
 
 ### NEW COMPETITIVE FEATURES (Turn 2-3)
 1. ✅ **Policy Renewal Tracker** (`/renewals`) - ENHANCED
