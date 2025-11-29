@@ -1,10 +1,30 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, AlertCircle, CheckCircle2, Clock, DollarSign, Bell, ArrowRight } from "lucide-react";
-import { Progress } from "@/components/ui/progress";
+import { 
+  Calendar, 
+  AlertCircle, 
+  CheckCircle2, 
+  Clock, 
+  CreditCard, 
+  Bell, 
+  ArrowRight, 
+  RefreshCw, 
+  Shield, 
+  TrendingUp,
+  ChevronRight,
+  Zap,
+  Info,
+  CalendarDays,
+  Timer,
+  Sparkles,
+  Car,
+  Home,
+  Heart,
+  Plane
+} from "lucide-react";
 
 const renewalData = [
   {
@@ -31,7 +51,7 @@ const renewalData = [
     renewalDate: new Date(2025, 11, 15),
     premiumAmount: 320,
     premiumPeriodKey: "semiAnnual",
-    statusKey: "dueSoon",
+    statusKey: "urgent",
     daysUntilRenewal: 18,
     lastRenewed: "2024-06-15",
     autoRenew: true,
@@ -51,12 +71,27 @@ const renewalData = [
     lastRenewed: "2024-03-20",
     autoRenew: true,
     paymentMethodKey: "creditCard"
+  },
+  {
+    id: 4,
+    policyNumber: "ETH-LIFE-223",
+    provider: "Ethniki",
+    typeKey: "life",
+    currentExpiry: new Date(2026, 5, 1),
+    renewalDate: new Date(2026, 5, 1),
+    premiumAmount: 85,
+    premiumPeriodKey: "monthly",
+    statusKey: "upcoming",
+    daysUntilRenewal: 185,
+    lastRenewed: "2024-06-01",
+    autoRenew: false,
+    paymentMethodKey: "bankTransfer"
   }
 ];
 
 export default function RenewalsPage() {
   const { t, i18n } = useTranslation();
-  const [selectedRenewal, setSelectedRenewal] = useState<typeof renewalData[0] | null>(null);
+  const [activeFilter, setActiveFilter] = useState<"all" | "urgent" | "thisMonth" | "upcoming">("all");
 
   const formatLocalizedDate = (date: Date) => {
     const locale = i18n.language === 'el' ? 'el-GR' : 'en-US';
@@ -67,196 +102,403 @@ export default function RenewalsPage() {
     }).format(date);
   };
 
+  const formatShortDate = (date: Date) => {
+    const locale = i18n.language === 'el' ? 'el-GR' : 'en-US';
+    return new Intl.DateTimeFormat(locale, { 
+      month: 'short', 
+      day: 'numeric' 
+    }).format(date);
+  };
+
+  const formatCurrency = (amount: number) => {
+    const locale = i18n.language === 'el' ? 'el-GR' : 'en-US';
+    return new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency: 'EUR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(amount);
+  };
+
   const getStatusColor = (statusKey: string) => {
     switch (statusKey) {
-      case "dueSoon": 
-      case "urgent": return "bg-red-100 text-red-800 border-red-200";
-      case "upcoming": return "bg-yellow-100 text-yellow-800 border-yellow-200";
-      default: return "bg-emerald-100 text-emerald-800 border-emerald-200";
+      case "urgent": return "bg-red-100 text-red-700 border-red-200 dark:bg-red-900/30 dark:text-red-400 dark:border-red-800";
+      case "dueSoon": return "bg-amber-100 text-amber-700 border-amber-200 dark:bg-amber-900/30 dark:text-amber-400 dark:border-amber-800";
+      case "upcoming": return "bg-emerald-100 text-emerald-700 border-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-400 dark:border-emerald-800";
+      default: return "bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800";
     }
   };
 
   const getStatusIcon = (statusKey: string) => {
     switch (statusKey) {
-      case "dueSoon":
       case "urgent":
-        return <AlertCircle className="h-4 w-4" />;
+        return <AlertCircle className="h-4 w-4" aria-hidden="true" />;
+      case "dueSoon":
+        return <Clock className="h-4 w-4" aria-hidden="true" />;
       case "upcoming":
-        return <Clock className="h-4 w-4" />;
+        return <CalendarDays className="h-4 w-4" aria-hidden="true" />;
       default:
-        return <CheckCircle2 className="h-4 w-4" />;
+        return <CheckCircle2 className="h-4 w-4" aria-hidden="true" />;
+    }
+  };
+
+  const getPolicyIcon = (typeKey: string) => {
+    switch (typeKey) {
+      case "health": return <Heart className="h-5 w-5" aria-hidden="true" />;
+      case "auto": return <Car className="h-5 w-5" aria-hidden="true" />;
+      case "home": return <Home className="h-5 w-5" aria-hidden="true" />;
+      case "travel": return <Plane className="h-5 w-5" aria-hidden="true" />;
+      default: return <Shield className="h-5 w-5" aria-hidden="true" />;
     }
   };
 
   const getProgressColor = (daysUntilRenewal: number) => {
-    if (daysUntilRenewal <= 7) return "bg-red-500";
-    if (daysUntilRenewal <= 30) return "bg-yellow-500";
-    return "bg-emerald-500";
+    if (daysUntilRenewal <= 14) return "bg-red-500 dark:bg-red-600";
+    if (daysUntilRenewal <= 30) return "bg-amber-500 dark:bg-amber-600";
+    return "bg-emerald-500 dark:bg-emerald-600";
   };
 
   const getProgressPercentage = (daysUntilRenewal: number) => {
-    return Math.min(100, Math.max(0, (daysUntilRenewal / 180) * 100));
+    const maxDays = 180;
+    return Math.min(100, Math.max(5, ((maxDays - daysUntilRenewal) / maxDays) * 100));
   };
 
+  const getStatusLabel = (daysUntilRenewal: number) => {
+    if (daysUntilRenewal <= 14) return t('renewals.urgent');
+    if (daysUntilRenewal <= 30) return t('renewals.dueThisMonth');
+    return t('renewals.upcoming90Days');
+  };
+
+  const filteredRenewals = renewalData.filter(r => {
+    if (activeFilter === "all") return true;
+    if (activeFilter === "urgent") return r.daysUntilRenewal <= 14;
+    if (activeFilter === "thisMonth") return r.daysUntilRenewal <= 30;
+    if (activeFilter === "upcoming") return r.daysUntilRenewal > 30;
+    return true;
+  });
+
+  const urgentCount = renewalData.filter(r => r.daysUntilRenewal <= 14).length;
+  const thisMonthCount = renewalData.filter(r => r.daysUntilRenewal <= 30).length;
+  const autoRenewCount = renewalData.filter(r => r.autoRenew).length;
+  const totalPremiums = renewalData.reduce((sum, r) => sum + r.premiumAmount, 0);
+  const nextRenewal = renewalData.reduce((min, r) => r.daysUntilRenewal < min.daysUntilRenewal ? r : min, renewalData[0]);
+
   return (
-    <div className="space-y-8 pb-10">
+    <div className="space-y-6 pb-10">
       {/* Header */}
       <div className="space-y-2">
-        <h1 className="text-4xl font-bold tracking-tight">{t('renewals.policyRenewals')}</h1>
-        <p className="text-lg text-muted-foreground">
-          {t('renewals.trackRenewals')}
-        </p>
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center">
+            <RefreshCw className="h-6 w-6 text-primary-foreground" aria-hidden="true" />
+            <span className="sr-only">{t('renewals.policyRenewals')}</span>
+          </div>
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight">{t('renewals.policyRenewals')}</h1>
+            <p className="text-sm text-muted-foreground">{t('renewals.trackRenewals')}</p>
+          </div>
+        </div>
       </div>
 
-      {/* Renewal Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <Card className="bg-gradient-to-br from-red-50 to-red-100 border-red-200">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-red-600 font-medium uppercase">{t('renewals.dueThisMonth')}</p>
-                <p className="text-3xl font-bold text-red-900 mt-1">2</p>
+      {/* Quick Stats Row */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        {/* Next Renewal */}
+        <Card className="border-l-4 border-l-amber-500 dark:border-l-amber-400" data-testid="card-next-renewal">
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center flex-shrink-0">
+                <Timer className="h-5 w-5 text-amber-600 dark:text-amber-400" aria-hidden="true" />
+                <span className="sr-only">{t('renewals.nextRenewal')}</span>
               </div>
-              <AlertCircle className="h-12 w-12 text-red-400 opacity-50" />
+              <div className="min-w-0">
+                <p className="text-xs text-muted-foreground uppercase tracking-wide">{t('renewals.nextRenewal')}</p>
+                <p className="text-xl font-bold">{t('renewals.daysCount', { count: nextRenewal.daysUntilRenewal })}</p>
+              </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-yellow-50 to-yellow-100 border-yellow-200">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-yellow-600 font-medium uppercase">{t('renewals.upcoming90Days')}</p>
-                <p className="text-3xl font-bold text-yellow-900 mt-1">1</p>
+        {/* Due This Month */}
+        <Card className="border-l-4 border-l-red-500 dark:border-l-red-400" data-testid="card-due-this-month">
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center flex-shrink-0">
+                <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400" aria-hidden="true" />
+                <span className="sr-only">{t('renewals.dueThisMonth')}</span>
               </div>
-              <Calendar className="h-12 w-12 text-yellow-400 opacity-50" />
+              <div className="min-w-0">
+                <p className="text-xs text-muted-foreground uppercase tracking-wide">{t('renewals.dueThisMonth')}</p>
+                <p className="text-xl font-bold">{thisMonthCount}</p>
+              </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-emerald-50 to-emerald-100 border-emerald-200">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-emerald-600 font-medium uppercase">{t('renewals.autoRenewEnabled')}</p>
-                <p className="text-3xl font-bold text-emerald-900 mt-1">3</p>
+        {/* Auto-Renew */}
+        <Card className="border-l-4 border-l-emerald-500 dark:border-l-emerald-400" data-testid="card-auto-renew">
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center flex-shrink-0">
+                <CheckCircle2 className="h-5 w-5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
+                <span className="sr-only">{t('renewals.autoRenewEnabled')}</span>
               </div>
-              <CheckCircle2 className="h-12 w-12 text-emerald-400 opacity-50" />
+              <div className="min-w-0">
+                <p className="text-xs text-muted-foreground uppercase tracking-wide">{t('renewals.autoRenewEnabled')}</p>
+                <p className="text-xl font-bold">{autoRenewCount}/{renewalData.length}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Total Premiums */}
+        <Card className="border-l-4 border-l-primary" data-testid="card-total-premiums">
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-primary/10 dark:bg-primary/20 flex items-center justify-center flex-shrink-0">
+                <TrendingUp className="h-5 w-5 text-primary" aria-hidden="true" />
+                <span className="sr-only">{t('renewals.totalPremiums')}</span>
+              </div>
+              <div className="min-w-0">
+                <p className="text-xs text-muted-foreground uppercase tracking-wide">{t('renewals.totalPremiums')}</p>
+                <p className="text-xl font-bold">{formatCurrency(totalPremiums)}</p>
+              </div>
             </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Renewals List */}
+      {/* Filter Tabs */}
+      <div className="flex flex-wrap gap-2">
+        {[
+          { key: "all", label: t('renewals.allPolicies'), count: renewalData.length },
+          { key: "urgent", label: t('renewals.urgent'), count: urgentCount },
+          { key: "thisMonth", label: t('renewals.thisMonth'), count: thisMonthCount },
+          { key: "upcoming", label: t('renewals.next3Months'), count: renewalData.length - thisMonthCount },
+        ].map(({ key, label, count }) => (
+          <Button
+            key={key}
+            variant={activeFilter === key ? "default" : "outline"}
+            className="min-h-[44px] gap-2"
+            onClick={() => setActiveFilter(key as typeof activeFilter)}
+            data-testid={`button-filter-${key}`}
+          >
+            {label}
+            <Badge variant="secondary" className={`text-xs ${activeFilter === key ? "bg-primary-foreground/20 text-primary-foreground" : ""}`}>
+              {count}
+            </Badge>
+          </Button>
+        ))}
+      </div>
+
+      {/* Renewals Timeline */}
       <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold">{t('renewals.policyRenewals')}</h2>
-          <Badge variant="outline" className="text-sm">
-            <Bell className="h-3 w-3 mr-1" />
-            {t('notifications.title')}
-          </Badge>
+        <div className="flex items-center justify-between gap-2 flex-wrap">
+          <h2 className="text-lg font-semibold flex items-center gap-2">
+            <Calendar className="h-5 w-5 text-primary" aria-hidden="true" />
+            {t('renewals.renewalTimeline')}
+          </h2>
+          <Button variant="ghost" className="text-sm gap-1 min-h-[44px]" data-testid="button-set-reminder">
+            <Bell className="h-4 w-4" aria-hidden="true" />
+            {t('renewals.setReminder')}
+          </Button>
         </div>
 
-        <div className="grid gap-4">
-          {renewalData.map((renewal) => (
-            <Card key={renewal.id} className="hover:shadow-lg transition-shadow border-l-4 border-l-primary">
-              <CardContent className="p-6">
-                <div className="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-2 gap-6">
-                  {/* Left side */}
-                  <div className="space-y-4">
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <h3 className="font-bold text-lg">{t(`policyTypes.${renewal.typeKey}`)}</h3>
-                        <p className="text-sm text-muted-foreground">{renewal.provider}</p>
-                        <p className="text-xs text-muted-foreground font-mono mt-1">{renewal.policyNumber}</p>
-                      </div>
-                      <Badge className={getStatusColor(renewal.statusKey)}>
-                        {getStatusIcon(renewal.statusKey)}
-                        <span className="ml-1">{t(`common.${renewal.statusKey}`)}</span>
-                      </Badge>
-                    </div>
-
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-muted-foreground">{t('renewals.timeUntilRenewal')}</span>
-                        <span className="font-bold text-lg">{t('renewals.daysCount', { count: renewal.daysUntilRenewal })}</span>
-                      </div>
-                      <Progress 
-                        value={getProgressPercentage(renewal.daysUntilRenewal)} 
-                        className="h-2"
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                      <div>
-                        <p className="text-xs text-muted-foreground uppercase">{t('renewals.renewalDate')}</p>
-                        <p className="font-semibold text-sm">{formatLocalizedDate(renewal.renewalDate)}</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground uppercase">{t('billing.amount')}</p>
-                        <p className="font-semibold text-sm">€{renewal.premiumAmount} ({t(`billing.${renewal.premiumPeriodKey}`)})</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Right side */}
-                  <div className="space-y-4 border-l pl-6 md:border-l">
-                    <div className="space-y-3">
-                      <div className="flex items-start gap-3">
-                        <CheckCircle2 className="h-5 w-5 text-emerald-600 mt-0.5 flex-shrink-0" />
-                        <div>
-                          <p className="text-sm font-medium">{t('renewals.autoRenewal')}</p>
-                          <p className="text-xs text-muted-foreground">{renewal.autoRenew ? t('notificationPreferences.alwaysOn') : t('renewals.manualRenewalRequired')}</p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-start gap-3">
-                        <DollarSign className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                        <div>
-                          <p className="text-sm font-medium">{t('billing.paymentMethod')}</p>
-                          <p className="text-xs text-muted-foreground">{t(`common.${renewal.paymentMethodKey}`)}</p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-start gap-3">
-                        <Calendar className="h-5 w-5 text-blue-500 mt-0.5 flex-shrink-0" />
-                        <div>
-                          <p className="text-sm font-medium">{t('renewals.lastRenewed')}</p>
-                          <p className="text-xs text-muted-foreground">{formatLocalizedDate(new Date(renewal.lastRenewed))}</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-2 pt-2">
-                      <Button variant="outline" className="flex-1 text-xs">
-                        {t('renewals.viewPolicy')}
-                      </Button>
-                      <Button className="flex-1 text-xs bg-primary">
-                        {t('renewals.renewNow')}
-                        <ArrowRight className="h-3 w-3 ml-1" />
-                      </Button>
-                    </div>
-                  </div>
+        <div className="space-y-4">
+          {filteredRenewals.length === 0 ? (
+            <Card className="border-dashed">
+              <CardContent className="p-8 text-center">
+                <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mx-auto mb-4">
+                  <CheckCircle2 className="h-8 w-8 text-muted-foreground" aria-hidden="true" />
                 </div>
+                <h3 className="font-semibold mb-1">{t('renewals.noPoliciesDue')}</h3>
+                <p className="text-sm text-muted-foreground">{t('renewals.allCaughtUp')}</p>
               </CardContent>
             </Card>
-          ))}
+          ) : (
+            filteredRenewals.map((renewal) => (
+              <Card 
+                key={renewal.id} 
+                className="overflow-hidden hover:shadow-lg transition-all duration-300"
+                data-testid={`card-renewal-${renewal.id}`}
+              >
+                {/* Urgency Bar */}
+                <div className={`h-1 ${
+                  renewal.daysUntilRenewal <= 14 ? 'bg-red-500 dark:bg-red-600' : 
+                  renewal.daysUntilRenewal <= 30 ? 'bg-amber-500 dark:bg-amber-600' : 
+                  'bg-emerald-500 dark:bg-emerald-600'
+                }`} aria-hidden="true" />
+                
+                <CardContent className="p-0">
+                  <div className="flex flex-col md:flex-row">
+                    {/* Left Column - Policy Info */}
+                    <div className="flex-1 p-4 md:p-5 space-y-4">
+                      {/* Header Row */}
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="flex items-center gap-3">
+                          <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                            renewal.typeKey === 'health' ? 'bg-pink-100 text-pink-600 dark:bg-pink-900/30 dark:text-pink-400' :
+                            renewal.typeKey === 'auto' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' :
+                            renewal.typeKey === 'home' ? 'bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400' :
+                            'bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400'
+                          }`}>
+                            {getPolicyIcon(renewal.typeKey)}
+                            <span className="sr-only">{t(`policyTypes.${renewal.typeKey}`)}</span>
+                          </div>
+                          <div>
+                            <h3 className="font-semibold text-base">{t(`policyTypes.${renewal.typeKey}`)}</h3>
+                            <p className="text-sm text-muted-foreground">{renewal.provider}</p>
+                            <p className="text-xs text-muted-foreground font-mono">{renewal.policyNumber}</p>
+                          </div>
+                        </div>
+                        <Badge className={`${getStatusColor(renewal.statusKey)} flex items-center gap-1`}>
+                          {getStatusIcon(renewal.statusKey)}
+                          <span>{getStatusLabel(renewal.daysUntilRenewal)}</span>
+                        </Badge>
+                      </div>
+
+                      {/* Countdown */}
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm text-muted-foreground">{t('renewals.renewsIn')}</span>
+                          <span className={`text-2xl font-bold ${
+                            renewal.daysUntilRenewal <= 14 ? 'text-red-600 dark:text-red-400' :
+                            renewal.daysUntilRenewal <= 30 ? 'text-amber-600 dark:text-amber-400' :
+                            'text-emerald-600 dark:text-emerald-400'
+                          }`}>
+                            {t('renewals.daysCount', { count: renewal.daysUntilRenewal })}
+                          </span>
+                        </div>
+                        <div className="relative h-2 bg-muted rounded-full overflow-hidden" role="progressbar" aria-valuenow={getProgressPercentage(renewal.daysUntilRenewal)} aria-valuemin={0} aria-valuemax={100}>
+                          <div 
+                            className={`absolute left-0 top-0 h-full rounded-full transition-all duration-500 ${getProgressColor(renewal.daysUntilRenewal)}`}
+                            style={{ width: `${getProgressPercentage(renewal.daysUntilRenewal)}%` }}
+                          />
+                        </div>
+                        <p className="text-xs text-muted-foreground">
+                          {t('renewals.expiresOn')} {formatLocalizedDate(renewal.renewalDate)}
+                        </p>
+                      </div>
+
+                      {/* Details Grid */}
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="p-3 rounded-lg bg-muted/50 dark:bg-muted/30">
+                          <p className="text-xs text-muted-foreground mb-1">{t('renewals.premium')}</p>
+                          <p className="font-semibold">{formatCurrency(renewal.premiumAmount)}</p>
+                          <p className="text-xs text-muted-foreground">/{t(`billing.${renewal.premiumPeriodKey}`)}</p>
+                        </div>
+                        <div className="p-3 rounded-lg bg-muted/50 dark:bg-muted/30">
+                          <p className="text-xs text-muted-foreground mb-1">{t('renewals.lastRenewed')}</p>
+                          <p className="font-semibold">{formatShortDate(new Date(renewal.lastRenewed))}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Right Column - Status & Actions */}
+                    <div className="md:w-64 p-4 md:p-5 bg-muted/30 dark:bg-muted/20 md:border-l border-border flex flex-col justify-between gap-4">
+                      {/* Status Items */}
+                      <div className="space-y-3">
+                        <div className="flex items-center gap-2">
+                          {renewal.autoRenew ? (
+                            <>
+                              <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" aria-hidden="true" />
+                              <span className="text-sm text-emerald-700 dark:text-emerald-400">{t('renewals.autoRenewOn')}</span>
+                            </>
+                          ) : (
+                            <>
+                              <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-400 flex-shrink-0" aria-hidden="true" />
+                              <span className="text-sm text-amber-700 dark:text-amber-400">{t('renewals.autoRenewOff')}</span>
+                            </>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <CreditCard className="h-4 w-4 text-muted-foreground flex-shrink-0" aria-hidden="true" />
+                          <span className="text-sm text-muted-foreground">{t(`common.${renewal.paymentMethodKey}`)}</span>
+                        </div>
+                        {renewal.daysUntilRenewal <= 30 && (
+                          <div className="flex items-center gap-2">
+                            <Zap className="h-4 w-4 text-primary flex-shrink-0" aria-hidden="true" />
+                            <span className="text-sm text-primary font-medium">{t('renewals.actionRequired')}</span>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Action Buttons */}
+                      <div className="flex flex-col gap-2">
+                        <Button 
+                          variant="outline" 
+                          className="w-full justify-between min-h-[44px]"
+                          data-testid={`button-view-policy-${renewal.id}`}
+                        >
+                          {t('renewals.viewPolicy')}
+                          <ChevronRight className="h-4 w-4" aria-hidden="true" />
+                        </Button>
+                        <Button 
+                          className="w-full justify-between min-h-[44px] bg-gradient-to-r from-primary to-primary/90"
+                          data-testid={`button-renew-${renewal.id}`}
+                        >
+                          {t('renewals.renewNow')}
+                          <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))
+          )}
         </div>
       </div>
 
-      {/* Tips Section */}
-      <Card className="bg-blue-50 border-blue-200">
-        <CardHeader>
+      {/* Savings Opportunity Card */}
+      <Card className="bg-gradient-to-r from-primary/10 via-primary/5 to-transparent dark:from-primary/20 dark:via-primary/10 border-primary/20 overflow-hidden" data-testid="card-savings-opportunity">
+        <CardContent className="p-5">
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
+            <div className="w-14 h-14 rounded-xl bg-primary/20 dark:bg-primary/30 flex items-center justify-center flex-shrink-0">
+              <Sparkles className="h-7 w-7 text-primary" aria-hidden="true" />
+              <span className="sr-only">{t('renewals.savingsOpportunity')}</span>
+            </div>
+            <div className="flex-1">
+              <h3 className="font-semibold text-lg flex items-center gap-2">
+                {t('renewals.savingsOpportunity')}
+              </h3>
+              <p className="text-sm text-muted-foreground mt-1">
+                {t('renewals.bundleSaveAmount', { amount: 450 })}
+              </p>
+            </div>
+            <Button className="min-h-[44px] gap-2" data-testid="button-compare-quotes">
+              {t('renewals.compareQuotes')}
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Pro Tips Section */}
+      <Card className="border-blue-200 dark:border-blue-800 bg-blue-50/50 dark:bg-blue-950/30" data-testid="card-pro-tips">
+        <CardHeader className="pb-3">
           <CardTitle className="flex items-center gap-2 text-lg">
-            <AlertCircle className="h-5 w-5 text-blue-600" />
+            <Info className="h-5 w-5 text-blue-600 dark:text-blue-400" aria-hidden="true" />
             {t('renewals.proTips')}
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3 text-sm">
-          <p>• <strong>{t('renewals.autoRenewal')}:</strong> {t('renewals.tipAutoRenewal')}</p>
-          <p>• <strong>{t('renewals.reviewBeforeRenewal')}:</strong> {t('renewals.tipReviewBeforeRenewal')}</p>
-          <p>• <strong>{t('renewals.compareOptions')}:</strong> {t('renewals.tipCompareOptions')}</p>
-          <p>• <strong>{t('billing.updatePaymentMethod')}:</strong> {t('renewals.tipUpdatePayment')}</p>
+        <CardContent className="pt-0">
+          <div className="grid sm:grid-cols-2 gap-4">
+            {[
+              { icon: RefreshCw, title: t('renewals.autoRenewal'), desc: t('renewals.tipAutoRenewal') },
+              { icon: Shield, title: t('renewals.reviewBeforeRenewal'), desc: t('renewals.tipReviewBeforeRenewal') },
+              { icon: TrendingUp, title: t('renewals.compareOptions'), desc: t('renewals.tipCompareOptions') },
+              { icon: CreditCard, title: t('billing.updatePaymentMethod'), desc: t('renewals.tipUpdatePayment') },
+            ].map(({ icon: Icon, title, desc }, idx) => (
+              <div key={idx} className="flex items-start gap-3 p-3 rounded-lg bg-background/60 dark:bg-background/40">
+                <div className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center flex-shrink-0">
+                  <Icon className="h-4 w-4 text-blue-600 dark:text-blue-400" aria-hidden="true" />
+                </div>
+                <div>
+                  <p className="font-medium text-sm">{title}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">{desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </CardContent>
       </Card>
     </div>

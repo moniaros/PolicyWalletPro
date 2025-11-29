@@ -65,11 +65,26 @@ Cross-platform insurance policy wallet for Greek/European insurers (Ethniki, Gen
    - Gradient confirm button with checkmark icon
 
 ### NEW COMPETITIVE FEATURES (Turn 2-3)
-1. ✅ **Policy Renewal Tracker** (`/renewals`)
-   - Calendar-based renewal timeline
-   - Auto-renewal status monitoring
-   - Payment method tracking
-   - Integrated into navigation
+1. ✅ **Policy Renewal Tracker** (`/renewals`) - ENHANCED
+   - **Quick Stats Dashboard** (4 summary cards):
+     - Next Renewal countdown
+     - Due This Month counter
+     - Auto-Renew status (X/Y policies)
+     - Total Premiums Due
+   - **Smart Filter Tabs**: All Policies, Urgent, This Month, Next 3 Months
+   - **Enhanced Renewal Cards**:
+     - Urgency indicator bar (red/amber/green)
+     - Policy type icons (Health, Auto, Home, Life)
+     - Visual countdown with days remaining
+     - Progress bar showing time until renewal
+     - Premium amount and billing period
+     - Last renewed date
+     - Auto-renew status indicator
+     - Quick action buttons (View Policy, Renew Now)
+   - **Savings Opportunity Card**: Bundle discount promotion
+   - **Pro Tips Section**: 4 tips with icons for renewal best practices
+   - **Full i18n Support**: 30+ new translation keys in Greek/English
+   - **Mobile-First Design**: 44px touch targets, responsive layouts
 
 2. ✅ **Payment/Billing Tracker** (`/billing`)
    - 3-tab interface: Overview, Payment History, Payment Methods
