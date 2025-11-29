@@ -1204,7 +1204,8 @@
     "dashboardScoreAuto": "Auto",
     "dashboardScoreHome": "Home",
     "connectionRestored": "Connection restored",
-    "dataSyncWhenReconnect": "Data will sync when reconnected"
+    "dataSyncWhenReconnect": "Data will sync when reconnected",
+    "potentialAnnualPremium": "Potential annual premium opportunity"
   },
   "expiry": {
     "expired": "Expired",

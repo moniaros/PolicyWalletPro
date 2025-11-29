@@ -1211,7 +1211,8 @@
     "dashboardScoreAuto": "Κλάδος Αυτοκινήτου",
     "dashboardScoreHome": "Κλάδος Κατοικίας",
     "connectionRestored": "Σύνδεση αποκαταστάθηκε",
-    "dataSyncWhenReconnect": "Τα δεδομένα θα συγχρονιστούν"
+    "dataSyncWhenReconnect": "Τα δεδομένα θα συγχρονιστούν",
+    "potentialAnnualPremium": "Δυνητικό ετήσιο ασφάλιστρο"
   },
   "expiry": {
     "expired": "Ληγμένο",
