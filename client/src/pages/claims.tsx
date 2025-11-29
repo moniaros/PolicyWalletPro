@@ -127,7 +127,7 @@ export default function ClaimsPage() {
                {wizardStep < 3 ? (
                  <Button onClick={() => setWizardStep(wizardStep + 1)}>{ t('forms.nextStep') }</Button>
                ) : (
-                 <Button className="bg-emerald-600 hover:bg-emerald-700" onClick={() => setIsWizardOpen(false)}>Submit Claim</Button>
+                 <Button className="bg-emerald-600 hover:bg-emerald-700" onClick={() => setIsWizardOpen(false)}>{t('claims.submitClaim')}</Button>
                )}
             </DialogFooter>
           </DialogContent>
@@ -137,7 +137,7 @@ export default function ClaimsPage() {
       {/* Active Claims */}
       <div className="space-y-6">
          <h2 className="text-xl font-bold flex items-center gap-2">
-            <Clock className="h-5 w-5 text-primary" /> Active Claims
+            <Clock className="h-5 w-5 text-primary" /> {t('claims.activeClaims')}
          </h2>
          {allClaims.filter(c => c.status !== "Paid" && c.status !== "Closed").length > 0 ? (
             allClaims.filter(c => c.status !== "Paid" && c.status !== "Closed").map((claim, i) => (
@@ -152,12 +152,12 @@ export default function ClaimsPage() {
                               </Badge>
                            </div>
                            <p className="text-muted-foreground text-sm">
-                              {claim.policyType} ({claim.policyProvider}) • Filed on {claim.reportedDate} • ID: {claim.id}
+                              {claim.policyType} ({claim.policyProvider}) • {t('claims.filedOn')} {claim.reportedDate} • ID: {claim.id}
                            </p>
                         </div>
                         <div className="text-right">
                            <p className="font-bold text-xl">{claim.amount}</p>
-                           <p className="text-xs text-muted-foreground">Estimated Amount</p>
+                           <p className="text-xs text-muted-foreground">{t('claims.estimatedAmount')}</p>
                         </div>
                      </div>
                      
@@ -186,7 +186,7 @@ export default function ClaimsPage() {
       {/* History */}
       <div className="space-y-4 pt-4">
          <h2 className="text-xl font-bold flex items-center gap-2 text-muted-foreground">
-            <FileText className="h-5 w-5" /> Past Claims
+            <FileText className="h-5 w-5" /> {t('claims.pastClaims')}
          </h2>
          <div className="grid gap-4">
             {allClaims.filter(c => c.status === "Paid" || c.status === "Closed").map((claim, i) => (
@@ -203,7 +203,7 @@ export default function ClaimsPage() {
                      </div>
                      <div className="text-right">
                         <span className="font-bold text-emerald-700">{claim.amount}</span>
-                        <Badge variant="outline" className="ml-3 bg-emerald-50 text-emerald-700 border-emerald-200">Paid</Badge>
+                        <Badge variant="outline" className="ml-3 bg-emerald-50 text-emerald-700 border-emerald-200">{t('claims.paid')}</Badge>
                      </div>
                   </CardContent>
                </Card>

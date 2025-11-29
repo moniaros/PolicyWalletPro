@@ -59,7 +59,7 @@ export default function LoginPage() {
 
       if (!response.ok) {
         const data = await response.json();
-        throw new Error(data.error || "Authentication failed");
+        throw new Error(data.error || t('notifications.authenticationFailed'));
       }
 
       return response.json();
@@ -108,7 +108,7 @@ export default function LoginPage() {
       localStorage.setItem("auth_token", `${provider}-demo-token`);
       localStorage.setItem("user_id", `user-${provider}-123`);
       
-      toast.success(`${provider} Sign In`, {
+      toast.success(t('login.socialSignInSuccess', { provider }), {
         description: t('login.connectedVia', { provider })
       });
       
