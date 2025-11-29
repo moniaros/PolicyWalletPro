@@ -69,6 +69,7 @@
     "active": "Ενεργό",
     "expired": "Ληγμένο",
     "cancel": "Ακύρωση",
+    "select": "Επιλέξτε...",
     "save": "Αποθήκευση",
     "close": "Κλείσιμο",
     "new": "Νέα",
@@ -286,7 +287,10 @@
     "arriveEarly": "Φτάστε 15 λεπτά νωρίτερα για check-in",
     "confirmationSent": "Η επιβεβαίωση θα σταλεί μέσω email & SMS",
     "step": "Βήμα",
-    "of": "από"
+    "of": "από",
+    "serviceSpecificInfo": "Πληροφορίες Υπηρεσίας",
+    "requiredFieldsHint": "Συμπληρώστε τα απαιτούμενα πεδία παρακάτω",
+    "requiredDocuments": "Απαιτούμενα Έγγραφα"
   },
   "analysis": {
     "title": "Ανάλυση Ασφαλιστικού κενού",

@@ -6,12 +6,22 @@ import { policies, inNetworkServices, appointmentServiceTypes, inNetworkProvider
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Calendar as CalendarIcon, MapPin, Clock, Plus, Phone, Trash2, Edit2, AlertCircle, CheckCircle2, Network, FileText, Stethoscope, Timer, ChevronRight, Building2, Sun, Sunset, Moon, CreditCard, Shield, Bell, User, Mail, MessageSquare, Info, Sparkles } from "lucide-react";
@@ -56,6 +66,7 @@ export default function AppointmentsPage() {
   const [appointmentToCancel, setAppointmentToCancel] = useState<BookedAppointment | null>(null);
   const [filterStatus, setFilterStatus] = useState<"all" | "confirmed" | "pending" | "cancelled">("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [formData, setFormData] = useState<Record<string, any>>({});
 
   useEffect(() => {
     const saved = localStorage.getItem("policyguard_booked_appointments");
@@ -83,8 +94,146 @@ export default function AppointmentsPage() {
     setAppointmentTime("");
     setAppointmentReason("");
     setAppointmentNotes("");
+    setFormData({});
     setEditingId(null);
     setIsOpen(true);
+  };
+
+  const handleFormFieldChange = (fieldId: string, value: any) => {
+    setFormData(prev => ({ ...prev, [fieldId]: value }));
+  };
+
+  const getFieldLabel = (labelKey: string): string => {
+    const key = labelKey.replace("fields.", "");
+    const translated = t(`fields.${key}`, { defaultValue: "" });
+    if (!translated || translated === `fields.${key}`) {
+      return key.split(/(?=[A-Z])/).join(" ").replace(/^./, (c) => c.toUpperCase());
+    }
+    return translated;
+  };
+
+  const getOptionLabel = (labelKey: string): string => {
+    const key = labelKey.replace("fields.options.", "");
+    const translated = t(`fields.options.${key}`, { defaultValue: "" });
+    if (!translated || translated === `fields.options.${key}`) {
+      return key.split(/(?=[A-Z])/).join(" ").replace(/^./, (c) => c.toUpperCase());
+    }
+    return translated;
+  };
+
+  const renderFormField = (field: any) => {
+    const label = getFieldLabel(field.labelKey);
+    const isRequired = field.required;
+    const value = formData[field.id] ?? "";
+    const fieldId = `field-${field.id}`;
+
+    switch (field.type) {
+      case "text":
+      case "phone":
+        return (
+          <div key={field.id} className="space-y-2">
+            <Label htmlFor={fieldId} className="text-sm font-medium flex items-center gap-1">
+              {label}
+              {isRequired && <span className="text-destructive" aria-hidden="true">*</span>}
+            </Label>
+            <Input
+              id={fieldId}
+              type={field.type === "phone" ? "tel" : "text"}
+              value={value}
+              onChange={(e) => handleFormFieldChange(field.id, e.target.value)}
+              className="min-h-[48px]"
+              required={isRequired}
+              data-testid={`input-${field.id}`}
+            />
+          </div>
+        );
+      
+      case "textarea":
+        return (
+          <div key={field.id} className="space-y-2">
+            <Label htmlFor={fieldId} className="text-sm font-medium flex items-center gap-1">
+              {label}
+              {isRequired && <span className="text-destructive" aria-hidden="true">*</span>}
+            </Label>
+            <Textarea
+              id={fieldId}
+              value={value}
+              onChange={(e) => handleFormFieldChange(field.id, e.target.value)}
+              rows={3}
+              className="resize-none"
+              required={isRequired}
+              data-testid={`textarea-${field.id}`}
+            />
+          </div>
+        );
+      
+      case "date":
+        return (
+          <div key={field.id} className="space-y-2">
+            <Label htmlFor={fieldId} className="text-sm font-medium flex items-center gap-1">
+              {label}
+              {isRequired && <span className="text-destructive" aria-hidden="true">*</span>}
+            </Label>
+            <Input
+              id={fieldId}
+              type="date"
+              value={value}
+              onChange={(e) => handleFormFieldChange(field.id, e.target.value)}
+              className="min-h-[48px]"
+              required={isRequired}
+              data-testid={`input-date-${field.id}`}
+            />
+          </div>
+        );
+      
+      case "select":
+        return (
+          <div key={field.id} className="space-y-2">
+            <Label className="text-sm font-medium flex items-center gap-1">
+              {label}
+              {isRequired && <span className="text-destructive" aria-hidden="true">*</span>}
+            </Label>
+            <Select
+              value={value}
+              onValueChange={(val) => handleFormFieldChange(field.id, val)}
+            >
+              <SelectTrigger 
+                className="min-h-[48px]"
+                data-testid={`select-${field.id}`}
+              >
+                <SelectValue placeholder={t("common.select")} />
+              </SelectTrigger>
+              <SelectContent>
+                {field.options?.map((opt: any) => (
+                  <SelectItem key={opt.value} value={opt.value}>
+                    {getOptionLabel(opt.labelKey)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        );
+      
+      case "checkbox":
+        return (
+          <div key={field.id} className="flex items-center gap-3 py-2 min-h-[48px]">
+            <Checkbox
+              id={fieldId}
+              checked={value === true}
+              onCheckedChange={(checked) => handleFormFieldChange(field.id, checked)}
+              className="h-5 w-5"
+              data-testid={`checkbox-${field.id}`}
+            />
+            <Label htmlFor={fieldId} className="text-sm font-medium flex items-center gap-1 cursor-pointer">
+              {label}
+              {isRequired && <span className="text-destructive" aria-hidden="true">*</span>}
+            </Label>
+          </div>
+        );
+      
+      default:
+        return null;
+    }
   };
 
   const handleRescheduleClick = (apt: BookedAppointment) => {
@@ -213,6 +362,7 @@ export default function AppointmentsPage() {
         inNetwork: true,
         coveredByInsurance: true,
         urgency: selectedUrgency,
+        formData: formData,
       };
       saveAppointments([...bookedAppointments, newAppointment]);
       toast.success(t("appointments.appointmentConfirmed"));
@@ -274,22 +424,43 @@ export default function AppointmentsPage() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 pb-20 md:pb-0">
       {/* Header */}
-      <div className="flex items-start justify-between">
+      <div className="flex items-start justify-between gap-4">
         <div>
           <h1 className="text-4xl font-bold tracking-tight text-foreground">
             {t("appointments.appointments")}
           </h1>
           <p className="text-muted-foreground mt-2">{t("appointments.trackVisits")}</p>
         </div>
+        
+        {/* Desktop Button + Header Icon Button for Mobile */}
+        <div className="flex items-center gap-2">
+          {/* Mobile Header Icon */}
+          <Button 
+            size="icon" 
+            variant="outline"
+            className="md:hidden"
+            onClick={handleRequestAppointment}
+            data-testid="button-request-appointment-mobile-header"
+            aria-label={t("appointments.requestAppointment")}
+          >
+            <Plus className="h-5 w-5" />
+          </Button>
+          
+          {/* Desktop Full Button */}
+          <Button 
+            size="lg" 
+            className="shadow-lg shadow-primary/20 hidden md:flex" 
+            onClick={handleRequestAppointment} 
+            data-testid="button-request-appointment"
+          >
+            <Plus className="h-5 w-5 mr-2" />
+            {t("appointments.requestAppointment")}
+          </Button>
+        </div>
+        
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
-          <DialogTrigger asChild>
-            <Button size="lg" className="shadow-lg shadow-primary/20" onClick={handleRequestAppointment} data-testid="button-request-appointment">
-              <Plus className="h-5 w-5 mr-2" />
-              {t("appointments.requestAppointment")}
-            </Button>
-          </DialogTrigger>
           
           <DialogContent className="sm:max-w-[700px] max-h-[85vh] overflow-hidden flex flex-col">
             <DialogHeader>
@@ -772,10 +943,49 @@ export default function AppointmentsPage() {
                     </CardContent>
                   </Card>
 
+                  {/* Service-Specific Form Fields */}
+                  {selectedServiceType?.requiredFields && selectedServiceType.requiredFields.length > 0 && (
+                    <Card className="border-amber-200 dark:border-amber-800/50 overflow-hidden">
+                      <div className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30 px-4 py-2 border-b border-amber-200 dark:border-amber-800/50">
+                        <h4 className="font-medium text-sm flex items-center gap-2 text-amber-900 dark:text-amber-100">
+                          <FileText className="h-4 w-4 text-amber-600 dark:text-amber-400" aria-hidden="true" />
+                          {t("appointments.serviceSpecificInfo")}
+                        </h4>
+                        <p className="text-xs text-amber-700 dark:text-amber-300 mt-0.5">
+                          {t("appointments.requiredFieldsHint")}
+                        </p>
+                      </div>
+                      <CardContent className="p-4 space-y-4">
+                        {selectedServiceType.requiredFields.map((field: any) => renderFormField(field))}
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {/* Required Documents Info */}
+                  {selectedServiceType?.documentationRequired && selectedServiceType.documentationRequired.length > 0 && (
+                    <div className="bg-muted/30 rounded-lg p-4 space-y-2">
+                      <h4 className="font-medium text-sm flex items-center gap-2">
+                        <FileText className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+                        {t("appointments.requiredDocuments")}
+                      </h4>
+                      <ul className="space-y-1 text-sm text-muted-foreground">
+                        {selectedServiceType.documentationRequired.map((doc: string, idx: number) => {
+                          const docKey = doc.replace("docs.", "");
+                          return (
+                            <li key={idx} className="flex items-center gap-2">
+                              <CheckCircle2 className="h-3 w-3 text-green-500 flex-shrink-0" aria-hidden="true" />
+                              {t(`docs.${docKey}`)}
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  )}
+
                   {/* Visit Details Form */}
                   <div className="space-y-4">
                     <h4 className="font-medium text-sm flex items-center gap-2 text-muted-foreground">
-                      <MessageSquare className="h-4 w-4" />
+                      <MessageSquare className="h-4 w-4" aria-hidden="true" />
                       {t("appointments.visitDetails")}
                     </h4>
 
@@ -1048,6 +1258,19 @@ export default function AppointmentsPage() {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Sticky Mobile Bottom Button */}
+      <div className="fixed bottom-0 left-0 right-0 p-4 bg-background/95 backdrop-blur-sm border-t md:hidden z-50">
+        <Button 
+          size="lg" 
+          className="w-full shadow-lg shadow-primary/20 min-h-[48px]" 
+          onClick={handleRequestAppointment}
+          data-testid="button-request-appointment-mobile-sticky"
+        >
+          <Plus className="h-5 w-5 mr-2" aria-hidden="true" />
+          {t("appointments.requestAppointment")}
+        </Button>
+      </div>
     </div>
   );
 }

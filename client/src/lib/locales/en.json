@@ -72,6 +72,7 @@
     "active": "Active",
     "expired": "Expired",
     "cancel": "Cancel",
+    "select": "Select...",
     "save": "Save",
     "close": "Close",
     "new": "New",
@@ -289,7 +290,10 @@
     "arriveEarly": "Arrive 15 minutes early for check-in",
     "confirmationSent": "Confirmation will be sent via email & SMS",
     "step": "Step",
-    "of": "of"
+    "of": "of",
+    "serviceSpecificInfo": "Service-Specific Information",
+    "requiredFieldsHint": "Please complete the required fields below",
+    "requiredDocuments": "Required Documents"
   },
   "analysis": {
     "title": "Gap Analysis",
