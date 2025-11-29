@@ -1,40 +1,51 @@
 {
   "common": {
-    "loading": "Loading...",
-    "close": "Close",
-    "actions": "Actions",
+    "date": "Date",
+    "amount": "Amount",
+    "method": "Method",
+    "status": "Status",
     "edit": "Edit",
+    "add": "Add",
     "delete": "Delete",
-    "save": "Save",
-    "cancel": "Cancel",
+    "view": "View",
+    "search": "Search",
+    "download": "Download",
+    "paid": "Paid",
+    "scheduled": "Scheduled",
+    "overdue": "Overdue",
+    "failed": "Failed",
+    "default": "Default",
+    "expires": "Expires",
+    "directDebit": "Direct Debit",
+    "creditCard": "Credit Card",
+    "addPaymentMethod": "Add Payment Method",
+    "searchPlaceholder": "Search by provider or policy number...",
+    "now": "Now",
+    "ago": "ago",
+    "days": "days",
+    "hours": "hours",
     "all": "All",
-    "active": "Active",
-    "inactive": "Inactive",
-    "retry": "Retry",
-    "download": "Documents",
-    "copy": "Copy",
+    "no": "No",
+    "yes": "Yes",
     "back": "Back",
-    "addPolicy": "Add New Policy",
-    "submit": "Submit",
     "next": "Next",
     "uploading": "Uploading...",
     "upload": "Upload",
     "uploadResults": "Upload Results",
-    "welcome": "Dashboard"
+    "previous": "Previous",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "close": "Close",
+    "new": "New"
   },
   "dashboard": {
-    "title": "Dashboard",
-    "welcomeBack": "Welcome back, {{name}}",
-    "healthScore": "Insurance Health Score",
-    "wellCovered": "You're well covered!",
-    "newUpdates": "You have {{count}} new updates",
-    "activePolicies": "Active Policies",
-    "upNext": "Up Next",
-    "upcomingVisit": "Upcoming Visit",
-    "healthyStreak": "Healthy Streak!",
-    "noClaimsMessage": "You haven't filed claims in the last {{months}} months.",
-    "viewAnalysis": "View Analysis",
-    "reschedule": "Reschedule"
+    "statusExcellent": "Excellent",
+    "statusGood": "Good",
+    "statusFair": "Fair",
+    "health": "Health",
+    "auto": "Auto",
+    "home": "Home"
   },
   "policies": {
     "title": "Policies",
@@ -76,71 +87,16 @@
     "marine": "Marine Insurance"
   },
   "insurance": {
-    "coverage": "Coverage",
-    "deductible": "Deductible",
-    "sumInsured": "Sum Insured",
-    "annualPremium": "Annual Premium",
-    "monthlyPremium": "Monthly Premium",
-    "coinsurance": "Coinsurance",
-    "copay": "Copay",
-    "beneficiary": "Beneficiary",
-    "insured": "Insured",
-    "policyHolder": "Policy Holder",
-    "agent": "Agent",
-    "broker": "Broker",
-    "claim": "Claim",
-    "claimStatus": "Claim Status",
-    "approved": "Approved",
-    "denied": "Denied",
-    "underReview": "Under Review",
-    "paidOut": "Paid Out",
-    "excludedRisks": "Excluded Risks",
-    "coveredRisks": "Covered Risks",
-    "hospitalNetwork": "Hospital Network",
-    "inNetwork": "In Network",
-    "outOfNetwork": "Out of Network",
-    "cashless": "Cashless",
-    "underwriting": "Underwriting",
-    "riskAssessment": "Risk Assessment",
-    "premiumRate": "Premium Rate",
-    "renewalTerms": "Renewal Terms",
-    "policyTerm": "Policy Term",
-    "exclusions": "Exclusions",
-    "limitations": "Limitations",
-    "grace_period": "Grace Period",
-    "lapsing": "Lapsing",
-    "reinstatement": "Reinstatement",
-    "adjustmentFactor": "Adjustment Factor",
-    "loadingFactor": "Loading Factor"
+    "health": "Health Insurance",
+    "auto": "Auto Insurance",
+    "home": "Home Insurance",
+    "life": "Life Insurance",
+    "pet": "Pet Insurance"
   },
   "claims": {
-    "title": "Claims",
-    "claimsCenter": "Claims Center",
-    "trackClaims": "Track active claims and file new requests.",
     "fileNewClaim": "File New Claim",
-    "fileClaimStep": "File a New Claim - Step {{step}} of 3",
-    "whichPolicy": "Which policy is this for?",
-    "selectPolicy": "Select policy...",
-    "dateOfIncident": "Date of Incident",
-    "incidentType": "Incident Type",
-    "selectType": "Select type...",
-    "accident": "Accident",
-    "theft": "Theft",
-    "damage": "Damage",
-    "medical": "Medical Emergency",
-    "description": "Description",
-    "describeWhat": "Please describe what happened in detail...",
-    "evidence": "Evidence / Photos",
-    "uploadPhotos": "Upload Photos or Docs",
-    "readySubmit": "Ready to Submit?",
-    "reviewDetails": "Please review your details before submitting. An agent will be assigned within 24 hours.",
-    "newClaim": "New Claim",
-    "claimDate": "Claim Date",
-    "estimatedAmount": "Estimated Amount",
-    "approvedAmount": "Approved Amount",
-    "paidAmount": "Paid Amount",
-    "trackClaim": "Track Claim",
-    "payment": "Payment"
+    "submitClaim": "Submit Claim",
+    "pastClaims": "Past Claims"
   },
   "appointments": {
     "title": "Appointments",
@@ -219,66 +175,36 @@
     "currentYear": "$2,400/yr",
     "healthRiskScore": "Health Risk Score",
     "riskAssessmentScore": "Risk Assessment Score",
-    "riskLevel": "Risk Level",
     "noCheckupsMessage": "No checkups uploaded yet",
     "bundleYear": "$1,950/yr"
   },
   "health": {
-    "title": "Health",
-    "healthWellness": "Health & Wellness",
-    "uploadCheckup": "Upload Checkup Results",
-    "checkupType": "Checkup Type",
-    "annualScreening": "Annual Health Screening",
-    "dental": "Dental Checkup",
-    "eye": "Eye Exam",
-    "cardiac": "Cardiac Screening",
-    "lab": "Lab Work",
-    "healthcareProvider": "Healthcare Provider",
-    "coveredPolicy": "Covered under your policy",
-    "healthRecords": "Medical Records",
-    "medications": "Medications",
-    "allergies": "Allergies",
-    "medicalHistory": "Medical History",
-    "doctor": "Doctor",
-    "hospital": "Hospital",
-    "clinic": "Clinic",
-    "appointment": "Appointment",
-    "prescription": "Prescription",
-    "diagnostic": "Diagnostic",
-    "treatment": "Treatment",
-    "followUp": "Follow-up",
-    "preventive": "Preventive"
+    "nextCheckupDue": "Next Checkup Due"
   },
   "profile": {
-    "title": "Profile",
-    "yourProfile": "Your Profile",
-    "helpUnderstand": "Help us understand your situation so we can identify coverage gaps and recommend the right policies for your peace of mind.",
-    "profileUpdated": "Your profile has been updated. View your policies to see personalized recommendations.",
-    "personalInfo": "Personal Information",
-    "basicDetails": "Basic details to understand your situation",
-    "fullName": "Full Name *",
-    "dateOfBirth": "Date of Birth",
-    "ageGroup": "Age Group *",
-    "financialInfo": "Financial Information",
-    "helpsRecommend": "Helps us recommend appropriate coverage levels",
+    "dependents": "Number of Dependents",
+    "incomeRange": "Annual Household Income",
     "emergencyFund": "Emergency Fund Status",
-    "healthLifestyle": "Health & Lifestyle",
-    "impactsInsurance": "Impacts insurance needs and risk assessment",
+    "healthStatus": "Health Status",
     "travelFrequency": "Travel Frequency",
-    "occupationRisk": "Occupation Risk Level",
-    "lifeStage": "Life Stage & Coverage",
-    "identifyGaps": "Help identify insurance gaps",
-    "dependents": "Dependents",
-    "numberOfDependents": "Number of Dependents"
+    "occupationRisk": "Occupation Risk",
+    "familyStatus": "Family Status"
   },
   "agents": {
-    "title": "Agents",
-    "agentDetails": "Agent Details",
-    "contactAgent": "Contact Agent",
-    "phone": "Phone",
-    "email": "Email",
-    "availability": "Availability",
-    "workingHours": "Working Hours"
+    "quoteRequests": "Quote Requests",
+    "messageSent": "Message sent successfully",
+    "sendMessage": "Send Message",
+    "openingCall": "Initiating call...",
+    "callingAgent": "Calling Agent",
+    "openingWhatsapp": "Opening WhatsApp...",
+    "chatOnWhatsapp": "Chat on WhatsApp",
+    "openingViber": "Opening Viber...",
+    "chatOnViber": "Chat on Viber",
+    "openingEmail": "Opening email client...",
+    "emailTo": "Email",
+    "willGetBack": "will contact you shortly",
+    "agentDetails": "Agent Profile",
+    "title": "Insurance Agents"
   },
   "auth": {
     "login": "Sign in",
@@ -290,16 +216,9 @@
     "signUp": "Sign up"
   },
   "settings": {
-    "title": "Settings",
-    "account": "Account",
-    "preferences": "Preferences",
     "notifications": "Notifications",
-    "privacy": "Privacy",
-    "language": "Language",
-    "theme": "Theme",
-    "darkMode": "Dark",
-    "lightMode": "Light",
-    "systemMode": "System"
+    "smsNotifications": "SMS Notifications",
+    "doNotDisturb": "Do Not Disturb"
   },
   "wellness": {
     "title": "Wellness",
@@ -315,7 +234,31 @@
     "fillRequired": "Please fill in all required fields"
   },
   "gapAnalysis": {
-    "title": "Gap Analysis"
+    "lifeInsurance": "Life Insurance",
+    "lifeInsuranceDesc": "You have dependents or family obligations without life insurance protection",
+    "lifeInsuranceRec": "Term life insurance (10-30 years) to protect your family's financial future. Amount: 5-10x your annual income",
+    "disabilityInsurance": "Disability Insurance",
+    "disabilityInsuranceDesc": "If you cannot work due to illness/injury, your income is at risk",
+    "disabilityInsuranceRec": "Short and long-term disability coverage to replace 60-80% of your income",
+    "travelInsurance": "International Travel Insurance",
+    "travelInsuranceDesc": "You travel but lack travel medical coverage",
+    "travelInsuranceRec": "Annual travel insurance covering medical emergencies, evacuation, and trip cancellation",
+    "healthInsurance": "Comprehensive Health Insurance",
+    "healthInsuranceDesc": "Medical expenses can be catastrophic without proper coverage",
+    "healthInsuranceRec": "Private health insurance or comprehensive public coverage with supplemental options",
+    "homeInsurance": "Home Insurance",
+    "homeInsuranceDesc": "Your largest asset (home) needs protection against damage and liability",
+    "homeInsuranceRec": "Comprehensive homeowner insurance covering building, contents, and liability (€1M minimum)",
+    "autoInsurance": "Auto Insurance",
+    "autoInsuranceDesc": "Regular vehicle use without proper coverage creates legal and financial risk",
+    "autoInsuranceRec": "Third-party liability + collision/comprehensive coverage",
+    "emergencyFund": "Emergency Fund",
+    "emergencyFundDesc": "Without emergency savings, unexpected events force debt or insurance claims",
+    "emergencyFundRec": "Build 3-6 months of living expenses in accessible savings (€3k-€15k minimum)",
+    "selfFunding": "Self-funding priority",
+    "petInsurance": "Pet Insurance (Optional)",
+    "petInsuranceDesc": "Pet medical emergencies can cost €1000-€5000",
+    "petInsuranceRec": "Pet health insurance covering accidents, illnesses, and preventive care"
   },
   "renewals": {
     "title": "Renewals",
@@ -325,26 +268,28 @@
     "renewalsSoon": "{{count}} policies renewing soon"
   },
   "billing": {
-    "title": "Billing & Payments",
-    "billingPayments": "Billing & Payments",
-    "totalAnnualPremiums": "Total Annual Premiums",
-    "monthlyAverage": "Monthly Average",
-    "monthlyOverview": "This month's overview",
-    "averageMonthly": "Average Monthly",
-    "paidYTD": "Paid YTD",
-    "dueNext": "Due Next",
-    "next2DueDates": "Next 2 due dates",
-    "potentialSavings": "€495-1,062/year"
+    "paymentHistoryDescription": "Your 12-month payment history at a glance"
   },
   "recommendations": {
-    "title": "Recommendations",
-    "aiPoweredRecommendations": "AI-Powered Recommendations",
-    "actionItems": "Action Items",
-    "potentialSavings": "Potential Savings"
+    "addDental": "Add Dental Coverage",
+    "increaseLife": "Increase Life Insurance Coverage",
+    "bundleDiscount": "Bundle Discount Available",
+    "petInsurance": "Pet Insurance Recently Added",
+    "maximizeWellness": "Maximize Wellness Benefits"
   },
   "notifications": {
-    "title": "Notifications",
-    "notificationsCenter": "Notifications Center"
+    "autoInsuranceRenewal": "Auto Insurance Renewal Due",
+    "paymentDue": "Payment Due",
+    "coverageGapIdentified": "New Coverage Gap Identified",
+    "claimStatusUpdated": "Claim Status Updated",
+    "appointmentReminder": "Appointment Reminder",
+    "newLoginDetected": "New Login Detected",
+    "specialOffer": "Special Offer",
+    "authenticationFailed": "Authentication failed",
+    "failedToLoadAppointments": "Failed to load appointments",
+    "failedToFetch": "Failed to fetch stats",
+    "failedToComplete": "Failed to complete",
+    "failedToSave": "Failed to save profile"
   },
   "quickActions": {
     "quickActions": "Quick Actions",
@@ -354,46 +299,6 @@
     "bookAppointment": "Book Appointment",
     "viewRecommendations": "View Recommendations",
     "contactAgent": "Contact Agent"
-  },
-  "common": {
-    "date": "Date",
-    "amount": "Amount",
-    "method": "Method",
-    "status": "Status",
-    "edit": "Edit",
-    "add": "Add",
-    "delete": "Delete",
-    "view": "View",
-    "search": "Search",
-    "download": "Download",
-    "paid": "Paid",
-    "scheduled": "Scheduled",
-    "overdue": "Overdue",
-    "failed": "Failed",
-    "default": "Default",
-    "expires": "Expires",
-    "directDebit": "Direct Debit",
-    "creditCard": "Credit Card",
-    "addPaymentMethod": "Add Payment Method",
-    "searchPlaceholder": "Search by provider or policy number...",
-    "now": "Now",
-    "ago": "ago",
-    "days": "days",
-    "hours": "hours",
-    "all": "All",
-    "no": "No",
-    "yes": "Yes",
-    "back": "Back",
-    "next": "Next",
-    "uploading": "Uploading...",
-    "upload": "Upload",
-    "uploadResults": "Upload Results",
-    "previous": "Previous",
-    "submit": "Submit",
-    "cancel": "Cancel",
-    "save": "Save",
-    "close": "Close",
-    "new": "New"
   },
   "recommendations_details": {
     "addDentalCoverage": "Add Dental Coverage",
@@ -451,15 +356,6 @@
     "homeInsurance": "Home Insurance (Ergo)",
     "paymentsCompleted": "payments completed"
   },
-  "billing": {
-    "paymentHistoryDescription": "Your 12-month payment history at a glance"
-  },
-  "recommendations": {
-    "highPriorityRecs": "High-priority recommendations",
-    "high": "High",
-    "medium": "Medium",
-    "low": "Low"
-  },
   "billingPlans": {
     "monthly": "Monthly",
     "sixMonths": "6 Months",
@@ -481,41 +377,32 @@
   },
   "notificationPreferences": {
     "policyRenewals": "Policy Renewals",
-    "renewalsDesc": "Reminders about upcoming policy renewals",
+    "policyRenewalsDesc": "Reminders about upcoming policy renewals",
     "paymentReminders": "Payment Reminders",
-    "paymentsDesc": "Notifications for upcoming or missed payments",
+    "paymentRemindersDesc": "Notifications for upcoming or missed payments",
     "claimsUpdates": "Claims Updates",
-    "claimsDesc": "Status updates on your active claims",
+    "claimsUpdatesDesc": "Status updates on your active claims",
     "coverageChanges": "Coverage Changes",
-    "coverageDesc": "Notifications when coverage details change",
+    "coverageChangesDesc": "Notifications when coverage details change",
     "policyRecommendations": "Policy Recommendations",
-    "recommendationsDesc": "AI-powered suggestions to improve your coverage",
     "appointmentReminders": "Appointment Reminders",
-    "appointmentsDesc": "Reminders for scheduled appointments",
+    "appointmentRemindersDesc": "Reminders for scheduled appointments",
     "specialOffers": "Special Offers",
-    "offersDesc": "Exclusive deals and promotions from our partners",
+    "specialOffersDesc": "Exclusive deals and promotions from our partners",
     "securityAlerts": "Security Alerts",
-    "securityDesc": "Important security and account alerts (always on)",
-    "criticalAlertsOnly": "Critical Alerts Only",
-    "criticalDesc": "Only receive SMS for urgent matters (renewals due, payment failed)",
-    "claimsStatus": "Claims Status",
-    "claimsStatusDesc": "SMS updates on claims progress"
+    "criticalAlertsOnly": "Critical Alerts Only"
   },
   "onboarding": {
-    "welcome": "Welcome to PolicyWallet",
-    "welcomeDesc": "Your personal insurance manager for managing policies from multiple insurers.",
-    "healthMatters": "Your Health Matters",
-    "healthDesc": "Track your health data and get personalized wellness recommendations.",
-    "smartAnalytics": "Smart Analytics",
-    "analyticsDesc": "Understand your coverage gaps and optimize your protection."
+    "steps": "Onboarding steps",
+    "skipTutorial": "Skip onboarding tutorial",
+    "completeAndContinue": "Complete onboarding and continue"
   },
   "navigation": {
     "renewals": "Renewals",
     "billing": "Billing",
     "recommendations": "Recommendations",
     "notifications": "Notifications",
-    "admin": "Admin",
-    "policyWallet": "PolicyWallet"
+    "admin": "Admin"
   },
   "dashboardWidgets": {
     "coverageHealthByType": "Coverage Health by Type",
@@ -527,48 +414,17 @@
     "good": "Good",
     "fair": "Fair"
   },
-  "gapAnalysis": {
-    "optimalCoverage": "✓ Optimal Coverage",
-    "insurancePays": "Insurance Pays",
-    "pet": "Pet Insurance"
-  },
   "chatbot": {
-    "welcome": "Hi! I'm your PolicyWallet AI assistant. I can help you check your coverage, file a claim, or find an agent. How can I help you today?",
-    "fileClaim": "To file a claim, go to the specific policy details page and click 'File New Claim'. I can guide you through the document upload process if you like.",
-    "aiAssistant": "PolicyWallet AI",
     "askAnything": "Ask anything..."
   },
   "policyRecommendations": {
-    "coverageScore": "Coverage Score",
-    "critical": "Critical: Add These Coverages",
-    "recommended": "Recommended: Add These Coverages",
-    "saveMoney": "Save Money: Coverages to Drop",
-    "optional": "Optional: Nice-to-Have Coverages"
+    "add": "Add",
+    "sendingRequest": "Sending...",
+    "requestQuote": "Request Quote"
   },
   "documents": {
-    "searchDocuments": "Search documents..."
-  },
-  "agents": {
-    "openingCall": "Opening call...",
-    "callingAgent": "Calling",
-    "openingWhatsapp": "Opening WhatsApp...",
-    "chatOnWhatsapp": "Chat with",
-    "onWhatsapp": "on WhatsApp",
-    "openingViber": "Opening Viber...",
-    "chatOnViber": "Chat with",
-    "onViber": "on Viber",
-    "openingEmail": "Opening email...",
-    "emailTo": "Email to",
-    "messageSent": "Message sent!",
-    "willGetBack": "will get back to you shortly"
-  },
-  "profile": {
-    "lifeStageAndCoverage": "Life Stage & Coverage",
-    "currentInsuranceCoverage": "Current Insurance Coverage",
-    "impactsInsuranceNeeds": "Impacts insurance needs and risk assessment"
-  },
-  "gapAnalysis": {
-    "criticalCoverageGaps": "Critical Coverage Gaps"
+    "acceptedFormats": "Accepted formats",
+    "download": "Download"
   },
   "login": {
     "emailOrUsername": "Email or Username",
@@ -598,25 +454,18 @@
     "premium": "Premium",
     "policyNo": "Policy No"
   },
-  "claims": {
-    "fileNewClaim": "File New Claim",
-    "submitClaim": "Submit Claim",
-    "pastClaims": "Past Claims"
-  },
-  "documents": {
-    "acceptedFormats": "Accepted formats",
-    "download": "Download"
-  },
   "admin": {
-    "monthlyClaimsSummary": "Monthly Claims Summary",
-    "policyPortfolioAnalysis": "Policy Portfolio Analysis",
-    "riskAssessmentReport": "Risk Assessment Report",
-    "auditTrailExport": "Audit Trail Export"
-  },
-  "policyRecommendations": {
-    "add": "Add",
-    "sendingRequest": "Sending...",
-    "requestQuote": "Request Quote"
+    "monthlyClaims": "Monthly Claims",
+    "policyPortfolio": "Policy Portfolio",
+    "riskAssessment": "Risk Assessment",
+    "auditTrail": "Audit Trail",
+    "dashboard": "Admin Dashboard",
+    "enterpriseInsurance": "Enterprise insurance platform analytics and management",
+    "totalUsers": "Total Users",
+    "dataCompliance": "Data Compliance",
+    "gdprCompliance": "GDPR Compliance",
+    "gdprRequirements": "GDPR Requirements",
+    "securityRequirements": "Security Requirements"
   },
   "actions": {
     "viewResults": "View Results",
@@ -676,38 +525,31 @@
   },
   "agentServices": {
     "servicesProvided": "Services Provided",
-    "whatYouCanGetHelp": "What you can get help with",
-    "policySelection": "Policy Selection & Purchase",
+    "whatYouCanGetHelp": "What You Can Get Help With",
+    "policySelection": "Policy Selection Guidance",
     "claimsAssistance": "Claims Assistance",
-    "policyReviews": "Policy Reviews & Optimization",
+    "policyReviews": "Policy Reviews",
     "coverageGapAnalysis": "Coverage Gap Analysis",
     "policyRenewals": "Policy Renewals",
     "documentSupport": "Document Support",
-    "emergencySupport": "Emergency Support 24/7",
-    "basedInAthens": "Based in Athens, Greece",
-    "servingClients": "Serving clients across Greece and EU. Fluent in English, Greek, German, and Italian.",
-    "sendQuickMessage": "Send a Quick Message",
-    "dontSeeQuestion": "Don't see your question answered? Send a message and we'll respond soon",
-    "tellUsWhatNeed": "Tell us what you need help with..."
+    "emergencySupport": "24/7 Emergency Support",
+    "basedInAthens": "Based in Athens",
+    "servingClients": "Serving Clients Nationwide",
+    "sendQuickMessage": "Send Quick Message",
+    "dontSeeQuestion": "Don't see your question?",
+    "tellUsWhatNeed": "Tell us what you need"
   },
   "gapAnalysisQuestions": {
     "ageGroup": "What is your age group?",
-    "familyStatus": "What is your family status?",
-    "dependents": "Do you have dependents (children)?",
-    "incomeRange": "What is your annual household income range?",
-    "health": "How would you describe your current health?",
-    "emergencySavings": "Do you have 3-6 months of emergency savings?",
-    "travelFrequency": "How often do you travel internationally?",
-    "lifeStageRisks": "Which of the following applies to you?",
-    "occupationRisk": "Would you describe your occupation as:",
-    "firstHomePurchase": "First home purchase planned",
-    "youngChildren": "Young children",
-    "mortgageHolder": "Mortgage holder",
-    "highDebt": "High debt",
-    "businessOwner": "Business owner",
-    "lowRiskOffice": "Low risk (office)",
-    "mediumRiskMixed": "Medium risk (mixed)",
-    "highRiskPhysical": "High risk (physical/travel)",
+    "familyStatusQuestion": "What is your family status?",
+    "dependentsQuestion": "Do you have dependents (children)?",
+    "currentCoveragesQuestion": "Which insurance types do you currently have?",
+    "incomeRangeQuestion": "What is your annual household income range?",
+    "healthStatusQuestion": "How would you describe your current health?",
+    "emergencyFundQuestion": "Do you have 3-6 months of emergency savings?",
+    "travelFrequencyQuestion": "How often do you travel internationally?",
+    "occupationRiskQuestion": "Would you describe your occupation as:",
+    "lifeStageRisksQuestion": "Which of these apply to your life stage?",
     "excellent": "Excellent",
     "good": "Good",
     "fair": "Fair",
@@ -718,71 +560,26 @@
     "never": "Never",
     "oneTwoTimesYear": "1-2 times/year",
     "threeSixTimesYear": "3-6 times/year",
-    "monthlyPlus": "Monthly+"
-  },
-  "chatbot": {
-    "greeting": "Hi! I'm your PolicyWallet AI assistant. I can help you check your coverage, file a claim, or find an agent. How can I help you today?",
-    "yourHealthMatters": "Your Health Matters",
-    "yourInsuranceProfile": "Your Insurance Profile",
-    "occupationRiskLevel": "Occupation Risk Level",
-    "lifeStageAndCoverage": "Life Stage & Coverage",
-    "helpIdentifyGaps": "Help identify insurance gaps",
-    "lifeStageFactors": "Life Stage Factors",
-    "currentCoverage": "Current Insurance Coverage"
-  },
-  "onboarding": {
-    "welcomeTitle": "Welcome to PolicyWallet",
-    "welcomeDesc": "Your personal insurance manager",
-    "healthTitle": "Your Health Matters",
-    "healthDesc": "Track your health data",
-    "analyticsTitle": "Smart Analytics",
-    "analyticsDesc": "Understand your coverage gaps"
-  },
-  "admin": {
-    "monthlyClaimsSummary": "Monthly Claims Summary",
-    "policyPortfolioAnalysis": "Policy Portfolio Analysis",
-    "riskAssessmentReport": "Risk Assessment Report",
-    "auditTrailExport": "Audit Trail Export",
-    "availableReports": "Available Reports",
-    "dataStandardCompliance": "Data Standard Compliance",
-    "securityRequirements": "Security Requirements",
-    "gdprRequirements": "GDPR Requirements"
-  },
-  "agents": {
-    "quoteRequests": "Quote Requests",
-    "messageSent": "Message Sent!",
-    "sendMessage": "Send Message",
-    "openingCall": "Opening call...",
-    "callingAgent": "Calling",
-    "openingWhatsapp": "Opening WhatsApp...",
-    "chatOnWhatsapp": "Chat with",
-    "openingViber": "Opening Viber...",
-    "chatOnViber": "Chat with",
-    "openingEmail": "Opening email...",
-    "emailTo": "Email to",
-    "willGetBack": "will get back to you shortly"
-  },
-  "recommendations": {
-    "addDentalCoverage": "Add Dental Coverage",
-    "addDentalRider": "Add Dental Rider",
-    "increaseLifeInsurance": "Increase Life Insurance Coverage",
-    "upgradeLifeInsurance": "Upgrade Life Insurance",
-    "petInsuranceAdded": "Pet Insurance Recently Added",
-    "explorePetInsurance": "Explore Pet Insurance"
+    "monthlyPlus": "Monthly+",
+    "lowRiskOffice": "Low risk (office)",
+    "mediumRiskMixed": "Medium risk (mixed)",
+    "highRiskPhysical": "High risk (physical/travel)",
+    "firstHomePurchase": "First home purchase planned",
+    "youngChildren": "Young children",
+    "mortgageHolder": "Mortgage holder",
+    "highDebt": "High debt",
+    "businessOwner": "Business owner"
   },
   "status": {
-    "success": "Success",
-    "failed": "Failed",
-    "submitted": "Submitted",
     "active": "Active",
-    "inactive": "Inactive",
     "pending": "Pending",
-    "approved": "Approved",
-    "rejected": "Rejected",
-    "inReview": "In Review",
+    "expired": "Expired",
+    "review_needed": "Review Needed",
+    "cancelled": "Cancelled",
+    "lapsed": "Lapsed",
     "paid": "Paid",
     "closed": "Closed",
-    "cancelled": "Cancelled"
+    "in_review": "In Review"
   },
   "mockData": {
     "medical": "Medical",
@@ -827,7 +624,7 @@
   "familyStatus": {
     "single": "Single",
     "married": "Married",
-    "domesticPartner": "Domestic Partner",
+    "domesticPartner": "Domestic partner",
     "widowedDivorced": "Widowed/Divorced"
   },
   "dependents": {
@@ -836,18 +633,18 @@
     "threePlusDependents": "3+ dependents"
   },
   "insuranceTypes": {
-    "health": "Health",
-    "auto": "Auto",
-    "home": "Home",
-    "life": "Life",
-    "disability": "Disability",
-    "travel": "Travel",
-    "pet": "Pet",
+    "health": "Health Insurance",
+    "auto": "Motor Insurance",
+    "home": "Home & Property",
+    "life": "Life Insurance",
+    "disability": "Disability Insurance",
+    "travel": "Travel Insurance",
+    "pet": "Pet Insurance",
     "umbrella": "Umbrella/Liability"
   },
   "claimsSteps": {
     "submitted": "Submitted",
-    "reviewing": "Reviewing",
+    "reviewing": "Under Review",
     "approved": "Approved",
     "paid": "Paid"
   },
@@ -863,56 +660,6 @@
     "pending": "Pending",
     "confirmed": "Confirmed",
     "cancelled": "Cancelled"
-  },
-  "gapAnalysisQuestions": {
-    "ageGroup": "What is your age group?",
-    "familyStatusQuestion": "What is your family status?",
-    "dependentsQuestion": "Do you have dependents (children)?",
-    "currentCoveragesQuestion": "Which insurance types do you currently have?",
-    "incomeRangeQuestion": "What is your annual household income range?",
-    "healthStatusQuestion": "How would you describe your current health?",
-    "emergencyFundQuestion": "Do you have 3-6 months of emergency savings?",
-    "travelFrequencyQuestion": "How often do you travel internationally?",
-    "occupationRiskQuestion": "Would you describe your occupation as:",
-    "lifeStageRisksQuestion": "Which of these apply to your life stage?",
-    "excellent": "Excellent",
-    "good": "Good",
-    "fair": "Fair",
-    "chronicConditions": "Has chronic conditions",
-    "wellCovered": "Yes, well covered",
-    "partiallyCovered": "Partially covered",
-    "minimalOrNone": "Minimal or none",
-    "never": "Never",
-    "oneTwoTimesYear": "1-2 times/year",
-    "threeSixTimesYear": "3-6 times/year",
-    "monthlyPlus": "Monthly+",
-    "lowRiskOffice": "Low risk (office)",
-    "mediumRiskMixed": "Medium risk (mixed)",
-    "highRiskPhysical": "High risk (physical/travel)",
-    "firstHomePurchase": "First home purchase planned",
-    "youngChildren": "Young children",
-    "mortgageHolder": "Mortgage holder",
-    "highDebt": "High debt",
-    "businessOwner": "Business owner"
-  },
-  "admin": {
-    "monthlyClaims": "Monthly Claims Summary",
-    "policyPortfolio": "Policy Portfolio Analysis",
-    "riskAssessment": "Risk Assessment Report",
-    "auditTrail": "Audit Trail Export",
-    "dataCompliance": "Data Standard Compliance",
-    "securityRequirements": "Security Requirements",
-    "gdprRequirements": "GDPR Requirements",
-    "availableReports": "Available Reports"
-  },
-  "profile": {
-    "dependents": "Number of Dependents",
-    "incomeRange": "Annual Household Income",
-    "emergencyFund": "Emergency Fund Status",
-    "healthStatus": "Health Status",
-    "travelFrequency": "Travel Frequency",
-    "occupationRisk": "Occupation Risk",
-    "familyStatus": "Family Status"
   },
   "sections": {
     "personalDetails": "Personal Details",
@@ -939,19 +686,15 @@
     "managePaymentsHistory": "Manage your upcoming payments and view history"
   },
   "placeholders": {
-    "searchDocuments": "Search documents...",
-    "pasteFindings": "Paste findings, measurements, or key results..."
+    "johnDoe": "John Doe",
+    "yourEmail": "your@email.com",
+    "providerExample": "e.g., Dr. Papadopoulos, Athens Medical Center"
   },
   "messages": {
     "noActiveClaims": "No active claims. You're all good!",
     "noDocumentsFound": "No documents found.",
     "noCheckupsMessage": "No checkups uploaded yet. Upload your first checkup result to get started.",
     "gdprCompliance": "GDPR Compliance: All data retention policies updated. Last audit: Nov 15, 2025"
-  },
-  "settings": {
-    "notifications": "Notifications",
-    "smsNotifications": "SMS Notifications",
-    "doNotDisturb": "Do Not Disturb"
   },
   "languages": {
     "english": "English",
@@ -975,118 +718,6 @@
     "tax": "Tax"
   },
   "forms": {
-    "fullName": "Full Name",
-    "email": "Email",
-    "phone": "Phone",
-    "cardNumber": "Card Number"
-  },
-  "security": {
-    "changePassword": "Change Password",
-    "updateLoginPassword": "Update your login password",
-    "loginPin": "Login PIN",
-    "biometricLogin": "Biometric Login",
-    "biometricEnabled": "Biometric login enabled",
-    "biometricDisabled": "Biometric login disabled"
-  },
-  "dashboard": {
-    "statusExcellent": "Excellent",
-    "statusGood": "Good",
-    "statusFair": "Fair",
-    "health": "Health",
-    "auto": "Auto",
-    "home": "Home"
-  },
-  "notifications": {
-    "autoRenewalDue": "Auto Insurance Renewal Due",
-    "paymentDue": "Payment Due",
-    "coverageGapIdentified": "New Coverage Gap Identified",
-    "claimStatusUpdated": "Claim Status Updated",
-    "appointmentReminder": "Appointment Reminder",
-    "newLoginDetected": "New Login Detected",
-    "specialOffer": "Special Offer"
-  },
-  "recommendations": {
-    "addDentalCoverage": "Add Dental Coverage",
-    "addDentalRider": "Add Dental Rider",
-    "increaseLifeInsurance": "Increase Life Insurance Coverage",
-    "upgradeLifeInsurance": "Upgrade Life Insurance",
-    "bundleDiscount": "Bundle Discount Available",
-    "reviewBundling": "Review Bundling Option",
-    "petInsuranceAdded": "Pet Insurance Recently Added",
-    "explorePetInsurance": "Explore Pet Insurance",
-    "renewalQuotes": "Get Renewal Quotes",
-    "maxWellnessBenefits": "Maximize Wellness Benefits",
-    "claimWellnessBenefit": "Claim Wellness Benefit",
-    "coversVeterinaryEmergencies": "Covers veterinary emergencies and routine care"
-  },
-  "time": {
-    "perYear": "/year",
-    "perMonth": "/month",
-    "timesPerYear": "times/year"
-  },
-  "coverage": {
-    "addDentalRider": "Add Dental Rider",
-    "instantActivation": "Instant activation",
-    "buyNowStartCoverage": "Buy now and start coverage immediately",
-    "chooseYourPlan": "Choose Your Plan",
-    "monthly": "Monthly",
-    "noCommitmentCancelAnytime": "No commitment, cancel anytime",
-    "sixMonths": "6 Months",
-    "yearly": "Yearly",
-    "total": "Total",
-    "monthlyAvg": "/month avg",
-    "save": "Save"
-  },
-  "policy": {
-    "next2DueDates": "Next 2 due dates",
-    "coverageHealthByType": "Coverage Health by Type",
-    "policyCompletenessScores": "Policy completeness and coverage health scores",
-    "insuranceTypes": {
-      "health": "Health Insurance",
-      "auto": "Motor Insurance",
-      "home": "Home & Property",
-      "travel": "Travel Insurance",
-      "liability": "Liability Coverage"
-    },
-    "coverageStatus": {
-      "excellent": "Excellent",
-      "good": "Good",
-      "fair": "Fair",
-      "poor": "Poor"
-    },
-    "paymentReminders": "Payment Reminders",
-    "scheduled": "Scheduled",
-    "paymentDue": "Payment Due"
-  },
-  "details": {
-    "experience": "Experience",
-    "impact": "Impact",
-    "category": "Category",
-    "provider": "Provider",
-    "primary": "Primary",
-    "expiration": "Expiration",
-    "proposals": "Proposals",
-    "settings": "Settings",
-    "theme": "Theme",
-    "timezone": "Timezone",
-    "customizeAppExperience": "Customize your app experience",
-    "policyCompletenessScores": "Policy completeness scores"
-  },
-  "notifications": {
-    "email": "Email",
-    "instant": "Instant",
-    "sms": "SMS",
-    "dailySummary": "Daily Summary",
-    "weeklySummary": "Weekly Summary"
-  },
-  "admin": {
-    "gdprCompliance": "GDPR Compliance",
-    "allDataRetentionPoliciesUpdated": "All data retention policies updated. Last audit"
-  },
-  "agent": {
-    "whatsappAndEmail": "WhatsApp & Email"
-  },
-  "forms": {
     "nextStep": "Next Step",
     "nextSteps": "Next Steps",
     "next": "Next",
@@ -1098,103 +729,13 @@
     "loginPinRequired": "PIN (4 digits) *",
     "cvvRequired": "CVV *"
   },
-  "policy": {
-    "lobCode": "LOB Code",
-    "monthlyPremium": "Monthly Premium",
-    "id": "ID",
-    "incident": "Incident",
-    "instantActivation": "Instant activation",
-    "nextCheckupDue": "Next Checkup Due",
-    "next2DueDates": "Next 2 due dates"
-  },
-  "gap": {
-    "current": "Current",
-    "safeZone": "Safe Zone",
-    "target": "Target",
-    "currentPath": "Current Path",
-    "ytdGrowth": "YTD Growth",
-    "ytdPerformance": "YTD Performance",
-    "unprotected": "⚠️ Unprotected",
-    "protected": "✓ Protected"
-  },
-  "health": {
-    "nextCheckupDue": "Next Checkup Due"
-  },
-  "files": {
-    "acceptedFormatsLabel": "Accepted file formats and size limit"
-  },
-  "onboarding": {
-    "steps": "Onboarding steps",
-    "skipTutorial": "Skip onboarding tutorial",
-    "completeAndContinue": "Complete onboarding and continue"
-  },
-  "chatbot": {
-    "askAnything": "Ask anything..."
-  },
-  "placeholders": {
-    "johnDoe": "John Doe",
-    "yourEmail": "your@email.com",
-    "providerExample": "e.g., Dr. Papadopoulos, Athens Medical Center"
-  },
-  "buttons": {
-    "skipForNow": "Skip for Now",
-    "letsGo": "Let's Go!"
-  },
-  "protection": {
-    "careerProtectionTimeline": "Career Protection Timeline",
-    "unprotectedYears": "Unprotected Years",
-    "healthRadar": "Health Radar"
-  },
-  "ui": {
-    "close": "Close",
-    "sidebar": "Sidebar",
-    "more": "More",
-    "previous": "Previous",
-    "next": "Next",
-    "monthly": "Monthly",
-    "yearly": "Yearly",
-    "policies": "Policies",
-    "recommendations": "Recommendations",
-    "status": "Status",
-    "emailAddress": "Email Address",
-    "password": "Password",
-    "mmYy": "MM/YY",
-    "utc": "UTC",
-    "sms": "SMS",
-    "duringBusinessHours": "During business hours",
-    "buyNowStartCoverageImmediately": "Buy now and start coverage immediately",
-    "potentialAnnualPremium": "Potential annual premium from addressing these gaps",
-    "somethingWentWrong": "Something went wrong",
-    "dataSyncWhenReconnect": "Your data will sync when you reconnect",
-    "connectionRestored": "Connection restored",
-    "foundBasedOnProfile": "Found based on your profile"
-  },
-  "gapAnalysis": {
-    "lifeInsurance": "Life Insurance",
-    "lifeInsuranceDesc": "You have dependents or family obligations without life insurance protection",
-    "lifeInsuranceRec": "Term life insurance (10-30 years) to protect your family's financial future. Amount: 5-10x your annual income",
-    "disabilityInsurance": "Disability Insurance",
-    "disabilityInsuranceDesc": "If you cannot work due to illness/injury, your income is at risk",
-    "disabilityInsuranceRec": "Short and long-term disability coverage to replace 60-80% of your income",
-    "travelInsurance": "International Travel Insurance",
-    "travelInsuranceDesc": "You travel but lack travel medical coverage",
-    "travelInsuranceRec": "Annual travel insurance covering medical emergencies, evacuation, and trip cancellation",
-    "healthInsurance": "Comprehensive Health Insurance",
-    "healthInsuranceDesc": "Medical expenses can be catastrophic without proper coverage",
-    "healthInsuranceRec": "Private health insurance or comprehensive public coverage with supplemental options",
-    "homeInsurance": "Home Insurance",
-    "homeInsuranceDesc": "Your largest asset (home) needs protection against damage and liability",
-    "homeInsuranceRec": "Comprehensive homeowner insurance covering building, contents, and liability (€1M minimum)",
-    "autoInsurance": "Auto Insurance",
-    "autoInsuranceDesc": "Regular vehicle use without proper coverage creates legal and financial risk",
-    "autoInsuranceRec": "Third-party liability + collision/comprehensive coverage",
-    "emergencyFund": "Emergency Fund",
-    "emergencyFundDesc": "Without emergency savings, unexpected events force debt or insurance claims",
-    "emergencyFundRec": "Build 3-6 months of living expenses in accessible savings (€3k-€15k minimum)",
-    "selfFunding": "Self-funding priority",
-    "petInsurance": "Pet Insurance (Optional)",
-    "petInsuranceDesc": "Pet medical emergencies can cost €1000-€5000",
-    "petInsuranceRec": "Pet health insurance covering accidents, illnesses, and preventive care"
+  "security": {
+    "changePassword": "Change Password",
+    "updateLoginPassword": "Update your login password",
+    "loginPin": "Login PIN",
+    "biometricLogin": "Biometric Login",
+    "biometricEnabled": "Biometric login enabled",
+    "biometricDisabled": "Biometric login disabled"
   },
   "time": {
     "perYear": "per year",
@@ -1212,30 +753,90 @@
     "nov": "Nov",
     "dec": "Dec"
   },
+  "coverage": {
+    "addDentalRider": "Add Dental Rider",
+    "instantActivation": "Instant activation",
+    "buyNowStartCoverage": "Buy now and start coverage immediately",
+    "chooseYourPlan": "Choose Your Plan",
+    "monthly": "Monthly",
+    "noCommitmentCancelAnytime": "No commitment, cancel anytime",
+    "sixMonths": "6 Months",
+    "yearly": "Yearly",
+    "total": "Total",
+    "monthlyAvg": "/month avg",
+    "save": "Save"
+  },
+  "policy": {
+    "lobCode": "LOB Code",
+    "monthlyPremium": "Monthly Premium",
+    "id": "ID",
+    "incident": "Incident",
+    "instantActivation": "Instant activation",
+    "nextCheckupDue": "Next Checkup Due",
+    "next2DueDates": "Next 2 due dates",
+    "coverageHealthByType": "Coverage Health by Type",
+    "insuranceTypes": {
+      "auto": "Motor Insurance",
+      "health": "Health Insurance",
+      "home": "Home Insurance"
+    },
+    "paymentReminders": "Payment Reminders",
+    "policyCompletenessScores": "Policy completeness scores"
+  },
+  "details": {
+    "experience": "Experience",
+    "impact": "Impact",
+    "category": "Category",
+    "provider": "Provider",
+    "primary": "Primary",
+    "expiration": "Expiration",
+    "proposals": "Proposals",
+    "settings": "Settings",
+    "theme": "Theme",
+    "timezone": "Timezone",
+    "customizeAppExperience": "Customize your app experience",
+    "policyCompletenessScores": "Policy completeness scores"
+  },
+  "agent": {
+    "whatsappAndEmail": "WhatsApp & Email"
+  },
+  "gap": {
+    "current": "Current",
+    "safeZone": "Safe Zone",
+    "target": "Target",
+    "currentPath": "Current Path",
+    "ytdGrowth": "YTD Growth",
+    "ytdPerformance": "YTD Performance",
+    "unprotected": "⚠️ Unprotected",
+    "protected": "✓ Protected"
+  },
+  "files": {
+    "acceptedFormatsLabel": "Accepted file formats and size limit"
+  },
+  "buttons": {
+    "skipForNow": "Skip for Now",
+    "letsGo": "Let's Go!"
+  },
+  "protection": {
+    "careerProtectionTimeline": "Career Protection Timeline",
+    "unprotectedYears": "Unprotected Years",
+    "healthRadar": "Health Radar"
+  },
+  "ui": {
+    "policyWallet": "PolicyWallet",
+    "appPreferences": "App Preferences",
+    "dashboardScoreHealth": "Health",
+    "dashboardScoreAuto": "Auto",
+    "dashboardScoreHome": "Home",
+    "connectionRestored": "Connection restored",
+    "dataSyncWhenReconnect": "Data will sync when reconnected"
+  },
   "expiry": {
     "expired": "Expired",
     "expirestoday": "Expires Today",
     "expirestomorrow": "Expires Tomorrow",
     "renews": "Renews in {{days}} days",
     "renewsmonths": "Renews in {{months}} month{{plural}}"
-  },
-  "status": {
-    "active": "Active",
-    "pending": "Pending",
-    "expired": "Expired",
-    "review_needed": "Review Needed",
-    "cancelled": "Cancelled",
-    "lapsed": "Lapsed",
-    "paid": "Paid",
-    "closed": "Closed",
-    "in_review": "In Review"
-  },
-  "insurance": {
-    "health": "Health Insurance",
-    "auto": "Auto Insurance",
-    "home": "Home Insurance",
-    "life": "Life Insurance",
-    "pet": "Pet Insurance"
   },
   "riskObjectLabels": {
     "vehicle": "Vehicle",
@@ -1245,60 +846,6 @@
     "pet": "Pet",
     "coverage": "Coverage"
   },
-  "admin": {
-    "monthlyClaims": "Monthly Claims",
-    "policyPortfolio": "Policy Portfolio",
-    "riskAssessment": "Risk Assessment",
-    "auditTrail": "Audit Trail",
-    "dashboard": "Admin Dashboard",
-    "enterpriseInsurance": "Enterprise insurance platform analytics and management",
-    "totalUsers": "Total Users"
-  },
-  "navigation": {
-    "renewals": "Renewals",
-    "billing": "Billing",
-    "recommendations": "Recommendations",
-    "notifications": "Notifications",
-    "admin": "Admin"
-  },
-  "notifications": {
-    "autoInsuranceRenewal": "Auto Insurance Renewal Due",
-    "paymentDue": "Payment Due",
-    "coverageGapIdentified": "New Coverage Gap Identified",
-    "claimStatusUpdated": "Claim Status Updated",
-    "appointmentReminder": "Appointment Reminder",
-    "newLoginDetected": "New Login Detected",
-    "specialOffer": "Special Offer",
-    "authenticationFailed": "Authentication failed",
-    "failedToLoadAppointments": "Failed to load appointments",
-    "failedToFetch": "Failed to fetch stats",
-    "failedToComplete": "Failed to complete",
-    "failedToSave": "Failed to save profile"
-  },
-  "recommendations": {
-    "addDental": "Add Dental Coverage",
-    "increaseLife": "Increase Life Insurance Coverage",
-    "bundleDiscount": "Bundle Discount Available",
-    "petInsurance": "Pet Insurance Recently Added",
-    "maximizeWellness": "Maximize Wellness Benefits"
-  },
-  "notificationPreferences": {
-    "policyRenewals": "Policy Renewals",
-    "policyRenewalsDesc": "Reminders about upcoming policy renewals",
-    "paymentReminders": "Payment Reminders",
-    "paymentRemindersDesc": "Notifications for upcoming or missed payments",
-    "claimsUpdates": "Claims Updates",
-    "claimsUpdatesDesc": "Status updates on your active claims",
-    "coverageChanges": "Coverage Changes",
-    "coverageChangesDesc": "Notifications when coverage details change",
-    "policyRecommendations": "Policy Recommendations",
-    "appointmentReminders": "Appointment Reminders",
-    "appointmentRemindersDesc": "Reminders for scheduled appointments",
-    "specialOffers": "Special Offers",
-    "specialOffersDesc": "Exclusive deals and promotions from our partners",
-    "securityAlerts": "Security Alerts",
-    "criticalAlertsOnly": "Critical Alerts Only"
-  },
   "errors": {
     "validEmail": "Please enter a valid email",
     "couldNotConnect": "Could not connect to {{provider}}. Please try again",
@@ -1306,13 +853,6 @@
     "fillPasswordFields": "Please fill in all password fields",
     "selectAnswer": "Please select an answer",
     "required": "Required"
-  },
-  "ui": {
-    "policyWallet": "PolicyWallet",
-    "appPreferences": "App Preferences",
-    "dashboardScoreHealth": "Health",
-    "dashboardScoreAuto": "Auto",
-    "dashboardScoreHome": "Home"
   },
   "questionnaire": {
     "title": "Insurance Gap Analysis Questionnaire",

@@ -1,44 +1,48 @@
 {
   "common": {
-    "loading": "Φόρτωση...",
-    "close": "Κλείσιμο",
-    "actions": "Ενέργειες",
+    "date": "Ημερομηνία",
+    "amount": "Ποσό",
+    "method": "Μέθοδος",
+    "status": "Κατάσταση",
     "edit": "Επεξεργασία",
+    "add": "Προσθήκη",
     "delete": "Διαγραφή",
-    "save": "Αποθήκευση",
-    "cancel": "Ακύρωση",
+    "view": "Προβολή",
+    "search": "Αναζήτηση",
+    "download": "Λήψη",
+    "paid": "Καταβληθέν",
+    "scheduled": "Προγραμματισμένη",
+    "overdue": "Ληξιπρόθεσμη",
+    "failed": "Αποτυχία",
+    "default": "Προεπιλεγμένη",
+    "expires": "Λήξη",
+    "directDebit": "Άμεση Χρέωση",
+    "creditCard": "Πιστωτική Κάρτα",
+    "addPaymentMethod": "Προσθήκη Μεθόδου Πληρωμής",
+    "searchPlaceholder": "Αναζήτηση ανά πάροχο ή αριθμό πολιτικής...",
+    "now": "Τώρα",
+    "ago": "πριν",
+    "days": "ημέρες",
+    "hours": "ώρες",
     "all": "Όλα",
-    "active": "Ενεργό",
-    "inactive": "Ανενεργό",
-    "retry": "Προσπαθήστε Ξανά",
-    "download": "Έγγραφα",
-    "copy": "Αντιγραφή",
+    "no": "Όχι",
+    "yes": "Ναι",
     "back": "Πίσω",
-    "submit": "Υποβολή",
-    "welcome": "Αρχική",
-    "addPolicy": "Νέο Ασφαλιστήριο",
-    "viewAll": "Προβολή όλων",
-    "settings": "Ρυθμίσεις",
     "next": "Επόμενο",
-    "uploading": "Ανέβασμα...",
-    "upload": "Ανέβασμα",
-    "uploadResults": "Ανέβασμα Αποτελεσμάτων",
-    "gdprCompliant": "Συμμόρφωση GDPR",
-    "euProtected": "Προστασία ΕΕ"
+    "previous": "Προηγούμενο",
+    "submit": "Υποβολή",
+    "cancel": "Ακύρωση",
+    "save": "Αποθήκευση",
+    "close": "Κλείσιμο",
+    "new": "Νέα"
   },
   "dashboard": {
-    "title": "Επισκόπηση",
-    "welcomeBack": "Καλώς ήρθατε ξανά, {{name}}",
-    "healthScore": "Ασφαλιστική Κάλυψη: ",
-    "wellCovered": " Είστε καλά καλυμμένοι!",
-    "newUpdates": "Έχετε {{count}} νέες ενημερώσεις",
-    "activePolicies": "Ενεργά Συμβόλαια",
-    "upNext": "Επόμενα",
-    "upcomingVisit": "Επερχόμενη Επίσκεψη",
-    "healthyStreak": "Υγιεινή Πορεία!",
-    "noClaimsMessage": "Δεν έχετε υποβάλει δηλώσεις αποζημίωσης τους τελευταίους {{months}} μήνες.",
-    "viewAnalysis": "Προβολή Ανάλυσης",
-    "reschedule": "Αναπρογραμματισμός"
+    "statusExcellent": "Εξαιρετικό",
+    "statusGood": "Καλό",
+    "statusFair": "Δίκαιο",
+    "health": "Υγεία",
+    "auto": "Αυτοκίνητο",
+    "home": "Σπίτι"
   },
   "policies": {
     "title": "Συμβόλαια",
@@ -80,71 +84,16 @@
     "marine": "Ναυτική Ασφάλιση"
   },
   "insurance": {
-    "coverage": "Κάλυψη",
-    "deductible": "Απόσπασμα",
-    "sumInsured": "Ποσό Ασφάλισης",
-    "annualPremium": "Ετήσιο Ασφάλιστρο",
-    "monthlyPremium": "Μηνιαίο Ασφάλιστρο",
-    "coinsurance": "Συνασφάλιση",
-    "copay": "Συνδρομή",
-    "beneficiary": "Δικαιούχος",
-    "insured": "Ασφαλισμένος",
-    "policyHolder": "Συμβαλόμενος",
-    "agent": "Συνεργάτης",
-    "broker": "Μεσίτης",
-    "claim": "Δήλωση Αποζημίωσης",
-    "claimStatus": "Κατάσταση Δήλωσης",
-    "approved": "Εγκρίθηκε",
-    "denied": "Απορρίφθηκε",
-    "underReview": "Υπό Εξέταση",
-    "paidOut": "Καταβλήθηκε",
-    "excludedRisks": "Αποκλειόμενοι Κίνδυνοι",
-    "coveredRisks": "Καλυπτόμενοι Κίνδυνοι",
-    "hospitalNetwork": "Δίκτυο Νοσοκομείων",
-    "inNetwork": "Εντός Δικτύου",
-    "outOfNetwork": "Εκτός Δικτύου",
-    "cashless": "Χωρίς Μετρητά",
-    "underwriting": "Ασφαλιστική Διαδικασία",
-    "riskAssessment": "Αξιολόγηση Κινδύνου",
-    "premiumRate": "Ασφαλιστικό Επιτόκιο",
-    "renewalTerms": "Όροι Ανανέωσης",
-    "policyTerm": "Αεργικό Σύμβασης",
-    "exclusions": "Αποκλεισμοί",
-    "limitations": "Περιορισμοί",
-    "grace_period": "Περίοδος Χάριτος",
-    "lapsing": "Ληξιπροθεσμία",
-    "reinstatement": "Επανενεργοποίηση",
-    "adjustmentFactor": "Παράγοντας Προσαρμογής",
-    "loadingFactor": "Παράγοντας Φόρτωσης"
+    "health": "Κλάδος Υγείας",
+    "auto": "Κλάδος Αυτοκινήτου",
+    "home": "Κλάδος Κατοικίας",
+    "life": "Κλάδος Ζωής",
+    "pet": "Ασφάλεια Κατοικιδίων"
   },
   "claims": {
-    "title": "Αποζημιώσεις",
-    "claimsCenter": "Κέντρο Δηλώσεων Αποζημιώσεων",
-    "trackClaims": "Παρακολουθήστε τις ενεργές δηλώσεις και υποβάλετε νέες αιτήσεις.",
-    "fileNewClaim": "Υποβολή Δήλωσης",
-    "fileClaimStep": "Υποβολή Δήλωσης - Βήμα {{step}} από 3",
-    "whichPolicy": "Ποια ασφάλιση αφορά;",
-    "selectPolicy": "Επιλέξτε ασφάλιση...",
-    "dateOfIncident": "Ημερομηνία Συμβάντος",
-    "incidentType": "Τύπος Συμβάντος",
-    "selectType": "Επιλέξτε τύπο...",
-    "accident": "Ατύχημα",
-    "theft": "Κλοπή",
-    "damage": "Ζημιά",
-    "medical": "Ιατρική Έκτακτη Ανάγκη",
-    "description": "Περιγραφή",
-    "describeWhat": "Παρακαλώ περιγράψτε λεπτομερώς τι συνέβη...",
-    "evidence": "Στοιχεία / Φωτογραφίες",
-    "uploadPhotos": "Ανεβάστε Φωτογραφίες ή Έγγραφα",
-    "readySubmit": "Έτοιμοι για Υποβολή;",
-    "reviewDetails": "Παρακαλώ επαληθεύστε τα στοιχεία σας πριν υποβάλετε. Ένας συνεργάτης θα εκχωρηθεί εντός 24 ωρών.",
-    "newClaim": "Νέα Δήλωση",
-    "claimDate": "Ημερομηνία Δήλωσης",
-    "estimatedAmount": "Εκτιμώμενο Ποσό",
-    "approvedAmount": "Εγκεκριμένο Ποσό",
-    "paidAmount": "Καταβληθέν Ποσό",
-    "trackClaim": "Παρακολούθηση Δήλωσης",
-    "payment": "Πληρωμή"
+    "fileNewClaim": "Υποβολή Νέας Δήλωσης",
+    "submitClaim": "Υποβολή Δήλωσης",
+    "pastClaims": "Προηγούμενες Δηλώσεις"
   },
   "appointments": {
     "title": "Ραντεβού",
@@ -221,68 +170,38 @@
     "current": "Τρέχουσα",
     "healthRiskScore": "Αξιολόγηση Κινδύνου Υγείας",
     "riskAssessmentScore": "Βαθμολογία Αξιολόγησης Κινδύνου",
-    "riskLevel": "Επίπεδο Κινδύνου",
     "noCheckupsMessage": "Δεν έχουν ανεβαστεί έλεγχοι ακόμα",
     "withBundle": "Με πακέτο",
     "currentYear": "€2,400/έτος",
     "bundleYear": "€1,950/έτος"
   },
   "health": {
-    "title": "Υγεία",
-    "healthWellness": "Wellness",
-    "uploadCheckup": "Ανέβασμα Αποτελεσμάτων Checkup",
-    "checkupType": "Τύπος Checkup",
-    "annualScreening": "Ετήσιο Ιατρικό Screening",
-    "dental": "Οδοντιατρική Εξέταση",
-    "eye": "Εξέταση Όρασης",
-    "cardiac": "Καρδιολογικό Screening",
-    "lab": "Εργαστηριακές Εξετάσεις",
-    "healthcareProvider": "Πάροχος Υγειονομικής Περίθαλψης",
-    "coveredPolicy": "Καλύπτεται από την ασφάλισή σας",
-    "healthRecords": "Ιατρικά Αρχεία",
-    "medications": "Φάρμακα",
-    "allergies": "Αλλεργίες",
-    "medicalHistory": "Ιατρικό Ιστορικό",
-    "doctor": "Ιατρός",
-    "hospital": "Νοσοκομείο",
-    "clinic": "Κλινική",
-    "appointment": "Ραντεβού",
-    "prescription": "Συνταγή",
-    "diagnostic": "Διαγνωστικό",
-    "treatment": "Θεραπεία",
-    "followUp": "Παρακολούθηση",
-    "preventive": "Προληπτική"
+    "nextCheckupDue": "Επόμενη Εξέταση Ληξιαρχείου"
   },
   "profile": {
-    "title": "Προφίλ",
-    "yourProfile": "Το Προφίλ σας",
-    "helpUnderstand": "Βοηθήστε μας να κατανοήσουμε την κατάστασή σας ώστε να εντοπίσουμε κενά κάλυψης και να προτείνουμε τις κατάλληλες ασφαλίσεις για την ησυχία σας.",
-    "profileUpdated": "Το προφίλ σας έχει ενημερωθεί. Δείτε τις ασφαλίσεις σας για να δείτε εξατομικευμένες συστάσεις.",
-    "personalInfo": "Προσωπικές Πληροφορίες",
-    "basicDetails": "Βασικές λεπτομέρειες για να κατανοήσουμε την κατάστασή σας",
-    "fullName": "Πλήρες Όνομα *",
-    "dateOfBirth": "Ημερομηνία Γέννησης",
-    "ageGroup": "Ομάδα Ηλικίας *",
-    "financialInfo": "Οικονομικές Πληροφορίες",
-    "helpsRecommend": "Μας βοηθά να συνιστούμε κατάλληλα επίπεδα κάλυξης",
+    "dependents": "Αριθμός Εξαρτώμενων",
+    "incomeRange": "Εύρος Ετήσιου Οικογενειακού Εισοδήματος",
     "emergencyFund": "Κατάσταση Ταμείου Έκτακτης Ανάγκης",
-    "healthLifestyle": "Υγεία & Τρόπος Ζωής",
-    "impactsInsurance": "Επηρεάζει τις ασφαλιστικές ανάγκες και την αξιολόγηση κινδύνου",
+    "healthStatus": "Κατάσταση Υγείας",
     "travelFrequency": "Συχνότητα Ταξιδιών",
-    "occupationRisk": "Επίπεδο Κινδύνου Επαγγέλματος",
-    "lifeStage": "Στάδιο Ζωής & Κάλυψη",
-    "identifyGaps": "Βοηθήστε να εντοπίσουμε κενά ασφάλισης",
-    "dependents": "Αριθμός Εξαρτωμένων",
-    "numberOfDependents": "Αριθμός Εξαρτωμένων"
+    "occupationRisk": "Επαγγελματικός Κίνδυνος",
+    "familyStatus": "Οικογενειακή Κατάσταση"
   },
   "agents": {
-    "title": "Συνεργάτες",
-    "agentDetails": "Στοιχεία Συνεργάτη",
-    "contactAgent": "Επικοινωνία",
-    "phone": "Τηλέφωνο",
-    "email": "Email",
-    "availability": "Διαθεσιμότητα",
-    "workingHours": "Ώρες Λειτουργίας"
+    "quoteRequests": "Αιτήματα Προσφορών",
+    "messageSent": "Μήνυμα αποστολής",
+    "sendMessage": "Αποστολή Μηνύματος",
+    "openingCall": "Έναρξη κλήσης...",
+    "callingAgent": "Κλήση Συνεργάτη",
+    "openingWhatsapp": "Άνοιγμα WhatsApp...",
+    "chatOnWhatsapp": "Συνομιλία στο WhatsApp",
+    "openingViber": "Άνοιγμα Viber...",
+    "chatOnViber": "Συνομιλία στο Viber",
+    "openingEmail": "Άνοιγμα email...",
+    "emailTo": "Email",
+    "willGetBack": "θα επικοινωνήσουν σύντομα",
+    "agentDetails": "Προφίλ Συνεργάτη",
+    "title": "Ασφαλιστικοί Συνεργάτες"
   },
   "auth": {
     "login": "Σύνδεση",
@@ -294,16 +213,9 @@
     "signUp": "Δημιουργία Λογαριασμού"
   },
   "settings": {
-    "title": "Ρυθμίσεις",
-    "account": "Λογαριασμός",
-    "preferences": "Προτιμήσεις",
     "notifications": "Ειδοποιήσεις",
-    "privacy": "Απόρρητο",
-    "language": "Γλώσσα",
-    "theme": "Θέμα",
-    "darkMode": "Σκοτεινό",
-    "lightMode": "Ανοιχτό",
-    "systemMode": "Σύστημα"
+    "smsNotifications": "Ειδοποιήσεις SMS",
+    "doNotDisturb": "Μην Ενοχλείτε"
   },
   "wellness": {
     "title": "Wellness",
@@ -314,7 +226,31 @@
     "goals": "Στόχοι"
   },
   "gapAnalysis": {
-    "title": "Ανάλυση"
+    "lifeInsurance": "Ασφάλεια Ζωής",
+    "lifeInsuranceDesc": "Έχετε εξαρτώμενα ή οικογενειακές υποχρεώσεις χωρίς προστασία ασφάλειας ζωής",
+    "lifeInsuranceRec": "Ασφάλεια ζωής όρου (10-30 χρόνια) για να προστατεύσετε το οικονομικό μέλλον της οικογένειας. Ποσό: 5-10x το ετήσιο εισόδημα",
+    "disabilityInsurance": "Ασφάλεια Αναπηρίας",
+    "disabilityInsuranceDesc": "Εάν δεν μπορέσετε να εργαστείτε λόγω ασθένειας/τραυματισμού, το εισόδημά σας κινδυνεύει",
+    "disabilityInsuranceRec": "Κάλυψη βραχυπρόθεσμης και μακροπρόθεσμης αναπηρίας για αντικατάσταση 60-80% του εισοδήματος",
+    "travelInsurance": "Ασφάλεια Διεθνών Ταξιδιών",
+    "travelInsuranceDesc": "Ταξιδεύετε αλλά δεν έχετε ιατρική κάλυψη ταξιδιών",
+    "travelInsuranceRec": "Ετήσια ασφάλεια ταξιδιών που καλύπτει ιατρικές έκτακτες ανάγκες, εκκένωση και ακύρωση ταξιδιού",
+    "healthInsurance": "Περιεκτική Ασφάλεια Υγείας",
+    "healthInsuranceDesc": "Οι ιατρικές δαπάνες μπορεί να είναι καταστροφικές χωρίς σωστή κάλυψη",
+    "healthInsuranceRec": "Ιδιωτική ασφάλεια υγείας ή περιεκτική δημόσια κάλυψη με συμπληρωματικές επιλογές",
+    "homeInsurance": "Ασφάλεια Κατοικίας",
+    "homeInsuranceDesc": "Το μεγαλύτερο περιουσιακό σας στοιχείο (σπίτι) χρειάζεται προστασία από ζημιές και ευθύνη",
+    "homeInsuranceRec": "Περιεκτική ασφάλεια ιδιοκτητών που καλύπτει κτίριο, περιεχόμενο και ευθύνη (ελάχιστο €1 εκ.)",
+    "autoInsurance": "Ασφάλεια Αυτοκινήτου",
+    "autoInsuranceDesc": "Η τακτική χρήση οχήματος χωρίς σωστή κάλυψη δημιουργεί νομικό και οικονομικό κίνδυνο",
+    "autoInsuranceRec": "Ευθύνη τρίτων + κάλυψη σύγκρουσης/περιεκτική",
+    "emergencyFund": "Ταμείο Έκτακτης Ανάγκης",
+    "emergencyFundDesc": "Χωρίς εξοικονόμηση έκτακτης ανάγκης, τα απρόσμενα γεγονότα αναγκάζουν χρέος ή αξιώσεις ασφάλειας",
+    "emergencyFundRec": "Κτίστε 3-6 μήνες δαπανών διαβίωσης σε εύκολα προσβάσιμες αποταμιεύσεις (ελάχιστο €3k-€15k)",
+    "selfFunding": "Προτεραιότητα αuto-χρηματοδότησης",
+    "petInsurance": "Ασφάλεια Κατοικιδίων (Προαιρετική)",
+    "petInsuranceDesc": "Οι ιατρικές έκτακτες ανάγκες κατοικιδίων μπορεί να κοστίσουν €1000-€5000",
+    "petInsuranceRec": "Ασφάλεια υγείας κατοικιδίων που καλύπτει ατυχήματα, ασθένειες και προληπτική φροντίδα"
   },
   "renewals": {
     "title": "Ανανεώσεις",
@@ -334,93 +270,45 @@
     "proTips": "Συμβουλές Ειδικών"
   },
   "billing": {
-    "title": "Τιμολόγηση & Πληρωμές",
-    "billingPayments": "Χρεώσεις & Πληρωμές",
-    "managementTracking": "Διαχειρίστε τις πληρωμές σας, δείτε το ιστορικό και παρακολουθήστε το κόστος των ασφαλίστρων",
-    "overview": "Επισκόπηση",
-    "paymentStatus": "Κατάσταση Πληρωμής",
-    "paymentHistory": "Ιστορικό Πληρωμών",
-    "paymentMethods": "Μέθοδοι Πληρωμής",
-    "totalAnnualPremiums": "Συνολικά Ετήσια Ασφάλιστρα",
-    "monthlyAverage": "Μέσος Όρος Μηνιαίως",
-    "nextPaymentDue": "Επόμενη Πληρωμή",
-    "paidThisYear": "Καταβληθέν Φέτος",
-    "premiumPaymentTrends": "Τάσεις Πληρωμής Ασφαλίστρων",
-    "yearOverYearChange": "Μεταβολή Ετήσιας Σύγκρισης",
-    "averagePaymentDelay": "Μέσος Όρος Καθυστέρησης Πληρωμής",
-    "downloadInvoice": "Λήψη Τιμολογίου",
-    "updatePaymentMethod": "Ενημέρωση Μεθόδου Πληρωμής",
-    "date": "Ημερομηνία",
-    "amount": "Ποσό",
-    "status": "Κατάσταση",
-    "method": "Μέθοδος",
-    "paid": "Καταβληθέν",
-    "scheduled": "Προγραμματισμένη",
-    "overdue": "Ληξιπρόθεσμη",
-    "failed": "Αποτυχία"
+    "paymentHistoryDescription": "Ιστορικό πληρωμών 12 μηνών με μια ματιά"
   },
   "recommendations": {
-    "title": "Συστάσεις",
-    "aiPoweredRecommendations": "Συστάσεις με Τεχνητή Νοημοσύνη",
-    "personalizedInsights": "Εξατομικευμένες συστάσεις για βελτιστοποίηση της κάλυψης και των εξοικονομήσεων",
-    "actionItems": "Αιτήματα Δράσης",
-    "potentialSavings": "Δυνητικές Εξοικονομήσεις",
-    "ifImplemented": "Εάν εφαρμοσθούν όλες οι συστάσεις",
-    "coverageScore": "Βαθμολογία Κάλυψης",
-    "roomForImprovement": "Χώρος για Βελτίωση",
-    "immediateAction": "Άμεση Ενέργεια Απαιτούμενη",
-    "within30Days": "Εντός 30 Ημερών",
-    "reviewExplore": "Ανασκόπηση & Εξερεύνηση",
-    "coverageGap": "Κενό Κάλυψης",
-    "lifeEvent": "Σημαντικό Γεγονός Ζωής",
-    "savingsOpportunity": "Ευκαιρία Εξοικονόμησης",
-    "newOpportunity": "Νέα Ευκαιρία",
-    "renewalStrategy": "Στρατηγική Ανανέωσης",
-    "wellness": "Wellness",
-    "scheduleConsultation": "Προγραμματισμός Συμβουλεύσης",
-    "readyOptimize": "Έτοιμοι να Βελτιστοποιήσετε την Κάλυψή σας;"
+    "addDental": "Προσθήκη Κάλυψης Οδοντιατρικής",
+    "increaseLife": "Αύξηση Κάλυψης Ασφάλειας Ζωής",
+    "bundleDiscount": "Έκπτωση Πακέτου Διαθέσιμη",
+    "petInsurance": "Ασφάλεια Κατοικιδίων Πρόσφατα Προστέθηκε",
+    "maximizeWellness": "Μεγιστοποίηση Παροχών Wellness"
   },
   "notifications": {
-    "title": "Ειδοποιήσεις",
-    "notificationsCenter": "Κέντρο Ειδοποιήσεων",
-    "stayUpdated": "Μείνετε ενημερωμένοι σχετικά με τις ασφαλίσεις, τις αποζημιώσεις και τις συστάσεις",
-    "highPriority": "Υψηλή Προτεραιότητα",
-    "unread": "Ανάγνωστα",
-    "total": "Σύνολο",
-    "allNotifications": "Όλες",
-    "autoInsuranceRenewal": "Ανανέωση Αυτοκινήτου",
-    "paymentDue": "Πληρωμή Ληξιπρόθεσμη",
-    "newCoverageGap": "Νέα Κενή Κάλυψη",
-    "claimStatusUpdated": "Κατάσταση Αποζημίωσης Ενημερώθηκε",
+    "autoInsuranceRenewal": "Ανανέωση Ασφάλειας Αυτοκινήτου Διατίθεται",
+    "paymentDue": "Ημερομηνία Πληρωμής",
+    "coverageGapIdentified": "Εντοπίστηκε Νέο Κενό Κάλυψης",
+    "claimStatusUpdated": "Ενημέρωση Κατάστασης Αποζημίωσης",
     "appointmentReminder": "Υπενθύμιση Ραντεβού",
-    "newLoginDetected": "Νέα Είσοδος Ανιχνεύθηκε",
+    "newLoginDetected": "Εντοπίστηκε Νέα Σύνδεση",
     "specialOffer": "Ειδική Προσφορά",
-    "markAllAsRead": "Σήμανση Όλων ως Αναγνωσμένων",
-    "view": "Προβολή",
-    "noNotifications": "Δεν υπάρχουν ειδοποιήσεις"
+    "authenticationFailed": "Η Πιστοποίηση Απέτυχε",
+    "failedToLoadAppointments": "Αποτυχία Φόρτωσης Ραντεβού",
+    "failedToFetch": "Αποτυχία Λήψης Δεδομένων",
+    "failedToComplete": "Αποτυχία Ολοκλήρωσης",
+    "failedToSave": "Αποτυχία Αποθήκευσης Προφίλ"
   },
   "notificationPreferences": {
-    "title": "Προτιμήσεις Ειδοποιήσεων",
-    "subtitle": "Ελέγξτε πώς και πότε λαμβάνετε ενημερώσεις σχετικά με τις ασφαλίσεις και τον λογαριασμό σας",
-    "emailNotifications": "Ειδοποιήσεις Email",
-    "inAppNotifications": "Ειδοποιήσεις Εντός Εφαρμογής",
-    "smsNotifications": "Ειδοποιήσεις SMS",
-    "doNotDisturb": "Μην Ενοχλείτε",
-    "emailFrequency": "Συχνότητα Email",
-    "instant": "Άμεσα",
-    "dailySummary": "Ημερήσια Σύνοψη",
-    "weeklySummary": "Εβδομαδιαία Σύνοψη",
-    "policyRenewals": "Ανανεώσεις Ασφαλιστηρίων",
+    "policyRenewals": "Ανανεώσεις Πολιτικών",
+    "policyRenewalsDesc": "Υπενθυμίσεις για επερχόμενες ανανεώσεις πολιτικών",
     "paymentReminders": "Υπενθυμίσεις Πληρωμής",
+    "paymentRemindersDesc": "Ειδοποιήσεις για επερχόμενες ή χαμένες πληρωμές",
     "claimsUpdates": "Ενημερώσεις Αποζημιώσεων",
+    "claimsUpdatesDesc": "Ενημερώσεις κατάστασης στις ενεργές αποζημιώσεις σας",
     "coverageChanges": "Αλλαγές Κάλυψης",
+    "coverageChangesDesc": "Ειδοποιήσεις όταν αλλάζουν τα λεπτομέρειες κάλυψης",
+    "policyRecommendations": "Συστάσεις Πολιτικών",
     "appointmentReminders": "Υπενθυμίσεις Ραντεβού",
+    "appointmentRemindersDesc": "Υπενθυμίσεις για προγραμματισμένα ραντεβού",
     "specialOffers": "Ειδικές Προσφορές",
-    "securityAlerts": "Ειδοποιήσεις Ασφάλειας",
-    "alwaysOn": "Πάντα Ενεργή",
-    "criticalAlertsOnly": "Μόνο Κρίσιμες Ειδοποιήσεις",
-    "savePreferences": "Αποθήκευση Προτιμήσεων",
-    "savedSuccessfully": "Αποθηκεύθηκε με επιτυχία"
+    "specialOffersDesc": "Αποκλειστικές προσφορές και προωθήσεις από τους συνεργάτες μας",
+    "securityAlerts": "Ειδοποιήσεις Ασφαλείας",
+    "criticalAlertsOnly": "Μόνο Κρίσιμες Ειδοποιήσεις"
   },
   "quickActions": {
     "quickActions": "Γρήγορες Ενέργειες",
@@ -430,43 +318,6 @@
     "bookAppointment": "Κράτηση Ραντεβού",
     "viewRecommendations": "Προβολή Συστάσεων",
     "contactAgent": "Επικοινωνία Συνεργάτη"
-  },
-  "common": {
-    "date": "Ημερομηνία",
-    "amount": "Ποσό",
-    "method": "Μέθοδος",
-    "status": "Κατάσταση",
-    "edit": "Επεξεργασία",
-    "add": "Προσθήκη",
-    "delete": "Διαγραφή",
-    "view": "Προβολή",
-    "search": "Αναζήτηση",
-    "download": "Λήψη",
-    "paid": "Καταβληθέν",
-    "scheduled": "Προγραμματισμένη",
-    "overdue": "Ληξιπρόθεσμη",
-    "failed": "Αποτυχία",
-    "default": "Προεπιλεγμένη",
-    "expires": "Λήξη",
-    "directDebit": "Άμεση Χρέωση",
-    "creditCard": "Πιστωτική Κάρτα",
-    "addPaymentMethod": "Προσθήκη Μεθόδου Πληρωμής",
-    "searchPlaceholder": "Αναζήτηση ανά πάροχο ή αριθμό πολιτικής...",
-    "now": "Τώρα",
-    "ago": "πριν",
-    "days": "ημέρες",
-    "hours": "ώρες",
-    "all": "Όλα",
-    "no": "Όχι",
-    "yes": "Ναι",
-    "back": "Πίσω",
-    "next": "Επόμενο",
-    "previous": "Προηγούμενο",
-    "submit": "Υποβολή",
-    "cancel": "Ακύρωση",
-    "save": "Αποθήκευση",
-    "close": "Κλείσιμο",
-    "new": "Νέα"
   },
   "recommendations_details": {
     "addDentalCoverage": "Προσθήκη Κάλυψης Οδοντιατρικής",
@@ -524,15 +375,6 @@
     "homeInsurance": "Ασφάλιση Κατοικίας (Ergo)",
     "paymentsCompleted": "πληρωμές ολοκληρώθηκαν"
   },
-  "billing": {
-    "paymentHistoryDescription": "Ιστορικό πληρωμών 12 μηνών με μια ματιά"
-  },
-  "recommendations": {
-    "highPriorityRecs": "Συστάσεις υψηλής προτεραιότητας",
-    "high": "Υψηλή",
-    "medium": "Μεσαία",
-    "low": "Χαμηλή"
-  },
   "billingPlans": {
     "monthly": "Μηνιαία",
     "sixMonths": "6 Μήνες",
@@ -552,43 +394,17 @@
     "yourAgentWillContact": "Ο συνεργάτης σας θα επικοινωνήσει σας σύντομα",
     "paymentFailed": "Η πληρωμή απέτυχε. Παρακαλώ προσπαθήστε ξανά"
   },
-  "notificationPreferences": {
-    "policyRenewals": "Ανανεώσεις Πολιτικής",
-    "renewalsDesc": "Υπενθυμίσεις για επερχόμενες ανανεώσεις συμβολαίων",
-    "paymentReminders": "Υπενθυμίσεις Πληρωμής",
-    "paymentsDesc": "Ειδοποιήσεις για επερχόμενες ή χαμένες πληρωμές",
-    "claimsUpdates": "Ενημερώσεις Δηλώσεων",
-    "claimsDesc": "Ενημερώσεις κατάστασης για τις ενεργές δηλώσεις σας",
-    "coverageChanges": "Αλλαγές Κάλυψης",
-    "coverageDesc": "Ειδοποιήσεις όταν αλλάζουν τα στοιχεία κάλυψης",
-    "policyRecommendations": "Συστάσεις Πολιτικής",
-    "recommendationsDesc": "Προτάσεις που ενισχύονται από ΤΝ για βελτίωση της κάλυψης σας",
-    "appointmentReminders": "Υπενθυμίσεις Ραντεβού",
-    "appointmentsDesc": "Υπενθυμίσεις για προγραμματισμένα ραντεβού",
-    "specialOffers": "Ειδικές Προσφορές",
-    "offersDesc": "Αποκλειστικές συμφωνίες και προσφορές από τους εταίρους μας",
-    "securityAlerts": "Ειδοποιήσεις Ασφάλειας",
-    "securityDesc": "Σημαντικές ειδοποιήσεις ασφάλειας και λογαριασμού (πάντα ενεργό)",
-    "criticalAlertsOnly": "Μόνο Κρίσιμες Ειδοποιήσεις",
-    "criticalDesc": "Λαμβάνετε SMS μόνο για επείγοντα ζητήματα (ανανέωση που οφείλεται, η πληρωμή απέτυχε)",
-    "claimsStatus": "Κατάσταση Δηλώσεων",
-    "claimsStatusDesc": "Ενημερώσεις SMS για την πρόοδο των δηλώσεων"
-  },
   "onboarding": {
-    "welcome": "Καλώς ήρθατε στο PolicyWallet",
-    "welcomeDesc": "Ο προσωπικός σας διαχειριστής ασφάλισης για τη διαχείριση πολιτικών από πολλούς ασφαλιστές",
-    "healthMatters": "Η Υγεία σας Είναι Σημαντική",
-    "healthDesc": "Παρακολουθήστε τα δεδομένα υγείας σας και λαμβάνετε εξατομικευμένες συστάσεις wellness",
-    "smartAnalytics": "Έξυπνη Ανάλυση",
-    "analyticsDesc": "Κατανοήστε τα κενά κάλυψης σας και βελτιστοποιήστε την προστασία σας"
+    "steps": "Βήματα ενσωμάτωσης",
+    "skipTutorial": "Παράλειψη εκμάθησης",
+    "completeAndContinue": "Ολοκληρώστε και συνεχίστε"
   },
   "navigation": {
     "renewals": "Ανανεώσεις",
     "billing": "Χρέωση",
     "recommendations": "Συστάσεις",
     "notifications": "Ειδοποιήσεις",
-    "admin": "Διαχείριση",
-    "policyWallet": "PolicyWallet"
+    "admin": "Διαχειριστής"
   },
   "dashboardWidgets": {
     "coverageHealthByType": "Υγεία Κάλυψης κατά Τύπο",
@@ -600,46 +416,17 @@
     "good": "Καλό",
     "fair": "Δίκαιο"
   },
-  "gapAnalysis": {
-    "optimalCoverage": "✓ Βέλτιστη Κάλυψη",
-    "insurancePays": "Ασφάλιση Πληρώνει",
-    "pet": "Κατοικίδιο"
-  },
   "chatbot": {
-    "welcome": "Γεια σας! Είμαι ο PolicyWallet AI assistant. Μπορώ να σας βοηθήσω να ελέγξετε την κάλυψή σας, να υποβάλετε δήλωση ή να βρείτε έναν συνεργάτη. Πώς μπορώ να σας βοηθήσω σήμερα;",
-    "fileClaim": "Για να υποβάλετε μια δήλωση, πηγαίνετε στη σελίδα λεπτομερειών της συγκεκριμένης πολιτικής και κάντε κλικ 'Υποβολή Νέας Δήλωσης'. Μπορώ να σας καθοδηγήσω μέσα από τη διαδικασία ανεβάσματος εγγράφων αν θέλετε.",
-    "aiAssistant": "PolicyWallet AI",
-    "askAnything": "Ρωτήστε τα πάντα..."
+    "askAnything": "Ρωτήστε οτιδήποτε..."
   },
   "policyRecommendations": {
-    "coverageScore": "Σκορ Κάλυψης",
-    "critical": "Κρίσιμο: Προσθέστε Αυτές τις Κάλυψες",
-    "recommended": "Συνιστάται: Προσθέστε Αυτές τις Κάλυψες",
-    "saveMoney": "Εξοικονομήστε Χρήματα: Κάλυψες για Αφαίρεση",
-    "optional": "Προαιρετικό: Ωραίες Κάλυψες"
+    "add": "Προσθήκη",
+    "sendingRequest": "Αποστολή...",
+    "requestQuote": "Αίτηση Προσφοράς"
   },
   "documents": {
-    "searchDocuments": "Αναζήτηση εγγράφων..."
-  },
-  "agents": {
-    "openingCall": "Άνοιγμα κλήσης...",
-    "callingAgent": "Κλήση",
-    "openingWhatsapp": "Άνοιγμα WhatsApp...",
-    "chatOnWhatsapp": "Συνομιλία στο WhatsApp",
-    "openingViber": "Άνοιγμα Viber...",
-    "chatOnViber": "Συνομιλία στο Viber",
-    "openingEmail": "Άνοιγμα email...",
-    "emailTo": "Email προς",
-    "messageSent": "Μήνυμα απεστάλη!",
-    "willGetBack": "θα επικοινωνήσει μαζί σας σύντομα"
-  },
-  "profile": {
-    "lifeStageAndCoverage": "Στάδιο Ζωής & Κάλυψη",
-    "currentInsuranceCoverage": "Τρέχουσα Κάλυψη Ασφάλισης",
-    "impactsInsuranceNeeds": "Επηρεάζει τις ανάγκες ασφάλισης και την αξιολόγηση κινδύνου"
-  },
-  "gapAnalysis": {
-    "criticalCoverageGaps": "Κρίσιμα Κενά Κάλυψης"
+    "acceptedFormats": "Αποδεκτές Μορφές",
+    "download": "Λήψη"
   },
   "login": {
     "emailOrUsername": "Email ή Όνομα Χρήστη",
@@ -669,25 +456,18 @@
     "premium": "Ασφάλιστρο",
     "policyNo": "Αριθ. Πολιτικής"
   },
-  "claims": {
-    "fileNewClaim": "Υποβολή Νέας Δήλωσης",
-    "submitClaim": "Υποβολή Δήλωσης",
-    "pastClaims": "Προηγούμενες Δηλώσεις"
-  },
-  "documents": {
-    "acceptedFormats": "Αποδεκτές Μορφές",
-    "download": "Λήψη"
-  },
   "admin": {
-    "monthlyClaimsSummary": "Μηνιαία Περίληψη Δηλώσεων",
-    "policyPortfolioAnalysis": "Ανάλυση Χαρτοφυλακίου Πολιτικής",
-    "riskAssessmentReport": "Έκθεση Αξιολόγησης Κινδύνου",
-    "auditTrailExport": "Εξαγωγή Ίχνους Ελέγχου"
-  },
-  "policyRecommendations": {
-    "add": "Προσθήκη",
-    "sendingRequest": "Αποστολή...",
-    "requestQuote": "Αίτηση Προσφοράς"
+    "monthlyClaims": "Μηνιαίες Αποζημιώσεις",
+    "policyPortfolio": "Χαρτοφυλάκιο Πολιτικών",
+    "riskAssessment": "Αξιολόγηση Κινδύνου",
+    "auditTrail": "Ιχνηλασία Ελέγχου",
+    "dashboard": "Πίνακας Ελέγχου Διαχειριστή",
+    "enterpriseInsurance": "Πλατφόρμα Ασφάλισης Εταιρικής Λύσης - Ανάλυση και Διαχείριση",
+    "totalUsers": "Σύνολο Χρηστών",
+    "dataCompliance": "Συμμόρφωση Δεδομένων",
+    "gdprCompliance": "Συμμόρφωση GDPR",
+    "gdprRequirements": "Απαιτήσεις GDPR",
+    "securityRequirements": "Απαιτήσεις Ασφάλειας"
   },
   "actions": {
     "viewResults": "Δείτε Αποτελέσματα",
@@ -743,100 +523,51 @@
     "labWork": "Εργαστηριακές Εξετάσεις"
   },
   "agentServices": {
-    "servicesProvided": "Υπηρεσίες που Προσφέρονται",
-    "whatYouCanGetHelp": "Τι μπορούμε να σας βοηθήσουμε",
-    "policySelection": "Επιλογή & Αγορά Πολιτικής",
-    "claimsAssistance": "Βοήθεια με Δηλώσεις",
-    "policyReviews": "Αναθεώρηση & Βελτιστοποίηση Πολιτικής",
+    "servicesProvided": "Υπηρεσίες Παρεχόμενες",
+    "whatYouCanGetHelp": "Ζητήματα Βοήθειας",
+    "policySelection": "Καθοδήγηση Επιλογής",
+    "claimsAssistance": "Βοήθεια Αποζημιώσεων",
+    "policyReviews": "Αναθεώρηση Συμβολαίων",
     "coverageGapAnalysis": "Ανάλυση Κενών Κάλυψης",
-    "policyRenewals": "Ανανέωση Πολιτικών",
+    "policyRenewals": "Ανανεώσεις Συμβολαίων",
     "documentSupport": "Υποστήριξη Εγγράφων",
-    "emergencySupport": "Υποστήριξη Έκτακτης Ανάγκης 24/7",
-    "basedInAthens": "Εδρεύει στην Αθήνα, Ελλάδα",
-    "servingClients": "Εξυπηρετώ πελάτες σε όλη την Ελλάδα και την ΕΕ. Ευγλώττων σε Αγγλικά, Ελληνικά, Γερμανικά και Ιταλικά.",
-    "sendQuickMessage": "Αποστολή Γρήγορου Μηνύματος",
-    "dontSeeQuestion": "Δεν βλέπετε την ερώτησή σας; Στείλτε ένα μήνυμα και θα σας απαντήσουμε σύντομα",
-    "tellUsWhatNeed": "Πείτε μας τι χρειάζεστε..."
+    "emergencySupport": "Υποστήριξη 24/7",
+    "basedInAthens": "Έδρα στην Αθήνα",
+    "servingClients": "Εξυπηρέτηση σε όλη τη χώρα",
+    "sendQuickMessage": "Γρήγορο Μήνυμα",
+    "dontSeeQuestion": "Δεν βλέπετε την ερώτησή σας;",
+    "tellUsWhatNeed": "Πείτε μας τι χρειάζεστε"
   },
   "gapAnalysisQuestions": {
     "ageGroup": "Ποια είναι η ηλικιακή σας ομάδα;",
-    "familyStatus": "Ποια είναι η οικογενειακή σας κατάσταση;",
-    "dependents": "Έχετε εξαρτώμενα άτομα (παιδιά);",
-    "incomeRange": "Ποια είναι η ετήσια εισοδηματική σας κατηγορία;",
-    "health": "Πώς θα περιγράφατε την τρέχουσα κατάσταση της υγείας σας;",
-    "emergencySavings": "Έχετε 3-6 μήνες κεφάλαιο έκτακτης ανάγκης;",
-    "travelFrequency": "Πόσο συχνά ταξιδεύετε διεθνώς;",
-    "lifeStageRisks": "Ποιος από τους ακόλουθους ισχύει για εσάς;",
-    "occupationRisk": "Θα περιγράφατε την εργασία σας ως:",
-    "firstHomePurchase": "Πρώτη αγορά σπιτιού προγραμματισμένη",
-    "youngChildren": "Μικρά παιδιά",
-    "mortgageHolder": "Κάτοχος Δανείου",
-    "highDebt": "Υψηλό χρέος",
-    "businessOwner": "Ιδιοκτήτης Επιχείρησης",
-    "lowRiskOffice": "Χαμηλός κίνδυνος (γραφείο)",
-    "mediumRiskMixed": "Μεσαίος κίνδυνος (μικτές δραστηριότητες)",
-    "highRiskPhysical": "Υψηλός κίνδυνος (σωματικό/ταξίδι)",
+    "familyStatusQuestion": "Ποια είναι η οικογενειακή σας κατάσταση;",
+    "dependentsQuestion": "Έχετε εξαρτώμενα (παιδιά);",
+    "currentCoveragesQuestion": "Ποιοι τύποι ασφάλειας έχετε αυτή τη στιγμή;",
+    "incomeRangeQuestion": "Ποιο είναι το εύρος του ετήσιου οικογενειακού εισοδήματος;",
+    "healthStatusQuestion": "Πώς θα περιγράφατε την τρέχουσα υγεία σας;",
+    "emergencyFundQuestion": "Έχετε αποταμιεύσει 3-6 μήνες έκτακτης ανάγκης;",
+    "travelFrequencyQuestion": "Πόσο συχνά ταξιδεύετε διεθνώς;",
+    "occupationRiskQuestion": "Πώς θα περιγράφατε τον επαγγελματικό κίνδυνο;",
+    "lifeStageRisksQuestion": "Ποια από αυτά ισχύουν για το τρέχον στάδιο της ζωής σας;",
     "excellent": "Εξαιρετική",
     "good": "Καλή",
     "fair": "Ικανοποιητική",
     "chronicConditions": "Χρόνια νοσήματα",
-    "wellCovered": "Ναι, καλά κάλυψη",
-    "partiallyCovered": "Μερικώς κάλυψη",
+    "wellCovered": "Ναι, καλά καλυμμένη",
+    "partiallyCovered": "Μερικώς καλυμμένη",
     "minimalOrNone": "Ελάχιστη ή καμία",
     "never": "Ποτέ",
     "oneTwoTimesYear": "1-2 φορές/έτος",
     "threeSixTimesYear": "3-6 φορές/έτος",
-    "monthlyPlus": "Μηνιαίως+"
-  },
-  "chatbot": {
-    "greeting": "Γεια σας! Είμαι ο ΑΙ βοηθός σας της PolicyWallet. Μπορώ να σας βοηθήσω να ελέγξετε την κάλυψή σας, να υποβάλετε μια δήλωση ή να βρείτε έναν πράκτορα. Πώς μπορώ να σας βοηθήσω σήμερα;",
-    "yourHealthMatters": "Η υγεία σας είναι σημαντική",
-    "yourInsuranceProfile": "Το Προφίλ Ασφάλισης σας",
-    "occupationRiskLevel": "Επίπεδο Κινδύνου Εργασίας",
-    "lifeStageAndCoverage": "Στάδιο Ζωής & Κάλυψη",
-    "helpIdentifyGaps": "Βοηθήστε να εντοπίσετε κενά ασφάλισης",
-    "lifeStageFactors": "Παράγοντες Σταδίου Ζωής",
-    "currentCoverage": "Τρέχουσα Κάλυψη Ασφάλισης"
-  },
-  "onboarding": {
-    "welcomeTitle": "Καλώς ήρθατε στο PolicyWallet",
-    "welcomeDesc": "Ο προσωπικός σας διαχειριστής ασφάλισης",
-    "healthTitle": "Η υγεία σας είναι σημαντική",
-    "healthDesc": "Παρακολουθήστε τα δεδομένα υγείας σας",
-    "analyticsTitle": "Έξυπνη Ανάλυση",
-    "analyticsDesc": "Κατανοήστε τα κενά κάλυψής σας"
-  },
-  "admin": {
-    "monthlyClaimsSummary": "Μηνιαία Περίληψη Δηλώσεων",
-    "policyPortfolioAnalysis": "Ανάλυση Χαρτοφυλακίου Πολιτικών",
-    "riskAssessmentReport": "Έκθεση Αξιολόγησης Κινδύνου",
-    "auditTrailExport": "Εξαγωγή Ελέγχου",
-    "availableReports": "Διαθέσιμες Εκθέσεις",
-    "dataStandardCompliance": "Συμμόρφωση Προτύπων",
-    "securityRequirements": "Απαιτήσεις Ασφάλειας",
-    "gdprRequirements": "Απαιτήσεις GDPR"
-  },
-  "agents": {
-    "quoteRequests": "Αιτήματα Προσφοράς",
-    "messageSent": "Μήνυμα Απεστάλη!",
-    "sendMessage": "Αποστολή Μηνύματος",
-    "openingCall": "Ανοίγμα κλήσης...",
-    "callingAgent": "Κλήση προς",
-    "openingWhatsapp": "Ανοίγμα WhatsApp...",
-    "chatOnWhatsapp": "Συνομιλία με",
-    "openingViber": "Ανοίγμα Viber...",
-    "chatOnViber": "Συνομιλία με",
-    "openingEmail": "Ανοίγμα email...",
-    "emailTo": "Email προς",
-    "willGetBack": "θα σας απαντήσει σύντομα"
-  },
-  "recommendations": {
-    "addDentalCoverage": "Προσθήκη Οδοντιατρικής Κάλυψης",
-    "addDentalRider": "Προσθήκη Οδοντιατρικού Rider",
-    "increaseLifeInsurance": "Αύξηση Ασφάλισης Ζωής",
-    "upgradeLifeInsurance": "Αναβάθμιση Ασφάλισης Ζωής",
-    "petInsuranceAdded": "Ασφάλιση Κατοικιδίων Προστέθηκε",
-    "explorePetInsurance": "Εξερεύνηση Ασφάλισης Κατοικιδίων"
+    "monthlyPlus": "Μηνιαίως ή συχνότερα",
+    "lowRiskOffice": "Χαμηλός κίνδυνος (γραφείο)",
+    "mediumRiskMixed": "Μεσαίος κίνδυνος (μικτές δραστηριότητες)",
+    "highRiskPhysical": "Υψηλός κίνδυνος (σωματική/ταξίδια)",
+    "firstHomePurchase": "Σχεδιάζω αγορά πρώτου σπιτιού",
+    "youngChildren": "Μικρά παιδιά",
+    "mortgageHolder": "Κάτοχος δανείου",
+    "highDebt": "Υψηλό χρέος",
+    "businessOwner": "Ιδιοκτήτης επιχείρησης"
   },
   "validation": {
     "required": "Το πεδίο {{fieldName}} είναι υποχρεωτικό.",
@@ -844,18 +575,15 @@
     "fillRequired": "Παρακαλώ συμπληρώστε όλα τα υποχρεωτικά πεδία"
   },
   "status": {
-    "success": "Επιτυχία",
-    "failed": "Αποτυχία",
-    "submitted": "Υποβλήθηκε",
-    "active": "Ενεργή",
-    "inactive": "Ανενεργή",
-    "pending": "Εκκρεμμότητα",
-    "approved": "Εγκεκριμένη",
-    "rejected": "Απορριφθείσα",
-    "inReview": "Υπό Ανασκόπηση",
-    "paid": "Πληρωμένη",
-    "closed": "Κλειστή",
-    "cancelled": "Ακυρωθείσα"
+    "active": "Ενεργό",
+    "pending": "Εκκρεμές",
+    "expired": "Ληγμένο",
+    "review_needed": "Χρήζει Ελέγχου",
+    "cancelled": "Ακυρώθηκε",
+    "lapsed": "Ανενεργό",
+    "paid": "Πληρωμένο",
+    "closed": "Κλειστό",
+    "in_review": "Υπό Ελέγχου"
   },
   "mockData": {
     "medical": "Ιατρική",
@@ -898,10 +626,10 @@
     "civil": "Αστική Ευθύνη"
   },
   "familyStatus": {
-    "single": "Ανύπαντρος/η",
-    "married": "Παντρεμένος/η",
-    "domesticPartner": "Ημιουργός",
-    "widowedDivorced": "Χήρος/α ή Διαζευγμένος/η"
+    "single": "Ανύπαντρος",
+    "married": "Παντρεμένος",
+    "domesticPartner": "Σύντροφος",
+    "widowedDivorced": "Χήρος/Χήρα"
   },
   "dependents": {
     "noDependents": "Χωρίς εξαρτώμενα",
@@ -909,20 +637,20 @@
     "threePlusDependents": "3+ εξαρτώμενα"
   },
   "insuranceTypes": {
-    "health": "Υγεία",
-    "auto": "Αυτοκίνητο",
-    "home": "Κατοικία",
-    "life": "Ζωή",
-    "disability": "Αναπηρία",
-    "travel": "Ταξίδια",
-    "pet": "Κατοικίδια",
+    "health": "Ασφάλιση Υγείας",
+    "auto": "Ασφάλιση Αυτοκινήτου",
+    "home": "Ασφάλιση Περιουσίας",
+    "life": "Ασφάλιση Ζωής",
+    "disability": "Ασφάλιση Αναπηρίας",
+    "travel": "Ασφάλιση Ταξιδιού",
+    "pet": "Ασφάλιση Κατοικιδίων",
     "umbrella": "Ομπρέλα/Ευθύνη"
   },
   "claimsSteps": {
     "submitted": "Υποβλήθηκε",
     "reviewing": "Υπό Εξέταση",
-    "approved": "Εγκεκριμένη",
-    "paid": "Πληρωμένη"
+    "approved": "Εγκρίθηκε",
+    "paid": "Καταβλήθηκε"
   },
   "healthConditions": {
     "hypertension": "Υπέρταση",
@@ -936,56 +664,6 @@
     "pending": "Εκκρεμμότητα",
     "confirmed": "Επιβεβαιωμένη",
     "cancelled": "Ακυρωθείσα"
-  },
-  "gapAnalysisQuestions": {
-    "ageGroup": "Ποια είναι η ηλικιακή σας ομάδα;",
-    "familyStatusQuestion": "Ποια είναι η οικογενειακή σας κατάσταση;",
-    "dependentsQuestion": "Έχετε εξαρτώμενα (παιδιά);",
-    "currentCoveragesQuestion": "Ποιοι τύποι ασφάλειας έχετε αυτή τη στιγμή;",
-    "incomeRangeQuestion": "Ποιο είναι το εύρος του ετήσιου οικογενειακού εισοδήματος;",
-    "healthStatusQuestion": "Πώς θα περιγράφατε την τρέχουσα υγεία σας;",
-    "emergencyFundQuestion": "Έχετε αποταμιεύσει 3-6 μήνες έκτακτης ανάγκης;",
-    "travelFrequencyQuestion": "Πόσο συχνά ταξιδεύετε διεθνώς;",
-    "occupationRiskQuestion": "Πώς θα περιγράφατε τον επαγγελματικό κίνδυνο;",
-    "lifeStageRisksQuestion": "Ποια από αυτά ισχύουν για το τρέχον στάδιο της ζωής σας;",
-    "excellent": "Εξαιρετική",
-    "good": "Καλή",
-    "fair": "Ικανοποιητική",
-    "chronicConditions": "Χρόνια νοσήματα",
-    "wellCovered": "Ναι, καλά καλυμμένη",
-    "partiallyCovered": "Μερικώς καλυμμένη",
-    "minimalOrNone": "Ελάχιστη ή καμία",
-    "never": "Ποτέ",
-    "oneTwoTimesYear": "1-2 φορές/έτος",
-    "threeSixTimesYear": "3-6 φορές/έτος",
-    "monthlyPlus": "Μηνιαίως ή συχνότερα",
-    "lowRiskOffice": "Χαμηλός κίνδυνος (γραφείο)",
-    "mediumRiskMixed": "Μεσαίος κίνδυνος (μικτές δραστηριότητες)",
-    "highRiskPhysical": "Υψηλός κίνδυνος (σωματική/ταξίδια)",
-    "firstHomePurchase": "Σχεδιάζω αγορά πρώτου σπιτιού",
-    "youngChildren": "Μικρά παιδιά",
-    "mortgageHolder": "Κάτοχος δανείου",
-    "highDebt": "Υψηλό χρέος",
-    "businessOwner": "Ιδιοκτήτης επιχείρησης"
-  },
-  "admin": {
-    "monthlyClaims": "Μηνιαία Περίληψη Δηλώσεων",
-    "policyPortfolio": "Ανάλυση Χαρτοφυλακίου Πολιτικών",
-    "riskAssessment": "Έκθεση Αξιολόγησης Κινδύνου",
-    "auditTrail": "Εξαγωγή Ελέγχου",
-    "dataCompliance": "Συμμόρφωση Προτύπου Δεδομένων",
-    "securityRequirements": "Απαιτήσεις Ασφάλειας",
-    "gdprRequirements": "Απαιτήσεις GDPR",
-    "availableReports": "Διαθέσιμες Εκθέσεις"
-  },
-  "profile": {
-    "dependents": "Αριθμός Εξαρτώμενων",
-    "incomeRange": "Εύρος Ετήσιου Οικογενειακού Εισοδήματος",
-    "emergencyFund": "Κατάσταση Ταμείου Έκτακτης Ανάγκης",
-    "healthStatus": "Κατάσταση Υγείας",
-    "travelFrequency": "Συχνότητα Ταξιδιών",
-    "occupationRisk": "Επαγγελματικός Κίνδυνος",
-    "familyStatus": "Οικογενειακή Κατάσταση"
   },
   "sections": {
     "personalDetails": "Προσωπικές Λεπτομέρειες",
@@ -1012,19 +690,15 @@
     "managePaymentsHistory": "Διαχειρίστε τις προσεχείς πληρωμές και προβάλλετε το ιστορικό"
   },
   "placeholders": {
-    "searchDocuments": "Αναζήτηση εγγράφων...",
-    "pasteFindings": "Επικολλήστε ευρήματα, μετρήσεις ή βασικά αποτελέσματα..."
+    "johnDoe": "Ιωάννης Παπαδόπουλος",
+    "yourEmail": "το@email.σας",
+    "providerExample": "π.χ., Δρ. Παπαδόπουλος, Αθηνών Ιατρικό Κέντρο"
   },
   "messages": {
     "noActiveClaims": "Δεν υπάρχουν ενεργές αξιώσεις. Είστε σε καλή κατάσταση!",
     "noDocumentsFound": "Δεν βρέθηκαν έγγραφα.",
     "noCheckupsMessage": "Δεν έχουν ανεβαστεί έλεγχοι ακόμα. Ανεβάστε το πρώτο αποτέλεσμα ελέγχου για να ξεκινήσετε.",
     "gdprCompliance": "Συμμόρφωση GDPR: Όλες οι πολιτικές διατήρησης δεδομένων ενημερώθηκαν. Τελευταίος έλεγχος: 15 Νοεμβρίου 2025"
-  },
-  "settings": {
-    "notifications": "Ειδοποιήσεις",
-    "smsNotifications": "Ειδοποιήσεις SMS",
-    "doNotDisturb": "Μην Ενοχλείτε"
   },
   "languages": {
     "english": "English",
@@ -1048,10 +722,16 @@
     "tax": "Φόρος"
   },
   "forms": {
-    "fullName": "Πλήρες Όνομα",
-    "email": "Ηλεκτρονική Διεύθυνση",
-    "phone": "Τηλέφωνο",
-    "cardNumber": "Αριθμός Κάρτας"
+    "nextStep": "Επόμενο Βήμα",
+    "nextSteps": "Επόμενα Βήματα",
+    "next": "Επόμενο",
+    "previous": "Προηγούμενο",
+    "currentPassword": "Τρέχων Κωδικός Πρόσβασης",
+    "loginPin": "PIN Σύνδεσης (4 ψηφία)",
+    "cvv": "CVV",
+    "currentPasswordRequired": "Τρέχων Κωδικός Πρόσβασης *",
+    "loginPinRequired": "PIN Σύνδεσης (4 ψηφία) *",
+    "cvvRequired": "CVV *"
   },
   "security": {
     "changePassword": "Αλλαγή Κωδικού Πρόσβασης",
@@ -1061,41 +741,21 @@
     "biometricEnabled": "Η βιομετρική σύνδεση ενεργοποιήθηκε",
     "biometricDisabled": "Η βιομετρική σύνδεση απενεργοποιήθηκε"
   },
-  "dashboard": {
-    "statusExcellent": "Εξαιρετικό",
-    "statusGood": "Καλό",
-    "statusFair": "Δίκαιο",
-    "health": "Υγεία",
-    "auto": "Αυτοκίνητο",
-    "home": "Σπίτι"
-  },
-  "notifications": {
-    "autoRenewalDue": "Ανανέωση Ασφάλειας Αυτοκινήτου Ληξιμένη",
-    "paymentDue": "Πληρωμή Ληξιμένη",
-    "coverageGapIdentified": "Εντοπίστηκε Νέο Χάσμα Κάλυψης",
-    "claimStatusUpdated": "Κατάσταση Αξίωσης Ενημερώθηκε",
-    "appointmentReminder": "Υπενθύμιση Ραντεβού",
-    "newLoginDetected": "Ανιχνεύθηκε Νέα Σύνδεση",
-    "specialOffer": "Ειδική Προσφορά"
-  },
-  "recommendations": {
-    "addDentalCoverage": "Προσθήκη Κάλυψης Οδοντιατρικής",
-    "addDentalRider": "Προσθήκη Οδοντιατρικής Ασφάλισης",
-    "increaseLifeInsurance": "Αύξηση Κάλυψης Ασφάλειας Ζωής",
-    "upgradeLifeInsurance": "Αναβάθμιση Ασφάλειας Ζωής",
-    "bundleDiscount": "Έκπτωση Πακέτου Διαθέσιμη",
-    "reviewBundling": "Επισκόπηση Επιλογής Πακέτου",
-    "petInsuranceAdded": "Ασφάλεια Κατοικιδίων Προστέθηκε Πρόσφατα",
-    "explorePetInsurance": "Εξερεύνηση Ασφάλειας Κατοικιδίων",
-    "renewalQuotes": "Λήψη Προσφορών Ανανέωσης",
-    "maxWellnessBenefits": "Μεγιστοποίηση Οφελών Wellness",
-    "claimWellnessBenefit": "Αξίωση Οφέλους Wellness",
-    "coversVeterinaryEmergencies": "Καλύπτει Κτηνιατρικές Έκτακτες Ανάγκες και Ρουτίνα Φροντίδα"
-  },
   "time": {
-    "perYear": "/έτος",
-    "perMonth": "/μήνα",
-    "timesPerYear": "φορές/έτος"
+    "perYear": "ανά έτος",
+    "month": "Μήνας",
+    "jan": "Ιαν",
+    "feb": "Φεβ",
+    "mar": "Μάρ",
+    "apr": "Απρ",
+    "may": "Μάι",
+    "jun": "Ιούν",
+    "jul": "Ιούλ",
+    "aug": "Αύγ",
+    "sep": "Σεπ",
+    "oct": "Οκτ",
+    "nov": "Νοέ",
+    "dec": "Δεκ"
   },
   "coverage": {
     "addDentalRider": "Προσθήκη Οδοντιατρικής",
@@ -1124,40 +784,17 @@
     "customizeAppExperience": "Προσαρμόστε την εμπειρία της εφαρμογής σας",
     "policyCompletenessScores": "Βαθμολογίες πληρότητας πολιτικής"
   },
-  "notifications": {
-    "email": "Ηλεκτρονική Διεύθυνση",
-    "instant": "Άμεσα",
-    "sms": "SMS",
-    "dailySummary": "Καθημερινή Σύνοψη",
-    "weeklySummary": "Εβδομαδιαία Σύνοψη"
-  },
-  "admin": {
-    "gdprCompliance": "Συμμόρφωση GDPR",
-    "allDataRetentionPoliciesUpdated": "Όλες οι πολιτικές διατήρησης δεδομένων ενημερώθηκαν. Τελευταία επιθεώρηση"
-  },
   "agent": {
     "whatsappAndEmail": "WhatsApp & Ηλεκτρονική Διεύθυνση"
   },
-  "forms": {
-    "nextStep": "Επόμενο Βήμα",
-    "nextSteps": "Επόμενα Βήματα",
-    "next": "Επόμενο",
-    "previous": "Προηγούμενο",
-    "currentPassword": "Τρέχων Κωδικός Πρόσβασης",
-    "loginPin": "PIN Σύνδεσης (4 ψηφία)",
-    "cvv": "CVV",
-    "currentPasswordRequired": "Τρέχων Κωδικός Πρόσβασης *",
-    "loginPinRequired": "PIN Σύνδεσης (4 ψηφία) *",
-    "cvvRequired": "CVV *"
-  },
   "policy": {
     "next2DueDates": "Επόμενα 2 δεδουλευμένα",
-    "coverageHealthByType": "Κατάσταση Κάλυψης κατά Τύπο",
-    "policyCompletenessScores": "Βαθμολογία πληρότητας ασφάλισης και κατάστασης κάλυψης",
+    "coverageHealthByType": "Κάλυψη ανά Κλάδο",
+    "policyCompletenessScores": "Βαθμολογία Πληρότητας",
     "insuranceTypes": {
-      "health": "Υγειονομική Ασφάλιση",
+      "health": "Ασφάλιση Υγείας",
       "auto": "Ασφάλιση Αυτοκινήτου",
-      "home": "Ασφάλιση Κατοικίας",
+      "home": "Ασφάλιση Περιουσίας",
       "travel": "Ασφάλιση Ταξιδίων",
       "liability": "Ασφάλιση Ευθύνης"
     },
@@ -1190,24 +827,8 @@
     "unprotected": "⚠️ Χωρίς Προστασία",
     "protected": "✓ Προστατευμένο"
   },
-  "health": {
-    "nextCheckupDue": "Επόμενη Εξέταση Ληξιαρχείου"
-  },
   "files": {
     "acceptedFormatsLabel": "Αποδεκτές μορφές αρχείων και όριο μεγέθους"
-  },
-  "onboarding": {
-    "steps": "Βήματα ενσωμάτωσης",
-    "skipTutorial": "Παράλειψη εκμάθησης",
-    "completeAndContinue": "Ολοκληρώστε και συνεχίστε"
-  },
-  "chatbot": {
-    "askAnything": "Ρωτήστε οτιδήποτε..."
-  },
-  "placeholders": {
-    "johnDoe": "Ιωάννης Παπαδόπουλος",
-    "yourEmail": "το@email.σας",
-    "providerExample": "π.χ., Δρ. Παπαδόπουλος, Αθηνών Ιατρικό Κέντρο"
   },
   "buttons": {
     "skipForNow": "Παράλειψη προς το παρόν",
@@ -1219,71 +840,13 @@
     "healthRadar": "Ραντάρ Υγείας"
   },
   "ui": {
-    "close": "Κλείσιμο",
-    "sidebar": "Πλευρική Γραμμή",
-    "more": "Περισσότερα",
-    "previous": "Προηγούμενο",
-    "next": "Επόμενο",
-    "monthly": "Μηνιαίο",
-    "yearly": "Ετήσιο",
-    "policies": "Πολιτικές",
-    "recommendations": "Συστάσεις",
-    "status": "Κατάσταση",
-    "emailAddress": "Διεύθυνση Ηλεκτρονικής Διεύθυνσης",
-    "password": "Κωδικός Πρόσβασης",
-    "mmYy": "MM/ΕΕ",
-    "utc": "UTC",
-    "sms": "SMS",
-    "duringBusinessHours": "Κατά τις ώρες εργασίας",
-    "buyNowStartCoverageImmediately": "Αγοράστε τώρα και ξεκινήστε την κάλυψη αμέσως",
-    "potentialAnnualPremium": "Δυνητικό ετήσιο ασφάλιστρο από την αντιμετώπιση αυτών των κενών",
-    "somethingWentWrong": "Κάτι πήγε στραβά",
-    "dataSyncWhenReconnect": "Τα δεδομένα σας θα συγχρονιστούν όταν συνδεθείτε ξανά",
-    "connectionRestored": "Η σύνδεση επαναφέρθηκε",
-    "foundBasedOnProfile": "Βρέθηκε με βάση το προφίλ σας"
-  },
-  "gapAnalysis": {
-    "lifeInsurance": "Ασφάλεια Ζωής",
-    "lifeInsuranceDesc": "Έχετε εξαρτώμενα ή οικογενειακές υποχρεώσεις χωρίς προστασία ασφάλειας ζωής",
-    "lifeInsuranceRec": "Ασφάλεια ζωής όρου (10-30 χρόνια) για να προστατεύσετε το οικονομικό μέλλον της οικογένειας. Ποσό: 5-10x το ετήσιο εισόδημα",
-    "disabilityInsurance": "Ασφάλεια Αναπηρίας",
-    "disabilityInsuranceDesc": "Εάν δεν μπορέσετε να εργαστείτε λόγω ασθένειας/τραυματισμού, το εισόδημά σας κινδυνεύει",
-    "disabilityInsuranceRec": "Κάλυψη βραχυπρόθεσμης και μακροπρόθεσμης αναπηρίας για αντικατάσταση 60-80% του εισοδήματος",
-    "travelInsurance": "Ασφάλεια Διεθνών Ταξιδιών",
-    "travelInsuranceDesc": "Ταξιδεύετε αλλά δεν έχετε ιατρική κάλυψη ταξιδιών",
-    "travelInsuranceRec": "Ετήσια ασφάλεια ταξιδιών που καλύπτει ιατρικές έκτακτες ανάγκες, εκκένωση και ακύρωση ταξιδιού",
-    "healthInsurance": "Περιεκτική Ασφάλεια Υγείας",
-    "healthInsuranceDesc": "Οι ιατρικές δαπάνες μπορεί να είναι καταστροφικές χωρίς σωστή κάλυψη",
-    "healthInsuranceRec": "Ιδιωτική ασφάλεια υγείας ή περιεκτική δημόσια κάλυψη με συμπληρωματικές επιλογές",
-    "homeInsurance": "Ασφάλεια Κατοικίας",
-    "homeInsuranceDesc": "Το μεγαλύτερο περιουσιακό σας στοιχείο (σπίτι) χρειάζεται προστασία από ζημιές και ευθύνη",
-    "homeInsuranceRec": "Περιεκτική ασφάλεια ιδιοκτητών που καλύπτει κτίριο, περιεχόμενο και ευθύνη (ελάχιστο €1 εκ.)",
-    "autoInsurance": "Ασφάλεια Αυτοκινήτου",
-    "autoInsuranceDesc": "Η τακτική χρήση οχήματος χωρίς σωστή κάλυψη δημιουργεί νομικό και οικονομικό κίνδυνο",
-    "autoInsuranceRec": "Ευθύνη τρίτων + κάλυψη σύγκρουσης/περιεκτική",
-    "emergencyFund": "Ταμείο Έκτακτης Ανάγκης",
-    "emergencyFundDesc": "Χωρίς εξοικονόμηση έκτακτης ανάγκης, τα απρόσμενα γεγονότα αναγκάζουν χρέος ή αξιώσεις ασφάλειας",
-    "emergencyFundRec": "Κτίστε 3-6 μήνες δαπανών διαβίωσης σε εύκολα προσβάσιμες αποταμιεύσεις (ελάχιστο €3k-€15k)",
-    "selfFunding": "Προτεραιότητα αuto-χρηματοδότησης",
-    "petInsurance": "Ασφάλεια Κατοικιδίων (Προαιρετική)",
-    "petInsuranceDesc": "Οι ιατρικές έκτακτες ανάγκες κατοικιδίων μπορεί να κοστίσουν €1000-€5000",
-    "petInsuranceRec": "Ασφάλεια υγείας κατοικιδίων που καλύπτει ατυχήματα, ασθένειες και προληπτική φροντίδα"
-  },
-  "time": {
-    "perYear": "ανά έτος",
-    "month": "Μήνας",
-    "jan": "Ιαν",
-    "feb": "Φεβ",
-    "mar": "Μάρ",
-    "apr": "Απρ",
-    "may": "Μάι",
-    "jun": "Ιούν",
-    "jul": "Ιούλ",
-    "aug": "Αύγ",
-    "sep": "Σεπ",
-    "oct": "Οκτ",
-    "nov": "Νοέ",
-    "dec": "Δεκ"
+    "policyWallet": "PolicyWallet",
+    "appPreferences": "Προτιμήσεις Εφαρμογής",
+    "dashboardScoreHealth": "Κλάδος Υγείας",
+    "dashboardScoreAuto": "Κλάδος Αυτοκινήτου",
+    "dashboardScoreHome": "Κλάδος Κατοικίας",
+    "connectionRestored": "Σύνδεση αποκαταστάθηκε",
+    "dataSyncWhenReconnect": "Τα δεδομένα θα συγχρονιστούν"
   },
   "expiry": {
     "expired": "Ληγμένο",
@@ -1291,24 +854,6 @@
     "expirestomorrow": "Λήγει Αύριο",
     "renews": "Ανανέωση σε {{days}} ημέρες",
     "renewsmonths": "Ανανέωση σε {{months}} μήνα{{plural}}"
-  },
-  "status": {
-    "active": "Ενεργό",
-    "pending": "Εκκρεμές",
-    "expired": "Ληγμένο",
-    "review_needed": "Χρήζει Ελέγχου",
-    "cancelled": "Ακυρώθηκε",
-    "lapsed": "Ανενεργό",
-    "paid": "Πληρωμένο",
-    "closed": "Κλειστό",
-    "in_review": "Υπό Ελέγχου"
-  },
-  "insurance": {
-    "health": "Κλάδος Υγείας",
-    "auto": "Κλάδος Αυτοκινήτου",
-    "home": "Κλάδος Κατοικίας",
-    "life": "Κλάδος Ζωής",
-    "pet": "Ασφάλεια Κατοικιδίων"
   },
   "riskObjectLabels": {
     "vehicle": "Όχημα",
@@ -1318,60 +863,6 @@
     "pet": "Κατοικίδιο",
     "coverage": "Κάλυψη"
   },
-  "admin": {
-    "monthlyClaims": "Μηνιαίες Αποζημιώσεις",
-    "policyPortfolio": "Χαρτοφυλάκιο Πολιτικών",
-    "riskAssessment": "Αξιολόγηση Κινδύνου",
-    "auditTrail": "Ιχνηλασία Ελέγχου",
-    "dashboard": "Πίνακας Ελέγχου Διαχειριστή",
-    "enterpriseInsurance": "Πλατφόρμα Ασφάλισης Εταιρικής Λύσης - Ανάλυση και Διαχείριση",
-    "totalUsers": "Σύνολο Χρηστών"
-  },
-  "navigation": {
-    "renewals": "Ανανεώσεις",
-    "billing": "Χρέωση",
-    "recommendations": "Συστάσεις",
-    "notifications": "Ειδοποιήσεις",
-    "admin": "Διαχειριστής"
-  },
-  "notifications": {
-    "autoInsuranceRenewal": "Ανανέωση Ασφάλειας Αυτοκινήτου Διατίθεται",
-    "paymentDue": "Ημερομηνία Πληρωμής",
-    "coverageGapIdentified": "Εντοπίστηκε Νέο Κενό Κάλυψης",
-    "claimStatusUpdated": "Ενημέρωση Κατάστασης Αποζημίωσης",
-    "appointmentReminder": "Υπενθύμιση Ραντεβού",
-    "newLoginDetected": "Εντοπίστηκε Νέα Σύνδεση",
-    "specialOffer": "Ειδική Προσφορά",
-    "authenticationFailed": "Η Πιστοποίηση Απέτυχε",
-    "failedToLoadAppointments": "Αποτυχία Φόρτωσης Ραντεβού",
-    "failedToFetch": "Αποτυχία Λήψης Δεδομένων",
-    "failedToComplete": "Αποτυχία Ολοκλήρωσης",
-    "failedToSave": "Αποτυχία Αποθήκευσης Προφίλ"
-  },
-  "recommendations": {
-    "addDental": "Προσθήκη Κάλυψης Οδοντιατρικής",
-    "increaseLife": "Αύξηση Κάλυψης Ασφάλειας Ζωής",
-    "bundleDiscount": "Έκπτωση Πακέτου Διαθέσιμη",
-    "petInsurance": "Ασφάλεια Κατοικιδίων Πρόσφατα Προστέθηκε",
-    "maximizeWellness": "Μεγιστοποίηση Παροχών Wellness"
-  },
-  "notificationPreferences": {
-    "policyRenewals": "Ανανεώσεις Πολιτικών",
-    "policyRenewalsDesc": "Υπενθυμίσεις για επερχόμενες ανανεώσεις πολιτικών",
-    "paymentReminders": "Υπενθυμίσεις Πληρωμής",
-    "paymentRemindersDesc": "Ειδοποιήσεις για επερχόμενες ή χαμένες πληρωμές",
-    "claimsUpdates": "Ενημερώσεις Αποζημιώσεων",
-    "claimsUpdatesDesc": "Ενημερώσεις κατάστασης στις ενεργές αποζημιώσεις σας",
-    "coverageChanges": "Αλλαγές Κάλυψης",
-    "coverageChangesDesc": "Ειδοποιήσεις όταν αλλάζουν τα λεπτομέρειες κάλυψης",
-    "policyRecommendations": "Συστάσεις Πολιτικών",
-    "appointmentReminders": "Υπενθυμίσεις Ραντεβού",
-    "appointmentRemindersDesc": "Υπενθυμίσεις για προγραμματισμένα ραντεβού",
-    "specialOffers": "Ειδικές Προσφορές",
-    "specialOffersDesc": "Αποκλειστικές προσφορές και προωθήσεις από τους συνεργάτες μας",
-    "securityAlerts": "Ειδοποιήσεις Ασφαλείας",
-    "criticalAlertsOnly": "Μόνο Κρίσιμες Ειδοποιήσεις"
-  },
   "errors": {
     "validEmail": "Παρακαλώ εισαγάγετε ένα έγκυρο email",
     "couldNotConnect": "Δεν ήταν δυνατή η σύνδεση με {{provider}}. Παρακαλώ προσπαθήστε ξανά",
@@ -1379,13 +870,6 @@
     "fillPasswordFields": "Παρακαλώ συμπληρώστε όλα τα πεδία κωδικού πρόσβασης",
     "selectAnswer": "Παρακαλώ επιλέξτε μια απάντηση",
     "required": "Απαιτείται"
-  },
-  "ui": {
-    "policyWallet": "PolicyWallet",
-    "appPreferences": "Προτιμήσεις Εφαρμογής",
-    "dashboardScoreHealth": "Κλάδος Υγείας",
-    "dashboardScoreAuto": "Κλάδος Αυτοκινήτου",
-    "dashboardScoreHome": "Κλάδος Κατοικίας"
   },
   "questionnaire": {
     "title": "Έρευνα Ασφαλιστικών Κενών",
