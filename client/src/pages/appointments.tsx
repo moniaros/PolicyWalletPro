@@ -255,11 +255,6 @@ export default function AppointmentsPage() {
                     return translated !== insurerKey ? translated : policy.provider;
                   };
                   
-                  const handleDocumentClick = (e: React.MouseEvent, doc: string) => {
-                    e.stopPropagation();
-                    toast.info(t("documents.downloadingFile", { filename: doc }));
-                  };
-                  
                   return (
                     <Card
                       key={policy.id}
@@ -284,7 +279,7 @@ export default function AppointmentsPage() {
                           </Badge>
                         </div>
 
-                        {/* Policy Details Grid */}
+                        {/* Policy Details Grid - Critical Data Only */}
                         <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm border-t pt-3">
                           {/* Policy Number */}
                           <div className="space-y-0.5">
@@ -310,25 +305,11 @@ export default function AppointmentsPage() {
                             <p className="font-medium text-foreground">{new Date(policy.effectiveDate).toLocaleDateString("el-GR")}</p>
                           </div>
                           
-                          {/* Expiry Date */}
-                          <div className="space-y-0.5">
-                            <p className="text-xs text-muted-foreground">{t("appointments.expiryDate")}</p>
-                            <p className="font-medium text-foreground">{new Date(policy.expiry).toLocaleDateString("el-GR")}</p>
-                          </div>
-                          
                           {/* Vehicle Reg (if Auto policy) */}
                           {policy.vehicleReg && (
                             <div className="space-y-0.5">
                               <p className="text-xs text-muted-foreground">{t("appointments.vehicleReg")}</p>
                               <p className="font-medium text-foreground">{policy.vehicleReg}</p>
-                            </div>
-                          )}
-                          
-                          {/* Group Registry Number (if exists) */}
-                          {policy.groupRegistryNumber && (
-                            <div className="space-y-0.5">
-                              <p className="text-xs text-muted-foreground">{t("appointments.groupRegistryNumber")}</p>
-                              <p className="font-medium text-foreground">{policy.groupRegistryNumber}</p>
                             </div>
                           )}
                           
@@ -340,28 +321,6 @@ export default function AppointmentsPage() {
                             </div>
                           )}
                         </div>
-                        
-                        {/* Uploaded Documents - Interactive Buttons */}
-                        {policy.uploadedDocs && policy.uploadedDocs.length > 0 && (
-                          <div className="mt-3 pt-3 border-t">
-                            <p className="text-xs text-muted-foreground mb-1.5">{t("appointments.uploadedDocs")} ({policy.uploadedDocs.length})</p>
-                            <div className="flex flex-wrap gap-1.5">
-                              {policy.uploadedDocs.map((doc: string, idx: number) => (
-                                <Button
-                                  key={idx}
-                                  variant="outline"
-                                  size="sm"
-                                  className="h-7 text-xs font-normal gap-1.5"
-                                  onClick={(e) => handleDocumentClick(e, doc)}
-                                  data-testid={`button-doc-download-${policy.id}-${idx}`}
-                                >
-                                  <FileText className="h-3 w-3" />
-                                  {doc}
-                                </Button>
-                              ))}
-                            </div>
-                          </div>
-                        )}
                       </CardContent>
                     </Card>
                   );
