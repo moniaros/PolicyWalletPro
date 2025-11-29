@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
@@ -121,6 +122,7 @@ const notificationPreferences = {
 };
 
 export function NotificationsPreferences() {
+  const { t } = useTranslation();
   const [preferences, setPreferences] = useState(notificationPreferences);
   const [saved, setSaved] = useState(false);
 
