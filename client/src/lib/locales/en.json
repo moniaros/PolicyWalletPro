@@ -1690,19 +1690,43 @@
     "pet": {
       "vet": {
         "name": "Veterinary Clinic Visit",
-        "description": "General vet appointment"
+        "description": "General vet appointment for checkups and consultations"
       },
       "surgery": {
         "name": "Pet Surgery",
-        "description": "Surgical procedure for pet"
+        "description": "Surgical procedure for your pet with pre-authorization"
       },
       "emergency": {
         "name": "Pet Emergency",
-        "description": "Urgent veterinary care"
+        "description": "Urgent veterinary care for emergencies - available 24/7"
       },
       "claim": {
         "name": "Pet Treatment Claim",
-        "description": "Veterinary expense reimbursement"
+        "description": "Submit veterinary expense reimbursement request"
+      },
+      "vaccination": {
+        "name": "Pet Vaccination",
+        "description": "Scheduled vaccinations and booster shots for your pet"
+      },
+      "wellness": {
+        "name": "Pet Wellness Checkup",
+        "description": "Comprehensive health screening and preventive care"
+      },
+      "microchip": {
+        "name": "Microchip Services",
+        "description": "Microchip implantation, registration, or information update"
+      },
+      "dental": {
+        "name": "Pet Dental Care",
+        "description": "Dental cleaning, checkups, and oral health treatments"
+      },
+      "nutrition": {
+        "name": "Nutrition Consultation",
+        "description": "Diet planning, weight management, and nutritional advice"
+      },
+      "behavioral": {
+        "name": "Behavioral Consultation",
+        "description": "Professional assessment for behavioral issues and training"
       }
     }
   },
@@ -1859,6 +1883,21 @@
     "veterinarian": "Veterinarian",
     "emergencyDescription": "Emergency Description",
     "clinicName": "Clinic Name",
+    "petSpecies": "Pet Species",
+    "vaccineType": "Vaccine Type",
+    "lastVaccineDate": "Last Vaccination Date",
+    "petAge": "Pet Age",
+    "healthConcerns": "Health Concerns",
+    "ownerPhone": "Owner Phone Number",
+    "serviceType": "Service Type",
+    "dentalIssue": "Dental Issue",
+    "lastDentalVisit": "Last Dental Visit",
+    "petWeight": "Pet Weight (kg)",
+    "consultReason": "Consultation Reason",
+    "currentDiet": "Current Diet Description",
+    "behaviorIssue": "Behavior Issue",
+    "behaviorDescription": "Behavior Description",
+    "previousTraining": "Has Previous Training",
     "options": {
       "inpatient": "Inpatient",
       "outpatient": "Outpatient",
@@ -1983,7 +2022,33 @@
       "embassy": "Embassy Collection",
       "passport": "Passport",
       "nationalId": "National ID",
-      "visa": "Visa"
+      "visa": "Visa",
+      "dog": "Dog",
+      "cat": "Cat",
+      "rabies": "Rabies",
+      "distemper": "Distemper",
+      "parvo": "Parvovirus",
+      "leishmania": "Leishmania (Leishmaniasis)",
+      "comboVaccine": "Combination Vaccine",
+      "seniorCheckup": "Senior Pet Checkup",
+      "puppyCheckup": "Puppy/Kitten Checkup",
+      "comprehensiveCheckup": "Comprehensive Health Checkup",
+      "newMicrochip": "New Microchip Implant",
+      "updateChipInfo": "Update Microchip Information",
+      "verifyChip": "Verify Microchip",
+      "dentalCleaning": "Dental Cleaning",
+      "toothExtraction": "Tooth Extraction",
+      "dentalCheckup": "Dental Checkup",
+      "gumDisease": "Gum Disease Treatment",
+      "weightManagement": "Weight Management",
+      "foodAllergies": "Food Allergies",
+      "medicalDiet": "Medical Diet Prescription",
+      "generalNutrition": "General Nutrition Advice",
+      "aggression": "Aggression Issues",
+      "petAnxiety": "Anxiety/Fear Issues",
+      "basicTraining": "Basic Training",
+      "socialization": "Socialization Training",
+      "destructiveBehavior": "Destructive Behavior"
     }
   },
   "docs": {

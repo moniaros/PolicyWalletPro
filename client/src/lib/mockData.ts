@@ -1339,6 +1339,129 @@ export const appointmentServiceTypes: Record<string, AppointmentServiceType[]> =
         { id: "bankAccount", labelKey: "fields.bankAccount", type: "text", required: true }
       ],
       documentationRequired: ["docs.vetInvoice", "docs.medicalReport", "docs.receipts"]
+    },
+    {
+      id: "pet-vaccination",
+      nameKey: "appointmentTypes.pet.vaccination.name",
+      descriptionKey: "appointmentTypes.pet.vaccination.description",
+      urgencyLevels: ["routine"],
+      estimatedDuration: "30min",
+      requiredFields: [
+        { id: "petName", labelKey: "fields.petName", type: "text", required: true },
+        { id: "petSpecies", labelKey: "fields.petSpecies", type: "select", required: true, options: [
+          { value: "dog", labelKey: "fields.options.dog" },
+          { value: "cat", labelKey: "fields.options.cat" },
+          { value: "other", labelKey: "fields.options.other" }
+        ]},
+        { id: "vaccineType", labelKey: "fields.vaccineType", type: "select", required: true, options: [
+          { value: "rabies", labelKey: "fields.options.rabies" },
+          { value: "distemper", labelKey: "fields.options.distemper" },
+          { value: "parvo", labelKey: "fields.options.parvo" },
+          { value: "leishmania", labelKey: "fields.options.leishmania" },
+          { value: "combo", labelKey: "fields.options.comboVaccine" }
+        ]},
+        { id: "lastVaccineDate", labelKey: "fields.lastVaccineDate", type: "date", required: false }
+      ],
+      documentationRequired: ["docs.petVaccinationRecord"]
+    },
+    {
+      id: "pet-wellness",
+      nameKey: "appointmentTypes.pet.wellness.name",
+      descriptionKey: "appointmentTypes.pet.wellness.description",
+      urgencyLevels: ["routine"],
+      estimatedDuration: "45-60min",
+      requiredFields: [
+        { id: "petName", labelKey: "fields.petName", type: "text", required: true },
+        { id: "petAge", labelKey: "fields.petAge", type: "text", required: true },
+        { id: "checkupType", labelKey: "fields.checkupType", type: "select", required: true, options: [
+          { value: "annual", labelKey: "fields.options.annualCheckup" },
+          { value: "senior", labelKey: "fields.options.seniorCheckup" },
+          { value: "puppy", labelKey: "fields.options.puppyCheckup" },
+          { value: "comprehensive", labelKey: "fields.options.comprehensiveCheckup" }
+        ]},
+        { id: "concerns", labelKey: "fields.healthConcerns", type: "textarea", required: false }
+      ],
+      documentationRequired: []
+    },
+    {
+      id: "pet-microchip",
+      nameKey: "appointmentTypes.pet.microchip.name",
+      descriptionKey: "appointmentTypes.pet.microchip.description",
+      urgencyLevels: ["routine"],
+      estimatedDuration: "15-30min",
+      requiredFields: [
+        { id: "petName", labelKey: "fields.petName", type: "text", required: true },
+        { id: "petSpecies", labelKey: "fields.petSpecies", type: "select", required: true, options: [
+          { value: "dog", labelKey: "fields.options.dog" },
+          { value: "cat", labelKey: "fields.options.cat" },
+          { value: "other", labelKey: "fields.options.other" }
+        ]},
+        { id: "serviceType", labelKey: "fields.serviceType", type: "select", required: true, options: [
+          { value: "newChip", labelKey: "fields.options.newMicrochip" },
+          { value: "updateInfo", labelKey: "fields.options.updateChipInfo" },
+          { value: "verify", labelKey: "fields.options.verifyChip" }
+        ]},
+        { id: "ownerPhone", labelKey: "fields.ownerPhone", type: "phone", required: true }
+      ],
+      documentationRequired: ["docs.petPassport"]
+    },
+    {
+      id: "pet-dental",
+      nameKey: "appointmentTypes.pet.dental.name",
+      descriptionKey: "appointmentTypes.pet.dental.description",
+      urgencyLevels: ["routine", "urgent"],
+      estimatedDuration: "1-2hrs",
+      requiredFields: [
+        { id: "petName", labelKey: "fields.petName", type: "text", required: true },
+        { id: "dentalIssue", labelKey: "fields.dentalIssue", type: "select", required: true, options: [
+          { value: "cleaning", labelKey: "fields.options.dentalCleaning" },
+          { value: "extraction", labelKey: "fields.options.toothExtraction" },
+          { value: "checkup", labelKey: "fields.options.dentalCheckup" },
+          { value: "gumDisease", labelKey: "fields.options.gumDisease" }
+        ]},
+        { id: "symptoms", labelKey: "fields.symptoms", type: "textarea", required: false },
+        { id: "lastDentalVisit", labelKey: "fields.lastDentalVisit", type: "date", required: false }
+      ],
+      documentationRequired: []
+    },
+    {
+      id: "pet-nutrition",
+      nameKey: "appointmentTypes.pet.nutrition.name",
+      descriptionKey: "appointmentTypes.pet.nutrition.description",
+      urgencyLevels: ["routine"],
+      estimatedDuration: "30-45min",
+      requiredFields: [
+        { id: "petName", labelKey: "fields.petName", type: "text", required: true },
+        { id: "petWeight", labelKey: "fields.petWeight", type: "text", required: true },
+        { id: "consultReason", labelKey: "fields.consultReason", type: "select", required: true, options: [
+          { value: "weightManagement", labelKey: "fields.options.weightManagement" },
+          { value: "allergies", labelKey: "fields.options.foodAllergies" },
+          { value: "medicalDiet", labelKey: "fields.options.medicalDiet" },
+          { value: "generalAdvice", labelKey: "fields.options.generalNutrition" }
+        ]},
+        { id: "currentDiet", labelKey: "fields.currentDiet", type: "textarea", required: true }
+      ],
+      documentationRequired: []
+    },
+    {
+      id: "pet-behavioral",
+      nameKey: "appointmentTypes.pet.behavioral.name",
+      descriptionKey: "appointmentTypes.pet.behavioral.description",
+      urgencyLevels: ["routine", "urgent"],
+      estimatedDuration: "1-2hrs",
+      requiredFields: [
+        { id: "petName", labelKey: "fields.petName", type: "text", required: true },
+        { id: "behaviorIssue", labelKey: "fields.behaviorIssue", type: "select", required: true, options: [
+          { value: "aggression", labelKey: "fields.options.aggression" },
+          { value: "anxiety", labelKey: "fields.options.petAnxiety" },
+          { value: "training", labelKey: "fields.options.basicTraining" },
+          { value: "socialization", labelKey: "fields.options.socialization" },
+          { value: "destructive", labelKey: "fields.options.destructiveBehavior" }
+        ]},
+        { id: "behaviorDescription", labelKey: "fields.behaviorDescription", type: "textarea", required: true },
+        { id: "previousTraining", labelKey: "fields.previousTraining", type: "checkbox", required: false }
+      ],
+      documentationRequired: []
     }
   ]
 };
@@ -1381,9 +1504,14 @@ export const inNetworkProviders: Record<string, { id: string; name: string; loca
     { id: "tp2", name: "Travel Claims Center", location: "Athens", phone: "+30 210 3300500", specialties: ["travel-cancellation", "travel-luggage", "travel-delay", "travel-extension", "travel-medical"] }
   ],
   Pet: [
-    { id: "pp1", name: "Happy Paws Veterinary", location: "Kifisia", phone: "+30 210 6234567", specialties: ["pet-vet", "pet-surgery"] },
-    { id: "pp2", name: "24h Pet Emergency", location: "Chalandri", phone: "+30 210 6742111", specialties: ["pet-emergency"] },
-    { id: "pp3", name: "Pet Claims Center", location: "Athens", phone: "+30 210 3300600", specialties: ["pet-claim"] }
+    { id: "pp1", name: "Happy Paws Veterinary", location: "Kifisia", phone: "+30 210 6234567", specialties: ["pet-vet", "pet-surgery", "pet-vaccination", "pet-wellness", "pet-microchip", "pet-dental"] },
+    { id: "pp2", name: "24h Pet Emergency", location: "Chalandri", phone: "+30 210 6742111", specialties: ["pet-emergency", "pet-surgery"] },
+    { id: "pp3", name: "Pet Claims Center", location: "Athens", phone: "+30 210 3300600", specialties: ["pet-claim"] },
+    { id: "pp4", name: "Athens Veterinary Hospital", location: "Maroussi", phone: "+30 210 6109000", specialties: ["pet-vet", "pet-surgery", "pet-emergency", "pet-dental", "pet-wellness"] },
+    { id: "pp5", name: "Pet Nutrition & Wellness Center", location: "Glyfada", phone: "+30 210 8946000", specialties: ["pet-nutrition", "pet-wellness", "pet-behavioral"] },
+    { id: "pp6", name: "Canine Behavior Institute", location: "Kolonaki", phone: "+30 210 7225600", specialties: ["pet-behavioral", "pet-nutrition"] },
+    { id: "pp7", name: "VetDent Athens", location: "Psychico", phone: "+30 210 6750000", specialties: ["pet-dental", "pet-vet"] },
+    { id: "pp8", name: "PetID Microchip Services", location: "Syntagma", phone: "+30 210 3210500", specialties: ["pet-microchip", "pet-vaccination"] }
   ]
 };
 

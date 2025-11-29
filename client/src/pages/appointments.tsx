@@ -112,14 +112,32 @@ export default function AppointmentsPage() {
     setStep(2);
   };
 
+  // Map policy types to appointmentServiceTypes keys
+  const getPolicyTypeKey = (policyType: string): string => {
+    const typeMapping: Record<string, string> = {
+      "Pet Insurance": "Pet",
+      "Investment Life": "Life",
+      "Home & Liability": "Home",
+      "Health": "Health",
+      "Auto": "Auto",
+      "Life": "Life",
+      "Travel": "Travel",
+      "Home": "Home",
+      "Pet": "Pet"
+    };
+    return typeMapping[policyType] || policyType;
+  };
+
   const getServiceTypesForPolicy = (): AppointmentServiceType[] => {
     if (!selectedPolicy) return [];
-    return appointmentServiceTypes[selectedPolicy.type] || [];
+    const typeKey = getPolicyTypeKey(selectedPolicy.type);
+    return appointmentServiceTypes[typeKey] || [];
   };
 
   const getProvidersForServiceType = (): any[] => {
     if (!selectedPolicy || !selectedServiceType) return [];
-    const providers = inNetworkProviders[selectedPolicy.type] || [];
+    const typeKey = getPolicyTypeKey(selectedPolicy.type);
+    const providers = inNetworkProviders[typeKey] || [];
     return providers.filter(p => p.specialties.includes(selectedServiceType.id));
   };
 
