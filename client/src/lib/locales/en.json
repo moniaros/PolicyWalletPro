@@ -254,7 +254,12 @@
     "statusActive": "Active",
     "statusReviewNeeded": "Review Needed",
     "statusExpired": "Expired",
-    "statusPending": "Pending"
+    "statusPending": "Pending",
+    "urgencyLevel": "Urgency Level",
+    "selectProvider": "Select a Provider",
+    "noProvidersAvailable": "No providers available for this service type. Please contact support.",
+    "date": "Date",
+    "time": "Time"
   },
   "analysis": {
     "title": "Gap Analysis",

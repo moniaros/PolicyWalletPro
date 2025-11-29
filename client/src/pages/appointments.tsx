@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
-import { policies, inNetworkServices } from "@/lib/mockData";
+import { policies, inNetworkServices, appointmentServiceTypes, inNetworkProviders, type AppointmentServiceType } from "@/lib/mockData";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -14,13 +14,14 @@ import {
   DialogTrigger,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { Calendar as CalendarIcon, MapPin, Clock, Plus, Phone, Trash2, Edit2, AlertCircle, CheckCircle2, Network, FileText, Stethoscope } from "lucide-react";
+import { Calendar as CalendarIcon, MapPin, Clock, Plus, Phone, Trash2, Edit2, AlertCircle, CheckCircle2, Network, FileText, Stethoscope, Timer, ChevronRight, Building2 } from "lucide-react";
 import { toast } from "sonner";
 
 interface BookedAppointment {
   id: string;
   policyId: number;
   policyType: string;
+  serviceTypeId: string;
   serviceName: string;
   provider: string;
   location: string;
@@ -32,14 +33,18 @@ interface BookedAppointment {
   notes?: string;
   inNetwork?: boolean;
   coveredByInsurance?: boolean;
+  urgency?: "routine" | "urgent" | "emergency";
+  formData?: Record<string, any>;
 }
 
 export default function AppointmentsPage() {
   const { t } = useTranslation();
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [bookedAppointments, setBookedAppointments] = useState<BookedAppointment[]>([]);
-  const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
+  const [step, setStep] = useState<1 | 2 | 3 | 4 | 5>(1);
   const [selectedPolicy, setSelectedPolicy] = useState<typeof policies[0] | null>(null);
+  const [selectedServiceType, setSelectedServiceType] = useState<AppointmentServiceType | null>(null);
+  const [selectedUrgency, setSelectedUrgency] = useState<"routine" | "urgent" | "emergency">("routine");
   const [selectedService, setSelectedService] = useState<any | null>(null);
   const [appointmentDate, setAppointmentDate] = useState("");
   const [appointmentTime, setAppointmentTime] = useState("");
@@ -71,6 +76,8 @@ export default function AppointmentsPage() {
   const handleRequestAppointment = () => {
     setStep(1);
     setSelectedPolicy(null);
+    setSelectedServiceType(null);
+    setSelectedUrgency("routine");
     setSelectedService(null);
     setAppointmentDate("");
     setAppointmentTime("");
@@ -105,14 +112,54 @@ export default function AppointmentsPage() {
     setStep(2);
   };
 
-  const getServicesForPolicy = () => {
+  const getServiceTypesForPolicy = (): AppointmentServiceType[] => {
     if (!selectedPolicy) return [];
-    return (inNetworkServices as any)[selectedPolicy.type] || [];
+    return appointmentServiceTypes[selectedPolicy.type] || [];
   };
 
-  const handleServiceSelect = (service: any) => {
-    setSelectedService(service);
+  const getProvidersForServiceType = (): any[] => {
+    if (!selectedPolicy || !selectedServiceType) return [];
+    const providers = inNetworkProviders[selectedPolicy.type] || [];
+    return providers.filter(p => p.specialties.includes(selectedServiceType.id));
+  };
+
+  const handleServiceTypeSelect = (serviceType: AppointmentServiceType) => {
+    setSelectedServiceType(serviceType);
+    setSelectedUrgency(serviceType.urgencyLevels[0] || "routine");
     setStep(3);
+  };
+
+  const handleProviderSelect = (provider: any) => {
+    setSelectedService(provider);
+    setStep(4);
+  };
+
+  const getTranslatedServiceName = (serviceType: AppointmentServiceType): string => {
+    const keyParts = serviceType.nameKey.split(".");
+    if (keyParts.length >= 3) {
+      const category = keyParts[1];
+      const service = keyParts[2];
+      return t(`appointmentTypes.${category}.${service}.name`);
+    }
+    return serviceType.id;
+  };
+
+  const getTranslatedServiceDesc = (serviceType: AppointmentServiceType): string => {
+    const keyParts = serviceType.descriptionKey.split(".");
+    if (keyParts.length >= 3) {
+      const category = keyParts[1];
+      const service = keyParts[2];
+      return t(`appointmentTypes.${category}.${service}.description`);
+    }
+    return "";
+  };
+
+  const getUrgencyColor = (urgency: string): string => {
+    switch (urgency) {
+      case "emergency": return "bg-red-100 text-red-700 border-red-200 dark:bg-red-900/30 dark:text-red-400 dark:border-red-800";
+      case "urgent": return "bg-amber-100 text-amber-700 border-amber-200 dark:bg-amber-900/30 dark:text-amber-400 dark:border-amber-800";
+      default: return "bg-green-100 text-green-700 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800";
+    }
   };
 
   const handleConfirmAppointment = () => {
@@ -130,14 +177,16 @@ export default function AppointmentsPage() {
       saveAppointments(updated);
       toast.success(t("appointments.appointmentUpdated"));
     } else {
+      const serviceName = selectedServiceType ? getTranslatedServiceName(selectedServiceType) : selectedService?.name || "";
       const newAppointment: BookedAppointment = {
         id: Date.now().toString(),
         policyId: selectedPolicy!.id,
         policyType: selectedPolicy!.type,
-        serviceName: selectedService.name,
-        provider: selectedService.provider,
-        location: selectedService.location,
-        phone: selectedService.phone,
+        serviceTypeId: selectedServiceType?.id || "",
+        serviceName: serviceName,
+        provider: selectedService?.name || "",
+        location: selectedService?.location || "",
+        phone: selectedService?.phone || "",
         date: appointmentDate,
         time: appointmentTime,
         status: "confirmed",
@@ -145,6 +194,7 @@ export default function AppointmentsPage() {
         notes: appointmentNotes,
         inNetwork: true,
         coveredByInsurance: true,
+        urgency: selectedUrgency,
       };
       saveAppointments([...bookedAppointments, newAppointment]);
       toast.success(t("appointments.appointmentConfirmed"));
@@ -328,54 +378,151 @@ export default function AppointmentsPage() {
               </div>
             )}
 
-            {/* STEP 2: SELECT SERVICE */}
+            {/* STEP 2: SELECT SERVICE TYPE */}
             {step === 2 && selectedPolicy && (
               <>
-                <div className="space-y-3 py-4 max-h-96 overflow-y-auto">
-                  {getServicesForPolicy().map((service: any) => (
+                <div className="space-y-3 py-4 max-h-[60vh] overflow-y-auto">
+                  <p className="text-sm text-muted-foreground mb-4">{t("appointmentTypes.selectServiceType")}</p>
+                  {getServiceTypesForPolicy().map((serviceType) => (
                     <Card
-                      key={service.id}
+                      key={serviceType.id}
                       className="cursor-pointer border-2 hover:border-primary transition-colors"
-                      onClick={() => handleServiceSelect(service)}
-                      data-testid={`card-service-${service.id}`}
+                      onClick={() => handleServiceTypeSelect(serviceType)}
+                      data-testid={`card-service-type-${serviceType.id}`}
                     >
                       <CardContent className="p-4">
-                        <div className="flex items-start justify-between mb-2">
-                          <h3 className="font-semibold flex items-center gap-2 flex-wrap">
-                            {service.name}
-                            <Badge variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200">
-                              {t("appointments.inNetwork")}
-                            </Badge>
+                        <div className="flex items-start justify-between gap-2 mb-2">
+                          <h3 className="font-semibold text-base">
+                            {getTranslatedServiceName(serviceType)}
                           </h3>
+                          <ChevronRight className="h-5 w-5 text-muted-foreground flex-shrink-0" />
                         </div>
-                        <div className="space-y-1 text-sm text-muted-foreground">
-                          <p><strong>{service.provider}</strong></p>
-                          <p className="flex items-center gap-2"><MapPin className="h-4 w-4" />{service.location}</p>
-                          <p className="flex items-center gap-2"><Phone className="h-4 w-4" />{service.phone}</p>
+                        <p className="text-sm text-muted-foreground mb-3">
+                          {getTranslatedServiceDesc(serviceType)}
+                        </p>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                            <Timer className="h-3.5 w-3.5" />
+                            <span>{t("appointmentTypes.estimatedDuration")}: {serviceType.estimatedDuration}</span>
+                          </div>
+                          <div className="flex gap-1">
+                            {serviceType.urgencyLevels.map((level) => (
+                              <Badge 
+                                key={level} 
+                                variant="outline" 
+                                className={`text-xs ${getUrgencyColor(level)}`}
+                              >
+                                {t(`appointmentTypes.urgency.${level}`)}
+                              </Badge>
+                            ))}
+                          </div>
                         </div>
                       </CardContent>
                     </Card>
                   ))}
                 </div>
-                <Button variant="outline" onClick={() => setStep(1)} className="w-full">
+                <Button variant="outline" onClick={() => setStep(1)} className="w-full min-h-[44px]" data-testid="button-back-step1">
                   ← {t("common.back")}
                 </Button>
               </>
             )}
 
-            {/* STEP 3: SELECT DATE & TIME */}
-            {step === 3 && selectedPolicy && selectedService && (
+            {/* STEP 3: SELECT PROVIDER */}
+            {step === 3 && selectedPolicy && selectedServiceType && (
+              <>
+                <div className="space-y-4 py-4 max-h-[60vh] overflow-y-auto">
+                  <Card className="border-primary/20 bg-primary/5">
+                    <CardContent className="p-3 space-y-1 text-sm">
+                      <div className="flex justify-between items-center">
+                        <span className="text-muted-foreground">{t("appointments.service")}</span>
+                        <span className="font-semibold">{getTranslatedServiceName(selectedServiceType)}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-muted-foreground">{t("appointments.urgencyLevel")}:</span>
+                        <div className="flex gap-1">
+                          {selectedServiceType.urgencyLevels.map((level) => (
+                            <Badge 
+                              key={level}
+                              variant="outline"
+                              className={`text-xs cursor-pointer transition-all ${
+                                selectedUrgency === level 
+                                  ? getUrgencyColor(level) + " ring-2 ring-offset-1 ring-current" 
+                                  : "opacity-50"
+                              }`}
+                              onClick={() => setSelectedUrgency(level)}
+                              data-testid={`badge-urgency-${level}`}
+                            >
+                              {t(`appointmentTypes.urgency.${level}`)}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <p className="text-sm font-medium">{t("appointments.selectProvider")}</p>
+                  
+                  {getProvidersForServiceType().length > 0 ? (
+                    getProvidersForServiceType().map((provider) => (
+                      <Card
+                        key={provider.id}
+                        className="cursor-pointer border-2 hover:border-primary transition-colors"
+                        onClick={() => handleProviderSelect(provider)}
+                        data-testid={`card-provider-${provider.id}`}
+                      >
+                        <CardContent className="p-4">
+                          <div className="flex items-start justify-between mb-2">
+                            <h3 className="font-semibold flex items-center gap-2 flex-wrap">
+                              <Building2 className="h-4 w-4 text-primary" />
+                              {provider.name}
+                              <Badge variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800">
+                                {t("appointments.inNetwork")}
+                              </Badge>
+                            </h3>
+                          </div>
+                          <div className="space-y-1 text-sm text-muted-foreground">
+                            <p className="flex items-center gap-2"><MapPin className="h-4 w-4" />{provider.location}</p>
+                            <p className="flex items-center gap-2"><Phone className="h-4 w-4" />{provider.phone}</p>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))
+                  ) : (
+                    <Card className="border-dashed">
+                      <CardContent className="p-6 text-center">
+                        <AlertCircle className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+                        <p className="text-sm text-muted-foreground">{t("appointments.noProvidersAvailable")}</p>
+                      </CardContent>
+                    </Card>
+                  )}
+                </div>
+                <Button variant="outline" onClick={() => setStep(2)} className="w-full min-h-[44px]" data-testid="button-back-step2">
+                  ← {t("common.back")}
+                </Button>
+              </>
+            )}
+
+            {/* STEP 4: SELECT DATE & TIME */}
+            {step === 4 && selectedPolicy && selectedService && (
               <>
                 <div className="space-y-6 py-4">
                   <Card className="border-primary/20 bg-primary/5">
                     <CardContent className="p-4 space-y-2 text-sm">
                       <div><p className="text-xs text-muted-foreground">{t("appointments.policy")}</p><p className="font-semibold">{selectedPolicy.type}</p></div>
-                      <div><p className="text-xs text-muted-foreground">{t("appointments.service")}</p><p className="font-semibold">{selectedService.name}</p></div>
-                      <div><p className="text-xs text-muted-foreground">{t("appointments.provider")}</p><p className="font-semibold">{selectedService.provider}</p></div>
+                      <div><p className="text-xs text-muted-foreground">{t("appointments.service")}</p><p className="font-semibold">{selectedServiceType ? getTranslatedServiceName(selectedServiceType) : selectedService?.name}</p></div>
+                      <div><p className="text-xs text-muted-foreground">{t("appointments.provider")}</p><p className="font-semibold">{selectedService?.name}</p></div>
+                      {selectedUrgency && (
+                        <div className="flex items-center gap-2">
+                          <p className="text-xs text-muted-foreground">{t("appointments.urgencyLevel")}:</p>
+                          <Badge variant="outline" className={`text-xs ${getUrgencyColor(selectedUrgency)}`}>
+                            {t(`appointmentTypes.urgency.${selectedUrgency}`)}
+                          </Badge>
+                        </div>
+                      )}
                     </CardContent>
                   </Card>
 
-                  <div className="bg-white p-3 rounded-lg border flex justify-center">
+                  <div className="bg-white dark:bg-background p-3 rounded-lg border flex justify-center">
                     <DayPicker
                       mode="single"
                       selected={appointmentDate ? new Date(appointmentDate) : undefined}
@@ -398,16 +545,16 @@ export default function AppointmentsPage() {
                       type="time"
                       value={appointmentTime}
                       onChange={(e) => setAppointmentTime(e.target.value)}
-                      className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
+                      className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 min-h-[44px]"
                       data-testid="input-appointment-time"
                     />
                   </div>
 
                   <div className="flex gap-2">
-                    <Button variant="outline" onClick={() => setStep(2)} className="flex-1">
+                    <Button variant="outline" onClick={() => setStep(3)} className="flex-1 min-h-[44px]" data-testid="button-back-step3">
                       ← {t("common.back")}
                     </Button>
-                    <Button onClick={() => setStep(4)} className="flex-1 shadow-lg shadow-primary/20">
+                    <Button onClick={() => setStep(5)} className="flex-1 shadow-lg shadow-primary/20 min-h-[44px]" data-testid="button-next-step5">
                       {t("common.next")} →
                     </Button>
                   </div>
@@ -415,10 +562,19 @@ export default function AppointmentsPage() {
               </>
             )}
 
-            {/* STEP 4: ADDITIONAL INFO */}
-            {step === 4 && selectedPolicy && selectedService && appointmentDate && appointmentTime && (
+            {/* STEP 5: ADDITIONAL INFO & CONFIRM */}
+            {step === 5 && selectedPolicy && selectedService && appointmentDate && appointmentTime && (
               <>
                 <div className="space-y-4 py-4">
+                  <Card className="border-primary/20 bg-primary/5">
+                    <CardContent className="p-3 space-y-1 text-sm">
+                      <div className="flex justify-between"><span className="text-muted-foreground">{t("appointments.service")}</span><span className="font-semibold">{selectedServiceType ? getTranslatedServiceName(selectedServiceType) : ""}</span></div>
+                      <div className="flex justify-between"><span className="text-muted-foreground">{t("appointments.provider")}</span><span className="font-semibold">{selectedService?.name}</span></div>
+                      <div className="flex justify-between"><span className="text-muted-foreground">{t("appointments.date")}</span><span className="font-semibold">{appointmentDate}</span></div>
+                      <div className="flex justify-between"><span className="text-muted-foreground">{t("appointments.time")}</span><span className="font-semibold">{appointmentTime}</span></div>
+                    </CardContent>
+                  </Card>
+
                   <div className="space-y-2">
                     <label className="text-sm font-semibold">{t("appointments.reasonForVisit")}</label>
                     <input
@@ -426,7 +582,7 @@ export default function AppointmentsPage() {
                       placeholder={t("appointments.reasonPlaceholder")}
                       value={appointmentReason}
                       onChange={(e) => setAppointmentReason(e.target.value)}
-                      className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
+                      className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 min-h-[44px]"
                       data-testid="input-appointment-reason"
                     />
                   </div>
@@ -457,10 +613,10 @@ export default function AppointmentsPage() {
                   </Card>
 
                   <div className="flex gap-2">
-                    <Button variant="outline" onClick={() => setStep(3)} className="flex-1">
+                    <Button variant="outline" onClick={() => setStep(4)} className="flex-1 min-h-[44px]" data-testid="button-back-step4">
                       ← {t("common.back")}
                     </Button>
-                    <Button onClick={handleConfirmAppointment} className="flex-1 shadow-lg shadow-primary/20" data-testid="button-confirm-booking">
+                    <Button onClick={handleConfirmAppointment} className="flex-1 shadow-lg shadow-primary/20 min-h-[44px]" data-testid="button-confirm-booking">
                       {editingId ? t("appointments.updateAppointment") : t("appointments.confirmBooking")}
                     </Button>
                   </div>

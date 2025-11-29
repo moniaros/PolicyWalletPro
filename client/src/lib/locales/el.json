@@ -251,7 +251,12 @@
     "statusActive": "Ενεργό",
     "statusReviewNeeded": "Απαιτείται Έλεγχος",
     "statusExpired": "Ληγμένο",
-    "statusPending": "Εκκρεμές"
+    "statusPending": "Εκκρεμές",
+    "urgencyLevel": "Επίπεδο Επείγοντος",
+    "selectProvider": "Επιλέξτε Πάροχο",
+    "noProvidersAvailable": "Δεν υπάρχουν διαθέσιμοι πάροχοι για αυτόν τον τύπο υπηρεσίας. Παρακαλώ επικοινωνήστε με την υποστήριξη.",
+    "date": "Ημερομηνία",
+    "time": "Ώρα"
   },
   "analysis": {
     "title": "Ανάλυση Ασφαλιστικού κενού",
