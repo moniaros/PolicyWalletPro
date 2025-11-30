@@ -71,6 +71,8 @@
     "submit": "Submit",
     "active": "Active",
     "expired": "Expired",
+    "pending": "Pending",
+    "cancelled": "Cancelled",
     "cancel": "Cancel",
     "select": "Select...",
     "save": "Save",
