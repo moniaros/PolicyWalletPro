@@ -1203,13 +1203,31 @@
   },
   "gap": {
     "current": "Current",
+    "safeLevel": "Safe Level",
     "safeZone": "Safe Zone",
     "target": "Target",
     "currentPath": "Current Path",
     "ytdGrowth": "YTD Growth",
     "ytdPerformance": "YTD Performance",
-    "unprotected": "⚠️ Unprotected",
-    "protected": "✓ Protected"
+    "unprotected": "Unprotected",
+    "protected": "Protected",
+    "safe": "Safe",
+    "atRisk": "At Risk",
+    "min": "Min",
+    "max": "Max",
+    "optimalCoverage": "Optimal Coverage",
+    "overpaying": "Overpaying",
+    "underprotected": "Underprotected",
+    "surgeryScenario": "5-Day Surgery Scenario",
+    "hospitalBill": "Hospital Bill",
+    "insurancePays": "Insurance Pays",
+    "youPay": "You Pay",
+    "deductibleGap": "Deductible Gap",
+    "deductibleExceeds": "Your deductible (€{{amount}}) exceeds emergency savings",
+    "shortfall": "Shortfall",
+    "healthRadar": "Health Radar",
+    "covered": "Covered",
+    "notCovered": "Not Covered"
   },
   "files": {
     "acceptedFormatsLabel": "Accepted file formats and size limit"

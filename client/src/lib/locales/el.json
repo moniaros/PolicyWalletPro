@@ -1210,13 +1210,31 @@
   },
   "gap": {
     "current": "Τρέχον",
+    "safeLevel": "Ασφαλές Επίπεδο",
     "safeZone": "Ασφαλής Ζώνη",
     "target": "Στόχος",
     "currentPath": "Τρέχουσα Διαδρομή",
     "ytdGrowth": "Ανάπτυξη ΈΤΥ",
     "ytdPerformance": "Απόδοση ΈΤΥ",
-    "unprotected": "⚠️ Χωρίς Προστασία",
-    "protected": "✓ Προστατευμένο"
+    "unprotected": "Χωρίς Προστασία",
+    "protected": "Προστατευμένο",
+    "safe": "Ασφαλές",
+    "atRisk": "Σε Κίνδυνο",
+    "min": "Ελάχ.",
+    "max": "Μέγ.",
+    "optimalCoverage": "Βέλτιστη Κάλυψη",
+    "overpaying": "Υπερπληρωμή",
+    "underprotected": "Ανεπαρκής Κάλυψη",
+    "surgeryScenario": "Σενάριο Χειρουργείου 5 Ημερών",
+    "hospitalBill": "Λογαριασμός Νοσοκομείου",
+    "insurancePays": "Πληρώνει η Ασφάλεια",
+    "youPay": "Πληρώνετε Εσείς",
+    "deductibleGap": "Κενό Απαλλαγής",
+    "deductibleExceeds": "Η απαλλαγή σας (€{{amount}}) υπερβαίνει τα αποθέματα έκτακτης ανάγκης",
+    "shortfall": "Έλλειμμα",
+    "healthRadar": "Ραντάρ Υγείας",
+    "covered": "Καλύπτεται",
+    "notCovered": "Δεν Καλύπτεται"
   },
   "files": {
     "acceptedFormatsLabel": "Αποδεκτές μορφές αρχείων και όριο μεγέθους"
