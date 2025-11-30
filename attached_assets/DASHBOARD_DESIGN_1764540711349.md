@@ -1,0 +1,2081 @@
+# PolicyWallet Dashboard Design Framework
+## Storytelling & Data Visualization Strategy
+
+**Version:** 1.0  
+**Date:** November 30, 2024  
+**Platform Priority:** iOS Mobile First → Web Responsive  
+**Target Audience:** Greek Insurance Market  
+
+---
+
+## 📋 Executive Summary
+
+This document defines the dashboard design strategy for PolicyWallet's three distinct user interfaces, applying professional storytelling and data visualization principles. Each dashboard serves different user needs while maintaining consistency in design language and user experience.
+
+### Three Dashboard Ecosystems
+
+1. **User Dashboard** (app.policywallet.gr) - Mobile-first iOS
+2. **Agent Dashboard** (agent.policywallet.gr) - Web/tablet hybrid
+3. **Admin Dashboard** (admin.policywallet.gr) - Web desktop-optimized
+
+---
+
+## 🎯 Dashboard Design Framework
+
+Based on industry best practices, our dashboards follow six core principles:
+
+### 1. Define the Purpose
+### 2. Choose the Right Metrics
+### 3. Present Data Effectively
+### 4. Eliminate Clutter & Noise
+### 5. Use Layout to Focus Attention
+### 6. Tell a Clear Story
+
+---
+
+## 📱 PART 1: USER DASHBOARD (Mobile iOS First)
+
+### Current Status: ❌ NOT IMPLEMENTED
+
+**What Exists:**
+- ✅ Backend APIs ready (policies, user profile, family members)
+- ✅ Authentication system complete
+- ✅ Data structure supports dashboard metrics
+- ❌ No frontend implementation yet
+- ❌ No dashboard UI/UX designs
+- ❌ No mobile screens defined
+
+---
+
+### 1.1 Purpose Definition
+
+**Primary User Goals:**
+1. **Quick Overview** - See insurance status at a glance
+2. **Policy Management** - Access and manage policies easily
+3. **Gap Awareness** - Understand coverage gaps
+4. **Expiry Alerts** - Never miss renewal dates
+5. **Family Coverage** - Track family member policies
+
+**Success Metrics:**
+- Time to find policy information: < 5 seconds
+- User engagement: Daily active usage
+- Task completion rate: > 90%
+- User satisfaction: NPS > 50
+
+**Dashboard Type:** Operational + Analytical Hybrid
+- **Operational:** Real-time policy status, expiry dates, pending actions
+- **Analytical:** Coverage trends, spending analysis, gap insights
+
+---
+
+### 1.2 Choose the Right Metrics
+
+#### Primary KPIs (Above the Fold)
+
+**Coverage Health Score** (0-100)
+```
+Purpose: Single metric showing overall insurance health
+Calculation: 
+  - Base: 40 points for having active policies
+  - Family coverage: +20 points if all members covered
+  - Gap analysis: +20 points if no critical gaps
+  - Documentation: +10 points if all policies verified
+  - Expiry management: +10 points if no policies expiring <30 days
+Data Source: GET /api/v1/policies + /api/v1/users/family-members
+Visualization: Circular progress indicator with color coding
+  - 0-40: Red (Critical)
+  - 41-70: Yellow (Needs Attention)
+  - 71-100: Green (Healthy)
+```
+
+**Active Policies Count**
+```
+Purpose: Show total policies under management
+Data Source: GET /api/v1/policies?status=active
+Visualization: Large number with trend indicator
+Format: "5 Active Policies" with +/- icon if changed
+```
+
+**Expiring Soon**
+```
+Purpose: Alert on policies needing renewal
+Data Source: GET /api/v1/policies?expiring_within=30
+Visualization: Badge with number, tap to see list
+Color: Red if <15 days, Yellow if 15-30 days
+```
+
+**Monthly Premium Total**
+```
+Purpose: Show total insurance spending
+Data Source: SUM(policies.premium_amount)
+Visualization: Currency with breakdown button
+Format: "€450/month" with trend
+```
+
+#### Secondary Metrics (Below the Fold)
+
+**Coverage by Type**
+```
+Purpose: Show distribution of insurance types
+Data Source: GET /api/v1/policies (grouped by policy_type)
+Visualization: Horizontal bar chart or donut chart
+Categories: Health, Auto, Home, Life, Other
+```
+
+**Family Coverage Status**
+```
+Purpose: Show which family members have coverage
+Data Source: GET /api/v1/users/family-members + policies
+Visualization: Avatar list with coverage indicators
+Format: Name + Active policies count + Coverage gaps badge
+```
+
+**Upcoming Renewals (6 months)**
+```
+Purpose: Forward-looking renewal calendar
+Data Source: GET /api/v1/policies?expiring_within=180
+Visualization: Timeline or list grouped by month
+```
+
+**Document Status**
+```
+Purpose: Show verification status of uploaded policies
+Data Source: GET /api/v1/documents (grouped by verification_status)
+Visualization: Progress ring with counts
+Categories: Verified, Pending, Needs Review
+```
+
+**Recent Activity**
+```
+Purpose: Show recent policy changes and actions
+Data Source: Audit logs filtered by user
+Visualization: Activity feed with icons
+Items: Policy added, Policy updated, Document uploaded, etc.
+```
+
+---
+
+### 1.3 Present Data Effectively
+
+#### Mobile-First Design Principles (iOS)
+
+**Screen Hierarchy:**
+
+```
+┌─────────────────────────────┐
+│  Header                     │  Status bar safe area
+│  "Good morning, Yannis"     │  Dynamic greeting
+├─────────────────────────────┤
+│  Coverage Health Score      │  Hero metric (60pt height)
+│      [Circular Progress]    │  
+│          85/100             │  
+├─────────────────────────────┤
+│  Quick Stats (Horizontal)   │  4-up card grid
+│  ┌─────┬─────┬─────┬─────┐ │  
+│  │Act. │Exp. │Prem.│Gaps │ │  Each 70x70pt
+│  │  5  │  1  │€450 │  2  │ │  
+│  └─────┴─────┴─────┴─────┘ │  
+├─────────────────────────────┤
+│  [Your Policies] →          │  Section header with CTA
+│                             │  
+│  ┌─────────────────────┐   │  Policy cards
+│  │ 🏥 Health Insurance │   │  (Swipeable)
+│  │ AXA | €120/mo       │   │  
+│  │ Expires: 15/03/2025 │   │  
+│  └─────────────────────┘   │  
+│                             │  
+│  ┌─────────────────────┐   │  
+│  │ 🚗 Auto Insurance   │   │  
+│  │ Allianz | €85/mo    │   │  
+│  │ Expires: 22/07/2025 │   │  
+│  └─────────────────────┘   │  
+├─────────────────────────────┤
+│  [Family Coverage] →        │  
+│                             │  
+│  👤 Maria (Spouse)          │  Avatar + name + status
+│     2 policies • 1 gap      │  
+│                             │  
+│  👤 Nikos (Son, 15)         │  
+│     1 policy • No gaps      │  
+├─────────────────────────────┤
+│  [Insights & Gaps] →        │  
+│                             │  
+│  ⚠️ Critical Gap             │  Alert card
+│  You lack life insurance    │  
+│  [Learn More]               │  
+├─────────────────────────────┤
+│  [Upcoming Renewals] →      │  
+│                             │  
+│  December 2024              │  Grouped by month
+│  • AXA Health (15th)        │  
+│                             │  
+│  January 2025               │  
+│  • None                     │  
+└─────────────────────────────┘
+│  Tab Bar Navigation         │  Bottom tabs (iOS standard)
+└─────────────────────────────┘
+```
+
+**iOS Design Specifications:**
+
+1. **Typography** (San Francisco font system)
+   - Hero metric: 48pt Bold
+   - Card titles: 17pt Semibold
+   - Body text: 15pt Regular
+   - Captions: 13pt Regular
+   - Micro text: 11pt Regular
+
+2. **Color Palette** (iOS Human Interface Guidelines)
+   ```swift
+   Primary:
+   - Teal/Blue: #007AFF (System blue)
+   - Success: #34C759 (System green)
+   - Warning: #FF9500 (System orange)
+   - Error: #FF3B30 (System red)
+   
+   Neutrals:
+   - Background: #F2F2F7 (System gray 6 - light mode)
+   - Card: #FFFFFF with shadow
+   - Text primary: #000000
+   - Text secondary: #3C3C43 (60% opacity)
+   
+   Dark Mode Support:
+   - Background: #000000
+   - Card: #1C1C1E
+   - Text primary: #FFFFFF
+   - Text secondary: #EBEBF5 (60% opacity)
+   ```
+
+3. **Spacing System** (8pt grid)
+   - Micro: 4pt
+   - Small: 8pt
+   - Medium: 16pt
+   - Large: 24pt
+   - XLarge: 32pt
+   - Section gap: 40pt
+
+4. **Component Library** (iOS Native Feel)
+   - Cards: 16pt corner radius, 0-2pt shadow
+   - Buttons: 12pt corner radius, haptic feedback
+   - Icons: SF Symbols 2.0+
+   - Lists: System grouped style
+   - Progress: Circular or linear (native UIProgressView)
+
+5. **Animations** (iOS standard)
+   - Transitions: 0.3s ease-in-out
+   - Micro-interactions: 0.15s
+   - Pull-to-refresh: Native UIRefreshControl
+   - Haptic feedback on taps and swipes
+
+---
+
+### 1.4 Eliminate Clutter & Noise
+
+#### What to AVOID:
+
+❌ **Multiple competing metrics at top**
+- Don't show 10 numbers at once
+- Users get overwhelmed and leave
+
+❌ **Unnecessary decorative elements**
+- No gradients for the sake of gradients
+- No 3D effects or skeuomorphism (iOS moved flat in iOS 7)
+- No animations that don't serve purpose
+
+❌ **Redundant information**
+- Don't repeat data in multiple places
+- If policy count is in quick stats, don't show again below
+
+❌ **Technical jargon**
+- "Coverage ratio": ❌ → "Coverage Health": ✅
+- "Policy aggregation": ❌ → "Your Policies": ✅
+
+❌ **Too many actions**
+- Each card should have max 1-2 actions
+- Primary action should be obvious
+
+#### What to INCLUDE:
+
+✅ **One hero metric** (Coverage Health Score)
+- User understands status immediately
+- Color-coded for quick comprehension
+
+✅ **4 key numbers** (Active, Expiring, Premium, Gaps)
+- Grid layout, equal weight
+- Tap to drill down
+
+✅ **Policy cards** (max 3 visible, scroll for more)
+- Essential info only: Name, Insurer, Premium, Expiry
+- Swipe actions: View details, Upload doc
+
+✅ **Visual hierarchy** (size and color)
+- Important = Larger + Color
+- Secondary = Smaller + Gray
+- Tertiary = Collapsed by default
+
+✅ **Clear CTAs** (Call to Actions)
+- "Add Policy" button always visible
+- "View All" links for sections
+- "Fix Gap" buttons on alerts
+
+---
+
+### 1.5 Use Layout to Focus Attention
+
+#### Focal Point Strategy
+
+**Primary Focus:** Coverage Health Score
+- Placement: Top center (first thing user sees)
+- Size: 60pt height, full width
+- Animation: Score counts up on load (0 → 85)
+- Interaction: Tap to see breakdown modal
+
+**Secondary Focus:** Quick Stats Grid
+- Placement: Below hero metric
+- Layout: 2x2 grid on small phones, 4x1 on larger phones
+- Equal visual weight (same size cards)
+- Color coding: Red/Yellow/Green based on status
+
+**Tertiary Focus:** Policy List
+- Placement: Mid-screen (primary scroll area)
+- Layout: Vertical list, one card per policy
+- Affordance: Cards have subtle shadow = tappable
+- Action: Tap card → Policy details screen
+
+**Quaternary Focus:** Insights & Alerts
+- Placement: Below policies (requires scroll)
+- Visual treatment: Alert styling with icon
+- Purpose: Drive user action on gaps
+
+#### Visual Weight Distribution
+
+```
+Screen Weight Map (1-10, 10 = most attention)
+
+┌─────────────────────────────┐
+│ Coverage Health Score   [10]│  Hero area
+├─────────────────────────────┤
+│ Quick Stats Grid        [8] │  Glanceable metrics
+├─────────────────────────────┤
+│ Your Policies           [7] │  Primary content
+│   Policy Card 1         [7] │
+│   Policy Card 2         [6] │
+│   Policy Card 3         [5] │
+├─────────────────────────────┤
+│ Family Coverage         [5] │  Secondary content
+├─────────────────────────────┤
+│ Insights & Gaps         [4] │  Proactive alerts
+├─────────────────────────────┤
+│ Upcoming Renewals       [3] │  Forward-looking
+└─────────────────────────────┘
+```
+
+#### Interaction Patterns (iOS Native)
+
+1. **Pull to Refresh**
+   - Standard iOS gesture
+   - Fetches latest policy data
+   - Shows loading spinner
+
+2. **Swipe Actions** (on policy cards)
+   - Swipe left: Delete (destructive)
+   - Swipe right: Quick view
+   - Haptic feedback on action
+
+3. **Tap Targets** (minimum 44x44pt)
+   - All tappable elements meet iOS guidelines
+   - Cards have full-card tap area
+   - Clear pressed state (opacity 0.6)
+
+4. **Modal Sheets** (iOS 15+ style)
+   - Bottom sheet for quick actions
+   - Full screen for complex forms
+   - Dismiss gesture: Swipe down
+
+5. **Contextual Menus** (Long press)
+   - 3D Touch/Haptic Touch on policy cards
+   - Quick actions: View, Edit, Share, Delete
+
+---
+
+### 1.6 Tell a Clear Story
+
+#### User Story Flow
+
+**Story Arc:** "Help me stay protected"
+
+```
+ACT 1: The Current State (Hero Section)
+────────────────────────────────────────
+User Question: "Am I protected?"
+Answer: Coverage Health Score (85/100)
+Emotional Response: "I'm doing well, but room to improve"
+
+ACT 2: The Details (Quick Stats)
+────────────────────────────────────────
+User Question: "What do I have?"
+Answer: 5 Active Policies, €450/month
+Emotional Response: "I know what I'm paying for"
+
+ACT 3: The Specifics (Policy List)
+────────────────────────────────────────
+User Question: "What are my policies?"
+Answer: List of policies with key info
+Emotional Response: "I can see everything clearly"
+
+ACT 4: The Gaps (Insights)
+────────────────────────────────────────
+User Question: "What am I missing?"
+Answer: Critical gap alerts
+Emotional Response: "I need to take action"
+
+ACT 5: The Future (Renewals)
+────────────────────────────────────────
+User Question: "What's coming up?"
+Answer: Renewal timeline
+Emotional Response: "I'm prepared"
+```
+
+#### Data Narrative Templates
+
+**Scenario 1: Healthy Coverage**
+```
+[Green Circle] Coverage Health: 92/100
+"You're well protected! 5 policies covering all major areas."
+
+Quick Stats:
+✅ 5 Active Policies
+✅ No expiring soon
+€450/month total premium
+✅ No critical gaps
+
+Suggested Action: "Review your coverage to optimize costs"
+```
+
+**Scenario 2: Needs Attention**
+```
+[Yellow Circle] Coverage Health: 68/100
+"You have good coverage, but there are some areas to address."
+
+Quick Stats:
+✅ 4 Active Policies
+⚠️ 1 expiring in 12 days
+€380/month total premium
+⚠️ 2 coverage gaps
+
+Suggested Action: 
+1. Renew AXA Health Insurance
+2. Review life insurance gap
+```
+
+**Scenario 3: Critical Issues**
+```
+[Red Circle] Coverage Health: 42/100
+"Action needed! Your insurance protection has significant gaps."
+
+Quick Stats:
+⚠️ 2 Active Policies only
+🚨 1 expired policy
+€120/month total premium
+🚨 4 critical gaps
+
+Urgent Actions:
+1. 🚨 Auto insurance expired - Renew immediately
+2. ⚠️ No health coverage - Get quotes
+3. ⚠️ Family members uninsured
+```
+
+#### Micro-Copy Strategy
+
+**Tone:** Friendly but professional
+**Language:** Greek (primary), English (optional)
+**Voice:** Second person ("You"), conversational
+
+**Examples:**
+
+Empty State:
+```
+"Καλώς ήρθες! 👋
+Ας ξεκινήσουμε προσθέτοντας την πρώτη σου ασφάλεια."
+(Welcome! Let's start by adding your first insurance policy.)
+
+[Add First Policy Button]
+```
+
+Loading State:
+```
+"Φορτώνουμε τις ασφάλειές σου..."
+(Loading your policies...)
+```
+
+Success State:
+```
+"✅ Ασφάλεια προστέθηκε επιτυχώς!"
+(Policy added successfully!)
+```
+
+Error State:
+```
+"⚠️ Κάτι πήγε στραβά. Δοκίμασε ξανά."
+(Something went wrong. Try again.)
+[Retry Button]
+```
+
+---
+
+### 1.7 Implementation Checklist
+
+#### Phase 1: Foundation (Week 1-2)
+
+**Backend Requirements:**
+- [ ] GET /api/v1/dashboard/overview endpoint
+  - Returns aggregated metrics
+  - Coverage health score calculation
+  - Quick stats (active, expiring, premium, gaps)
+- [ ] GET /api/v1/dashboard/policies/summary
+  - List of policies with essential info
+  - Sorted by expiry date (ascending)
+- [ ] GET /api/v1/dashboard/insights
+  - Gap analysis results
+  - Recommendations
+- [ ] GET /api/v1/dashboard/activity
+  - Recent user actions
+  - Audit log filtered
+
+**Mobile Components:**
+- [ ] Coverage Health Score Component
+  - Circular progress view
+  - Animated counter
+  - Color-coded
+  - Tap to detail modal
+- [ ] Quick Stats Grid Component
+  - 4-card layout
+  - Responsive to screen size
+  - Tap to filter/sort
+- [ ] Policy Card Component
+  - Reusable card design
+  - Swipe actions
+  - Status badge
+  - Tap to details
+- [ ] Empty State Component
+  - Friendly illustration
+  - Clear CTA
+  - Help text
+
+**Design System:**
+- [ ] Color palette defined (iOS semantic colors)
+- [ ] Typography scale (San Francisco)
+- [ ] Spacing system (8pt grid)
+- [ ] Component library (cards, buttons, badges)
+- [ ] Icon set (SF Symbols)
+- [ ] Dark mode support
+
+#### Phase 2: Core Features (Week 3-4)
+
+- [ ] Dashboard data fetching with cache
+- [ ] Pull-to-refresh functionality
+- [ ] Skeleton loading states
+- [ ] Error handling and retry
+- [ ] Policy detail screen
+- [ ] Add policy flow
+- [ ] Family member management
+- [ ] Gap analysis display
+- [ ] Renewal reminders
+
+#### Phase 3: Polish (Week 5-6)
+
+- [ ] Micro-interactions and animations
+- [ ] Haptic feedback
+- [ ] Accessibility (VoiceOver, Dynamic Type)
+- [ ] Localization (Greek)
+- [ ] Onboarding flow
+- [ ] App icon and splash screen
+- [ ] App Store screenshots
+
+---
+
+## 💼 PART 2: AGENT DASHBOARD (Web/Tablet Hybrid)
+
+### Current Status: ❌ NOT IMPLEMENTED
+
+**What Exists:**
+- ✅ Backend routes scaffolded (src/routes/agents.js)
+- ✅ Database tables (agent_clients, agent_communications)
+- ❌ No controller implementation
+- ❌ No UI/UX designs
+- ❌ No wireframes
+
+---
+
+### 2.1 Purpose Definition
+
+**Primary Agent Goals:**
+1. **Client Management** - Track all client relationships
+2. **Sales Pipeline** - Monitor prospects and conversions
+3. **Policy Portfolio** - Overview of all managed policies
+4. **Commission Tracking** - Understand earnings
+5. **Communication Hub** - Manage client interactions
+
+**Success Metrics:**
+- Client retention rate
+- Policies per client average
+- Commission per month
+- Response time to client queries
+- Conversion rate (lead → client)
+
+**Dashboard Type:** Operational + Strategic
+- **Operational:** Daily client interactions, pending tasks
+- **Strategic:** Long-term portfolio growth, performance trends
+
+---
+
+### 2.2 Choose the Right Metrics
+
+#### Primary KPIs (Top Row)
+
+**Total Clients**
+```
+Purpose: Show agent's client base size
+Data Source: GET /api/v1/agents/clients (count)
+Visualization: Large number with trend (MoM growth)
+Drill-down: Click to see client list
+```
+
+**Active Policies**
+```
+Purpose: Total policies under management
+Data Source: COUNT(policies) WHERE agent_id = current_user
+Visualization: Number with breakdown by type
+Format: "248 Active Policies"
+```
+
+**Monthly Recurring Revenue**
+```
+Purpose: Total premium value managed
+Data Source: SUM(policies.premium_amount) for agent's clients
+Visualization: Currency with trend chart
+Format: "€52,400 MRR" with 12-month sparkline
+```
+
+**Commission This Month**
+```
+Purpose: Agent's earnings to date
+Data Source: Agent commission calculation (new policies + renewals)
+Visualization: Currency with progress to quota
+Format: "€4,200 / €6,000 (70% of quota)"
+```
+
+#### Secondary Metrics (Second Row)
+
+**Expiring This Quarter**
+```
+Purpose: Policies needing renewal attention
+Data Source: Policies expiring in next 90 days
+Visualization: Number with urgency indicator
+Color: Red if >20 policies
+```
+
+**Pending Actions**
+```
+Purpose: Tasks requiring agent follow-up
+Data Source: Communications + pending renewals
+Visualization: Number with task list
+Types: Calls to make, emails to send, renewals to process
+```
+
+**Client Satisfaction**
+```
+Purpose: NPS or satisfaction score
+Data Source: Client surveys (if implemented)
+Visualization: Score out of 10 with trend
+Placeholder: "Coming soon" for MVP
+```
+
+**Conversion Rate**
+```
+Purpose: Lead → Client success rate
+Data Source: (New clients / Leads) last 30 days
+Visualization: Percentage with chart
+Format: "18% (9 of 50 leads)"
+```
+
+#### Dashboard Sections
+
+**1. Client List Table**
+```
+Columns:
+- Name (with avatar)
+- Total Policies
+- MRR (monthly recurring revenue)
+- Last Contact
+- Status (Active, Needs Attention, At Risk)
+- Actions (View, Message, Add Policy)
+
+Sorting: By name, MRR, last contact, status
+Filtering: By status, policy type, location
+Search: Real-time client search
+Pagination: 25 per page
+```
+
+**2. Sales Pipeline**
+```
+Stages:
+- Lead (Contacted but not client)
+- Prospect (In discussion)
+- Proposal Sent (Awaiting decision)
+- Won (New client)
+- Lost (Did not convert)
+
+Visualization: Kanban board or funnel chart
+Drag-and-drop: Move cards between stages
+Card info: Name, estimated value, days in stage
+```
+
+**3. Recent Activity Feed**
+```
+Items:
+- New policy added
+- Client renewed policy
+- Commission earned
+- Client messaged
+- Appointment scheduled
+
+Visualization: Timeline with icons
+Filtering: By activity type, date range
+Real-time: Updates without refresh
+```
+
+**4. Policy Renewals Calendar**
+```
+Purpose: Visual timeline of upcoming renewals
+Visualization: Calendar with color-coded dots
+View modes: Month, Quarter, Year
+Interaction: Click date → See expiring policies
+Alerts: Highlight policies <30 days
+```
+
+**5. Commission Report**
+```
+Period: Monthly, Quarterly, Yearly
+Breakdown:
+- New policies: €X
+- Renewals: €Y
+- Bonuses: €Z
+- Total: €T
+
+Visualization: Bar chart with breakdown
+Export: PDF for records
+```
+
+---
+
+### 2.3 Present Data Effectively
+
+#### Desktop-First Layout (1440px+ screens)
+
+```
+┌──────────────────────────────────────────────────────────┐
+│  PolicyWallet Agent Portal                    [Profile ▼]│
+├──────────────────────────────────────────────────────────┤
+│  Sidebar Navigation                                      │
+├─────────────────┬────────────────────────────────────────┤
+│ 🏠 Dashboard    │  Good afternoon, Yannis                │
+│ 👥 Clients      │                                        │
+│ 📋 Policies     │  ┌─────┬─────┬─────┬─────┐            │
+│ 📊 Reports      │  │Total│Activ│MRR  │Comm.│            │
+│ 💬 Messages     │  │Clien│Poli │     │This │            │
+│ ⚙️ Settings     │  │148  │892  │€52.4│€4.2K│            │
+│                 │  └─────┴─────┴─────┴─────┘            │
+│                 │                                        │
+│                 │  ┌──────────────────────────────────┐ │
+│                 │  │ Client List          [+ Add New] │ │
+│                 │  ├─────┬────┬────┬────────┬────────┤ │
+│                 │  │Name │Pol.│MRR │Contact │Actions │ │
+│                 │  ├─────┼────┼────┼────────┼────────┤ │
+│                 │  │Maria│ 5  │€450│2d ago  │[...]   │ │
+│                 │  │Nikos│ 3  │€280│1w ago  │[...]   │ │
+│                 │  │...  │... │... │...     │...     │ │
+│                 │  └─────┴────┴────┴────────┴────────┘ │
+│                 │                                        │
+│                 │  ┌──────────────┬─────────────────┐   │
+│                 │  │Sales Pipeline│Recent Activity  │   │
+│                 │  │              │• Policy added   │   │
+│                 │  │ [Kanban]     │• Client renewed │   │
+│                 │  │              │• €200 earned    │   │
+│                 │  └──────────────┴─────────────────┘   │
+└─────────────────┴────────────────────────────────────────┘
+```
+
+**Design Specifications:**
+
+1. **Layout Structure**
+   - Sidebar: 240px fixed width
+   - Content area: Fluid (100% - sidebar)
+   - Max content width: 1400px
+   - Padding: 32px on all sides
+
+2. **Typography** (Web)
+   - Headers: Inter or SF Pro Display
+   - Body: Inter or SF Pro Text
+   - H1: 32px Bold
+   - H2: 24px Semibold
+   - H3: 18px Semibold
+   - Body: 16px Regular
+   - Caption: 14px Regular
+
+3. **Color Palette**
+   ```css
+   Primary: #2563EB (Blue)
+   Success: #10B981 (Green)
+   Warning: #F59E0B (Amber)
+   Danger: #EF4444 (Red)
+   
+   Neutrals:
+   Background: #F9FAFB (Gray 50)
+   Surface: #FFFFFF
+   Border: #E5E7EB (Gray 200)
+   Text Primary: #111827 (Gray 900)
+   Text Secondary: #6B7280 (Gray 500)
+   ```
+
+4. **Component Library**
+   - Tables: Stripe rows, hover state
+   - Cards: 8px corner radius, subtle shadow
+   - Buttons: Primary (filled), Secondary (outline), Tertiary (ghost)
+   - Inputs: 8px corner radius, focus ring
+   - Badges: 4px corner radius, semantic colors
+
+5. **Data Tables**
+   - Row height: 56px
+   - Column padding: 16px horizontal
+   - Hover: Background change
+   - Selected: Border left (primary color)
+   - Sorting: Arrow icons in headers
+   - Actions: Icon buttons or dropdown
+
+---
+
+### 2.4 Eliminate Clutter & Noise
+
+#### What to AVOID:
+
+❌ **Information overload**
+- Don't show 50 columns in client table
+- Limit to 6-8 essential columns
+
+❌ **Unnecessary charts**
+- Not every metric needs a graph
+- Use charts only when trend matters
+
+❌ **Redundant navigation**
+- One sidebar is enough
+- Don't duplicate nav in header
+
+❌ **Distracting colors**
+- Limit to semantic colors (red/yellow/green)
+- Don't use rainbow charts
+
+❌ **Too many fonts**
+- Max 2 font families
+- Max 5 font sizes
+
+#### What to INCLUDE:
+
+✅ **Clear primary action**
+- "Add New Client" button always visible
+- Easy access to common tasks
+
+✅ **Contextual actions**
+- Row actions on hover (view, edit, message)
+- Bulk actions when rows selected
+
+✅ **Smart defaults**
+- Table sorted by "Last Contact" (oldest first)
+- Show active clients by default
+- Date range: "This Month"
+
+✅ **Progressive disclosure**
+- Summary view by default
+- "View Details" for deep dive
+- Expandable rows for more info
+
+✅ **Search and filters**
+- Quick search in sidebar
+- Advanced filters in dropdown
+- Save filter presets
+
+---
+
+### 2.5 Use Layout to Focus Attention
+
+#### Information Hierarchy
+
+**Level 1: Metrics Overview** (Top)
+- Placement: Full-width row below header
+- Purpose: Quick snapshot of key numbers
+- Visual: 4-up card layout, equal size
+- Interaction: Click to filter content below
+
+**Level 2: Primary Content** (Center)
+- Placement: Large table or kanban board
+- Purpose: Main working area for agent
+- Visual: Full-width table with clear headers
+- Interaction: Sort, filter, search, paginate
+
+**Level 3: Secondary Content** (Right side or below)
+- Placement: 2-column layout or stacked cards
+- Purpose: Supporting information
+- Visual: Smaller cards, less prominent
+- Interaction: Scroll independently
+
+**Level 4: Contextual Actions** (Inline)
+- Placement: On hover or as last column
+- Purpose: Quick actions per row
+- Visual: Icon buttons or dropdown menu
+- Interaction: Click for immediate action
+
+#### Desktop Responsive Breakpoints
+
+```
+1920px+: Full layout with right sidebar
+1440px: Full layout, condensed spacing
+1280px: Remove right sidebar, stack below
+1024px: Condensed sidebar, remove labels
+768px: Hamburger menu, mobile optimized
+```
+
+---
+
+### 2.6 Tell a Clear Story
+
+#### Agent Story Arc
+
+**Morning Routine Story:**
+
+```
+ACT 1: Status Check (Metrics)
+────────────────────────────────────────
+Question: "How am I doing this month?"
+Answer: Commission at 70% of quota, 148 clients, €52K MRR
+Emotion: "I'm on track, need to push for end of month"
+
+ACT 2: Priorities (Pending Actions)
+────────────────────────────────────────
+Question: "What needs my attention today?"
+Answer: 5 renewals expiring this week, 3 client messages
+Emotion: "I know exactly what to do first"
+
+ACT 3: Opportunities (Sales Pipeline)
+────────────────────────────────────────
+Question: "Where are my deals?"
+Answer: 8 proposals sent, 4 in discussion, 2 ready to close
+Emotion: "I can focus on closing these two deals"
+
+ACT 4: Relationships (Client List)
+────────────────────────────────────────
+Question: "Who haven't I talked to recently?"
+Answer: Table sorted by last contact, 12 clients >30 days
+Emotion: "I should reach out to these clients"
+
+ACT 5: Growth (Performance Trend)
+────────────────────────────────────────
+Question: "Am I growing?"
+Answer: +12% MRR vs last month, +8 new clients
+Emotion: "I'm improving, keep going"
+```
+
+#### Interaction Patterns
+
+**Pattern 1: Quick Client Check**
+```
+1. Agent lands on dashboard
+2. Sees client name in table
+3. Clicks name → Client detail modal
+4. Views policies, history, contact info
+5. Clicks "Message" → Sends quick note
+6. Modal closes → Back to dashboard
+Time: <30 seconds
+```
+
+**Pattern 2: Renewal Management**
+```
+1. Agent sees "15 Expiring This Quarter"
+2. Clicks metric → Filtered table
+3. Sorts by expiry date (ascending)
+4. Bulk selects all expiring <30 days
+5. Clicks "Send Renewal Reminders"
+6. System sends SMS/Email to clients
+7. Agent sees confirmation
+Time: <1 minute
+```
+
+**Pattern 3: Performance Review**
+```
+1. Agent clicks "Reports" in sidebar
+2. Selects "Commission Report"
+3. Date range: "This Year"
+4. Sees monthly breakdown chart
+5. Exports PDF for personal records
+6. Clicks "Share with Manager"
+Time: <2 minutes
+```
+
+---
+
+### 2.7 Implementation Checklist
+
+#### Phase 1: Backend (Week 1-2)
+
+**API Endpoints:**
+- [ ] GET /api/v1/agents/dashboard
+  - Metrics overview
+  - Pending actions count
+  - Commission to date
+- [ ] GET /api/v1/agents/clients
+  - Paginated client list
+  - Search, sort, filter
+  - Include policy counts and MRR
+- [ ] GET /api/v1/agents/clients/:id
+  - Detailed client view
+  - Policy list
+  - Communication history
+- [ ] POST /api/v1/agents/clients
+  - Add new client
+  - Associate with agent
+- [ ] GET /api/v1/agents/pipeline
+  - Sales pipeline stages
+  - Leads and prospects
+- [ ] POST /api/v1/agents/communications
+  - Log client interaction
+  - Send message
+- [ ] GET /api/v1/agents/commissions
+  - Commission report
+  - Breakdown by period
+
+**Database Updates:**
+- [ ] Agent commission calculations
+- [ ] Client status field
+- [ ] Sales pipeline stages
+- [ ] Communication templates
+
+#### Phase 2: Frontend (Week 3-4)
+
+**Web App Setup:**
+- [ ] Next.js project (agent.policywallet.gr)
+- [ ] Authentication integration
+- [ ] API client setup
+- [ ] UI component library (shadcn/ui or similar)
+
+**Core Components:**
+- [ ] Dashboard layout (sidebar + content)
+- [ ] Metrics cards
+- [ ] Client table with sorting/filtering
+- [ ] Client detail modal
+- [ ] Sales pipeline kanban
+- [ ] Activity feed
+- [ ] Navigation menu
+
+**Features:**
+- [ ] Client management (CRUD)
+- [ ] Policy viewing
+- [ ] Communication logging
+- [ ] Commission reporting
+- [ ] Search and filters
+
+#### Phase 3: Polish (Week 5)
+
+- [ ] Responsive design (tablet/desktop)
+- [ ] Loading states
+- [ ] Error handling
+- [ ] Export functionality
+- [ ] Bulk actions
+- [ ] Notifications
+
+---
+
+## 🛡️ PART 3: ADMIN DASHBOARD (Web Desktop)
+
+### Current Status: ❌ NOT IMPLEMENTED
+
+**What Exists:**
+- ✅ Backend routes scaffolded (src/routes/admin.js)
+- ✅ Database tables (admin_users, audit_logs)
+- ❌ No controller implementation
+- ❌ No UI/UX designs
+
+---
+
+### 3.1 Purpose Definition
+
+**Primary Admin Goals:**
+1. **System Oversight** - Monitor platform health
+2. **User Management** - Manage users, agents, admins
+3. **Insurer Management** - Add/edit insurance companies
+4. **Analytics** - Understand usage and growth
+5. **Compliance** - GDPR, audit logs, data exports
+
+**Success Metrics:**
+- System uptime: 99.9%
+- Average response time: <200ms
+- Daily active users (DAU)
+- Policies created per day
+- Support tickets resolved
+
+**Dashboard Type:** Strategic + Compliance
+- **Strategic:** Long-term growth metrics, trends
+- **Compliance:** Audit logs, data requests, system health
+
+---
+
+### 3.2 Choose the Right Metrics
+
+#### Primary KPIs (Top Row)
+
+**Total Users**
+```
+Purpose: Platform user base size
+Data Source: COUNT(users)
+Visualization: Number with growth chart
+Breakdown: Users, Agents, Admins
+Trend: Daily/Weekly/Monthly growth
+```
+
+**Total Policies**
+```
+Purpose: Policies under management
+Data Source: COUNT(policies)
+Visualization: Number with trend
+Breakdown: By policy type, status
+Format: "12,450 Policies"
+```
+
+**Platform Revenue**
+```
+Purpose: Total premium value (theoretical)
+Data Source: SUM(policies.premium_amount) * 12
+Visualization: Annual recurring value
+Format: "€5.2M ARR" with MoM growth
+```
+
+**System Health**
+```
+Purpose: Platform operational status
+Data Source: Server monitoring
+Visualization: Status indicator (green/yellow/red)
+Metrics: Uptime, Response time, Error rate
+Format: "✅ All systems operational"
+```
+
+#### Secondary Metrics (Second Row)
+
+**New Users (30d)**
+```
+Purpose: User acquisition rate
+Data Source: COUNT(users WHERE created_at > NOW() - 30 days)
+Visualization: Number with trend line
+Comparison: vs previous 30 days
+```
+
+**Active Users (7d)**
+```
+Purpose: Engagement metric
+Data Source: COUNT(DISTINCT user_id FROM audit_logs WHERE date > NOW() - 7 days)
+Visualization: Number with trend
+Format: "3,240 Active Users (7d)"
+```
+
+**Policies Added (30d)**
+```
+Purpose: Platform activity
+Data Source: COUNT(policies WHERE created_at > NOW() - 30 days)
+Visualization: Bar chart by day
+Average: Policies per day
+```
+
+**Data Export Requests**
+```
+Purpose: GDPR compliance tracking
+Data Source: COUNT(data_export_requests WHERE status = 'pending')
+Visualization: Number with urgency
+Alert: Red if >5 pending
+```
+
+#### Dashboard Sections
+
+**1. User Management Table**
+```
+Columns:
+- User Name
+- Email
+- Role (User, Agent, Admin)
+- Policies Count
+- Registration Date
+- Last Login
+- Status (Active, Suspended, Deleted)
+- Actions (View, Edit, Suspend, Delete)
+
+Filtering: By role, status, registration date
+Search: By name or email
+Export: CSV of all users
+```
+
+**2. Insurer Management**
+```
+Columns:
+- Insurer Name
+- Logo
+- Contact Email
+- Phone
+- Active Policies
+- Total Premium Value
+- Status (Active, Inactive)
+- Actions (Edit, Deactivate)
+
+Features:
+- Add new insurer
+- Bulk import from CSV
+- Configure billing settings
+```
+
+**3. System Analytics**
+```
+Charts:
+- User Growth (line chart, 12 months)
+- Policy Distribution (pie chart, by type)
+- Revenue Trend (area chart, 12 months)
+- Engagement Heatmap (by day of week/hour)
+
+Time Ranges: 7d, 30d, 90d, 1y, All time
+Export: Download charts as PNG/PDF
+```
+
+**4. Audit Log Viewer**
+```
+Columns:
+- Timestamp
+- User
+- Action (Created, Updated, Deleted, Login, etc.)
+- Resource (User, Policy, Document)
+- IP Address
+- User Agent
+- Details
+
+Filtering: By user, action, date range, resource
+Search: Full-text search in details
+Pagination: 100 per page
+Real-time: Auto-refresh every 30s
+```
+
+**5. GDPR Compliance**
+```
+Features:
+- Data Export Requests Queue
+  - User name, Request date, Status
+  - Actions: Process, Download, Mark Complete
+- Right to Erasure
+  - List of deletion requests
+  - Preview data to be deleted
+  - Confirm and execute deletion
+- Consent Management
+  - Users who accepted/rejected policies
+  - Revoked consents
+```
+
+---
+
+### 3.3 Present Data Effectively
+
+#### Desktop-Optimized Layout (1920px screens)
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  PolicyWallet Admin Portal               [Notifications] [👤]│
+├──────────────────────────────────────────────────────────────┤
+│  Sidebar                                                     │
+├───────────────┬──────────────────────────────────────────────┤
+│ 🏠 Dashboard  │  System Overview                             │
+│ 👥 Users      │                                              │
+│ 🏢 Insurers   │  ┌────────┬────────┬────────┬────────┐      │
+│ 📊 Analytics  │  │Users   │Policies│ARR     │Health  │      │
+│ 🔍 Audit Logs │  │12,450  │45,892  │€5.2M   │✅ Good │      │
+│ ⚙️ Settings   │  │+450(7d)│+892(7d)│+8% MoM │99.8%   │      │
+│ 📋 GDPR       │  └────────┴────────┴────────┴────────┘      │
+│               │                                              │
+│               │  ┌────────────────────────────────────────┐  │
+│               │  │ User Management     [+ Add] [Export]   │  │
+│               │  │                                        │  │
+│               │  │ [Search...] [Filter ▼] [Sort ▼]       │  │
+│               │  │                                        │  │
+│               │  │ ┌──────────────────────────────────┐  │  │
+│               │  │ │Name     │Role │Policies│Actions  │  │  │
+│               │  │ ├──────────┼─────┼────────┼─────────┤  │  │
+│               │  │ │Maria P. │User │5       │[⋮]      │  │  │
+│               │  │ │Nikos S. │Agent│148     │[⋮]      │  │  │
+│               │  │ │...      │...  │...     │...      │  │  │
+│               │  │ └──────────┴─────┴────────┴─────────┘  │  │
+│               │  │ [1] 2 3 ... 125 Next →                 │  │
+│               │  └────────────────────────────────────────┘  │
+│               │                                              │
+│               │  ┌──────────────────┬─────────────────────┐  │
+│               │  │System Analytics  │Recent Activity      │  │
+│               │  │                  │• User registered    │  │
+│               │  │ [Growth Chart]   │• Policy created     │  │
+│               │  │                  │• Document uploaded  │  │
+│               │  │                  │• Agent logged in    │  │
+│               │  └──────────────────┴─────────────────────┘  │
+└───────────────┴──────────────────────────────────────────────┘
+```
+
+**Design Specifications:**
+
+1. **Layout Structure**
+   - Sidebar: 260px fixed
+   - Content: Fluid with max-width 1600px
+   - Padding: 40px
+   - Section spacing: 32px
+
+2. **Data Density**
+   - Tables: Compact (48px row height)
+   - More columns than user dashboard (8-10 columns)
+   - Smaller font sizes (14px body)
+
+3. **Color Coding**
+   - Status: Green (active), Red (suspended), Gray (deleted)
+   - Metrics: Color by threshold (good/warning/critical)
+   - Charts: Consistent color palette
+
+4. **Advanced Features**
+   - Multi-column sorting
+   - Inline editing (double-click)
+   - Bulk actions (checkbox selection)
+   - Advanced filters (date range, multi-select)
+   - Export to CSV/PDF/Excel
+
+---
+
+### 3.4 Eliminate Clutter & Noise
+
+#### Admin-Specific Considerations
+
+❌ **Over-simplified visuals**
+- Admins need detail, not dumbed-down charts
+- Include technical metrics (response time, error rate)
+
+❌ **Too much color**
+- Keep professional, limit to semantic colors
+- Use color to highlight issues, not decorate
+
+❌ **Missing context**
+- Always show comparison (vs previous period)
+- Include absolute numbers with percentages
+
+✅ **Dense information**
+- Admins can handle more data
+- Use tables with many columns
+- Tooltips for definitions
+
+✅ **Powerful filters**
+- Multiple filter criteria
+- Save filter presets
+- Quick filters (e.g., "Show suspended users")
+
+✅ **Export everything**
+- CSV export for all tables
+- PDF reports
+- API access for custom queries
+
+---
+
+### 3.5 Use Layout to Focus Attention
+
+#### Admin Priorities
+
+**Primary Focus:** User/Insurer Tables
+- Most common admin task: User management
+- Table takes 60% of screen real estate
+- Always visible without scroll
+
+**Secondary Focus:** System Health
+- Placement: Top metrics row
+- Alert styling if issues detected
+- Click to see detailed logs
+
+**Tertiary Focus:** Analytics
+- Placement: Collapsible section or separate page
+- For strategic planning, not daily operations
+
+**Quaternary Focus:** GDPR/Compliance
+- Dedicated page (not on main dashboard)
+- Alert badge if pending requests
+
+---
+
+### 3.6 Tell a Clear Story
+
+#### Admin Story Arc
+
+**Daily Operations Story:**
+
+```
+ACT 1: System Check (Health Metrics)
+────────────────────────────────────────
+Question: "Is everything running smoothly?"
+Answer: ✅ All systems operational, 99.8% uptime
+Emotion: "Good, no fires to put out"
+
+ACT 2: User Activity (Growth)
+────────────────────────────────────────
+Question: "How is the platform growing?"
+Answer: +450 users this week, +892 policies
+Emotion: "We're growing steadily"
+
+ACT 3: User Management (Admin Tasks)
+────────────────────────────────────────
+Question: "Any user issues?"
+Answer: 2 suspended accounts, 1 support ticket
+Emotion: "I need to review these"
+
+ACT 4: Compliance (GDPR)
+────────────────────────────────────────
+Question: "Any data requests pending?"
+Answer: 0 pending data exports, all clear
+Emotion: "Compliant and good to go"
+
+ACT 5: Strategy (Analytics)
+────────────────────────────────────────
+Question: "What's the long-term trend?"
+Answer: 15% MoM growth, on track for year goals
+Emotion: "Let's keep this momentum"
+```
+
+---
+
+### 3.7 Implementation Checklist
+
+#### Phase 1: Backend (Week 1-2)
+
+**API Endpoints:**
+- [ ] GET /api/v1/admin/dashboard
+  - System overview metrics
+  - Recent activity
+- [ ] GET /api/v1/admin/users
+  - Paginated user list
+  - Search, filter, sort
+  - Include role, status, policy count
+- [ ] PATCH /api/v1/admin/users/:id
+  - Update user (suspend, activate, change role)
+- [ ] DELETE /api/v1/admin/users/:id
+  - Soft delete user (GDPR)
+- [ ] GET /api/v1/admin/insurers
+  - List all insurers
+- [ ] POST /api/v1/admin/insurers
+  - Add new insurer
+- [ ] PATCH /api/v1/admin/insurers/:id
+  - Edit insurer
+- [ ] GET /api/v1/admin/analytics
+  - User growth, policy trends, revenue
+  - Time series data
+- [ ] GET /api/v1/admin/audit-logs
+  - Paginated audit logs
+  - Filter by user, action, date
+- [ ] GET /api/v1/admin/gdpr/export-requests
+  - Pending data export requests
+- [ ] POST /api/v1/admin/gdpr/export-requests/:id/process
+  - Generate and download user data
+
+#### Phase 2: Frontend (Week 3-4)
+
+**Web App Setup:**
+- [ ] Next.js project (admin.policywallet.gr)
+- [ ] Admin authentication (role check)
+- [ ] UI component library
+- [ ] Chart library (Recharts or Chart.js)
+
+**Core Components:**
+- [ ] Admin layout (sidebar + content)
+- [ ] Metrics cards
+- [ ] User management table
+- [ ] Insurer management table
+- [ ] Analytics charts
+- [ ] Audit log viewer
+- [ ] GDPR compliance tools
+
+**Features:**
+- [ ] User CRUD operations
+- [ ] Insurer CRUD operations
+- [ ] System analytics
+- [ ] Audit log search/filter
+- [ ] Data export processing
+- [ ] Bulk actions
+
+#### Phase 3: Advanced Features (Week 5-6)
+
+- [ ] Advanced filtering (multi-criteria)
+- [ ] Export to CSV/PDF
+- [ ] Real-time notifications
+- [ ] System health monitoring
+- [ ] Email templates management
+- [ ] Role-based access control (RBAC)
+
+---
+
+## 🎨 PART 4: Cross-Dashboard Design System
+
+### 4.1 Shared Design Language
+
+#### Brand Colors
+
+```css
+/* Primary Palette */
+--primary-blue: #007AFF;    /* iOS system blue */
+--primary-teal: #5AC8FA;    /* iOS teal */
+--primary-indigo: #5856D6;  /* iOS indigo */
+
+/* Semantic Colors */
+--success: #34C759;         /* iOS green */
+--warning: #FF9500;         /* iOS orange */
+--error: #FF3B30;           /* iOS red */
+--info: #007AFF;            /* iOS blue */
+
+/* Neutrals (Light Mode) */
+--gray-50: #F9FAFB;
+--gray-100: #F3F4F6;
+--gray-200: #E5E7EB;
+--gray-300: #D1D5DB;
+--gray-400: #9CA3AF;
+--gray-500: #6B7280;
+--gray-600: #4B5563;
+--gray-700: #374151;
+--gray-800: #1F2937;
+--gray-900: #111827;
+
+/* Dark Mode Support */
+--dm-background: #000000;
+--dm-surface: #1C1C1E;
+--dm-surface-elevated: #2C2C2E;
+--dm-text-primary: #FFFFFF;
+--dm-text-secondary: #98989D;
+```
+
+#### Typography Scale
+
+```css
+/* Mobile (iOS) */
+--font-family: -apple-system, SF Pro Display, SF Pro Text, system-ui;
+
+--text-xs: 11px;      /* Micro text */
+--text-sm: 13px;      /* Captions */
+--text-base: 15px;    /* Body */
+--text-lg: 17px;      /* Subheadings */
+--text-xl: 20px;      /* Headings */
+--text-2xl: 28px;     /* Large headings */
+--text-3xl: 34px;     /* Hero text */
+--text-4xl: 48px;     /* Display text */
+
+/* Web (Desktop) */
+--text-xs: 12px;
+--text-sm: 14px;
+--text-base: 16px;
+--text-lg: 18px;
+--text-xl: 24px;
+--text-2xl: 32px;
+--text-3xl: 40px;
+--text-4xl: 56px;
+```
+
+#### Spacing System (8pt Grid)
+
+```css
+--space-1: 4px;       /* 0.5 units */
+--space-2: 8px;       /* 1 unit */
+--space-3: 12px;      /* 1.5 units */
+--space-4: 16px;      /* 2 units */
+--space-5: 20px;      /* 2.5 units */
+--space-6: 24px;      /* 3 units */
+--space-8: 32px;      /* 4 units */
+--space-10: 40px;     /* 5 units */
+--space-12: 48px;     /* 6 units */
+--space-16: 64px;     /* 8 units */
+```
+
+---
+
+### 4.2 Component Patterns
+
+#### Metric Card
+
+**Purpose:** Display a single KPI with context
+
+**Anatomy:**
+```
+┌─────────────────────┐
+│ Label               │  14px gray-500
+│ Value               │  32px bold black
+│ Change (+15%)       │  14px green/red
+│ Sparkline (optional)│  Mini chart
+└─────────────────────┘
+```
+
+**Variants:**
+- Simple (just label + value)
+- With trend (include change percentage)
+- With chart (include sparkline or mini chart)
+
+**States:**
+- Default
+- Hover (subtle elevation)
+- Loading (skeleton)
+- Error (red border, alert icon)
+
+#### Data Table
+
+**Purpose:** Display tabular data with sorting/filtering
+
+**Anatomy:**
+```
+┌──────────────────────────────────────┐
+│ [Search] [Filter ▼] [Sort ▼] [Export]│  Toolbar
+├──────────────────────────────────────┤
+│ Header Row (Sortable)                │  Bold, gray-700
+├──────────────────────────────────────┤
+│ Data Row 1                           │  Hover: gray-50
+│ Data Row 2 (Selected)                │  Selected: blue-50
+│ Data Row 3                           │
+│ ...                                  │
+├──────────────────────────────────────┤
+│ [◀] Page 1 of 50 [▶]                 │  Pagination
+└──────────────────────────────────────┘
+```
+
+**Features:**
+- Column sorting (asc/desc)
+- Row selection (checkbox)
+- Inline actions (hover to reveal)
+- Pagination (25/50/100 per page)
+- Export (CSV, PDF)
+
+#### Status Badge
+
+**Purpose:** Show status or category
+
+**Variants:**
+```
+Active:    [✓ Active]     - Green background
+Pending:   [⏱ Pending]    - Yellow background
+Expired:   [✗ Expired]    - Red background
+Draft:     [○ Draft]      - Gray background
+```
+
+**Sizes:**
+- Small (12px text, 16px height)
+- Medium (14px text, 24px height)
+- Large (16px text, 32px height)
+
+#### Empty State
+
+**Purpose:** Guide users when no data exists
+
+**Anatomy:**
+```
+┌─────────────────────┐
+│                     │
+│    [Illustration]   │  Friendly icon or image
+│                     │
+│   "No policies yet" │  Primary message
+│   "Add your first"  │  Secondary message
+│                     │
+│   [Add Policy]      │  Primary CTA
+│                     │
+└─────────────────────┘
+```
+
+**Variants:**
+- No data (user has none)
+- No results (search/filter returned nothing)
+- Error (failed to load data)
+
+---
+
+### 4.3 Responsive Strategy
+
+#### Breakpoints
+
+```css
+/* Mobile */
+--mobile-sm: 320px;   /* iPhone SE */
+--mobile-md: 375px;   /* iPhone 12/13/14 */
+--mobile-lg: 428px;   /* iPhone 14 Pro Max */
+
+/* Tablet */
+--tablet-sm: 768px;   /* iPad Mini */
+--tablet-md: 820px;   /* iPad */
+--tablet-lg: 1024px;  /* iPad Pro */
+
+/* Desktop */
+--desktop-sm: 1280px;
+--desktop-md: 1440px;
+--desktop-lg: 1920px;
+```
+
+#### Layout Adaptations
+
+**User Dashboard (Mobile):**
+- Single column layout
+- Stacked cards
+- Bottom tab navigation
+- Full-screen modals
+
+**Agent Dashboard (Tablet/Desktop):**
+- Sidebar + content (tablet: hamburger menu)
+- 2-column layouts on tablet
+- 3-column layouts on desktop
+- Side panel modals
+
+**Admin Dashboard (Desktop only):**
+- Fixed sidebar (collapse on <1280px)
+- Multi-column tables
+- Side-by-side panels
+- Modal sheets
+
+---
+
+### 4.4 Accessibility Standards
+
+#### WCAG 2.1 Level AA Compliance
+
+**Color Contrast:**
+- Normal text: 4.5:1 minimum
+- Large text (18px+): 3:1 minimum
+- UI components: 3:1 minimum
+
+**Keyboard Navigation:**
+- All interactive elements focusable
+- Visible focus indicators
+- Logical tab order
+- Escape key closes modals
+
+**Screen Reader Support:**
+- ARIA labels on all controls
+- ARIA live regions for dynamic content
+- Semantic HTML (header, nav, main, footer)
+- Alt text on images
+
+**Mobile Accessibility (iOS):**
+- VoiceOver compatible
+- Dynamic Type support (font scaling)
+- Reduce Motion support
+- High Contrast mode support
+
+---
+
+### 4.5 Performance Standards
+
+#### Mobile (User Dashboard)
+
+**Target Metrics:**
+- First Contentful Paint: <1.5s
+- Time to Interactive: <3.0s
+- Lighthouse Score: >90
+
+**Optimization Techniques:**
+- Image optimization (WebP, lazy loading)
+- Code splitting (route-based)
+- API response caching (React Query)
+- Skeleton loading states
+- Infinite scroll (policies list)
+
+#### Web (Agent/Admin Dashboards)
+
+**Target Metrics:**
+- First Contentful Paint: <1.0s
+- Time to Interactive: <2.0s
+- Lighthouse Score: >95
+
+**Optimization Techniques:**
+- Server-side rendering (Next.js)
+- Static generation where possible
+- API pagination (limit 25 per request)
+- Virtual scrolling (large tables)
+- Debounced search inputs
+
+---
+
+## 📐 PART 5: Implementation Roadmap
+
+### Phase 1: Foundation (Week 1-2)
+
+**Backend:**
+- [ ] Dashboard API endpoints (all 3 dashboards)
+- [ ] Metric calculation services
+- [ ] Caching layer (Redis optional)
+
+**Design:**
+- [ ] Complete Figma designs (all 3 dashboards)
+- [ ] Component library definitions
+- [ ] Style guide documentation
+
+**Mobile (iOS):**
+- [ ] Project setup (React Native or SwiftUI)
+- [ ] Navigation structure
+- [ ] Design system implementation
+
+---
+
+### Phase 2: User Dashboard (Week 3-4)
+
+**Mobile Implementation:**
+- [ ] Coverage Health Score component
+- [ ] Quick Stats grid
+- [ ] Policy list with swipe actions
+- [ ] Family coverage section
+- [ ] Insights & gap analysis display
+- [ ] Pull-to-refresh
+- [ ] Empty states
+
+**Integration:**
+- [ ] API integration
+- [ ] Error handling
+- [ ] Loading states
+- [ ] Data caching
+
+---
+
+### Phase 3: Agent Dashboard (Week 5-6)
+
+**Web Implementation:**
+- [ ] Next.js setup (agent.policywallet.gr)
+- [ ] Dashboard layout (sidebar + content)
+- [ ] Client management table
+- [ ] Sales pipeline (kanban)
+- [ ] Commission reporting
+- [ ] Activity feed
+
+**Features:**
+- [ ] Advanced filtering
+- [ ] Search functionality
+- [ ] Export to CSV
+- [ ] Client detail modals
+
+---
+
+### Phase 4: Admin Dashboard (Week 7-8)
+
+**Web Implementation:**
+- [ ] Next.js setup (admin.policywallet.gr)
+- [ ] User management table
+- [ ] Insurer management
+- [ ] System analytics charts
+- [ ] Audit log viewer
+- [ ] GDPR compliance tools
+
+**Features:**
+- [ ] Bulk actions
+- [ ] Real-time monitoring
+- [ ] Report generation
+- [ ] Advanced admin controls
+
+---
+
+### Phase 5: Polish & Launch (Week 9-10)
+
+**All Dashboards:**
+- [ ] Dark mode implementation
+- [ ] Accessibility audit
+- [ ] Performance optimization
+- [ ] User testing
+- [ ] Bug fixes
+- [ ] Documentation
+
+**Deployment:**
+- [ ] Staging environment testing
+- [ ] Production deployment
+- [ ] Monitoring setup
+- [ ] Analytics integration
+
+---
+
+## 🎯 PART 6: Success Criteria
+
+### User Dashboard (Mobile)
+
+**User Experience:**
+- [ ] Coverage Health Score visible within 1 second of app open
+- [ ] Policy list loads in <2 seconds
+- [ ] Smooth 60fps scrolling
+- [ ] Intuitive swipe gestures work correctly
+- [ ] All actions complete in <3 taps
+
+**Metrics:**
+- [ ] >80% of users check dashboard daily
+- [ ] <5% of users abandon during onboarding
+- [ ] >90% task completion rate
+- [ ] <2% error rate on API calls
+
+---
+
+### Agent Dashboard (Web)
+
+**User Experience:**
+- [ ] Dashboard loads fully in <3 seconds
+- [ ] Client search returns results in <500ms
+- [ ] Table sorting is instant (<100ms)
+- [ ] No lag when filtering large datasets
+- [ ] Exports complete in <5 seconds
+
+**Metrics:**
+- [ ] Agents spend >30 minutes per day on platform
+- [ ] >50% of agents use search daily
+- [ ] >30% of agents use export feature weekly
+- [ ] <1% error rate on data operations
+
+---
+
+### Admin Dashboard (Web)
+
+**User Experience:**
+- [ ] All metrics visible above the fold
+- [ ] User management table handles 10,000+ users
+- [ ] Audit logs searchable in <1 second
+- [ ] GDPR exports generate in <60 seconds
+- [ ] No performance degradation with large datasets
+
+**Metrics:**
+- [ ] Admins spend <15 minutes per day on routine tasks
+- [ ] 100% of GDPR requests processed within 24 hours
+- [ ] <0.5% of users experience support issues
+- [ ] 99.9% system uptime
+
+---
+
+## 📚 PART 7: Resources & References
+
+### Design Tools
+
+**Figma Files:**
+- [ ] User Dashboard (Mobile) - To be created
+- [ ] Agent Dashboard (Web) - To be created
+- [ ] Admin Dashboard (Web) - To be created
+- [ ] Component Library - To be created
+
+**Design Systems:**
+- Apple Human Interface Guidelines: https://developer.apple.com/design/
+- Material Design (for Android): https://material.io/design
+- Tailwind CSS: https://tailwindcss.com
+- shadcn/ui: https://ui.shadcn.com
+
+### Development Resources
+
+**Mobile (iOS):**
+- React Native: https://reactnative.dev
+- React Navigation: https://reactnavigation.org
+- React Query: https://tanstack.com/query
+- Expo: https://expo.dev (optional)
+
+**Web (Agent/Admin):**
+- Next.js: https://nextjs.org
+- Tailwind CSS: https://tailwindcss.com
+- Recharts: https://recharts.org
+- React Table: https://tanstack.com/table
+
+### Data Visualization
+
+**Best Practices:**
+- Edward Tufte - "The Visual Display of Quantitative Information"
+- Stephen Few - "Information Dashboard Design"
+- Cole Nussbaumer Knaflic - "Storytelling with Data"
+
+**Tools:**
+- Chart.js: https://www.chartjs.org
+- D3.js: https://d3js.org (advanced)
+- Recharts: https://recharts.org (React)
+- Victory: https://formidable.com/open-source/victory/
+
+---
+
+## ✅ Summary & Next Steps
+
+### What This Document Provides
+
+✅ **Complete dashboard strategy** for 3 user types
+✅ **6-principle framework** applied to each dashboard
+✅ **Detailed metric definitions** with data sources
+✅ **Mobile-first iOS design** specifications
+✅ **Web desktop-optimized** layouts for agent/admin
+✅ **Component library** guidelines
+✅ **Accessibility standards** (WCAG 2.1 AA)
+✅ **Performance targets** and optimization strategies
+✅ **Implementation roadmap** (10-week plan)
+✅ **Success criteria** for each dashboard
+
+### Current Status Assessment
+
+**User Dashboard (Mobile):**
+- Status: ❌ NOT STARTED
+- Backend: ✅ APIs ready
+- Design: ❌ No designs
+- Development: ❌ Not implemented
+- Priority: **HIGH** - Main user interface
+
+**Agent Dashboard (Web):**
+- Status: ❌ NOT STARTED
+- Backend: ⚠️ Routes scaffolded, controllers needed
+- Design: ❌ No designs
+- Development: ❌ Not implemented
+- Priority: **MEDIUM** - Secondary user group
+
+**Admin Dashboard (Web):**
+- Status: ❌ NOT STARTED
+- Backend: ⚠️ Routes scaffolded, controllers needed
+- Design: ❌ No designs
+- Development: ❌ Not implemented
+- Priority: **LOW** - Internal tool
+
+### Immediate Next Steps
+
+1. **Week 1:** Create Figma designs for User Dashboard
+2. **Week 2:** Implement User Dashboard backend endpoints
+3. **Week 3-4:** Build User Dashboard mobile app (iOS)
+4. **Week 5:** Test with real users, gather feedback
+5. **Week 6+:** Agent Dashboard design & development
+
+### Key Decisions Needed
+
+**Technology Stack:**
+- [ ] Mobile: React Native vs. Native iOS (Swift/SwiftUI)?
+- [ ] Web: Next.js vs. Other React framework?
+- [ ] Charts: Recharts vs. Chart.js vs. D3.js?
+- [ ] UI Library: Custom vs. shadcn/ui vs. Material-UI?
+
+**Design Approach:**
+- [ ] Hire designer vs. Use templates vs. Design yourself?
+- [ ] Create full designs first vs. Iterative design?
+- [ ] User testing: When and with how many users?
+
+**Development Approach:**
+- [ ] Hire developer vs. Build yourself vs. Offshore team?
+- [ ] Agile sprints vs. Waterfall approach?
+- [ ] MVP scope: What's truly essential for launch?
+
+---
+
+## 🎉 Conclusion
+
+This dashboard design framework provides a comprehensive blueprint for building PolicyWallet's three user interfaces. By following the 6 storytelling principles (Purpose, Metrics, Presentation, Clarity, Layout, Story), you'll create dashboards that are not only beautiful but also highly functional and user-centered.
+
+The key to success is to **start with the user dashboard** (mobile iOS), validate it with real users, and then expand to agent and admin dashboards. Focus on the metrics that matter, eliminate clutter, and always tell a clear story with your data.
+
+**Remember:**
+- Users want to know: "Am I protected?"
+- Agents want to know: "How do I grow my business?"
+- Admins want to know: "Is the platform healthy?"
+
+Design your dashboards to answer these questions clearly, quickly, and beautifully.
+
+Good luck building PolicyWallet! 🚀
+
+---
+
+**Document Version:** 1.0  
+**Last Updated:** November 30, 2024  
+**Author:** PolicyWallet Product Team  
+**Status:** Ready for Design & Development

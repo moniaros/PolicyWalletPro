@@ -356,13 +356,14 @@ export default function Dashboard() {
               </Card>
             </div>
           </section>
-        </div>
+          </div>
 
         {/* Agent Sidebar - Desktop Only */}
         <div className="hidden xl:block w-72 flex-shrink-0">
           <div className="sticky top-4">
             <AgentSidebar />
           </div>
+        </div>
         </div>
       </div>
 
