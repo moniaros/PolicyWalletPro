@@ -21,6 +21,7 @@ import {
   CreditCard,
   Sparkles,
   Menu,
+  Shield,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -51,6 +52,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const navItems = [
     { icon: Home, label: t('nav.dashboard'), href: "/" },
     { icon: FileText, label: t('nav.policies'), href: "/policies" },
+    { icon: Shield, label: t('nav.insuranceHealth'), href: "/insurance-health" },
     { icon: RefreshCw, label: t('nav.renewals'), href: "/renewals" },
     { icon: CreditCard, label: t('nav.billing'), href: "/billing" },
     { icon: Sparkles, label: t('nav.recommendations'), href: "/recommendations" },

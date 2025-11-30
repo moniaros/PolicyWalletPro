@@ -75,11 +75,74 @@ export default function Dashboard() {
     <>
       <OnboardingModal isOpen={showOnboarding} onClose={handleCloseOnboarding} />
       
-      <div className="flex gap-6">
+      <div className="space-y-6">
+        {/* iOS-Style Hero Section */}
+        <div className="bg-gradient-to-br from-primary via-primary/90 to-primary/80 rounded-3xl p-6 md:p-8 text-white shadow-2xl shadow-primary/25">
+          <div className="flex items-start justify-between mb-6">
+            <div className="flex-1">
+              <h1 className="text-3xl md:text-4xl font-bold mb-2">
+                {t('dashboard.welcomeTitle', { name: 'User' })}
+              </h1>
+              <p className="text-white/90 text-base md:text-lg">
+                {t('dashboard.welcomeSubtitle')}
+              </p>
+            </div>
+            <div className="h-16 w-16 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/30">
+              <Shield className="h-8 w-8 text-white" />
+            </div>
+          </div>
+
+          {/* Quick Stats */}
+          <div className="grid grid-cols-3 gap-4 mb-6">
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+              <p className="text-white/70 text-xs font-medium mb-1">{t('dashboard.totalPolicies')}</p>
+              <p className="text-2xl font-bold">{userState.policyCount}</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+              <p className="text-white/70 text-xs font-medium mb-1">{t('dashboard.activePolicies')}</p>
+              <p className="text-2xl font-bold">{policies.filter(p => p.status === "Active").length}</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+              <p className="text-white/70 text-xs font-medium mb-1">{t('dashboard.expiringSoon')}</p>
+              <p className="text-2xl font-bold">{userState.expiringPoliciesCount}</p>
+            </div>
+          </div>
+
+          {/* Primary Actions */}
+          <div className="flex gap-3">
+            <Link href="/policies">
+              <Button 
+                className="bg-white text-primary hover:bg-white/95 shadow-xl shadow-black/20 border-0 font-semibold px-6 h-12 rounded-xl transition-all hover:scale-105 active:scale-95"
+                data-testid="button-view-policies"
+              >
+                <Shield className="h-4 w-4 mr-2" />
+                {t('dashboard.viewPolicies')}
+              </Button>
+            </Link>
+            <Link href="/insurance-health">
+              <Button 
+                variant="outline" 
+                className="bg-white/15 border-white/40 text-white hover:bg-white/25 font-semibold px-6 h-12 rounded-xl backdrop-blur-sm transition-all hover:scale-105 active:scale-95"
+              >
+                {t('dashboard.insuranceHealth')} <ChevronRight className="h-4 w-4 ml-1" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+
+        <div className="flex gap-6">
         {/* Main Content */}
-        <div className="flex-1 space-y-8 min-w-0">
-          {/* Agent Hero Section */}
-          <AgentHeroSection />
+        <div className="flex-1 space-y-6 min-w-0">
+          {/* Agent Recommendation Pill - Only show if not dismissed */}
+          {showRecommendation && (
+            <AgentRecommendationPill 
+              recommendation={t('dashboard.agentRecommendation', { amount: '€300' })}
+              onDismiss={() => setShowRecommendation(false)}
+            />
+          )}
+
+          {/* Priority Layer - Above all widgets */}
+          <PriorityLayer />
 
           {/* Agent Recommendation Pill - Only show if not dismissed */}
           {showRecommendation && (
@@ -158,9 +221,21 @@ export default function Dashboard() {
           {/* Smart Dashboard Widgets Section - Personalized based on user state */}
           <section>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold">{t('dashboard.insuranceOverview')}</h2>
+              <div>
+                <h2 className="text-xl font-bold">{t('dashboard.insuranceOverview')}</h2>
+                {userState.isNewUser && (
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {t('dashboard.welcomeMessage')}
+                  </p>
+                )}
+                {userState.daysSinceLastVisit > 30 && (
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {t('dashboard.welcomeBack', { days: userState.daysSinceLastVisit })}
+                  </p>
+                )}
+              </div>
               {(userState.hasUrgentRenewals || userState.hasOpenClaims) && (
-                <Badge variant="secondary" className="bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300">
+                <Badge variant="secondary" className="bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300 animate-pulse">
                   <AlertTriangle className="h-3 w-3 mr-1" />
                   {userState.expiringPoliciesCount > 0 
                     ? t('dashboard.urgentRenewals', { count: userState.expiringPoliciesCount })
@@ -174,19 +249,29 @@ export default function Dashboard() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {/* Priority 1: Show renewals if urgent, otherwise insurance health */}
               {userState.hasUrgentRenewals ? (
-                <RenewalsWidget />
+                <div className="relative">
+                  <div className="absolute -top-2 -right-2 h-4 w-4 bg-red-500 rounded-full animate-ping" />
+                  <div className="absolute -top-2 -right-2 h-4 w-4 bg-red-500 rounded-full" />
+                  <RenewalsWidget />
+                </div>
+              ) : userState.isNewUser ? (
+                <InsuranceHealthWidget />
               ) : (
                 <InsuranceHealthWidget />
               )}
               
               {/* Priority 2: Show billing if no open claims, otherwise payment reminders (which highlights issues) */}
               {userState.hasOpenClaims ? (
-                <PaymentRemindersWidget />
+                <div className="relative">
+                  <div className="absolute -top-2 -right-2 h-4 w-4 bg-amber-500 rounded-full animate-ping" />
+                  <div className="absolute -top-2 -right-2 h-4 w-4 bg-amber-500 rounded-full" />
+                  <PaymentRemindersWidget />
+                </div>
               ) : (
                 <BillingWidget />
               )}
               
-              {/* Priority 3: Show recommendations (AI-powered savings) */}
+              {/* Priority 3: Show recommendations (AI-powered savings) - Always show for engagement */}
               <RecommendationsWidget />
             </div>
           </section>

@@ -112,88 +112,75 @@ export default function PolicyCard({ policy, index = 0 }: { policy: PolicyProps,
   const statusBadge = getSmartStatusBadge(policy, t);
   const StatusIcon = statusBadge.icon;
   const PolicyIcon = policy.icon;
+  const expiryStatus = getExpiryStatus(policy.expiry);
 
+  // Simplified card showing only 3 essential items: Provider, Premium, Expiry Status
   return (
     <Link href={`/policies/${policy.id}`}>
       <motion.div
         whileTap={{ scale: 0.98 }}
+        whileHover={{ y: -2 }}
         className="block"
       >
         <div 
-          className="bg-card rounded-2xl border border-border/50 shadow-sm active:bg-muted/30 transition-all duration-150"
+          className="bg-card rounded-2xl border border-border/50 shadow-sm hover:shadow-lg active:bg-muted/30 transition-all duration-200 cursor-pointer group"
           data-testid={`policy-card-${policy.id}`}
         >
-          <div className="p-4">
-            {/* Header: Icon + Product Name + Status Badge */}
-            <div className="flex items-start gap-3 mb-3">
-              <div className={`h-12 w-12 rounded-xl flex items-center justify-center shrink-0 shadow-md ${getIOSIconBg(policy.type)}`}>
-                <PolicyIcon className="h-6 w-6 text-white" />
+          <div className="p-5">
+            {/* Header: Icon + Provider + Status Badge */}
+            <div className="flex items-center gap-4 mb-4">
+              <div className={`h-14 w-14 rounded-xl flex items-center justify-center shrink-0 shadow-lg group-hover:scale-110 transition-transform ${getIOSIconBg(policy.type)}`}>
+                <PolicyIcon className="h-7 w-7 text-white" />
               </div>
               
               <div className="flex-1 min-w-0">
-                <h3 className="font-semibold text-base text-foreground leading-tight line-clamp-2">
-                  {policy.productName || policy.type}
-                </h3>
-                <p className="text-sm text-muted-foreground mt-0.5">
+                <h3 className="font-bold text-lg text-foreground leading-tight mb-1">
                   {policy.provider}
+                </h3>
+                <p className="text-sm text-muted-foreground line-clamp-1">
+                  {policy.productName || policy.type}
                 </p>
               </div>
 
               <Badge 
                 variant="secondary"
-                className={`shrink-0 text-xs font-medium ${statusBadge.className}`}
+                className={`shrink-0 text-xs font-semibold px-2.5 py-1 ${statusBadge.className}`}
                 data-testid={`status-badge-${policy.id}`}
               >
-                <StatusIcon className="h-3 w-3 mr-1" />
+                <StatusIcon className="h-3.5 w-3.5 mr-1.5" />
                 {statusBadge.label}
               </Badge>
             </div>
 
-            {/* Policy Details Grid */}
-            <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm border-t border-border/50 pt-3">
-              {/* Policy Number */}
-              <div className="flex items-center gap-2">
-                <Hash className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                <div className="min-w-0">
-                  <p className="text-xs text-muted-foreground">{t('policyCard.policyNumber')}</p>
-                  <p className="font-medium text-foreground truncate">{policy.policyNumber}</p>
-                </div>
+            {/* Essential Info: Premium + Expiry (2 items only) */}
+            <div className="flex items-center justify-between pt-4 border-t border-border/50">
+              {/* Premium */}
+              <div>
+                <p className="text-xs text-muted-foreground mb-1">{t('policyCard.premium')}</p>
+                <p className="font-bold text-lg text-foreground">{policy.premium}</p>
               </div>
 
-              {/* Policy Type */}
-              <div className="flex items-center gap-2">
-                <PolicyIcon className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                <div className="min-w-0">
-                  <p className="text-xs text-muted-foreground">{t('policyCard.policyType')}</p>
-                  <p className="font-medium text-foreground truncate">{t(`policyTypes.${policy.type.toLowerCase().replace(/[^a-z]/g, '')}`, policy.type)}</p>
-                </div>
-              </div>
-
-              {/* Renewal Date */}
-              <div className="flex items-center gap-2">
-                <Calendar className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                <div className="min-w-0">
-                  <p className="text-xs text-muted-foreground">{t('policyCard.renewalDate')}</p>
-                  <p className="font-medium text-foreground">{formatDate(policy.expiry, i18n.language)}</p>
-                </div>
-              </div>
-
-              {/* Vehicle Registration (only for Auto policies) */}
-              {policy.vehicleReg && (
+              {/* Expiry Date with visual indicator */}
+              <div className="text-right">
+                <p className="text-xs text-muted-foreground mb-1">{t('policyCard.expires')}</p>
                 <div className="flex items-center gap-2">
-                  <Car className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                  <div className="min-w-0">
-                    <p className="text-xs text-muted-foreground">{t('policyCard.vehicleReg')}</p>
-                    <p className="font-medium text-foreground">{policy.vehicleReg}</p>
-                  </div>
+                  <p className="font-semibold text-base text-foreground">
+                    {formatDate(policy.expiry, i18n.language)}
+                  </p>
+                  {expiryStatus === "critical" && (
+                    <div className="h-2 w-2 bg-orange-500 rounded-full animate-pulse" />
+                  )}
+                  {expiryStatus === "warning" && (
+                    <div className="h-2 w-2 bg-amber-500 rounded-full" />
+                  )}
                 </div>
-              )}
+              </div>
             </div>
 
-            {/* Footer: View Details */}
-            <div className="flex items-center justify-end gap-1 mt-3 pt-3 border-t border-border/50">
-              <span className="text-sm text-muted-foreground">{t('policyCard.viewDetails')}</span>
-              <ChevronRight className="h-4 w-4 text-muted-foreground" />
+            {/* Subtle hint to tap for details */}
+            <div className="flex items-center justify-end gap-1 mt-4 pt-3 border-t border-border/30">
+              <span className="text-xs text-muted-foreground/70">{t('policyCard.tapForDetails')}</span>
+              <ChevronRight className="h-3.5 w-3.5 text-muted-foreground/50 group-hover:translate-x-0.5 transition-transform" />
             </div>
           </div>
         </div>

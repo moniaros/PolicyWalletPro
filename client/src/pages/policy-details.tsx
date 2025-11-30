@@ -22,6 +22,7 @@ import {
 } from "@/lib/enhanced-gap-analysis";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { HealthDetailedView, AutoDetailedView, HomeDetailedView, InvestmentLifeDetailedView, PetDetailedView, UniversalBrokerActions } from "@/components/policy-detail-sections";
+import { PolicyDocumentsUpload } from "@/components/policy-documents-upload";
 import { toast } from "sonner";
 
 function getIOSIconBg(policyType: string) {
@@ -301,6 +302,15 @@ export default function PolicyDetailsPage() {
               {policy.type === "Home & Liability" && <HomeDetailedView policy={policy} metadata={policy.quickViewMetadata} />}
               {policy.type === "Investment Life" && <InvestmentLifeDetailedView policy={policy} metadata={policy.quickViewMetadata} />}
               {policy.type === "Pet Insurance" && <PetDetailedView policy={policy} metadata={policy.quickViewMetadata} />}
+
+              {/* Documents Upload Widget */}
+              <PolicyDocumentsUpload 
+                policyId={policy.id} 
+                policyType={policy.type}
+                onUploadComplete={(files) => {
+                  toast.success(t('documents.filesUploaded', { count: files.length }));
+                }}
+              />
             </motion.div>
           )}
 

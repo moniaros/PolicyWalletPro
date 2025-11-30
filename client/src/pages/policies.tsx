@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { policies } from "@/lib/mockData";
@@ -10,12 +10,22 @@ import { Search, UploadCloud, Filter, X, ChevronRight, Plus, SlidersHorizontal }
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { PoliciesListSkeleton } from "@/components/skeleton-loader";
+import { AddPolicyFlow } from "@/components/add-policy-flow";
 
 export default function PoliciesPage() {
   const { t } = useTranslation();
   const [search, setSearch] = useState("");
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [activeFilter, setActiveFilter] = useState<string>("all");
+  const [isLoading, setIsLoading] = useState(true);
+  const [showAddPolicy, setShowAddPolicy] = useState(false);
+  
+  // Simulate loading
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 500);
+    return () => clearTimeout(timer);
+  }, []);
 
   const filteredPolicies = policies.filter(p => {
     const matchesSearch = p.provider.toLowerCase().includes(search.toLowerCase()) || 
@@ -55,59 +65,14 @@ export default function PoliciesPage() {
             
             {/* iOS-Style Action Buttons */}
             <div className="flex items-center gap-2">
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button 
-                    size="icon" 
-                    className="h-11 w-11 rounded-full bg-primary shadow-lg shadow-primary/25"
-                    data-testid="button-add-policy"
-                  >
-                    <Plus className="h-5 w-5" />
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px] rounded-2xl">
-                  <DialogHeader>
-                    <DialogTitle>{t('policies.uploadNewPolicy')}</DialogTitle>
-                    <DialogDescription className="sr-only">
-                      {t('policies.uploadPolicyDescription')}
-                    </DialogDescription>
-                  </DialogHeader>
-                  <div className="grid gap-4 py-4">
-                    <div className="grid gap-2">
-                      <Label htmlFor="file">{t('policies.policyDocument')}</Label>
-                      <div 
-                        className="border-2 border-dashed border-muted-foreground/25 rounded-2xl h-36 flex flex-col items-center justify-center text-muted-foreground bg-muted/10 active:bg-muted/30 transition-colors cursor-pointer" 
-                        data-testid="dropzone-policy"
-                      >
-                        <UploadCloud className="h-10 w-10 mb-3 opacity-50" />
-                        <span className="text-sm font-medium">{t('policies.clickOrDrag')}</span>
-                        <span className="text-xs text-muted-foreground mt-1">PDF, PNG, JPG (Max 10MB)</span>
-                      </div>
-                    </div>
-                    <div className="grid gap-2">
-                      <Label htmlFor="type">{t('policies.insuranceType')}</Label>
-                      <Select>
-                        <SelectTrigger className="h-12 rounded-xl" data-testid="select-policy-type">
-                          <SelectValue placeholder={t('policies.selectType')} />
-                        </SelectTrigger>
-                        <SelectContent className="rounded-xl">
-                          <SelectItem value="health" className="rounded-lg">{t('policyTypes.health')}</SelectItem>
-                          <SelectItem value="auto" className="rounded-lg">{t('policyTypes.auto')}</SelectItem>
-                          <SelectItem value="home" className="rounded-lg">{t('policyTypes.home')}</SelectItem>
-                          <SelectItem value="life" className="rounded-lg">{t('policyTypes.life')}</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <Button 
-                      type="submit" 
-                      className="w-full h-12 rounded-xl text-base font-semibold mt-2"
-                      data-testid="button-save-policy"
-                    >
-                      {t('policies.savePolicy')}
-                    </Button>
-                  </div>
-                </DialogContent>
-              </Dialog>
+              <Button 
+                size="icon" 
+                className="h-11 w-11 rounded-full bg-primary shadow-lg shadow-primary/25"
+                data-testid="button-add-policy"
+                onClick={() => setShowAddPolicy(true)}
+              >
+                <Plus className="h-5 w-5" />
+              </Button>
             </div>
           </div>
 
@@ -175,7 +140,9 @@ export default function PoliciesPage() {
 
       {/* Policy Cards Grid */}
       <div className="px-4 py-4 pb-24">
-        {filteredPolicies.length === 0 ? (
+        {isLoading ? (
+          <PoliciesListSkeleton />
+        ) : filteredPolicies.length === 0 ? (
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -206,6 +173,17 @@ export default function PoliciesPage() {
           </div>
         )}
       </div>
+
+      {/* Add Policy Flow */}
+      <AddPolicyFlow
+        isOpen={showAddPolicy}
+        onClose={() => setShowAddPolicy(false)}
+        onComplete={(policyData) => {
+          console.log("Policy added:", policyData);
+          // Here you would typically add the policy to your state/API
+          setShowAddPolicy(false);
+        }}
+      />
     </div>
   );
 }
