@@ -1,9 +1,8 @@
 import { Link } from "wouter";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
-import { Download, AlertCircle, CheckCircle2, Eye, Clock, DollarSign, AlertTriangle, TrendingUp, MapPin, Phone, Zap } from "lucide-react";
+import { Download, AlertCircle, CheckCircle2, ChevronRight, Clock, DollarSign, AlertTriangle, TrendingUp, MapPin, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { formatRenewalCountdown, getStatusColor, getExpiryStatus } from "@/lib/policy-utils";
 
@@ -23,97 +22,73 @@ interface PolicyProps {
   quickViewMetadata?: Record<string, any>;
 }
 
-function renderQuickViewByType(policy: PolicyProps) {
+function getIOSIconBg(policyType: string) {
+  switch(policyType) {
+    case "Health": return "bg-red-500 dark:bg-red-600";
+    case "Auto": return "bg-blue-500 dark:bg-blue-600";
+    case "Home & Liability": return "bg-amber-500 dark:bg-amber-600";
+    case "Investment Life": return "bg-emerald-500 dark:bg-emerald-600";
+    case "Pet Insurance": return "bg-purple-500 dark:bg-purple-600";
+    case "Travel": return "bg-cyan-500 dark:bg-cyan-600";
+    default: return "bg-muted-foreground";
+  }
+}
+
+function renderQuickMetric(policy: PolicyProps) {
   const { t } = useTranslation();
   const metadata = policy.quickViewMetadata || {};
   
   switch(policy.type) {
     case "Investment Life":
       return (
-        <div className="space-y-2">
-          <div className="flex justify-between items-center">
-            <span className="text-xs text-muted-foreground uppercase font-semibold">{t('insurance.sumInsured')}</span>
-            <span className="font-bold text-lg text-foreground">{metadata.fundValue || "€45,200"}</span>
+        <div className="flex items-center gap-2 min-h-[24px]">
+          <div className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
+            <TrendingUp className="h-3.5 w-3.5" />
+            <span className="text-sm font-semibold">{metadata.ytdGrowth || t('policyCard.defaultGrowth', '+5.2%')}</span>
           </div>
-          <div className="flex justify-between items-center bg-emerald-50 px-2 py-1.5 rounded">
-            <span className="text-xs text-emerald-700 font-semibold flex items-center gap-1"><TrendingUp className="h-3 w-3" />{ t('gap.ytdGrowth') }</span>
-            <span className="font-bold text-emerald-700">{metadata.ytdGrowth || "+5.2%"}</span>
-          </div>
+          <span className="text-muted-foreground">·</span>
+          <span className="text-sm text-muted-foreground">{metadata.fundValue || t('policyCard.defaultFundValue', '€45,200')}</span>
         </div>
       );
     
     case "Auto":
       return (
-        <div className="space-y-2">
-          <div className="bg-blue-50 px-3 py-2 rounded-md">
-            <p className="text-xs text-blue-600 uppercase font-semibold">{t('auto.licensePlate')}</p>
-            <p className="font-mono font-bold text-blue-900 text-lg">{metadata.licensePlate || "ΥΖΑ-1234"}</p>
-          </div>
-          <div className="flex justify-between items-center">
-            <span className="text-xs text-muted-foreground uppercase font-semibold">{t('insurance.coverage')}</span>
-            <span className="font-semibold text-sm text-foreground">{metadata.coverageTier || t('auto.fullCasco')}</span>
-          </div>
+        <div className="flex items-center gap-2 min-h-[24px]">
+          <span className="font-mono text-sm font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/50 px-2 py-0.5 rounded">
+            {metadata.licensePlate || t('policyCard.defaultPlate', 'ΥΖΑ-1234')}
+          </span>
         </div>
       );
     
     case "Home & Liability":
       return (
-        <div className="space-y-2">
-          <div className="flex items-start gap-2 bg-amber-50 px-2 py-1.5 rounded">
-            <MapPin className="h-4 w-4 text-amber-700 shrink-0 mt-0.5" />
-            <div className="min-w-0">
-              <p className="text-xs text-amber-700 uppercase font-semibold">{t('home.propertyAddress')}</p>
-              <p className="text-sm font-semibold text-amber-900 truncate">{metadata.propertyAddress || "Ακαδημίας 10, Αθήνα"}</p>
-            </div>
-          </div>
-          <div className="flex justify-between items-center">
-            <span className="text-xs text-muted-foreground uppercase font-semibold">{t('insurance.sumInsured')}</span>
-            <span className="font-bold text-foreground">{metadata.sumInsured || "€465,000"}</span>
-          </div>
+        <div className="flex items-center gap-1.5 text-sm text-muted-foreground min-h-[24px]">
+          <MapPin className="h-3.5 w-3.5 shrink-0" />
+          <span className="truncate max-w-[150px]">{metadata.propertyAddress || t('policyCard.defaultAddress', 'Ακαδημίας 10')}</span>
         </div>
       );
     
     case "Pet Insurance":
       return (
-        <div className="space-y-2">
-          <div className="font-semibold text-lg text-foreground">{metadata.petName || "Max"}</div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
-            <div className="bg-emerald-500 h-2 rounded-full" style={{width: metadata.limitUsedPercent || "40%"}}></div>
-          </div>
-          <div className="text-xs text-muted-foreground">
-            {metadata.limitUsed || "€400"} / {metadata.limitTotal || "€1,000"} used
-          </div>
+        <div className="flex items-center gap-2 min-h-[24px]">
+          <span className="text-sm font-medium">{metadata.petName || t('policyCard.defaultPetName', 'Max')}</span>
+          <span className="text-muted-foreground">·</span>
+          <span className="text-xs text-muted-foreground">{metadata.limitUsed || "€400"}/{metadata.limitTotal || "€1,000"}</span>
         </div>
       );
     
     case "Health":
       return (
-        <div className="space-y-2">
-          <div className="flex justify-between items-center">
-            <span className="text-xs text-muted-foreground uppercase font-semibold">{t('policyCard.insuredPerson')}</span>
-            <span className="font-semibold text-sm text-foreground">{metadata.insuredPerson || "Primary Member"}</span>
-          </div>
-          <div className="flex justify-between items-center bg-purple-50 px-2 py-1.5 rounded">
-            <span className="text-xs text-purple-700 uppercase font-semibold">{t('policyCard.hospitalClass')}</span>
-            <span className="font-bold text-purple-900">{metadata.hospitalClass || "A-Class"}</span>
-          </div>
+        <div className="flex items-center gap-2 min-h-[24px]">
+          <Badge variant="secondary" className="text-xs font-medium bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300">
+            {metadata.hospitalClass || t('policyCard.defaultHospitalClass', 'A-Class')}
+          </Badge>
         </div>
       );
     
     default:
       return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div>
-            <p className="text-xs text-muted-foreground uppercase font-semibold mb-1">{t('policyCard.coverage')}</p>
-            <p className="font-semibold text-sm text-foreground">{policy.coverage}</p>
-          </div>
-          <div>
-            <p className="text-xs text-muted-foreground uppercase font-semibold mb-1 flex items-center gap-1">
-              <DollarSign className="h-3 w-3" />{t('policyCard.premium')}
-            </p>
-            <p className="font-semibold text-sm text-foreground">{policy.premium}</p>
-          </div>
-        </div>
+        <span className="text-sm text-muted-foreground min-h-[24px]">{policy.coverage}</span>
       );
   }
 }
@@ -123,115 +98,110 @@ export default function PolicyCard({ policy, index = 0 }: { policy: PolicyProps,
   const expiryStatus = getExpiryStatus(policy.expiry);
   const renewalText = formatRenewalCountdown(policy.expiry);
   const hasOpenClaim = policy.details?.claims?.some((c: any) => c.status !== "Paid");
-  const openClaim = policy.details?.claims?.find((c: any) => c.status !== "Paid");
   const pendingPayments = policy.details?.pendingPayments || 0;
+  const hasAlert = hasOpenClaim || pendingPayments > 0;
 
-  const expiryColorClass = 
-    expiryStatus === "expired" ? "text-red-600 bg-red-50" :
-    expiryStatus === "critical" ? "text-amber-600 bg-amber-50" :
-    expiryStatus === "warning" ? "text-orange-600 bg-orange-50" :
-    "text-emerald-600 bg-emerald-50";
+  const getExpiryBadgeStyle = () => {
+    switch(expiryStatus) {
+      case "expired": return "bg-red-100 text-red-700 dark:bg-red-950/50 dark:text-red-400";
+      case "critical": return "bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400";
+      case "warning": return "bg-orange-100 text-orange-700 dark:bg-orange-950/50 dark:text-orange-400";
+      default: return "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400";
+    }
+  };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1 }}
-      whileHover={{ y: -4 }}
-    >
-      <Card className="overflow-hidden hover:shadow-2xl transition-all duration-300 border-muted/50 group bg-white h-full flex flex-col hover:border-primary/20 relative">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
-        {/* Header: Product Info + Status Badge */}
-        <CardHeader className="flex flex-col md:flex-row items-start justify-between space-y-0 pb-4 border-b bg-gradient-to-r from-white to-muted/5 relative z-10">
-          <div className="flex items-center gap-3 flex-1">
-            <div className={`h-14 w-14 rounded-xl flex items-center justify-center shrink-0 ${policy.color} shadow-md`}>
-              <policy.icon className="h-7 w-7" />
+    <Link href={`/policies/${policy.id}`}>
+      <motion.div
+        whileTap={{ scale: 0.98 }}
+        className="block"
+      >
+        <div 
+          className="bg-card rounded-2xl border border-border/50 shadow-sm active:bg-muted/30 transition-all duration-150 overflow-hidden"
+          data-testid={`policy-card-${policy.id}`}
+        >
+          {/* Main Content */}
+          <div className="p-4 flex items-center gap-4">
+            {/* iOS-Style App Icon */}
+            <div className={`h-14 w-14 rounded-2xl flex items-center justify-center shrink-0 shadow-lg ${getIOSIconBg(policy.type)}`}>
+              <policy.icon className="h-7 w-7 text-white" />
             </div>
-            <div className="min-w-0 flex-1">
-              <h3 className="font-bold text-base leading-tight text-foreground">{policy.type}</h3>
-              <p className="text-xs text-muted-foreground mt-1 truncate font-medium">{policy.provider}</p>
-            </div>
-          </div>
-          <Badge 
-            variant="outline" 
-            className={`${getStatusColor(policy.status)} font-semibold text-xs ml-2 shrink-0 border px-2.5 py-1`}
-            data-testid={`status-badge-${policy.id}`}
-          >
-            {policy.status === "Active" ? <CheckCircle2 className="h-3 w-3 mr-1" /> : <AlertCircle className="h-3 w-3 mr-1" />}
-            {policy.status}
-          </Badge>
-        </CardHeader>
 
-        <CardContent className="pt-5 pb-4 flex-1 space-y-4 relative z-10">
-          {/* Type-Specific Quick View */}
-          {renderQuickViewByType(policy)}
-
-          {/* Row 2: Policy Number & Renewal Countdown */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-            <div>
-              <p className="text-xs text-muted-foreground uppercase tracking-wider font-bold mb-1.5">{t('policyCard.policyNo')}</p>
-              <p className="font-mono text-sm bg-gradient-to-br from-secondary/80 to-secondary/60 text-foreground py-2 px-2.5 rounded-lg font-semibold border border-secondary/40" data-testid={`policy-number-${policy.id}`}>{policy.policyNumber}</p>
-            </div>
-            <div>
-              <p className="text-xs text-muted-foreground uppercase tracking-wider font-bold mb-1.5 flex items-center gap-1">
-                <Clock className="h-3.5 w-3.5" />
-                Renews
-              </p>
-              <div className={`text-xs font-bold py-2 px-2.5 rounded-lg ${expiryColorClass} inline-block border`} data-testid={`renewal-countdown-${policy.id}`}>
-                {renewalText}
-              </div>
-            </div>
-          </div>
-
-          {/* Alerts: Open Claim */}
-          {hasOpenClaim && (
-            <div className="bg-amber-50 border border-amber-200 rounded-md p-2 flex items-start gap-2">
-              <AlertTriangle className="h-4 w-4 text-amber-600 shrink-0 mt-0.5" />
-              <div className="min-w-0">
-                <p className="text-xs font-semibold text-amber-900">Claim Status</p>
-                <p className="text-xs text-amber-800 mt-0.5" data-testid={`claim-status-${policy.id}`}>{openClaim?.reason} - {openClaim?.status}</p>
-              </div>
-            </div>
-          )}
-
-          {/* Alerts: Pending Payments */}
-          {pendingPayments > 0 && (
-            <div className="bg-red-50 border border-red-200 rounded-md p-2 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <AlertTriangle className="h-4 w-4 text-red-600 shrink-0" />
-                <div>
-                  <p className="text-xs font-semibold text-red-900">Payment Due</p>
-                  <p className="text-xs text-red-800 mt-0.5">{pendingPayments} overdue payment{pendingPayments > 1 ? 's' : ''}</p>
+            {/* Content */}
+            <div className="flex-1 min-w-0">
+              {/* Title Row */}
+              <div className="flex items-start justify-between gap-2">
+                <div className="min-w-0 flex-1">
+                  <h3 className="font-semibold text-base text-foreground leading-tight truncate">
+                    {policy.type}
+                  </h3>
+                  <p className="text-sm text-muted-foreground mt-0.5 truncate">
+                    {policy.provider}
+                  </p>
                 </div>
+                <ChevronRight className="h-5 w-5 text-muted-foreground/50 shrink-0 mt-0.5" />
+              </div>
+
+              {/* Quick Metric */}
+              <div className="mt-2">
+                {renderQuickMetric(policy)}
               </div>
             </div>
-          )}
-        </CardContent>
+          </div>
 
-        {/* Footer: Action Buttons */}
-        <CardFooter className="bg-gradient-to-r from-primary/5 via-muted/10 to-muted/5 p-4 flex gap-2 border-t border-muted/30 relative z-10">
-          <Link href={`/policies/${policy.id}`} className="flex-1">
-            <Button 
-              variant="outline" 
-              size="sm" 
-              className="w-full h-9 text-xs hover:bg-primary hover:text-white border-primary/30 text-primary bg-white font-semibold transition-all hover:shadow-md"
-              data-testid={`button-details-${policy.id}`}
-            >
-              <Eye className="h-3.5 w-3.5 mr-1.5" />
-              Details
-            </Button>
-          </Link>
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            className="flex-1 h-9 text-xs hover:bg-primary/10 hover:text-primary font-semibold transition-all" 
-            data-testid={`button-docs-${policy.id}`}
-          >
-            <Download className="h-3.5 w-3.5 mr-1.5" />
-            Docs
-          </Button>
-        </CardFooter>
-      </Card>
-    </motion.div>
+          {/* Footer with Status & Premium */}
+          <div className="px-4 pb-4 pt-0">
+            <div className="flex items-center justify-between gap-3 pt-3 border-t border-border/50">
+              {/* Status Badges */}
+              <div className="flex items-center gap-2 flex-wrap">
+                {/* Active/Expired Status */}
+                <Badge 
+                  variant="secondary"
+                  className={`text-xs font-medium ${
+                    policy.status === "Active" 
+                      ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400" 
+                      : "bg-red-100 text-red-700 dark:bg-red-950/50 dark:text-red-400"
+                  }`}
+                  data-testid={`status-badge-${policy.id}`}
+                >
+                  {policy.status === "Active" ? (
+                    <CheckCircle2 className="h-3 w-3 mr-1" />
+                  ) : (
+                    <AlertCircle className="h-3 w-3 mr-1" />
+                  )}
+                  {t(`common.${policy.status.toLowerCase()}`)}
+                </Badge>
+
+                {/* Renewal Badge */}
+                <Badge 
+                  variant="secondary"
+                  className={`text-xs font-medium ${getExpiryBadgeStyle()}`}
+                  data-testid={`renewal-badge-${policy.id}`}
+                >
+                  <Clock className="h-3 w-3 mr-1" />
+                  {renewalText}
+                </Badge>
+
+                {/* Alert Badge */}
+                {hasAlert && (
+                  <Badge 
+                    variant="secondary"
+                    className="text-xs font-medium bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400"
+                  >
+                    <AlertTriangle className="h-3 w-3 mr-1" />
+                    {hasOpenClaim ? t('policyCard.claimOpen') : t('policyCard.paymentDue')}
+                  </Badge>
+                )}
+              </div>
+
+              {/* Premium */}
+              <div className="text-right shrink-0">
+                <p className="text-sm font-bold text-foreground">{policy.premium}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </Link>
   );
 }

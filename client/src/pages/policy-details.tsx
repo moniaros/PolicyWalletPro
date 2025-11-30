@@ -1,11 +1,12 @@
 import { useRoute, Link } from "wouter";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { policies } from "@/lib/mockData";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useTranslation } from "react-i18next";
-import { ArrowLeft, Download, CreditCard, Users, AlertTriangle, FileCheck, Shield, TrendingUp, AlertCircle, DollarSign, CheckCircle2, Calendar, Hash, FileText } from "lucide-react";
+import { ArrowLeft, Download, CreditCard, Users, AlertTriangle, FileCheck, Shield, TrendingUp, AlertCircle, DollarSign, CheckCircle2, Calendar, Hash, FileText, ChevronRight, Phone, Mail, MessageCircle, Clock, MapPin, Car, Home, Heart, PawPrint } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { PolicyRecommendations } from "@/components/policy-recommendations";
 import { DynamicGapRecommendations } from "@/components/dynamic-gap-recommendations";
@@ -23,33 +24,57 @@ import { useUserProfile } from "@/hooks/useUserProfile";
 import { HealthDetailedView, AutoDetailedView, HomeDetailedView, InvestmentLifeDetailedView, PetDetailedView, UniversalBrokerActions } from "@/components/policy-detail-sections";
 import { toast } from "sonner";
 
+function getIOSIconBg(policyType: string) {
+  switch(policyType) {
+    case "Health": return "bg-red-500 dark:bg-red-600";
+    case "Auto": return "bg-blue-500 dark:bg-blue-600";
+    case "Home & Liability": return "bg-amber-500 dark:bg-amber-600";
+    case "Investment Life": return "bg-emerald-500 dark:bg-emerald-600";
+    case "Pet Insurance": return "bg-purple-500 dark:bg-purple-600";
+    case "Travel": return "bg-cyan-500 dark:bg-cyan-600";
+    default: return "bg-muted-foreground";
+  }
+}
+
+function getPolicyIcon(policyType: string) {
+  switch(policyType) {
+    case "Health": return Heart;
+    case "Auto": return Car;
+    case "Home & Liability": return Home;
+    case "Pet Insurance": return PawPrint;
+    default: return Shield;
+  }
+}
+
 export default function PolicyDetailsPage() {
   const { t } = useTranslation();
   const [match, params] = useRoute("/policies/:id");
   const id = params ? parseInt(params.id) : 0;
   const policy = policies.find((p) => p.id === id);
   const userProfile = useUserProfile();
+  const [activeTab, setActiveTab] = useState<"overview" | "billing" | "claims" | "analysis">("overview");
 
   if (!policy) {
     return (
       <div className="flex flex-col items-center justify-center h-[50vh] space-y-4">
-        <h1 className="text-2xl font-bold">{t('policyDetails.policyNotFound')}</h1>
+        <div className="h-20 w-20 rounded-full bg-muted/50 flex items-center justify-center">
+          <Shield className="h-10 w-10 text-muted-foreground/50" />
+        </div>
+        <h1 className="text-xl font-semibold">{t('policyDetails.policyNotFound')}</h1>
         <Link href="/policies">
-          <Button>{t('policyDetails.backToPolicies')}</Button>
+          <Button className="h-12 px-6 rounded-xl">{t('policyDetails.backToPolicies')}</Button>
         </Link>
       </div>
     );
   }
 
-  // Calculate gap analysis based on user profile
   const gapAnalysis = userProfile ? calculatePolicyGaps(policy.type, userProfile) : null;
   const gapScore = gapAnalysis?.score || 0;
   
-  // Calculate type-specific enhanced gap analysis
   let enhancedGapAnalysis: any = null;
   
   if (policy.type === "Home & Liability") {
-    enhancedGapAnalysis = analyzeHomeGaps(450000, 280); // Example property
+    enhancedGapAnalysis = analyzeHomeGaps(450000, 280);
   } else if (policy.type === "Auto") {
     enhancedGapAnalysis = analyzeAutoGaps(25000, 180000);
   } else if (policy.type === "Health") {
@@ -64,357 +89,454 @@ export default function PolicyDetailsPage() {
     enhancedGapAnalysis = analyzeMarineGaps("Mediterranean", "Ionian", 0, 45000);
   }
 
+  const IconComponent = policy.icon || getPolicyIcon(policy.type);
+
+  const tabs = [
+    { id: "overview", label: t('policyDetails.overview') },
+    { id: "billing", label: t('policyDetails.billing') },
+    { id: "claims", label: t('policyDetails.claimsTab') },
+    { id: "analysis", label: t('policyDetails.analysis') },
+  ];
+
   return (
-    <div className="space-y-8 pb-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div className="flex items-center gap-3">
-          <Link href="/policies">
-            <Button variant="ghost" size="icon" className="rounded-full hover:bg-muted/50 hover:scale-110 transition-all">
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-          </Link>
-          <div className="space-y-1">
-            <div className="flex items-center gap-3 flex-wrap">
-              <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground" data-testid="text-policy-title">{t(`policyTypes.${policy.type.toLowerCase().replace(/[^a-z]/g, '')}`, policy.type)}</h1>
-              <Badge variant={policy.status === "Active" ? "secondary" : "destructive"} className={`${policy.status === "Active" ? "bg-emerald-100 text-emerald-800" : ""}`}>
-                {t(`common.${policy.status.toLowerCase()}`)}
-              </Badge>
+    <div className="min-h-screen bg-background pb-24">
+      {/* iOS-Style Sticky Header */}
+      <div className="sticky top-0 z-40 bg-background/80 backdrop-blur-xl border-b border-border/50">
+        <div className="px-4 py-3">
+          {/* Navigation Row */}
+          <div className="flex items-center gap-3">
+            <Link href="/policies">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="h-11 w-11 rounded-full -ml-2"
+                data-testid="button-back"
+              >
+                <ArrowLeft className="h-5 w-5" />
+              </Button>
+            </Link>
+            
+            {/* Compact Header Info */}
+            <div className="flex items-center gap-3 flex-1 min-w-0">
+              <div className={`h-10 w-10 rounded-xl flex items-center justify-center shrink-0 shadow-md ${getIOSIconBg(policy.type)}`}>
+                <IconComponent className="h-5 w-5 text-white" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <h1 className="font-semibold text-base text-foreground truncate">
+                  {t(`policyTypes.${policy.type.toLowerCase().replace(/[^a-z]/g, '')}`, policy.type)}
+                </h1>
+                <p className="text-xs text-muted-foreground truncate">{policy.provider}</p>
+              </div>
             </div>
-            <p className="text-muted-foreground">{policy.provider} • {policy.policyNumber}</p>
+
+            {/* Action Buttons */}
+            <div className="flex items-center gap-2">
+              <Button 
+                variant="ghost" 
+                size="icon"
+                className="h-11 w-11 rounded-full"
+                data-testid="button-download"
+              >
+                <Download className="h-5 w-5" />
+              </Button>
+            </div>
           </div>
         </div>
-        <div className="flex gap-2">
-          <Button variant="outline" size="sm">
-            <Download className="h-4 w-4 mr-2" />
-            {t('actions.downloadACORD')}
-          </Button>
-          <Button size="sm">{t('actions.makePayment')}</Button>
+
+        {/* iOS-Style Segmented Control */}
+        <div className="px-4 pb-3">
+          <div className="bg-secondary/80 rounded-xl p-1 flex">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as typeof activeTab)}
+                className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-all min-h-[40px] ${
+                  activeTab === tab.id
+                    ? 'bg-background text-foreground shadow-sm'
+                    : 'text-muted-foreground'
+                }`}
+                data-testid={`tab-${tab.id}`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Overview Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        <Card className="bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20 hover:shadow-md transition-all">
-          <CardContent className="p-5 flex items-center gap-4">
-             <div className="h-12 w-12 rounded-xl bg-primary/15 flex items-center justify-center text-primary shadow-sm">
-               <Shield className="h-6 w-6" />
-             </div>
-             <div className="min-w-0">
-               <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider">{t('policyDetails.lobCode')}</p>
-               <p className="text-lg font-bold text-foreground truncate">{policy.lob}</p>
-             </div>
-          </CardContent>
-        </Card>
-        <Card className="bg-gradient-to-br from-emerald-50 to-emerald-100/50 dark:from-emerald-950/20 dark:to-emerald-900/10 border-emerald-200/50 dark:border-emerald-800/30 hover:shadow-md transition-all">
-          <CardContent className="p-5 flex items-center gap-4">
-             <div className="h-12 w-12 rounded-xl bg-emerald-200/50 dark:bg-emerald-800/50 flex items-center justify-center text-emerald-700 dark:text-emerald-300 shadow-sm">
-               <DollarSign className="h-6 w-6" />
-             </div>
-             <div>
-               <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider">{t('policyCard.premium')}</p>
-               <p className="text-lg font-bold text-foreground">{policy.premium}</p>
-             </div>
-          </CardContent>
-        </Card>
-         <Card className="bg-gradient-to-br from-blue-50 to-blue-100/50 dark:from-blue-950/20 dark:to-blue-900/10 border-blue-200/50 dark:border-blue-800/30 hover:shadow-md transition-all">
-          <CardContent className="p-5 flex items-center gap-4">
-             <div className="h-12 w-12 rounded-xl bg-blue-200/50 dark:bg-blue-800/50 flex items-center justify-center text-blue-700 dark:text-blue-300 shadow-sm">
-               <Calendar className="h-6 w-6" />
-             </div>
-             <div>
-               <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">{t('policyDetails.effective')}</p>
-               <p className="text-lg font-bold text-foreground">{policy.effectiveDate}</p>
-             </div>
-          </CardContent>
-        </Card>
-        <Card className="bg-secondary/50 border-muted">
-          <CardContent className="p-4 flex items-center gap-4">
-             <div className="h-10 w-10 rounded-full bg-secondary flex items-center justify-center text-foreground">
-               <Users className="h-5 w-5" />
-             </div>
-             <div>
-               <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">{t('policyDetails.beneficiaries')}</p>
-               <p className="text-xl font-bold text-foreground">{policy.details?.beneficiaries.length || 0}</p>
-             </div>
-          </CardContent>
-        </Card>
+      {/* Hero Card */}
+      <div className="px-4 pt-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className={`rounded-2xl p-5 shadow-lg ${getIOSIconBg(policy.type)}`}
+        >
+          <div className="flex items-start justify-between gap-4">
+            <div className="text-white">
+              <div className="flex items-center gap-2 mb-2">
+                <Badge 
+                  className={`text-xs font-medium ${
+                    policy.status === "Active" 
+                      ? "bg-white/20 text-white border-white/30" 
+                      : "bg-red-500/80 text-white border-red-400/30"
+                  }`}
+                >
+                  {policy.status === "Active" ? (
+                    <CheckCircle2 className="h-3 w-3 mr-1" />
+                  ) : (
+                    <AlertCircle className="h-3 w-3 mr-1" />
+                  )}
+                  {t(`common.${policy.status.toLowerCase()}`)}
+                </Badge>
+              </div>
+              <h2 className="text-2xl font-bold mb-1">
+                {t(`policyTypes.${policy.type.toLowerCase().replace(/[^a-z]/g, '')}`, policy.type)}
+              </h2>
+              <p className="text-white/80 text-sm">{policy.provider}</p>
+            </div>
+            <div className="h-16 w-16 rounded-2xl bg-white/20 flex items-center justify-center backdrop-blur-sm">
+              <IconComponent className="h-8 w-8 text-white" />
+            </div>
+          </div>
+
+          {/* Quick Stats */}
+          <div className="grid grid-cols-2 gap-4 mt-5 pt-4 border-t border-white/20">
+            <div>
+              <p className="text-white/60 text-xs font-medium uppercase tracking-wider">{t('policyCard.premium')}</p>
+              <p className="text-xl font-bold text-white mt-0.5">{policy.premium}</p>
+            </div>
+            <div>
+              <p className="text-white/60 text-xs font-medium uppercase tracking-wider">{t('policyDetails.effective')}</p>
+              <p className="text-xl font-bold text-white mt-0.5">{policy.effectiveDate}</p>
+            </div>
+          </div>
+        </motion.div>
       </div>
 
-      {/* Tabs Content */}
-      <Tabs defaultValue="overview" className="w-full">
-        <TabsList className="grid w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:w-[400px]">
-          <TabsTrigger value="overview">{t('policyDetails.overview')}</TabsTrigger>
-          <TabsTrigger value="billing">{t('policyDetails.billing')}</TabsTrigger>
-          <TabsTrigger value="claims">{t('policyDetails.claimsTab')}</TabsTrigger>
-          <TabsTrigger value="analysis">{t('policyDetails.analysis')}</TabsTrigger>
-        </TabsList>
-
-        {/* Type-Specific Detailed Views */}
-        {policy.type === "Health" && <TabsContent value="overview" className="mt-6"><HealthDetailedView policy={policy} metadata={policy.quickViewMetadata} /></TabsContent>}
-        {policy.type === "Auto" && <TabsContent value="overview" className="mt-6"><AutoDetailedView policy={policy} metadata={policy.quickViewMetadata} /></TabsContent>}
-        {policy.type === "Home & Liability" && <TabsContent value="overview" className="mt-6"><HomeDetailedView policy={policy} metadata={policy.quickViewMetadata} /></TabsContent>}
-        {policy.type === "Investment Life" && <TabsContent value="overview" className="mt-6"><InvestmentLifeDetailedView policy={policy} metadata={policy.quickViewMetadata} /></TabsContent>}
-        {policy.type === "Pet Insurance" && <TabsContent value="overview" className="mt-6"><PetDetailedView policy={policy} metadata={policy.quickViewMetadata} /></TabsContent>}
-        
-        {/* Overview Tab */}
-        <TabsContent value="overview" className="space-y-4 mt-6">
-          <div className="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg flex items-center gap-2">
-                   <FileCheck className="h-5 w-5 text-primary" />
-                   {t('policyDetails.scheduleOfBenefits')}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-0 divide-y">
-                {Object.entries(policy.details?.coverageLimits || {}).map(([key, value]) => (
-                  <div key={key} className="flex justify-between items-center py-3">
-                    <span className="text-sm font-medium text-muted-foreground">{key}</span>
-                    <span className="text-sm font-bold text-foreground text-right">{value as string}</span>
+      {/* Tab Content */}
+      <div className="px-4 pt-6 space-y-4">
+        <AnimatePresence mode="wait">
+          {/* Overview Tab */}
+          {activeTab === "overview" && (
+            <motion.div
+              key="overview"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              className="space-y-4"
+            >
+              {/* Policy Details Card */}
+              <div className="bg-card rounded-2xl border border-border/50 overflow-hidden">
+                <div className="px-4 py-3 border-b border-border/50">
+                  <h3 className="font-semibold text-base">{t('policyDetails.policyDetails')}</h3>
+                </div>
+                <div className="divide-y divide-border/50">
+                  <div className="px-4 py-3.5 flex items-center justify-between min-h-[52px]">
+                    <span className="text-muted-foreground text-sm">{t('appointments.policyNumber')}</span>
+                    <span className="font-mono font-medium text-sm">{policy.policyNumber}</span>
                   </div>
-                ))}
-              </CardContent>
-            </Card>
+                  <div className="px-4 py-3.5 flex items-center justify-between min-h-[52px]">
+                    <span className="text-muted-foreground text-sm">{t('policyDetails.lobCode')}</span>
+                    <span className="font-medium text-sm">{policy.lob}</span>
+                  </div>
+                  <div className="px-4 py-3.5 flex items-center justify-between min-h-[52px]">
+                    <span className="text-muted-foreground text-sm">{t('details.expiration')}</span>
+                    <span className="font-medium text-sm">{policy.expiry}</span>
+                  </div>
+                  <div className="px-4 py-3.5 flex items-center justify-between min-h-[52px]">
+                    <span className="text-muted-foreground text-sm">{t('policyCard.coverage')}</span>
+                    <span className="font-medium text-sm">{policy.coverage}</span>
+                  </div>
+                </div>
+              </div>
 
-            <div className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg flex items-center gap-2">
-                     <Users className="h-5 w-5 text-primary" />
-                     Beneficiaries
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {policy.details?.beneficiaries.map((beneficiary: any, i: number) => (
-                      <div key={i} className="flex items-center justify-between p-3 bg-secondary/30 rounded-lg border border-secondary">
-                        <div className="flex items-center gap-3">
-                          <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
-                            {beneficiary.name.charAt(0)}
-                          </div>
-                          <div>
-                             <p className="font-bold text-sm">{beneficiary.name}</p>
-                             <p className="text-xs text-muted-foreground">Rel: {beneficiary.relation} • DOB: {beneficiary.dob}</p>
-                          </div>
+              {/* Coverage Limits */}
+              <div className="bg-card rounded-2xl border border-border/50 overflow-hidden">
+                <div className="px-4 py-3 border-b border-border/50 flex items-center gap-2">
+                  <FileCheck className="h-4 w-4 text-primary" />
+                  <h3 className="font-semibold text-base">{t('policyDetails.scheduleOfBenefits')}</h3>
+                </div>
+                <div className="divide-y divide-border/50">
+                  {Object.entries(policy.details?.coverageLimits || {}).map(([key, value]) => (
+                    <div key={key} className="px-4 py-3.5 flex items-center justify-between min-h-[52px]">
+                      <span className="text-muted-foreground text-sm">{key}</span>
+                      <span className="font-semibold text-sm">{value as string}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Beneficiaries */}
+              {policy.details?.beneficiaries && policy.details.beneficiaries.length > 0 && (
+                <div className="bg-card rounded-2xl border border-border/50 overflow-hidden">
+                  <div className="px-4 py-3 border-b border-border/50 flex items-center gap-2">
+                    <Users className="h-4 w-4 text-primary" />
+                    <h3 className="font-semibold text-base">{t('policyDetails.beneficiaries')}</h3>
+                  </div>
+                  <div className="divide-y divide-border/50">
+                    {policy.details.beneficiaries.map((beneficiary: any, i: number) => (
+                      <div key={i} className="px-4 py-3.5 flex items-center gap-3 min-h-[60px]">
+                        <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm shrink-0">
+                          {beneficiary.name.charAt(0)}
                         </div>
-                        <div className="text-right">
-                           <Badge variant="outline">{beneficiary.allocation}</Badge>
-                           {beneficiary.primary && <p className="text-[10px] text-primary font-medium mt-1">{ t("details.primary") }</p>}
+                        <div className="flex-1 min-w-0">
+                          <p className="font-medium text-sm">{beneficiary.name}</p>
+                          <p className="text-xs text-muted-foreground">{beneficiary.relation}</p>
+                        </div>
+                        <div className="text-right shrink-0">
+                          <Badge variant="secondary" className="text-xs">{beneficiary.allocation}</Badge>
+                          {beneficiary.primary && (
+                            <p className="text-[10px] text-primary font-medium mt-1">{t("details.primary")}</p>
+                          )}
                         </div>
                       </div>
                     ))}
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              )}
 
-              <Card>
-                 <CardHeader>
-                    <CardTitle className="text-lg flex items-center gap-2">
-                       <FileText className="h-5 w-5 text-primary" />
-                       {t('details.technicalData')}
-                    </CardTitle>
-                 </CardHeader>
-                 <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-                    <div>
-                       <p className="text-muted-foreground text-xs uppercase">{t('details.carrierId')}</p>
-                       <p className="font-mono font-medium">{policy.carrierId || t('details.notAvailable')}</p>
-                    </div>
-                    <div>
-                       <p className="text-muted-foreground text-xs uppercase">{t('policy.lobCode')}</p>
-                       <p className="font-mono font-medium">{policy.lob || t('details.notAvailable')}</p>
-                    </div>
-                    <div>
-                       <p className="text-muted-foreground text-xs uppercase">{t('details.paymentFreq')}</p>
-                       <p className="font-medium">{policy.paymentFrequency || t('details.monthly')}</p>
-                    </div>
-                    <div>
-                       <p className="text-muted-foreground text-xs uppercase">{t("details.expiration")}</p>
-                       <p className="font-medium">{policy.expiry}</p>
-                    </div>
-                 </CardContent>
-              </Card>
-            </div>
-          </div>
-        </TabsContent>
+              {/* Type-Specific Views */}
+              {policy.type === "Health" && <HealthDetailedView policy={policy} metadata={policy.quickViewMetadata} />}
+              {policy.type === "Auto" && <AutoDetailedView policy={policy} metadata={policy.quickViewMetadata} />}
+              {policy.type === "Home & Liability" && <HomeDetailedView policy={policy} metadata={policy.quickViewMetadata} />}
+              {policy.type === "Investment Life" && <InvestmentLifeDetailedView policy={policy} metadata={policy.quickViewMetadata} />}
+              {policy.type === "Pet Insurance" && <PetDetailedView policy={policy} metadata={policy.quickViewMetadata} />}
+            </motion.div>
+          )}
 
-        {/* Billing Tab */}
-        <TabsContent value="billing" className="space-y-4 mt-6">
-          <Card>
-            <CardHeader>
-               <CardTitle>{t('billing.paymentStatus')}</CardTitle>
-               <CardDescription>{t('cardDescriptions.managePaymentsHistory')}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="bg-yellow-50 dark:bg-yellow-950 border border-yellow-100 dark:border-yellow-800 rounded-xl p-4 mb-6 flex items-center justify-between gap-4 flex-wrap">
-                 <div className="flex items-center gap-3">
-                    <AlertTriangle className="h-5 w-5 text-yellow-600" />
-                    <div>
-                       <p className="font-bold text-yellow-900 dark:text-yellow-100">{t('details.pendingPayment')}</p>
-                       <p className="text-sm text-yellow-700 dark:text-yellow-300">{t('details.dueOn')} {policy.details?.nextPaymentDue}</p>
-                    </div>
-                 </div>
-                 <div className="text-right">
-                    <p className="font-bold text-lg text-yellow-900 dark:text-yellow-100">${policy.details?.pendingPayments > 0 ? policy.details?.pendingPayments : policy.premium.replace('/mo', '')}</p>
-                    <Button size="sm" className="mt-1 h-7 text-xs bg-yellow-600 hover:bg-yellow-700 border-none text-white" data-testid="button-pay-now">{t('details.payNow')}</Button>
-                 </div>
+          {/* Billing Tab */}
+          {activeTab === "billing" && (
+            <motion.div
+              key="billing"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              className="space-y-4"
+            >
+              {/* Payment Alert */}
+              <div className="bg-amber-50 dark:bg-amber-950/50 rounded-2xl p-4 border border-amber-200 dark:border-amber-800">
+                <div className="flex items-start gap-3">
+                  <div className="h-10 w-10 rounded-full bg-amber-100 dark:bg-amber-900 flex items-center justify-center shrink-0">
+                    <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-semibold text-amber-900 dark:text-amber-100">{t('details.pendingPayment')}</p>
+                    <p className="text-sm text-amber-700 dark:text-amber-300 mt-0.5">
+                      {t('details.dueOn')} {policy.details?.nextPaymentDue}
+                    </p>
+                  </div>
+                  <div className="text-right shrink-0">
+                    <p className="font-bold text-lg text-amber-900 dark:text-amber-100">
+                      ${policy.details?.pendingPayments > 0 ? policy.details?.pendingPayments : policy.premium.replace('/mo', '')}
+                    </p>
+                  </div>
+                </div>
+                <Button 
+                  className="w-full mt-4 h-12 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-semibold"
+                  data-testid="button-pay-now"
+                >
+                  <CreditCard className="h-4 w-4 mr-2" />
+                  {t('details.payNow')}
+                </Button>
               </div>
 
-              <h3 className="font-semibold mb-3 text-sm uppercase text-muted-foreground tracking-wider">{t('details.paymentHistory')}</h3>
-              <div className="space-y-2">
-                 <div className="flex justify-between items-center p-3 border rounded-lg bg-white">
-                    <div className="flex items-center gap-3">
-                       <div className="bg-emerald-100 p-2 rounded-full text-emerald-600">
-                          <CheckCircle2 className="h-4 w-4" />
-                       </div>
-                       <div>
-                          <p className="font-medium">{ t('policy.monthlyPremium') }</p>
-                          <p className="text-xs text-muted-foreground">{policy.details?.lastPayment}</p>
-                       </div>
+              {/* Payment History */}
+              <div className="bg-card rounded-2xl border border-border/50 overflow-hidden">
+                <div className="px-4 py-3 border-b border-border/50">
+                  <h3 className="font-semibold text-base">{t('details.paymentHistory')}</h3>
+                </div>
+                <div className="divide-y divide-border/50">
+                  <div className="px-4 py-3.5 flex items-center gap-3 min-h-[60px]">
+                    <div className="h-10 w-10 rounded-full bg-emerald-100 dark:bg-emerald-900 flex items-center justify-center shrink-0">
+                      <CheckCircle2 className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
                     </div>
-                    <span className="font-bold">{policy.premium}</span>
-                 </div>
-                 {/* Mock older history */}
-                 <div className="flex justify-between items-center p-3 border rounded-lg bg-white opacity-70">
-                    <div className="flex items-center gap-3">
-                       <div className="bg-emerald-100 p-2 rounded-full text-emerald-600">
-                          <CheckCircle2 className="h-4 w-4" />
-                       </div>
-                       <div>
-                          <p className="font-medium">{ t('policy.monthlyPremium') }</p>
-                          <p className="text-xs text-muted-foreground">2025-10-01</p>
-                       </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-sm">{t('policy.monthlyPremium')}</p>
+                      <p className="text-xs text-muted-foreground">{policy.details?.lastPayment}</p>
                     </div>
-                    <span className="font-bold">{policy.premium}</span>
-                 </div>
+                    <span className="font-bold text-sm">{policy.premium}</span>
+                  </div>
+                  <div className="px-4 py-3.5 flex items-center gap-3 min-h-[60px] opacity-60">
+                    <div className="h-10 w-10 rounded-full bg-emerald-100 dark:bg-emerald-900 flex items-center justify-center shrink-0">
+                      <CheckCircle2 className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-sm">{t('policy.monthlyPremium')}</p>
+                      <p className="text-xs text-muted-foreground">2025-10-01</p>
+                    </div>
+                    <span className="font-bold text-sm">{policy.premium}</span>
+                  </div>
+                </div>
               </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+            </motion.div>
+          )}
 
-        {/* Claims Tab */}
-        <TabsContent value="claims" className="space-y-4 mt-6">
-          <div className="flex justify-between items-center">
-             <h3 className="text-lg font-bold">{t('policyDetails.claimsHistory')}</h3>
-             <Button size="sm" variant="outline">{t('actions.fileNewClaim')}</Button>
-          </div>
-          
-          {policy.details?.claims.length === 0 ? (
-            <Card className="bg-muted/20 border-dashed">
-               <CardContent className="flex flex-col items-center justify-center py-12 text-muted-foreground">
-                  <Shield className="h-12 w-12 mb-3 opacity-20" />
-                  <p>{t('policyDetails.noClaimsFiled')}</p>
-               </CardContent>
-            </Card>
-          ) : (
-            <div className="space-y-3">
-               {policy.details?.claims.map((claim: any) => (
-                  <Card key={claim.id}>
-                     <CardContent className="p-4">
-                        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
+          {/* Claims Tab */}
+          {activeTab === "claims" && (
+            <motion.div
+              key="claims"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              className="space-y-4"
+            >
+              {/* File New Claim Button */}
+              <Button 
+                className="w-full h-12 rounded-xl font-semibold"
+                data-testid="button-file-claim"
+              >
+                <FileText className="h-4 w-4 mr-2" />
+                {t('actions.fileNewClaim')}
+              </Button>
+
+              {policy.details?.claims?.length === 0 ? (
+                <div className="bg-card rounded-2xl border border-border/50 p-8 text-center">
+                  <div className="h-16 w-16 rounded-full bg-muted/50 flex items-center justify-center mx-auto mb-4">
+                    <Shield className="h-8 w-8 text-muted-foreground/50" />
+                  </div>
+                  <p className="text-muted-foreground">{t('policyDetails.noClaimsFiled')}</p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {policy.details?.claims?.map((claim: any) => (
+                    <div key={claim.id} className="bg-card rounded-2xl border border-border/50 overflow-hidden">
+                      <div className="p-4">
+                        <div className="flex items-start justify-between gap-3 mb-3">
                           <div>
-                             <div className="flex items-center gap-2 mb-1">
-                                <h4 className="font-bold">{claim.reason}</h4>
-                                <Badge variant={claim.status === "Paid" ? "secondary" : "outline"} className={claim.status === "Paid" ? "bg-emerald-100 text-emerald-800" : "bg-orange-100 text-orange-800 border-orange-200"}>
-                                   {claim.status}
-                                </Badge>
-                             </div>
-                             <div className="text-xs text-muted-foreground space-y-1">
-                                <p>{t('policy.id')}: <span className="font-mono">{claim.id}</span> • {t('policy.incident')}: {claim.incidentDate}</p>
-                                <p>{t('details.adjuster')}: {claim.adjuster || t('details.unassigned')}</p>
-                             </div>
+                            <div className="flex items-center gap-2 mb-1">
+                              <h4 className="font-semibold text-base">{claim.reason}</h4>
+                              <Badge 
+                                variant="secondary"
+                                className={`text-xs ${
+                                  claim.status === "Paid" 
+                                    ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400"
+                                    : "bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-400"
+                                }`}
+                              >
+                                {claim.status}
+                              </Badge>
+                            </div>
+                            <p className="text-xs text-muted-foreground">
+                              {t('policy.id')}: {claim.id} · {claim.incidentDate}
+                            </p>
                           </div>
-                          <div className="text-right">
-                             <p className="font-bold text-lg">{claim.amount}</p>
-                             <p className="text-xs text-muted-foreground">{t('billing.paid')}: {claim.paidAmount}</p>
-                             <p className="text-xs text-muted-foreground">{t('billing.reserve')}: {claim.reserveAmount}</p>
+                          <div className="text-right shrink-0">
+                            <p className="font-bold text-lg">{claim.amount}</p>
+                            <p className="text-xs text-muted-foreground">{t('billing.paid')}: {claim.paidAmount}</p>
                           </div>
                         </div>
                         
-                        {/* ACORD Claim Status Steps */}
                         {claim.steps && (
-                           <div className="w-full bg-secondary/30 h-1.5 rounded-full mt-2 overflow-hidden flex">
+                          <>
+                            <div className="w-full bg-secondary h-2 rounded-full overflow-hidden flex">
                               {claim.steps.map((s: string, i: number) => (
-                                 <div key={i} className={`h-full flex-1 border-r border-white/20 last:border-0 ${i < (claim.step || 0) ? 'bg-primary' : 'bg-transparent'}`}></div>
+                                <div 
+                                  key={i} 
+                                  className={`h-full flex-1 border-r border-background last:border-0 ${
+                                    i < (claim.step || 0) ? 'bg-primary' : 'bg-transparent'
+                                  }`}
+                                />
                               ))}
-                           </div>
+                            </div>
+                            <div className="flex justify-between mt-2">
+                              {claim.steps.map((s: string, i: number) => (
+                                <span 
+                                  key={i} 
+                                  className={`text-[10px] ${
+                                    i < (claim.step || 0) ? 'text-primary font-bold' : 'text-muted-foreground'
+                                  }`}
+                                >
+                                  {s}
+                                </span>
+                              ))}
+                            </div>
+                          </>
                         )}
-                        <div className="flex justify-between mt-1">
-                           {claim.steps?.map((s: string, i: number) => (
-                              <span key={i} className={`text-[10px] ${i < (claim.step || 0) ? 'text-primary font-bold' : 'text-muted-foreground'}`}>{s}</span>
-                           ))}
-                        </div>
-                     </CardContent>
-                  </Card>
-               ))}
-            </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </motion.div>
           )}
-        </TabsContent>
 
-        {/* Analysis Tab */}
-        <TabsContent value="analysis" className="space-y-4 mt-6">
-          <div className="grid grid-cols-1 gap-6">
-             {/* Enhanced Dynamic Gap Analysis */}
-             {enhancedGapAnalysis && (
+          {/* Analysis Tab */}
+          {activeTab === "analysis" && (
+            <motion.div
+              key="analysis"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              className="space-y-4"
+            >
+              {enhancedGapAnalysis && (
                 <DynamicGapRecommendations 
                   analysis={enhancedGapAnalysis}
                   onQuoteRequest={() => {
                     toast.success(t('policyDetails.quoteRequestSent'));
                   }}
                 />
-             )}
-             
-             {gapAnalysis ? (
+              )}
+              
+              {gapAnalysis ? (
                 <PolicyRecommendations 
                   analysis={gapAnalysis} 
                   onContactAgent={() => {
                     toast.info(t('policyDetails.redirectingToAgent'));
                   }}
                 />
-             ) : (
-                <Card className="bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800">
-                   <CardContent className="pt-6">
-                      <div className="text-center space-y-3">
-                         <AlertCircle className="h-12 w-12 text-blue-600 mx-auto" />
-                         <h3 className="font-semibold text-lg text-blue-900 dark:text-blue-100">{t('policyDetails.completeYourProfile')}</h3>
-                         <p className="text-sm text-muted-foreground">
-                            {t('policyDetails.profileRequiredForGapAnalysis')}
-                         </p>
-                         <Link href="/profile">
-                            <Button className="mt-2" data-testid="button-complete-profile">{t('policyDetails.completeProfile')}</Button>
-                         </Link>
-                      </div>
-                   </CardContent>
-                </Card>
-             )}
+              ) : (
+                <div className="bg-blue-50 dark:bg-blue-950/50 rounded-2xl p-6 border border-blue-200 dark:border-blue-800 text-center">
+                  <div className="h-16 w-16 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center mx-auto mb-4">
+                    <AlertCircle className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+                  </div>
+                  <h3 className="font-semibold text-lg text-blue-900 dark:text-blue-100 mb-2">
+                    {t('policyDetails.completeYourProfile')}
+                  </h3>
+                  <p className="text-sm text-blue-700 dark:text-blue-300 mb-4">
+                    {t('policyDetails.profileRequiredForGapAnalysis')}
+                  </p>
+                  <Link href="/profile">
+                    <Button className="h-12 px-6 rounded-xl" data-testid="button-complete-profile">
+                      {t('policyDetails.completeProfile')}
+                    </Button>
+                  </Link>
+                </div>
+              )}
 
-             <Card className="bg-indigo-50 dark:bg-indigo-950 border-indigo-100 dark:border-indigo-800">
-                <CardHeader>
-                   <CardTitle className="text-indigo-900 dark:text-indigo-100">{t("details.proposals")}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                   {policy.details?.gapAnalysis?.proposals.length > 0 ? (
-                      <ul className="space-y-3">
-                         {policy.details?.gapAnalysis?.proposals.map((prop: string, i: number) => (
-                            <li key={i} className="bg-white dark:bg-indigo-900 p-3 rounded-lg shadow-sm border border-indigo-100 dark:border-indigo-700 text-sm">
-                               <p className="font-medium text-indigo-900 dark:text-indigo-100">{prop}</p>
-                               <Button size="sm" variant="ghost" className="mt-2 w-full text-xs text-indigo-600 dark:text-indigo-300 h-7" data-testid={`button-view-quote-${i}`}>
-                                  {t('policyDetails.viewQuote')}
-                               </Button>
-                            </li>
-                         ))}
-                      </ul>
-                   ) : (
-                      <p className="text-sm text-indigo-800 dark:text-indigo-200">{t('policyDetails.noNewProposals')}</p>
-                   )}
-                </CardContent>
-             </Card>
-          </div>
-        </TabsContent>
-      </Tabs>
+              {/* Proposals */}
+              {policy.details?.gapAnalysis?.proposals?.length > 0 && (
+                <div className="bg-card rounded-2xl border border-border/50 overflow-hidden">
+                  <div className="px-4 py-3 border-b border-border/50">
+                    <h3 className="font-semibold text-base">{t("details.proposals")}</h3>
+                  </div>
+                  <div className="divide-y divide-border/50">
+                    {policy.details.gapAnalysis.proposals.map((prop: string, i: number) => (
+                      <div key={i} className="p-4">
+                        <p className="text-sm mb-3">{prop}</p>
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="w-full h-10 rounded-xl"
+                          data-testid={`button-view-quote-${i}`}
+                        >
+                          {t('policyDetails.viewQuote')}
+                          <ChevronRight className="h-4 w-4 ml-1" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
 
       {/* Universal Broker Actions */}
-      <UniversalBrokerActions policy={policy} />
+      <div className="px-4 pt-6">
+        <UniversalBrokerActions policy={policy} />
+      </div>
     </div>
   );
 }
