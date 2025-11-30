@@ -1,16 +1,58 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { policies, notifications, appointments } from "@/lib/mockData";
 import PolicyCard from "@/components/policy-card";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Bell, Plus, ChevronRight, Calendar, FileText, DollarSign, Heart, MessageCircle, TrendingUp, Shield, Clock } from "lucide-react";
+import { Bell, Plus, ChevronRight, Calendar, FileText, DollarSign, Heart, MessageCircle, TrendingUp, Shield, Clock, AlertTriangle } from "lucide-react";
 import { Link } from "wouter";
 import { OnboardingModal } from "@/components/onboarding-modal";
 import { AgentHeroSection, PriorityLayer } from "@/components/priority-layer";
 import { AgentSidebar, AgentFloatingBadge, AgentRecommendationPill } from "@/components/agent-sidebar";
 import { RenewalsWidget, BillingWidget, RecommendationsWidget, InsuranceHealthWidget, PaymentRemindersWidget } from "@/components/dashboard-widgets";
+
+type UserState = {
+  policyCount: number;
+  expiringPoliciesCount: number;
+  openClaimsCount: number;
+  daysSinceLastVisit: number;
+  hasUrgentRenewals: boolean;
+  hasOpenClaims: boolean;
+  isNewUser: boolean;
+};
+
+function calculateUserState(): UserState {
+  const now = new Date();
+  const thirtyDaysFromNow = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
+  
+  const expiringPolicies = policies.filter(p => {
+    const expiryDate = new Date(p.expiry);
+    return expiryDate <= thirtyDaysFromNow && expiryDate >= now;
+  });
+  
+  const openClaims = policies.reduce((count, p) => {
+    const claims = p.details?.claims || [];
+    return count + claims.filter((c: any) => c.status !== "Paid").length;
+  }, 0);
+  
+  const lastVisit = localStorage.getItem("last_dashboard_visit");
+  const daysSinceLastVisit = lastVisit 
+    ? Math.floor((now.getTime() - new Date(lastVisit).getTime()) / (1000 * 60 * 60 * 24))
+    : 999;
+  
+  localStorage.setItem("last_dashboard_visit", now.toISOString());
+  
+  return {
+    policyCount: policies.length,
+    expiringPoliciesCount: expiringPolicies.length,
+    openClaimsCount: openClaims,
+    daysSinceLastVisit,
+    hasUrgentRenewals: expiringPolicies.length > 0,
+    hasOpenClaims: openClaims > 0,
+    isNewUser: policies.length === 0
+  };
+}
 
 export default function Dashboard() {
   const { t } = useTranslation();
@@ -19,6 +61,8 @@ export default function Dashboard() {
   });
   const [showAgentPanel, setShowAgentPanel] = useState(false);
   const [showRecommendation, setShowRecommendation] = useState(true);
+  
+  const userState = useMemo(() => calculateUserState(), []);
   
   const handleCloseOnboarding = () => {
     setShowOnboarding(false);
@@ -111,16 +155,38 @@ export default function Dashboard() {
             </div>
           </section>
 
-          {/* Dashboard Widgets Section */}
+          {/* Smart Dashboard Widgets Section - Personalized based on user state */}
           <section>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-bold">{t('dashboard.insuranceOverview')}</h2>
+              {(userState.hasUrgentRenewals || userState.hasOpenClaims) && (
+                <Badge variant="secondary" className="bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300">
+                  <AlertTriangle className="h-3 w-3 mr-1" />
+                  {userState.expiringPoliciesCount > 0 
+                    ? t('dashboard.urgentRenewals', { count: userState.expiringPoliciesCount })
+                    : t('dashboard.openClaims', { count: userState.openClaimsCount })
+                  }
+                </Badge>
+              )}
             </div>
+            
+            {/* Personalized Widget Grid - Show 3 most relevant widgets based on user state */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              <RenewalsWidget />
-              <BillingWidget />
-              <InsuranceHealthWidget />
-              <PaymentRemindersWidget />
+              {/* Priority 1: Show renewals if urgent, otherwise insurance health */}
+              {userState.hasUrgentRenewals ? (
+                <RenewalsWidget />
+              ) : (
+                <InsuranceHealthWidget />
+              )}
+              
+              {/* Priority 2: Show billing if no open claims, otherwise payment reminders (which highlights issues) */}
+              {userState.hasOpenClaims ? (
+                <PaymentRemindersWidget />
+              ) : (
+                <BillingWidget />
+              )}
+              
+              {/* Priority 3: Show recommendations (AI-powered savings) */}
               <RecommendationsWidget />
             </div>
           </section>

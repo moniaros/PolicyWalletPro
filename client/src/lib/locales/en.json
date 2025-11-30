@@ -101,7 +101,9 @@
     "premiumDecrease": "Keep it up! Your premium may decrease at renewal.",
     "mariaOnline": "Maria is online",
     "insuranceSpecialist": "Your insurance specialist",
-    "agentRecommendation": "I noticed your auto and home insurance are with different providers. Bundling them could save you {{amount}}/year. Want me to get you some quotes?"
+    "agentRecommendation": "I noticed your auto and home insurance are with different providers. Bundling them could save you {{amount}}/year. Want me to get you some quotes?",
+    "urgentRenewals": "{{count}} Urgent",
+    "openClaims": "{{count}} Open Claims"
   },
   "policies": {
     "title": "Policies",
@@ -133,6 +135,7 @@
     "active": "Active",
     "expired": "Expired",
     "pending": "Pending",
+    "cancelled": "Cancelled",
     "details": "Policy Details",
     "documents": "Documents",
     "claimsHistory": "Claims History",
@@ -781,6 +784,8 @@
     "policyNo": "Policy No",
     "claimOpen": "Claim Open",
     "paymentDue": "Payment Due",
+    "renewSoon": "Renew Soon",
+    "expiringMonth": "Expires This Month",
     "defaultGrowth": "+5.2%",
     "defaultFundValue": "€45,200",
     "defaultPlate": "ΥΖΑ-1234",
