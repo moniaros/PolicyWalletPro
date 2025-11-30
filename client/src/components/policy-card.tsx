@@ -1,13 +1,14 @@
 import { Link } from "wouter";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
-import { CheckCircle2, ChevronRight, Clock, AlertCircle } from "lucide-react";
+import { CheckCircle2, ChevronRight, Clock, AlertCircle, Calendar, Car, Hash } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { getExpiryStatus } from "@/lib/policy-utils";
 
 interface PolicyProps {
   id: number;
   type: string;
+  productName?: string;
   provider: string;
   policyNumber: string;
   coverage: string;
@@ -16,6 +17,7 @@ interface PolicyProps {
   icon: any;
   color: string;
   status: string;
+  vehicleReg?: string | null;
   index?: number;
   details?: any;
   quickViewMetadata?: Record<string, any>;
@@ -92,10 +94,24 @@ function getSmartStatusBadge(policy: PolicyProps, t: any) {
   };
 }
 
+function formatDate(dateString: string, locale: string) {
+  try {
+    const date = new Date(dateString);
+    return date.toLocaleDateString(locale === 'el' ? 'el-GR' : 'en-GB', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
+  } catch {
+    return dateString;
+  }
+}
+
 export default function PolicyCard({ policy, index = 0 }: { policy: PolicyProps, index?: number }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const statusBadge = getSmartStatusBadge(policy, t);
   const StatusIcon = statusBadge.icon;
+  const PolicyIcon = policy.icon;
 
   return (
     <Link href={`/policies/${policy.id}`}>
@@ -104,29 +120,28 @@ export default function PolicyCard({ policy, index = 0 }: { policy: PolicyProps,
         className="block"
       >
         <div 
-          className="bg-card rounded-2xl border border-border/50 shadow-sm active:bg-muted/30 transition-all duration-150 min-h-[88px]"
+          className="bg-card rounded-2xl border border-border/50 shadow-sm active:bg-muted/30 transition-all duration-150"
           data-testid={`policy-card-${policy.id}`}
         >
-          {/* Simplified 3-Item Layout: Icon + Provider | Status Badge | Premium */}
-          <div className="p-4 flex items-center gap-4">
-            {/* 1. iOS-Style Icon */}
-            <div className={`h-14 w-14 rounded-2xl flex items-center justify-center shrink-0 shadow-lg ${getIOSIconBg(policy.type)}`}>
-              <policy.icon className="h-7 w-7 text-white" />
-            </div>
-
-            {/* 2. Type + Provider (stacked) */}
-            <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-base text-foreground leading-tight truncate">
-                {policy.type}
-              </h3>
-              <p className="text-sm text-muted-foreground mt-0.5 truncate">
-                {policy.provider}
-              </p>
+          <div className="p-4">
+            {/* Header: Icon + Product Name + Status Badge */}
+            <div className="flex items-start gap-3 mb-3">
+              <div className={`h-12 w-12 rounded-xl flex items-center justify-center shrink-0 shadow-md ${getIOSIconBg(policy.type)}`}>
+                <PolicyIcon className="h-6 w-6 text-white" />
+              </div>
               
-              {/* Single Smart Status Badge */}
+              <div className="flex-1 min-w-0">
+                <h3 className="font-semibold text-base text-foreground leading-tight line-clamp-2">
+                  {policy.productName || policy.type}
+                </h3>
+                <p className="text-sm text-muted-foreground mt-0.5">
+                  {policy.provider}
+                </p>
+              </div>
+
               <Badge 
                 variant="secondary"
-                className={`mt-2 text-xs font-medium ${statusBadge.className}`}
+                className={`shrink-0 text-xs font-medium ${statusBadge.className}`}
                 data-testid={`status-badge-${policy.id}`}
               >
                 <StatusIcon className="h-3 w-3 mr-1" />
@@ -134,10 +149,51 @@ export default function PolicyCard({ policy, index = 0 }: { policy: PolicyProps,
               </Badge>
             </div>
 
-            {/* 3. Premium + Chevron */}
-            <div className="flex items-center gap-2 shrink-0">
-              <p className="text-base font-bold text-foreground">{policy.premium}</p>
-              <ChevronRight className="h-5 w-5 text-muted-foreground/50" />
+            {/* Policy Details Grid */}
+            <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm border-t border-border/50 pt-3">
+              {/* Policy Number */}
+              <div className="flex items-center gap-2">
+                <Hash className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                <div className="min-w-0">
+                  <p className="text-xs text-muted-foreground">{t('policyCard.policyNumber')}</p>
+                  <p className="font-medium text-foreground truncate">{policy.policyNumber}</p>
+                </div>
+              </div>
+
+              {/* Policy Type */}
+              <div className="flex items-center gap-2">
+                <PolicyIcon className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                <div className="min-w-0">
+                  <p className="text-xs text-muted-foreground">{t('policyCard.policyType')}</p>
+                  <p className="font-medium text-foreground truncate">{t(`policyTypes.${policy.type.toLowerCase().replace(/[^a-z]/g, '')}`, policy.type)}</p>
+                </div>
+              </div>
+
+              {/* Renewal Date */}
+              <div className="flex items-center gap-2">
+                <Calendar className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                <div className="min-w-0">
+                  <p className="text-xs text-muted-foreground">{t('policyCard.renewalDate')}</p>
+                  <p className="font-medium text-foreground">{formatDate(policy.expiry, i18n.language)}</p>
+                </div>
+              </div>
+
+              {/* Vehicle Registration (only for Auto policies) */}
+              {policy.vehicleReg && (
+                <div className="flex items-center gap-2">
+                  <Car className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                  <div className="min-w-0">
+                    <p className="text-xs text-muted-foreground">{t('policyCard.vehicleReg')}</p>
+                    <p className="font-medium text-foreground">{policy.vehicleReg}</p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Footer: View Details */}
+            <div className="flex items-center justify-end gap-1 mt-3 pt-3 border-t border-border/50">
+              <span className="text-sm text-muted-foreground">{t('policyCard.viewDetails')}</span>
+              <ChevronRight className="h-4 w-4 text-muted-foreground" />
             </div>
           </div>
         </div>
