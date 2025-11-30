@@ -11,12 +11,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Authentication Routes
   app.post("/api/auth/register", async (req, res) => {
     try {
-      const { username, password, email } = req.body;
-      if (!username || !password) {
-        return res.status(400).json({ error: "Username and password required" });
+      const { email, password } = req.body;
+      if (!email || !password) {
+        return res.status(400).json({ error: "Email and password required" });
       }
-      const user = await register(username, password, email);
-      await auditLog("system", "user_registered", "users", { username });
+      const user = await register(email, password);
+      await auditLog("system", "user_registered", "users", { email });
       res.status(201).json(user);
     } catch (error: any) {
       res.status(400).json({ error: error.message });
@@ -25,12 +25,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/auth/login", async (req, res) => {
     try {
-      const { username, password } = req.body;
-      if (!username || !password) {
-        return res.status(400).json({ error: "Username and password required" });
+      const { email, password } = req.body;
+      if (!email || !password) {
+        return res.status(400).json({ error: "Email and password required" });
       }
-      const user = await login(username, password);
-      await auditLog("system", "user_login", "users", { username });
+      const user = await login(email, password);
+      await auditLog("system", "user_login", "users", { email });
       res.json(user);
     } catch (error: any) {
       res.status(401).json({ error: error.message });

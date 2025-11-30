@@ -44,6 +44,7 @@ export interface IStorage {
   // User CRUD
   getUser(id: string): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
+  getUserByEmail(email: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
 
   // User Profile
@@ -110,9 +111,13 @@ export class MemStorage implements IStorage {
     return Array.from(this.users.values()).find(u => u.username === username);
   }
 
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    return Array.from(this.users.values()).find(u => u.email === email);
+  }
+
   async createUser(insertUser: InsertUser): Promise<User> {
     const id = randomUUID();
-    const user: User = { ...insertUser, id };
+    const user: User = { ...insertUser, id } as User;
     this.users.set(id, user);
     return user;
   }

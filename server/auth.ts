@@ -10,16 +10,25 @@ function verifyPassword(password: string, hash: string): boolean {
   return hashPassword(password) === hash;
 }
 
-export async function register(username: string, password: string, email?: string) {
+export async function register(email: string, password: string) {
+  // Validate email
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    throw new Error("Invalid email address");
+  }
+
+  if (!password || password.length < 6) {
+    throw new Error("Password must be at least 6 characters");
+  }
+
   // Check if user exists
-  const existing = await storage.getUserByUsername(username);
+  const existing = await storage.getUserByEmail(email);
   if (existing) {
-    throw new Error("User already exists");
+    throw new Error("Email already registered");
   }
 
   // Create user
   const user = await storage.createUser({
-    username,
+    email,
     password: hashPassword(password),
   });
 
@@ -28,21 +37,26 @@ export async function register(username: string, password: string, email?: strin
 
   return {
     id: user.id,
-    username: user.username,
+    email: user.email,
     token,
   };
 }
 
-export async function login(username: string, password: string) {
-  // Find user
-  const user = await storage.getUserByUsername(username);
+export async function login(email: string, password: string) {
+  // Validate email
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    throw new Error("Invalid email address");
+  }
+
+  // Find user by email
+  const user = await storage.getUserByEmail(email);
   if (!user) {
-    throw new Error("Invalid credentials");
+    throw new Error("Invalid email or password");
   }
 
   // Verify password
   if (!verifyPassword(password, user.password)) {
-    throw new Error("Invalid credentials");
+    throw new Error("Invalid email or password");
   }
 
   // Generate token
@@ -50,7 +64,7 @@ export async function login(username: string, password: string) {
 
   return {
     id: user.id,
-    username: user.username,
+    email: user.email,
     token,
   };
 }
