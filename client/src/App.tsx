@@ -6,7 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { ErrorBoundary } from "@/components/error-boundary";
 import { NetworkStatus } from "@/components/network-status";
 import Layout from "@/components/layout";
-import { Suspense } from "react";
+import { Suspense, useState, useEffect } from "react";
 import Dashboard from "@/pages/dashboard";
 import ProfilePage from "@/pages/profile";
 import UserSettingsPage from "@/pages/user-settings";
@@ -28,12 +28,21 @@ import RecommendationsPage from "@/pages/recommendations";
 import NotificationsCenterPage from "@/pages/notifications-center";
 import InsuranceHealthPage from "@/pages/insurance-health";
 
-// Ultra-fast synchronous auth check - no useState needed
-const token = typeof window !== 'undefined' ? localStorage.getItem("auth_token") : null;
-const isAuthenticatedSync = !!token;
-
 function Router() {
-  if (!isAuthenticatedSync) {
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return !!localStorage.getItem("auth_token");
+  });
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setIsAuthenticated(!!localStorage.getItem("auth_token"));
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
+
+  if (!isAuthenticated) {
     return <LoginPage />;
   }
 

@@ -37,8 +37,11 @@ export default function LoginPage() {
     onSuccess: (data) => {
       localStorage.setItem("auth_token", data.token || "demo-token");
       localStorage.setItem("user_id", data.id);
+      // Dispatch storage event to trigger Router re-evaluation immediately
+      window.dispatchEvent(new Event("storage"));
       toast.success("Welcome!");
-      setLocation("/");
+      // Small delay to ensure storage events are processed
+      setTimeout(() => setLocation("/"), 50);
     },
     onError: (err: any) => {
       setError(err.message);
