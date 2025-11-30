@@ -1,376 +1,321 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { policies, notifications, appointments } from "@/lib/mockData";
-import PolicyCard from "@/components/policy-card";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Bell, Plus, ChevronRight, Calendar, FileText, DollarSign, Heart, MessageCircle, TrendingUp, Shield, Clock, AlertTriangle } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 import { Link } from "wouter";
-import { OnboardingModal } from "@/components/onboarding-modal";
-import { AgentHeroSection, PriorityLayer } from "@/components/priority-layer";
-import { AgentSidebar, AgentFloatingBadge, AgentRecommendationPill } from "@/components/agent-sidebar";
-import { RenewalsWidget, BillingWidget, RecommendationsWidget, InsuranceHealthWidget, PaymentRemindersWidget } from "@/components/dashboard-widgets";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { CircularProgress } from "@/components/circular-progress";
+import { 
+  Shield, 
+  TrendingUp, 
+  AlertTriangle, 
+  ChevronRight, 
+  Plus,
+  Heart,
+  DollarSign,
+  Calendar,
+  Users,
+  FileText,
+  MessageCircle,
+  ArrowUpRight,
+  ArrowDownLeft
+} from "lucide-react";
+import { policies } from "@/lib/mockData";
 
-type UserState = {
-  policyCount: number;
-  expiringPoliciesCount: number;
-  openClaimsCount: number;
-  daysSinceLastVisit: number;
-  hasUrgentRenewals: boolean;
-  hasOpenClaims: boolean;
-  isNewUser: boolean;
+// Sample data structure
+const sampleFamily = [
+  { id: 1, name: "Maria", relation: "Spouse", policiesCount: 2, gaps: 1, status: "active" },
+  { id: 2, name: "Nikos", relation: "Son", policiesCount: 1, gaps: 0, status: "active" },
+];
+
+const calculateCoverageHealth = () => {
+  const activePoliciesCount = policies.filter(p => p.status === "Active").length;
+  const hasFamily = sampleFamily.length > 0;
+  const criticalGaps = 2;
+  
+  let score = 40;
+  if (activePoliciesCount > 0) score += 10;
+  if (hasFamily) score += 20;
+  if (criticalGaps === 0) score += 20;
+  score += 10;
+  
+  return Math.min(score, 100);
 };
 
-function calculateUserState(): UserState {
-  const now = new Date();
-  const thirtyDaysFromNow = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
-  
-  const expiringPolicies = policies.filter(p => {
-    const expiryDate = new Date(p.expiry);
-    return expiryDate <= thirtyDaysFromNow && expiryDate >= now;
-  });
-  
-  const openClaims = policies.reduce((count, p) => {
-    const claims = p.details?.claims || [];
-    return count + claims.filter((c: any) => c.status !== "Paid").length;
-  }, 0);
-  
-  const lastVisit = localStorage.getItem("last_dashboard_visit");
-  const daysSinceLastVisit = lastVisit 
-    ? Math.floor((now.getTime() - new Date(lastVisit).getTime()) / (1000 * 60 * 60 * 24))
-    : 999;
-  
-  localStorage.setItem("last_dashboard_visit", now.toISOString());
-  
-  return {
-    policyCount: policies.length,
-    expiringPoliciesCount: expiringPolicies.length,
-    openClaimsCount: openClaims,
-    daysSinceLastVisit,
-    hasUrgentRenewals: expiringPolicies.length > 0,
-    hasOpenClaims: openClaims > 0,
-    isNewUser: policies.length === 0
-  };
-}
+const getHealthColor = (score: number) => {
+  if (score < 40) return "text-red-600";
+  if (score < 70) return "text-amber-600";
+  return "text-emerald-600";
+};
+
+const getHealthBgColor = (score: number) => {
+  if (score < 40) return "from-red-500/20 to-red-500/10";
+  if (score < 70) return "from-amber-500/20 to-amber-500/10";
+  return "from-emerald-500/20 to-emerald-500/10";
+};
 
 export default function Dashboard() {
   const { t } = useTranslation();
-  const [showOnboarding, setShowOnboarding] = useState(() => {
-    return !localStorage.getItem("onboarding_dismissed");
-  });
-  const [showAgentPanel, setShowAgentPanel] = useState(false);
-  const [showRecommendation, setShowRecommendation] = useState(true);
-  
-  const userState = useMemo(() => calculateUserState(), []);
-  
-  const handleCloseOnboarding = () => {
-    setShowOnboarding(false);
-    localStorage.setItem("onboarding_dismissed", "true");
-  };
+  const [greeting, setGreeting] = useState("Good morning");
 
-  const upcomingAppointment = appointments[0];
+  const coverageScore = useMemo(() => calculateCoverageHealth(), []);
+  const activePolicies = policies.filter(p => p.status === "Active").length;
+  const expiringPolicies = policies.filter(p => {
+    const expiry = new Date(p.expiry);
+    const inThirtyDays = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+    return expiry < inThirtyDays && p.status === "Active";
+  }).length;
+  const monthlyPremium = policies
+    .filter(p => p.status === "Active")
+    .reduce((sum, p) => sum + parseFloat(p.premium.replace("€", "")), 0);
+
+  const policyGaps = [
+    { type: "Life Insurance", severity: "high", reason: "No coverage detected" },
+    { type: "Disability Insurance", severity: "medium", reason: "Limited coverage" },
+  ];
+
+  const upcomingRenewals = policies
+    .filter(p => {
+      const expiry = new Date(p.expiry);
+      const inSixMonths = new Date(Date.now() + 180 * 24 * 60 * 60 * 1000);
+      return expiry > new Date() && expiry < inSixMonths;
+    })
+    .sort((a, b) => new Date(a.expiry).getTime() - new Date(b.expiry).getTime())
+    .slice(0, 3);
 
   return (
-    <>
-      <OnboardingModal isOpen={showOnboarding} onClose={handleCloseOnboarding} />
-      
-      <div className="space-y-6">
-        {/* iOS-Style Hero Section */}
-        <div className="bg-gradient-to-br from-primary via-primary/90 to-primary/80 rounded-3xl p-6 md:p-8 text-white shadow-2xl shadow-primary/25">
-          <div className="flex items-start justify-between mb-6">
-            <div className="flex-1">
-              <h1 className="text-3xl md:text-4xl font-bold mb-2">
-                {t('dashboard.welcomeTitle', { name: 'User' })}
-              </h1>
-              <p className="text-white/90 text-base md:text-lg">
-                {t('dashboard.welcomeSubtitle')}
+    <div className="min-h-screen bg-background pb-12">
+      {/* Header with Greeting */}
+      <div className="sticky top-0 z-30 bg-background/80 backdrop-blur-md border-b border-border/50 px-4 py-4">
+        <div className="max-w-6xl mx-auto">
+          <h1 className="text-2xl font-bold text-foreground">{greeting}, Yannis</h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            {new Date().toLocaleDateString("el-GR", { weekday: "long", day: "numeric", month: "long" })}
+          </p>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="max-w-6xl mx-auto px-4 py-6 space-y-6">
+        
+        {/* HERO: Coverage Health Score */}
+        <div className={`bg-gradient-to-br ${getHealthBgColor(coverageScore)} rounded-3xl p-8 border border-border/50`}>
+          <div className="flex flex-col items-center text-center space-y-4">
+            <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Coverage Health</p>
+            <div className="relative w-48 h-48">
+              <CircularProgress 
+                value={coverageScore} 
+                max={100}
+                strokeWidth={8}
+                className={getHealthColor(coverageScore)}
+              />
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <div className={`text-5xl font-bold ${getHealthColor(coverageScore)}`}>
+                  {coverageScore}
+                </div>
+                <div className="text-sm text-muted-foreground">/100</div>
+              </div>
+            </div>
+            <div>
+              <p className="text-lg font-semibold text-foreground">
+                {coverageScore >= 70 ? "Excellent coverage" : coverageScore >= 40 ? "Good progress" : "Needs attention"}
+              </p>
+              <p className="text-sm text-muted-foreground mt-1">
+                {coverageScore >= 70 ? "Your insurance portfolio is well-balanced" : "Review gaps to improve your coverage"}
               </p>
             </div>
-            <div className="h-16 w-16 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/30">
-              <Shield className="h-8 w-8 text-white" />
-            </div>
-          </div>
-
-          {/* Quick Stats */}
-          <div className="grid grid-cols-3 gap-4 mb-6">
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-              <p className="text-white/70 text-xs font-medium mb-1">{t('dashboard.totalPolicies')}</p>
-              <p className="text-2xl font-bold">{userState.policyCount}</p>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-              <p className="text-white/70 text-xs font-medium mb-1">{t('dashboard.activePolicies')}</p>
-              <p className="text-2xl font-bold">{policies.filter(p => p.status === "Active").length}</p>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-              <p className="text-white/70 text-xs font-medium mb-1">{t('dashboard.expiringSoon')}</p>
-              <p className="text-2xl font-bold">{userState.expiringPoliciesCount}</p>
-            </div>
-          </div>
-
-          {/* Primary Actions */}
-          <div className="flex gap-3">
-            <Link href="/policies">
-              <Button 
-                className="bg-white text-primary hover:bg-white/95 shadow-xl shadow-black/20 border-0 font-semibold px-6 h-12 rounded-xl transition-all hover:scale-105 active:scale-95"
-                data-testid="button-view-policies"
-              >
-                <Shield className="h-4 w-4 mr-2" />
-                {t('dashboard.viewPolicies')}
-              </Button>
-            </Link>
-            <Link href="/insurance-health">
-              <Button 
-                variant="outline" 
-                className="bg-white/15 border-white/40 text-white hover:bg-white/25 font-semibold px-6 h-12 rounded-xl backdrop-blur-sm transition-all hover:scale-105 active:scale-95"
-              >
-                {t('dashboard.insuranceHealth')} <ChevronRight className="h-4 w-4 ml-1" />
-              </Button>
-            </Link>
           </div>
         </div>
 
-        <div className="flex gap-6">
-        {/* Main Content */}
-        <div className="flex-1 space-y-6 min-w-0">
-          {/* Agent Recommendation Pill - Only show if not dismissed */}
-          {showRecommendation && (
-            <AgentRecommendationPill 
-              recommendation={t('dashboard.agentRecommendation', { amount: '€300' })}
-              onDismiss={() => setShowRecommendation(false)}
-            />
-          )}
+        {/* QUICK STATS: 4-Up Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {/* Active Policies */}
+          <Card className="p-4 border border-border/50">
+            <div className="flex items-start justify-between mb-2">
+              <div className="h-10 w-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                <FileText className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+              </div>
+            </div>
+            <p className="text-xs text-muted-foreground font-medium mb-1">Active Policies</p>
+            <p className="text-2xl font-bold text-foreground">{activePolicies}</p>
+            <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-2 flex items-center gap-1">
+              <ArrowUpRight className="h-3 w-3" />
+              All active
+            </p>
+          </Card>
 
-          {/* Priority Layer - Above all widgets */}
-          <PriorityLayer />
+          {/* Expiring Soon */}
+          <Card className="p-4 border border-border/50">
+            <div className="flex items-start justify-between mb-2">
+              <div className={`h-10 w-10 rounded-lg ${expiringPolicies > 0 ? 'bg-amber-100 dark:bg-amber-900/30' : 'bg-green-100 dark:bg-green-900/30'} flex items-center justify-center`}>
+                <Calendar className={`h-5 w-5 ${expiringPolicies > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-green-600 dark:text-green-400'}`} />
+              </div>
+            </div>
+            <p className="text-xs text-muted-foreground font-medium mb-1">Expiring Soon</p>
+            <p className="text-2xl font-bold text-foreground">{expiringPolicies}</p>
+            <p className={`text-xs mt-2 flex items-center gap-1 ${expiringPolicies > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-emerald-600 dark:text-emerald-400'}`}>
+              <Calendar className="h-3 w-3" />
+              {expiringPolicies > 0 ? "Review dates" : "None"}
+            </p>
+          </Card>
 
-          {/* Agent Recommendation Pill - Only show if not dismissed */}
-          {showRecommendation && (
-            <AgentRecommendationPill 
-              recommendation={t('dashboard.agentRecommendation', { amount: '€300' })}
-              onDismiss={() => setShowRecommendation(false)}
-            />
-          )}
+          {/* Monthly Premium */}
+          <Card className="p-4 border border-border/50">
+            <div className="flex items-start justify-between mb-2">
+              <div className="h-10 w-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+                <DollarSign className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+              </div>
+            </div>
+            <p className="text-xs text-muted-foreground font-medium mb-1">Monthly Premium</p>
+            <p className="text-2xl font-bold text-foreground">€{monthlyPremium.toFixed(0)}</p>
+            <p className="text-xs text-muted-foreground mt-2">/month</p>
+          </Card>
 
-          {/* Priority Layer - Above all widgets */}
-          <PriorityLayer />
+          {/* Coverage Gaps */}
+          <Card className="p-4 border border-border/50">
+            <div className="flex items-start justify-between mb-2">
+              <div className="h-10 w-10 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
+                <AlertTriangle className="h-5 w-5 text-red-600 dark:text-red-400" />
+              </div>
+            </div>
+            <p className="text-xs text-muted-foreground font-medium mb-1">Coverage Gaps</p>
+            <p className="text-2xl font-bold text-foreground">{policyGaps.length}</p>
+            <p className="text-xs text-red-600 dark:text-red-400 mt-2 flex items-center gap-1">
+              <AlertTriangle className="h-3 w-3" />
+              Action needed
+            </p>
+          </Card>
+        </div>
 
-          {/* Quick Actions - Outcome-focused Carousel */}
-          <section data-testid="quick-actions-section">
-            <h2 className="text-xl font-bold mb-4">{t('common.quickActions')}</h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-              {[
-                { 
-                  id: 'file-claim',
-                  titleKey: 'quickActionsNew.fileClaim', 
-                  subtitleKey: 'quickActionsNew.successRate',
-                  icon: FileText, 
-                  color: 'from-blue-500 to-blue-600',
-                  href: '/claims' 
-                },
-                { 
-                  id: 'get-savings',
-                  titleKey: 'quickActionsNew.getSavings', 
-                  subtitleKey: 'quickActionsNew.typicalSavings',
-                  icon: DollarSign, 
-                  color: 'from-emerald-500 to-emerald-600',
-                  href: '/recommendations' 
-                },
-                { 
-                  id: 'chat-maria',
-                  titleKey: 'quickActionsNew.chatMaria', 
-                  subtitleKey: 'quickActionsNew.onlineNow',
-                  icon: MessageCircle, 
-                  color: 'from-purple-500 to-purple-600',
-                  href: '#',
-                  isAgent: true
-                },
-                { 
-                  id: 'understand-gaps',
-                  titleKey: 'quickActionsNew.understandGaps', 
-                  subtitleKey: 'quickActionsNew.gapsIdentified',
-                  icon: Shield, 
-                  color: 'from-orange-500 to-orange-600',
-                  href: '/gap-analysis' 
-                },
-                { 
-                  id: 'health-checkup',
-                  titleKey: 'quickActionsNew.healthCheckup', 
-                  subtitleKey: 'quickActionsNew.preventiveCare',
-                  icon: Heart, 
-                  color: 'from-pink-500 to-pink-600',
-                  href: '/health-wellness' 
-                },
-              ].map((action) => (
-                <Link key={action.id} href={action.href} data-testid={`quick-action-${action.id}`}>
-                  <Card className="p-4 hover:shadow-md transition-all cursor-pointer group border-0 bg-gradient-to-br from-slate-50 to-white hover:scale-[1.02]">
-                    <div className={`h-10 w-10 rounded-xl bg-gradient-to-br ${action.color} flex items-center justify-center mb-3 group-hover:scale-110 transition-transform`}>
-                      <action.icon className="h-5 w-5 text-white" />
+        {/* YOUR POLICIES */}
+        <section>
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h2 className="text-xl font-bold text-foreground">Your Policies</h2>
+              <p className="text-sm text-muted-foreground mt-1">{policies.length} policies under management</p>
+            </div>
+            <Link href="/policies">
+              <Button variant="ghost" size="sm" className="gap-1" data-testid="button-view-all-policies">
+                View All <ChevronRight className="h-4 w-4" />
+              </Button>
+            </Link>
+          </div>
+          
+          <div className="grid md:grid-cols-2 gap-4">
+            {policies.slice(0, 4).map((policy) => (
+              <Link key={policy.id} href={`/policies/${policy.id}`}>
+                <Card className="p-4 border border-border/50 hover:shadow-md transition-all cursor-pointer">
+                  <div className="flex items-start justify-between mb-3">
+                    <div>
+                      <h3 className="font-semibold text-foreground">{policy.type}</h3>
+                      <p className="text-sm text-muted-foreground">{policy.provider}</p>
                     </div>
-                    <h3 className="font-semibold text-sm">{t(action.titleKey)}</h3>
-                    <p className="text-xs text-muted-foreground flex items-center gap-1">
-                      {action.isAgent && <span className="h-1.5 w-1.5 bg-emerald-500 rounded-full animate-pulse" />}
-                      {t(action.subtitleKey)}
-                    </p>
-                  </Card>
-                </Link>
+                    <Badge 
+                      variant="outline"
+                      className={policy.status === "Active" ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800" : ""}
+                    >
+                      {policy.status}
+                    </Badge>
+                  </div>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-foreground font-semibold">{policy.premium}/mo</span>
+                    <span className="text-muted-foreground">Expires: {new Date(policy.expiry).toLocaleDateString("el-GR")}</span>
+                  </div>
+                </Card>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        {/* FAMILY COVERAGE */}
+        <section>
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h2 className="text-xl font-bold text-foreground">Family Coverage</h2>
+              <p className="text-sm text-muted-foreground mt-1">{sampleFamily.length} family members tracked</p>
+            </div>
+          </div>
+          
+          <div className="space-y-3">
+            {sampleFamily.map((member) => (
+              <Card key={member.id} className="p-4 border border-border/50">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="h-10 w-10 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white font-semibold">
+                      {member.name[0]}
+                    </div>
+                    <div>
+                      <p className="font-semibold text-foreground">{member.name}</p>
+                      <p className="text-xs text-muted-foreground">{member.relation}</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm font-semibold text-foreground">{member.policiesCount} policies</p>
+                    {member.gaps > 0 && (
+                      <Badge variant="outline" className="mt-1 bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 border-amber-200 dark:border-amber-800">
+                        {member.gaps} gap
+                      </Badge>
+                    )}
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </section>
+
+        {/* INSIGHTS & GAPS */}
+        <section>
+          <h2 className="text-xl font-bold text-foreground mb-4">Coverage Gaps</h2>
+          <div className="space-y-3">
+            {policyGaps.map((gap, idx) => (
+              <Alert 
+                key={idx} 
+                className={gap.severity === "high" ? "bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-800" : "bg-amber-50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800"}
+              >
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className={`h-5 w-5 mt-0.5 flex-shrink-0 ${gap.severity === "high" ? "text-red-600 dark:text-red-400" : "text-amber-600 dark:text-amber-400"}`} />
+                  <div className="flex-1">
+                    <AlertDescription className="font-semibold text-foreground">{gap.type}</AlertDescription>
+                    <AlertDescription className="text-muted-foreground mt-1">{gap.reason}</AlertDescription>
+                  </div>
+                  <Button size="sm" variant="outline" className="ml-2">
+                    Fix
+                  </Button>
+                </div>
+              </Alert>
+            ))}
+          </div>
+        </section>
+
+        {/* UPCOMING RENEWALS */}
+        {upcomingRenewals.length > 0 && (
+          <section>
+            <h2 className="text-xl font-bold text-foreground mb-4">Upcoming Renewals</h2>
+            <div className="space-y-3">
+              {upcomingRenewals.map((policy) => (
+                <Card key={policy.id} className="p-4 border border-border/50 hover:shadow-md transition-all">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-semibold text-foreground">{policy.type}</p>
+                      <p className="text-sm text-muted-foreground">{policy.provider}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-semibold text-foreground">
+                        {new Date(policy.expiry).toLocaleDateString("el-GR")}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {Math.ceil((new Date(policy.expiry).getTime() - Date.now()) / (1000 * 60 * 60 * 24))} days
+                      </p>
+                    </div>
+                  </div>
+                </Card>
               ))}
             </div>
           </section>
-
-          {/* Smart Dashboard Widgets Section - Personalized based on user state */}
-          <section>
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <h2 className="text-xl font-bold">{t('dashboard.insuranceOverview')}</h2>
-                {userState.isNewUser && (
-                  <p className="text-sm text-muted-foreground mt-1">
-                    {t('dashboard.welcomeMessage')}
-                  </p>
-                )}
-                {userState.daysSinceLastVisit > 30 && (
-                  <p className="text-sm text-muted-foreground mt-1">
-                    {t('dashboard.welcomeBack', { days: userState.daysSinceLastVisit })}
-                  </p>
-                )}
-              </div>
-              {(userState.hasUrgentRenewals || userState.hasOpenClaims) && (
-                <Badge variant="secondary" className="bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300 animate-pulse">
-                  <AlertTriangle className="h-3 w-3 mr-1" />
-                  {userState.expiringPoliciesCount > 0 
-                    ? t('dashboard.urgentRenewals', { count: userState.expiringPoliciesCount })
-                    : t('dashboard.openClaims', { count: userState.openClaimsCount })
-                  }
-                </Badge>
-              )}
-            </div>
-            
-            {/* Personalized Widget Grid - Show 3 most relevant widgets based on user state */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {/* Priority 1: Show renewals if urgent, otherwise insurance health */}
-              {userState.hasUrgentRenewals ? (
-                <div className="relative">
-                  <div className="absolute -top-2 -right-2 h-4 w-4 bg-red-500 rounded-full animate-ping" />
-                  <div className="absolute -top-2 -right-2 h-4 w-4 bg-red-500 rounded-full" />
-                  <RenewalsWidget />
-                </div>
-              ) : userState.isNewUser ? (
-                <InsuranceHealthWidget />
-              ) : (
-                <InsuranceHealthWidget />
-              )}
-              
-              {/* Priority 2: Show billing if no open claims, otherwise payment reminders (which highlights issues) */}
-              {userState.hasOpenClaims ? (
-                <div className="relative">
-                  <div className="absolute -top-2 -right-2 h-4 w-4 bg-amber-500 rounded-full animate-ping" />
-                  <div className="absolute -top-2 -right-2 h-4 w-4 bg-amber-500 rounded-full" />
-                  <PaymentRemindersWidget />
-                </div>
-              ) : (
-                <BillingWidget />
-              )}
-              
-              {/* Priority 3: Show recommendations (AI-powered savings) - Always show for engagement */}
-              <RecommendationsWidget />
-            </div>
-          </section>
-
-          {/* Active Policies Section */}
-          <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 space-y-4">
-              <div className="flex items-center justify-between">
-                <h2 className="text-xl font-bold text-foreground">{t('dashboard.activePolicies')}</h2>
-                <Link href="/policies" className="text-sm text-primary font-medium hover:underline flex items-center" data-testid="link-all-policies">
-                  {t('common.viewAll')} <ChevronRight className="h-4 w-4 ml-1" />
-                </Link>
-              </div>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {policies.slice(0, 2).map((policy, i) => (
-                  <PolicyCard key={policy.id} policy={policy} index={i} />
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <h2 className="text-xl font-bold text-foreground">{t('dashboard.upNext')}</h2>
-              
-              {/* Upcoming Appointment */}
-              <Card className="p-5 bg-gradient-to-br from-white to-blue-50/50 border-blue-100">
-                <div className="flex items-center gap-3 text-primary mb-3">
-                  <div className="bg-primary/10 p-2 rounded-lg">
-                    <Calendar className="h-5 w-5" />
-                  </div>
-                  <span className="font-semibold">{t('dashboard.upcomingVisit')}</span>
-                </div>
-                
-                <div className="mb-3">
-                  <h3 className="font-bold">{upcomingAppointment.type}</h3>
-                  <p className="text-muted-foreground text-sm">{upcomingAppointment.doctor}</p>
-                </div>
-                
-                <div className="flex items-center justify-between text-sm border-t pt-3">
-                  <div className="text-foreground font-medium">
-                    {upcomingAppointment.date}
-                  </div>
-                  <Badge variant="secondary">
-                    {upcomingAppointment.time}
-                  </Badge>
-                </div>
-
-                <Link href="/appointments">
-                  <Button variant="outline" className="w-full mt-3 text-xs" data-testid="button-reschedule">
-                    {t('dashboard.reschedule')}
-                  </Button>
-                </Link>
-              </Card>
-
-              {/* Healthy Streak */}
-              <Card className="p-5 bg-gradient-to-br from-emerald-50 to-emerald-100/50 border-emerald-200/50">
-                <h3 className="font-bold text-emerald-900 mb-2">{t('dashboard.healthyStreak')}</h3>
-                <p className="text-sm text-emerald-700 mb-4">{t('dashboard.noClaimsMessage', { months: 12 })}</p>
-                <div className="h-2.5 bg-emerald-200 rounded-full overflow-hidden">
-                  <div className="h-full bg-gradient-to-r from-emerald-400 to-emerald-600 w-4/5 rounded-full"></div>
-                </div>
-                <p className="text-xs text-emerald-600 mt-2">{t('dashboard.premiumDecrease')}</p>
-              </Card>
-
-              {/* Agent Quick Access (Mobile-friendly) */}
-              <Card className="p-4 bg-gradient-to-br from-blue-50 to-emerald-50 border-blue-200/50 lg:hidden">
-                <div className="flex items-center gap-3">
-                  <div className="relative">
-                    <div className="h-12 w-12 rounded-full bg-gradient-to-br from-emerald-400 to-blue-500 flex items-center justify-center text-lg font-bold text-white">
-                      M
-                    </div>
-                    <div className="absolute -bottom-0.5 -right-0.5 h-4 w-4 bg-emerald-400 rounded-full border-2 border-white" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-semibold text-sm">{t('dashboard.mariaOnline')}</p>
-                    <p className="text-xs text-muted-foreground">{t('dashboard.insuranceSpecialist')}</p>
-                  </div>
-                  <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700">
-                    <MessageCircle className="h-4 w-4" />
-                  </Button>
-                </div>
-              </Card>
-            </div>
-          </section>
-          </div>
-
-        {/* Agent Sidebar - Desktop Only */}
-        <div className="hidden xl:block w-72 flex-shrink-0">
-          <div className="sticky top-4">
-            <AgentSidebar />
-          </div>
-        </div>
-        </div>
+        )}
       </div>
-
-      {/* Floating Agent Badge - Mobile/Tablet */}
-      <div className="xl:hidden">
-        <AgentFloatingBadge onClick={() => setShowAgentPanel(true)} />
-      </div>
-    </>
+    </div>
   );
 }
