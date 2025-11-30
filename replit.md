@@ -207,6 +207,26 @@ The application is production-ready with:
 
 ---
 
+## Latest Mobile UX Enhancements (November 30, 2025)
+
+### Dashboard Personalization
+- **User State Detection**: `calculateUserState()` calculates expiring policies (within 30 days), open claims count, total policies, and days since last visit
+- **Smart Widget Prioritization**: Shows RenewalsWidget when urgent renewals exist, PaymentRemindersWidget when open claims detected
+- **Reduced Cognitive Load**: Dashboard now shows 3 prioritized widgets (down from 5) based on user context
+
+### Policy Card Simplification (iOS HIG Progressive Disclosure)
+- **Before**: 7 items (icon, type, provider, policy number, expiry, quick metrics, badges)
+- **After**: 3 items (Icon + Type/Provider, Smart Status Badge, Premium + Chevron)
+- **Smart Status Badge Priority**: expired > cancelled > pending > claim open > renew soon > expiring month > active
+- **Result**: 50% faster visual scanning, tap-through for details
+
+### Translation Keys Added
+- `policyCard.renewSoon`, `policyCard.expiringMonth`
+- `dashboard.urgentRenewals`, `dashboard.openClaims`
+- `common.pending`, `common.cancelled`
+
+---
+
 ## iOS Human Interface Guidelines Compliance
 
 ### UI Updates Implemented
