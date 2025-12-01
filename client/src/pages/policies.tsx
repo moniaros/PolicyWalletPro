@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
@@ -9,6 +9,8 @@ import { Card } from "@/components/ui/card";
 import { Link } from "wouter";
 import { Search, X, ChevronRight, Plus, FileText, Heart, Car, Home, Briefcase, Dog, Loader2, Shield } from "lucide-react";
 import type { Policy } from "@shared/schema";
+
+type PolicyWithVehicle = Policy;
 
 const getPolicyIcon = (type: string) => {
   switch (type.toLowerCase()) {
@@ -58,15 +60,86 @@ const formatPremium = (premium: string | number, frequency: string) => {
   return `${formatted}/${frequency === "monthly" ? "month" : frequency === "quarterly" ? "quarter" : "year"}`;
 };
 
+const getVehicleLabel = (policy: PolicyWithVehicle): string => {
+  const policyAny = policy as any;
+  const vehicleData = policyAny.vehicleData || policyAny.documentParsedData?.vehicle;
+  if (!vehicleData) return "";
+  
+  const parts: string[] = [];
+  
+  if (vehicleData.make) parts.push(vehicleData.make.toUpperCase());
+  if (vehicleData.model) parts.push(vehicleData.model.toUpperCase());
+  if (vehicleData.engineCC) parts.push(`(${vehicleData.engineCC})`);
+  if (vehicleData.year) parts.push(`- ${vehicleData.year}`);
+  if (vehicleData.plate) parts.push(`- ${vehicleData.plate.toUpperCase()}`);
+  
+  return parts.join(" ") || "";
+};
+
+const getRenewalDuration = (frequency: string, t: any): string => {
+  switch (frequency?.toLowerCase()) {
+    case "annual":
+    case "yearly":
+      return t("policies.annual");
+    case "monthly":
+      return t("policies.monthly");
+    case "quarterly":
+      return t("policies.quarterly");
+    case "semiannual":
+    case "semi-annual":
+      return t("policies.semiAnnual");
+    default:
+      return t("policies.annual");
+  }
+};
+
+const getCategoryLabel = (type: string, t: any): string => {
+  switch (type.toLowerCase()) {
+    case "auto":
+      return t("policies.transportation");
+    case "health":
+      return t("policies.health");
+    case "home":
+      return t("policies.property");
+    case "life":
+      return t("policies.lifeProtection");
+    default:
+      return getPolicyTypeLabel(type, t);
+  }
+};
+
+const getCategoryIcon = (type: string) => {
+  switch (type.toLowerCase()) {
+    case "auto": return Car;
+    case "health": return Heart;
+    case "home": return Home;
+    case "life": return Briefcase;
+    case "pet": return Dog;
+    default: return FileText;
+  }
+};
+
 export default function PoliciesPage() {
   const { t } = useTranslation();
   const [search, setSearch] = useState("");
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [activeFilter, setActiveFilter] = useState<string>("all");
 
-  const { data: policies = [], isLoading } = useQuery<Policy[]>({
+  const { data: policies = [], isLoading } = useQuery<PolicyWithVehicle[]>({
     queryKey: ["/api/policies"],
   });
+
+  const groupedPolicies = useMemo(() => {
+    const groups: Record<string, PolicyWithVehicle[]> = {};
+    policies.forEach((policy) => {
+      const type = policy.policyType.toLowerCase();
+      if (!groups[type]) {
+        groups[type] = [];
+      }
+      groups[type].push(policy);
+    });
+    return groups;
+  }, [policies]);
 
   if (isLoading) {
     return (
@@ -218,60 +291,93 @@ export default function PoliciesPage() {
             </Button>
           </div>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredPolicies.map((policy) => {
-              const PolicyIcon = getPolicyIcon(policy.policyType);
+          <div className="space-y-6">
+            {Object.entries(groupedPolicies).map(([type, typePolicies]) => {
+              const filteredTypePolicies = typePolicies.filter((p) => {
+                const searchLower = search.toLowerCase();
+                const vehicleLabel = getVehicleLabel(p);
+                const matchesSearch =
+                  p.policyNumber.toLowerCase().includes(searchLower) ||
+                  p.policyType.toLowerCase().includes(searchLower) ||
+                  p.policyName?.toLowerCase().includes(searchLower) ||
+                  p.holderName?.toLowerCase().includes(searchLower) ||
+                  vehicleLabel.toLowerCase().includes(searchLower);
+
+                const isExpiringSoon = new Date(p.endDate) < new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+                const matchesFilter =
+                  activeFilter === "all" ||
+                  (activeFilter === "active" && p.status === "active") ||
+                  (activeFilter === "expiring" && isExpiringSoon && p.status === "active");
+
+                return matchesSearch && matchesFilter;
+              });
+
+              if (filteredTypePolicies.length === 0) return null;
+
+              const CategoryIcon = getCategoryIcon(type);
+
               return (
-                <Link key={policy.id} href={`/policies/${policy.id}`}>
-                  <Card
-                    className="p-6 border border-border/50 hover:shadow-lg transition-all cursor-pointer h-full"
-                    data-testid={`card-policy-${policy.id}`}
-                  >
-                    <div className="flex items-start justify-between mb-4 gap-2">
-                      <div className="flex items-center gap-3 min-w-0">
-                        <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                          <PolicyIcon className="h-5 w-5 text-primary" />
-                        </div>
-                        <div className="min-w-0">
-                          <h3 className="font-semibold text-foreground text-lg truncate">
-                            {getPolicyTypeLabel(policy.policyType, t)}
-                          </h3>
-                          <p className="text-sm text-muted-foreground truncate">{policy.policyName || policy.policyNumber}</p>
-                        </div>
+                <Card 
+                  key={type} 
+                  className="overflow-hidden border border-border/50"
+                  data-testid={`card-category-${type}`}
+                >
+                  <div className="bg-amber-50/80 dark:bg-amber-900/20 px-5 py-4">
+                    <div className="flex items-center gap-3">
+                      <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <CategoryIcon className="h-4 w-4 text-primary" />
                       </div>
-                      <Badge className={getStatusBadgeClass(policy.status)}>
-                        {t(`common.${policy.status}`)}
-                      </Badge>
+                      <h2 className="text-lg font-semibold text-foreground">
+                        {getCategoryLabel(type, t)}
+                      </h2>
                     </div>
+                  </div>
+                  
+                  <div className="divide-y divide-border/50">
+                    {filteredTypePolicies.map((policy) => {
+                      const vehicleLabel = getVehicleLabel(policy);
+                      const displayLabel = type === "auto" && vehicleLabel 
+                        ? vehicleLabel 
+                        : policy.policyName || policy.policyNumber;
 
-                    <div className="space-y-3 mb-4">
-                      <div className="flex justify-between text-sm gap-2">
-                        <span className="text-muted-foreground">{t("policies.policyNumber")}</span>
-                        <span className="font-medium truncate">{policy.policyNumber}</span>
-                      </div>
-                      <div className="flex justify-between text-sm gap-2">
-                        <span className="text-muted-foreground">{t("policies.premium")}</span>
-                        <span className="font-medium">{formatPremium(policy.premium, policy.premiumFrequency)}</span>
-                      </div>
-                      <div className="flex justify-between text-sm gap-2">
-                        <span className="text-muted-foreground">{t("policies.expires")}</span>
-                        <span className="font-medium">
-                          {new Date(policy.endDate).toLocaleDateString("el-GR")}
-                        </span>
-                      </div>
-                      {policy.holderName && (
-                        <div className="flex justify-between text-sm gap-2">
-                          <span className="text-muted-foreground">{t("addPolicy.holderName")}</span>
-                          <span className="font-medium truncate">{policy.holderName}</span>
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="flex items-center justify-between pt-4 border-t border-border/50 text-sm text-primary font-medium">
-                      {t("policies.viewDetails")} <ChevronRight className="h-4 w-4" />
-                    </div>
-                  </Card>
-                </Link>
+                      return (
+                        <Link key={policy.id} href={`/policies/${policy.id}`}>
+                          <div 
+                            className="px-5 py-4 hover:bg-muted/30 transition-colors cursor-pointer"
+                            data-testid={`row-policy-${policy.id}`}
+                          >
+                            <div className="flex items-center justify-between gap-4">
+                              <div className="flex items-center gap-3 min-w-0 flex-1">
+                                <div className="h-2 w-2 rounded-full bg-primary flex-shrink-0" />
+                                <span className="font-medium text-foreground truncate">
+                                  {displayLabel || t("policies.unknownVehicle")}
+                                </span>
+                              </div>
+                              <ChevronRight className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                            </div>
+                            
+                            <div className="ml-5 mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
+                              <span>
+                                <span className="font-medium text-foreground">
+                                  {formatPremium(policy.premium, policy.premiumFrequency)}
+                                </span>
+                              </span>
+                              <span>
+                                {t("policies.renewalDuration")}: {getRenewalDuration(policy.premiumFrequency, t)}
+                              </span>
+                              <Badge className={`${getStatusBadgeClass(policy.status)} text-[10px] px-1.5 py-0`}>
+                                {t(`common.${policy.status}`)}
+                              </Badge>
+                              <span>
+                                {t("policies.expires")}: {new Date(policy.endDate).toLocaleDateString("el-GR")}
+                              </span>
+                            </div>
+                          </div>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </Card>
               );
             })}
           </div>
