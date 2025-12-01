@@ -10,6 +10,59 @@ export const users = pgTable("users", {
   password: text("password").notNull(),
 });
 
+// Greek Insurers Table
+export const insurers = pgTable("insurers", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: text("name").notNull(),
+  nameEn: text("name_en"),
+  logo: text("logo"), // URL or base64 encoded logo
+  website: text("website"),
+  phone: text("phone"),
+  email: text("email"),
+  address: text("address"),
+  supportedTypes: text("supported_types").array(), // Array of insurance types: "health", "auto", "home", "life", "travel", etc.
+  isActive: boolean("is_active").notNull().default(true),
+  createdAt: timestamp("created_at").notNull().default(sql`now()`),
+});
+
+// User Policies Table
+export const policies = pgTable("policies", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull(),
+  insurerId: varchar("insurer_id").notNull(),
+  policyNumber: text("policy_number").notNull(),
+  policyType: text("policy_type").notNull(), // "health", "auto", "home", "life", "travel", "pet", "business"
+  policyName: text("policy_name"),
+  startDate: timestamp("start_date").notNull(),
+  endDate: timestamp("end_date").notNull(),
+  premium: decimal("premium", { precision: 10, scale: 2 }).notNull(),
+  premiumFrequency: text("premium_frequency").notNull().default("annual"), // "monthly", "quarterly", "annual"
+  coverageAmount: decimal("coverage_amount", { precision: 12, scale: 2 }),
+  deductible: decimal("deductible", { precision: 10, scale: 2 }),
+  status: text("status").notNull().default("active"), // "active", "expired", "cancelled", "pending"
+  autoRenew: boolean("auto_renew").notNull().default(false),
+  // Customer data from document parsing
+  holderName: text("holder_name"),
+  holderAfm: text("holder_afm"), // Greek Tax ID
+  holderAddress: text("holder_address"),
+  holderPhone: text("holder_phone"),
+  holderEmail: text("holder_email"),
+  // Policy-specific data (stored as JSON)
+  coverageDetails: jsonb("coverage_details"), // Detailed coverage info
+  vehicleData: jsonb("vehicle_data"), // For auto insurance: make, model, plate, VIN
+  propertyData: jsonb("property_data"), // For home insurance: address, sqm, type
+  healthData: jsonb("health_data"), // For health insurance: hospital network, max coverage
+  lifeData: jsonb("life_data"), // For life insurance: beneficiaries, sum assured
+  // Document info
+  documentUrl: text("document_url"),
+  documentParsedData: jsonb("document_parsed_data"), // Raw AI parsed data
+  // Metadata
+  addedMethod: text("added_method").notNull().default("manual"), // "document", "search", "manual"
+  notes: text("notes"),
+  createdAt: timestamp("created_at").notNull().default(sql`now()`),
+  updatedAt: timestamp("updated_at").notNull().default(sql`now()`),
+});
+
 export const healthCheckups = pgTable("health_checkups", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   userId: varchar("user_id").notNull(),
@@ -138,6 +191,17 @@ export const insertUserSchema = createInsertSchema(users).pick({
   password: true,
 });
 
+export const insertInsurerSchema = createInsertSchema(insurers).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertPolicySchema = createInsertSchema(policies).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 export const insertHealthCheckupSchema = createInsertSchema(healthCheckups).omit({
   id: true,
   createdAt: true,
@@ -184,6 +248,12 @@ export const insertDailyWellnessLogSchema = createInsertSchema(dailyWellnessLogs
 // Types
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
+
+export type InsertInsurer = z.infer<typeof insertInsurerSchema>;
+export type Insurer = typeof insurers.$inferSelect;
+
+export type InsertPolicy = z.infer<typeof insertPolicySchema>;
+export type Policy = typeof policies.$inferSelect;
 
 export type InsertHealthCheckup = z.infer<typeof insertHealthCheckupSchema>;
 export type HealthCheckup = typeof healthCheckups.$inferSelect;
