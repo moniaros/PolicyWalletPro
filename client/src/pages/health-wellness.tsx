@@ -229,14 +229,14 @@ const activityTypeIcons: Record<string, any> = {
   default: Activity
 };
 
-const activityTypeLabels: Record<string, string> = {
-  Run: "Τρέξιμο",
-  Ride: "Ποδηλασία",
-  Swim: "Κολύμβηση",
-  Walk: "Περπάτημα",
-  Hike: "Πεζοπορία",
-  Workout: "Προπόνηση",
-};
+const getActivityTypeLabels = (t: (key: string) => string): Record<string, string> => ({
+  Run: t("wellness.strava.activityTypes.run"),
+  Ride: t("wellness.strava.activityTypes.ride"),
+  Swim: t("wellness.strava.activityTypes.swim"),
+  Walk: t("wellness.strava.activityTypes.walk"),
+  Hike: t("wellness.strava.activityTypes.hike"),
+  Workout: t("wellness.strava.activityTypes.workout"),
+});
 
 export default function HealthWellnessPage() {
   const { t } = useTranslation();
@@ -486,22 +486,22 @@ export default function HealthWellnessPage() {
             
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 flex-wrap mb-1">
-                <h2 className="text-base font-bold text-foreground">Δείκτης Ευεξίας</h2>
+                <h2 className="text-base font-bold text-foreground">{t("wellness.wellnessIndex")}</h2>
                 <Badge variant="outline" className={`text-xs ${getScoreColor(wellnessScore)} border-current`}>
                   {getScoreLabel(wellnessScore)}
                 </Badge>
               </div>
               <p className="text-xs text-muted-foreground mb-2">
-                Βασισμένο σε ιατρικούς ελέγχους, στόχους υγείας και προληπτικές ενέργειες
+                {t("wellness.wellnessIndexDesc")}
               </p>
               <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs">
                 <div className="flex items-center gap-1">
                   <CheckCircle2 className="h-3 w-3 text-emerald-500" />
-                  <span className="text-muted-foreground">{completedActions}/{totalActions} Ενέργειες</span>
+                  <span className="text-muted-foreground">{completedActions}/{totalActions} {t("wellness.actions")}</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Stethoscope className="h-3 w-3 text-blue-500" />
-                  <span className="text-muted-foreground">{examsUpToDate}/{totalExams} Εξετάσεις</span>
+                  <span className="text-muted-foreground">{examsUpToDate}/{totalExams} {t("wellness.exams")}</span>
                 </div>
               </div>
             </div>
@@ -522,14 +522,14 @@ export default function HealthWellnessPage() {
                   <h3 className="font-bold text-sm text-foreground">Strava</h3>
                   {stravaConnected && (
                     <Badge variant="outline" className="text-xs px-1.5 py-0 text-emerald-600 border-emerald-200 dark:text-emerald-400 dark:border-emerald-800">
-                      Συνδεδεμένο
+                      {t("wellness.strava.connected")}
                     </Badge>
                   )}
                 </div>
                 <p className="text-xs text-muted-foreground truncate">
                   {stravaConnected 
-                    ? `Συγχρονισμός για ${stravaData.athleteName}` 
-                    : "Συγχρονισμός δραστηριοτήτων fitness"}
+                    ? t("wellness.strava.syncFor", { name: stravaData.athleteName }) 
+                    : t("wellness.strava.syncActivities")}
                 </p>
               </div>
             </div>
@@ -539,7 +539,7 @@ export default function HealthWellnessPage() {
                   variant="ghost" 
                   size="icon" 
                   className="h-8 w-8"
-                  onClick={() => toast.success("Συγχρονισμός ολοκληρώθηκε!")}
+                  onClick={() => toast.success(t("wellness.strava.syncComplete"))}
                   data-testid="button-sync-strava"
                 >
                   <RefreshCw className="h-4 w-4" />
@@ -562,7 +562,7 @@ export default function HealthWellnessPage() {
                 data-testid="button-connect-strava"
               >
                 <Link2 className="h-4 w-4 mr-1" />
-                Σύνδεση
+                {t("wellness.strava.connect")}
               </Button>
             )}
           </div>
@@ -574,25 +574,25 @@ export default function HealthWellnessPage() {
                   <p className="text-sm font-bold text-orange-600 dark:text-orange-400">
                     {formatDistance(weeklyStats.totalDistance)}
                   </p>
-                  <p className="text-[10px] text-muted-foreground">Απόσταση</p>
+                  <p className="text-[10px] text-muted-foreground">{t("wellness.strava.distance")}</p>
                 </div>
                 <div>
                   <p className="text-sm font-bold text-orange-600 dark:text-orange-400">
                     {formatDuration(weeklyStats.totalTime)}
                   </p>
-                  <p className="text-[10px] text-muted-foreground">Χρόνος</p>
+                  <p className="text-[10px] text-muted-foreground">{t("wellness.strava.time")}</p>
                 </div>
                 <div>
                   <p className="text-sm font-bold text-orange-600 dark:text-orange-400">
                     {weeklyStats.totalCalories}
                   </p>
-                  <p className="text-[10px] text-muted-foreground">Θερμίδες</p>
+                  <p className="text-[10px] text-muted-foreground">{t("wellness.strava.calories")}</p>
                 </div>
                 <div>
                   <p className="text-sm font-bold text-orange-600 dark:text-orange-400">
                     {weeklyStats.activityCount}
                   </p>
-                  <p className="text-[10px] text-muted-foreground">Ασκήσεις</p>
+                  <p className="text-[10px] text-muted-foreground">{t("wellness.strava.workouts")}</p>
                 </div>
               </div>
             </div>
@@ -609,7 +609,7 @@ export default function HealthWellnessPage() {
             >
               <div className="flex items-center gap-2">
                 <Activity className="h-4 w-4 text-orange-500" />
-                <span className="text-sm font-semibold text-foreground">Πρόσφατες Δραστηριότητες</span>
+                <span className="text-sm font-semibold text-foreground">{t("wellness.strava.recentActivities")}</span>
                 <Badge variant="secondary" className="text-xs px-1.5 py-0">{stravaData.activities.length}</Badge>
               </div>
               {showStravaActivities ? (
@@ -623,6 +623,7 @@ export default function HealthWellnessPage() {
               <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 scrollbar-hide snap-x snap-mandatory">
                 {stravaData.activities.map((activity) => {
                   const ActivityIcon = activityTypeIcons[activity.type] || activityTypeIcons.default;
+                  const activityTypeLabels = getActivityTypeLabels(t);
                   const activityLabel = activityTypeLabels[activity.type] || activity.type;
                   return (
                     <Card key={activity.id} className="p-3 min-w-[180px] flex-shrink-0 border border-border/50 snap-start" data-testid={`activity-${activity.id}`}>
@@ -664,7 +665,7 @@ export default function HealthWellnessPage() {
           <div className="flex items-center justify-between px-1">
             <div className="flex items-center gap-2">
               <Target className="h-4 w-4 text-primary" />
-              <span className="text-sm font-semibold text-foreground">Ημερήσιοι Στόχοι Υγείας</span>
+              <span className="text-sm font-semibold text-foreground">{t("wellness.dailyHealthGoals")}</span>
             </div>
             <Button
               variant="ghost"
@@ -676,12 +677,12 @@ export default function HealthWellnessPage() {
               {isEditingMetrics ? (
                 <>
                   <Save className="h-3 w-3 mr-1" />
-                  Αποθήκευση
+                  {t("common.save")}
                 </>
               ) : (
                 <>
                   <Edit3 className="h-3 w-3 mr-1" />
-                  Επεξεργασία
+                  {t("common.edit")}
                 </>
               )}
             </Button>
