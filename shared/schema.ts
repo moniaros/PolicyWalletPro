@@ -185,6 +185,142 @@ export const dailyWellnessLogs = pgTable("daily_wellness_logs", {
   updatedAt: timestamp("updated_at").notNull().default(sql`now()`),
 });
 
+// Policy Documents Table - Stores uploaded document files
+export const policyDocuments = pgTable("policy_documents", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  policyId: varchar("policy_id").notNull(),
+  userId: varchar("user_id").notNull(),
+  documentType: text("document_type").notNull(), // "policy", "certificate", "endorsement", "receipt", "claim", "id_card"
+  fileName: text("file_name").notNull(),
+  fileType: text("file_type").notNull(), // "application/pdf", "image/jpeg", etc.
+  fileSize: integer("file_size"), // bytes
+  fileData: text("file_data"), // base64 encoded file content
+  fileUrl: text("file_url"), // external URL if stored elsewhere
+  extractedText: text("extracted_text"), // OCR/parsed text content
+  aiParsedData: jsonb("ai_parsed_data"), // Full AI extracted structured data
+  parseStatus: text("parse_status").notNull().default("pending"), // "pending", "processing", "completed", "failed"
+  parseError: text("parse_error"),
+  createdAt: timestamp("created_at").notNull().default(sql`now()`),
+});
+
+// Policy Beneficiaries Table - Stores beneficiaries for life/health policies
+export const policyBeneficiaries = pgTable("policy_beneficiaries", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  policyId: varchar("policy_id").notNull(),
+  userId: varchar("user_id").notNull(),
+  beneficiaryType: text("beneficiary_type").notNull(), // "primary", "contingent", "irrevocable"
+  fullName: text("full_name").notNull(),
+  relationship: text("relationship").notNull(), // "spouse", "child", "parent", "sibling", "other"
+  dateOfBirth: text("date_of_birth"),
+  afm: text("afm"), // Greek Tax ID
+  idNumber: text("id_number"), // ID card or passport
+  percentage: decimal("percentage", { precision: 5, scale: 2 }).notNull(), // % of benefit
+  address: text("address"),
+  phone: text("phone"),
+  email: text("email"),
+  notes: text("notes"),
+  createdAt: timestamp("created_at").notNull().default(sql`now()`),
+});
+
+// Policy Drivers Table - Stores drivers for auto insurance policies
+export const policyDrivers = pgTable("policy_drivers", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  policyId: varchar("policy_id").notNull(),
+  userId: varchar("user_id").notNull(),
+  driverType: text("driver_type").notNull(), // "primary", "secondary", "occasional"
+  fullName: text("full_name").notNull(),
+  dateOfBirth: text("date_of_birth").notNull(),
+  afm: text("afm"), // Greek Tax ID
+  licenseNumber: text("license_number").notNull(),
+  licenseIssueDate: text("license_issue_date"),
+  licenseExpiryDate: text("license_expiry_date"),
+  licenseCategories: text("license_categories").array(), // ["B", "A1", "C"]
+  yearsLicensed: integer("years_licensed"),
+  accidentHistory: jsonb("accident_history"), // [{date, description, atFault}]
+  violations: jsonb("violations"), // [{date, type, points}]
+  address: text("address"),
+  phone: text("phone"),
+  email: text("email"),
+  createdAt: timestamp("created_at").notNull().default(sql`now()`),
+});
+
+// Policy Coverages Table - Detailed coverage breakdown
+export const policyCoverages = pgTable("policy_coverages", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  policyId: varchar("policy_id").notNull(),
+  userId: varchar("user_id").notNull(),
+  coverageType: text("coverage_type").notNull(), // "liability", "collision", "comprehensive", "medical", "dental", "vision"
+  coverageName: text("coverage_name").notNull(), // Display name
+  coverageNameEl: text("coverage_name_el"), // Greek name
+  description: text("description"),
+  descriptionEl: text("description_el"), // Greek description
+  limitAmount: decimal("limit_amount", { precision: 12, scale: 2 }), // Coverage limit in EUR
+  limitType: text("limit_type"), // "per_incident", "annual", "lifetime", "per_person"
+  deductible: decimal("deductible", { precision: 10, scale: 2 }),
+  coPayPercent: decimal("co_pay_percent", { precision: 5, scale: 2 }), // Co-pay percentage
+  waitingPeriod: integer("waiting_period"), // Days before coverage begins
+  isActive: boolean("is_active").notNull().default(true),
+  exclusions: text("exclusions").array(), // List of exclusions
+  conditions: text("conditions").array(), // Special conditions
+  createdAt: timestamp("created_at").notNull().default(sql`now()`),
+});
+
+// Policy Vehicles Table - Vehicle details for auto insurance
+export const policyVehicles = pgTable("policy_vehicles", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  policyId: varchar("policy_id").notNull(),
+  userId: varchar("user_id").notNull(),
+  vehicleType: text("vehicle_type").notNull(), // "car", "motorcycle", "truck", "van"
+  make: text("make").notNull(),
+  model: text("model").notNull(),
+  year: integer("year").notNull(),
+  licensePlate: text("license_plate").notNull(),
+  vin: text("vin"), // Vehicle Identification Number
+  engineSize: text("engine_size"), // cc
+  fuelType: text("fuel_type"), // "petrol", "diesel", "electric", "hybrid", "lpg"
+  color: text("color"),
+  currentMileage: integer("current_mileage"),
+  purchaseDate: text("purchase_date"),
+  purchasePrice: decimal("purchase_price", { precision: 10, scale: 2 }),
+  marketValue: decimal("market_value", { precision: 10, scale: 2 }),
+  garageAddress: text("garage_address"),
+  primaryUse: text("primary_use"), // "personal", "commute", "business"
+  annualMileage: integer("annual_mileage"),
+  hasAlarm: boolean("has_alarm").default(false),
+  hasTracker: boolean("has_tracker").default(false),
+  modifications: text("modifications").array(),
+  createdAt: timestamp("created_at").notNull().default(sql`now()`),
+});
+
+// Policy Properties Table - Property details for home/property insurance
+export const policyProperties = pgTable("policy_properties", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  policyId: varchar("policy_id").notNull(),
+  userId: varchar("user_id").notNull(),
+  propertyType: text("property_type").notNull(), // "apartment", "house", "villa", "commercial", "land"
+  address: text("address").notNull(),
+  city: text("city"),
+  postalCode: text("postal_code"),
+  region: text("region"),
+  country: text("country").default("Greece"),
+  squareMeters: decimal("square_meters", { precision: 8, scale: 2 }),
+  yearBuilt: integer("year_built"),
+  constructionType: text("construction_type"), // "concrete", "brick", "wood", "steel"
+  numberOfFloors: integer("number_of_floors"),
+  floorNumber: integer("floor_number"), // For apartments
+  hasBasement: boolean("has_basement").default(false),
+  hasGarage: boolean("has_garage").default(false),
+  hasPool: boolean("has_pool").default(false),
+  hasGarden: boolean("has_garden").default(false),
+  heatingType: text("heating_type"), // "central", "autonomous", "ac", "fireplace"
+  securitySystem: text("security_system"), // "alarm", "cctv", "guard", "none"
+  buildingValue: decimal("building_value", { precision: 12, scale: 2 }),
+  contentsValue: decimal("contents_value", { precision: 12, scale: 2 }),
+  isRented: boolean("is_rented").default(false),
+  occupancyType: text("occupancy_type"), // "primary", "secondary", "vacation", "rental"
+  createdAt: timestamp("created_at").notNull().default(sql`now()`),
+});
+
 // Insert Schemas
 export const insertUserSchema = createInsertSchema(users).pick({
   email: true,
@@ -245,6 +381,36 @@ export const insertDailyWellnessLogSchema = createInsertSchema(dailyWellnessLogs
   updatedAt: true,
 });
 
+export const insertPolicyDocumentSchema = createInsertSchema(policyDocuments).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertPolicyBeneficiarySchema = createInsertSchema(policyBeneficiaries).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertPolicyDriverSchema = createInsertSchema(policyDrivers).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertPolicyCoverageSchema = createInsertSchema(policyCoverages).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertPolicyVehicleSchema = createInsertSchema(policyVehicles).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertPolicyPropertySchema = createInsertSchema(policyProperties).omit({
+  id: true,
+  createdAt: true,
+});
+
 // Types
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
@@ -278,3 +444,21 @@ export type StravaConnection = typeof stravaConnections.$inferSelect;
 
 export type InsertDailyWellnessLog = z.infer<typeof insertDailyWellnessLogSchema>;
 export type DailyWellnessLog = typeof dailyWellnessLogs.$inferSelect;
+
+export type InsertPolicyDocument = z.infer<typeof insertPolicyDocumentSchema>;
+export type PolicyDocument = typeof policyDocuments.$inferSelect;
+
+export type InsertPolicyBeneficiary = z.infer<typeof insertPolicyBeneficiarySchema>;
+export type PolicyBeneficiary = typeof policyBeneficiaries.$inferSelect;
+
+export type InsertPolicyDriver = z.infer<typeof insertPolicyDriverSchema>;
+export type PolicyDriver = typeof policyDrivers.$inferSelect;
+
+export type InsertPolicyCoverage = z.infer<typeof insertPolicyCoverageSchema>;
+export type PolicyCoverage = typeof policyCoverages.$inferSelect;
+
+export type InsertPolicyVehicle = z.infer<typeof insertPolicyVehicleSchema>;
+export type PolicyVehicle = typeof policyVehicles.$inferSelect;
+
+export type InsertPolicyProperty = z.infer<typeof insertPolicyPropertySchema>;
+export type PolicyProperty = typeof policyProperties.$inferSelect;
