@@ -22,6 +22,7 @@ import ClaimsPage from "@/pages/claims";
 import HealthWellnessPage from "@/pages/health-wellness";
 import AdminDashboard from "@/pages/admin-dashboard";
 import LoginPage from "@/pages/login";
+import OnboardingPage from "@/pages/onboarding";
 import NotFound from "@/pages/not-found";
 import RenewalsPage from "@/pages/renewals";
 import BillingPage from "@/pages/billing";
@@ -31,6 +32,10 @@ import InsuranceHealthPage from "@/pages/insurance-health";
 import AddPolicyPage from "@/pages/add-policy";
 
 function Router() {
+  const [hasSeenOnboarding, setHasSeenOnboarding] = useState(() => {
+    return localStorage.getItem("hasSeenOnboarding") === "true";
+  });
+  
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     return !!localStorage.getItem("auth_token");
   });
@@ -38,11 +43,26 @@ function Router() {
   useEffect(() => {
     const handleStorageChange = () => {
       setIsAuthenticated(!!localStorage.getItem("auth_token"));
+      setHasSeenOnboarding(localStorage.getItem("hasSeenOnboarding") === "true");
     };
 
     window.addEventListener("storage", handleStorageChange);
     return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
+
+  const handleOnboardingComplete = () => {
+    localStorage.setItem("hasSeenOnboarding", "true");
+    setHasSeenOnboarding(true);
+  };
+
+  if (!hasSeenOnboarding) {
+    return (
+      <OnboardingPage 
+        onComplete={handleOnboardingComplete} 
+        onSignIn={handleOnboardingComplete}
+      />
+    );
+  }
 
   if (!isAuthenticated) {
     return <LoginPage />;

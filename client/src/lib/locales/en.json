@@ -3,6 +3,32 @@
     "name": "PolicyWallet",
     "tagline": "Your Insurance Wallet"
   },
+  "onboarding": {
+    "getStarted": "Get Started",
+    "signIn": "Sign In",
+    "slides": {
+      "hub": {
+        "title": "One hub for all your insurance needs",
+        "description": "Manage and organize all your insurance policies in one seamless digital wallet."
+      },
+      "organize": {
+        "title": "Organize all your policy documents",
+        "description": "Whether it's home, auto, health, or life, pull all your insurance details into one place."
+      },
+      "compare": {
+        "title": "Understand how your coverage stacks up",
+        "description": "Analyze your rates and coverage, identify gaps, and save money on your insurance."
+      },
+      "alerts": {
+        "title": "Never miss important dates",
+        "description": "Get notifications for renewals, payments, and policy expirations."
+      },
+      "wellness": {
+        "title": "Track your health and wellness",
+        "description": "Connect your health apps and track preventive checkups for better coverage."
+      }
+    }
+  },
   "pwa": {
     "updateAvailable": "New version available",
     "updateDescription": "Refresh to see the latest improvements.",
@@ -903,7 +929,7 @@
     "securityAlerts": "Security Alerts",
     "criticalAlertsOnly": "Critical Alerts Only"
   },
-  "onboarding": {
+  "onboardingOld": {
     "steps": "Onboarding steps",
     "skipTutorial": "Skip onboarding tutorial",
     "completeAndContinue": "Complete onboarding and continue"
