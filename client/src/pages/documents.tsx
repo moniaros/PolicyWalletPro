@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 import { 
   Search, 
   Download, 
@@ -16,12 +17,16 @@ import {
   Share2,
   Trash2,
   MoreVertical,
-  Grid3X3,
-  List,
   X,
   Clock,
   Shield,
-  CheckCircle2
+  CheckCircle2,
+  AlertCircle,
+  AlertTriangle,
+  TrendingUp,
+  Calendar,
+  ChevronRight,
+  Sparkles
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -31,6 +36,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
+import { Link } from "wouter";
 
 interface Document {
   id: number;
@@ -39,17 +45,20 @@ interface Document {
   date: string;
   size: string;
   provider?: string;
+  status: "verified" | "pending" | "needs_review";
+  policyId?: number;
+  expiryDate?: string;
 }
 
 const documentsData: Document[] = [
-  { id: 1, name: "NN Health Policy Schedule 2025", type: "Policy", date: "2025-01-01", size: "1.2 MB", provider: "NN Hellas" },
-  { id: 2, name: "NN Tax Certificate 2024", type: "Tax", date: "2025-02-15", size: "0.8 MB", provider: "NN Hellas" },
-  { id: 3, name: "Generali Green Card (EU)", type: "ID Card", date: "2025-06-15", size: "0.5 MB", provider: "Generali" },
-  { id: 4, name: "Generali Auto Contract", type: "Policy", date: "2025-06-15", size: "2.4 MB", provider: "Generali" },
-  { id: 5, name: "Ergo Home Insurance Schedule", type: "Policy", date: "2024-09-01", size: "1.5 MB", provider: "Ergo" },
-  { id: 6, name: "Claim Report #CLM-NN-001", type: "Claim", date: "2025-09-12", size: "3.1 MB", provider: "NN Hellas" },
-  { id: 7, name: "Interamerican Life Policy", type: "Policy", date: "2024-03-15", size: "1.8 MB", provider: "Interamerican" },
-  { id: 8, name: "Pet Insurance Card - Max", type: "ID Card", date: "2025-01-10", size: "0.3 MB", provider: "Petplan" },
+  { id: 1, name: "NN Health Policy Schedule 2025", type: "Policy", date: "2025-01-01", size: "1.2 MB", provider: "NN Hellas", status: "verified", policyId: 1, expiryDate: "2025-12-31" },
+  { id: 2, name: "NN Tax Certificate 2024", type: "Tax", date: "2025-02-15", size: "0.8 MB", provider: "NN Hellas", status: "verified" },
+  { id: 3, name: "Generali Green Card (EU)", type: "ID Card", date: "2025-06-15", size: "0.5 MB", provider: "Generali", status: "verified", policyId: 2, expiryDate: "2025-06-15" },
+  { id: 4, name: "Generali Auto Contract", type: "Policy", date: "2025-06-15", size: "2.4 MB", provider: "Generali", status: "pending", policyId: 2 },
+  { id: 5, name: "Ergo Home Insurance Schedule", type: "Policy", date: "2024-09-01", size: "1.5 MB", provider: "Ergo", status: "needs_review", policyId: 3 },
+  { id: 6, name: "Claim Report #CLM-NN-001", type: "Claim", date: "2025-09-12", size: "3.1 MB", provider: "NN Hellas", status: "verified" },
+  { id: 7, name: "Interamerican Life Policy", type: "Policy", date: "2024-03-15", size: "1.8 MB", provider: "Interamerican", status: "pending", policyId: 4 },
+  { id: 8, name: "Pet Insurance Card - Max", type: "ID Card", date: "2025-01-10", size: "0.3 MB", provider: "Petplan", status: "verified", policyId: 5 },
 ];
 
 const typeConfig = {
@@ -75,7 +84,28 @@ const typeConfig = {
     icon: FileBarChart, 
     color: "text-purple-600 dark:text-purple-400", 
     bg: "bg-purple-100 dark:bg-purple-900/40",
-    label: "Tax Documents"
+    label: "Tax Docs"
+  }
+};
+
+const statusConfig = {
+  verified: {
+    label: "Verified",
+    color: "text-emerald-600 dark:text-emerald-400",
+    bg: "bg-emerald-100 dark:bg-emerald-900/40",
+    icon: CheckCircle2
+  },
+  pending: {
+    label: "Pending",
+    color: "text-amber-600 dark:text-amber-400",
+    bg: "bg-amber-100 dark:bg-amber-900/40",
+    icon: Clock
+  },
+  needs_review: {
+    label: "Needs Review",
+    color: "text-red-600 dark:text-red-400",
+    bg: "bg-red-100 dark:bg-red-900/40",
+    icon: AlertCircle
   }
 };
 
@@ -91,27 +121,45 @@ const isRecent = (dateStr: string) => {
   return diffDays < 30;
 };
 
+const isExpiringSoon = (dateStr?: string) => {
+  if (!dateStr) return false;
+  const date = new Date(dateStr);
+  const now = new Date();
+  const diffDays = Math.floor((date.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+  return diffDays > 0 && diffDays < 30;
+};
+
 export default function DocumentsPage() {
   const [search, setSearch] = useState("");
   const [activeFilter, setActiveFilter] = useState<string>("all");
-  const [viewMode, setViewMode] = useState<"grid" | "list">("list");
 
   const filteredDocs = documentsData.filter(doc => {
     const matchesSearch = doc.name.toLowerCase().includes(search.toLowerCase()) ||
                           doc.provider?.toLowerCase().includes(search.toLowerCase());
-    const matchesType = activeFilter === "all" || doc.type === activeFilter;
+    const matchesType = activeFilter === "all" || doc.type === activeFilter || doc.status === activeFilter;
     return matchesSearch && matchesType;
   });
 
-  const recentDocs = documentsData.filter(doc => isRecent(doc.date)).slice(0, 3);
-
-  const typeCounts = {
-    all: documentsData.length,
-    Policy: documentsData.filter(d => d.type === "Policy").length,
-    Claim: documentsData.filter(d => d.type === "Claim").length,
-    "ID Card": documentsData.filter(d => d.type === "ID Card").length,
-    Tax: documentsData.filter(d => d.type === "Tax").length,
+  // Calculate Document Health Score
+  const verifiedCount = documentsData.filter(d => d.status === "verified").length;
+  const pendingCount = documentsData.filter(d => d.status === "pending").length;
+  const needsReviewCount = documentsData.filter(d => d.status === "needs_review").length;
+  const totalDocs = documentsData.length;
+  
+  const documentHealthScore = Math.round((verifiedCount / totalDocs) * 100);
+  const getHealthColor = (score: number) => {
+    if (score >= 80) return "text-emerald-600 dark:text-emerald-400";
+    if (score >= 50) return "text-amber-600 dark:text-amber-400";
+    return "text-red-600 dark:text-red-400";
   };
+  const getHealthBg = (score: number) => {
+    if (score >= 80) return "from-emerald-500 to-emerald-600";
+    if (score >= 50) return "from-amber-500 to-amber-600";
+    return "from-red-500 to-red-600";
+  };
+
+  const expiringDocs = documentsData.filter(d => isExpiringSoon(d.expiryDate));
+  const recentDocs = documentsData.filter(d => isRecent(d.date)).slice(0, 4);
 
   const handleDownload = (doc: Document) => {
     toast.success(`Downloading ${doc.name}...`);
@@ -125,10 +173,6 @@ export default function DocumentsPage() {
     toast.success("Share link copied to clipboard");
   };
 
-  const handleDelete = (doc: Document) => {
-    toast.error(`Delete functionality coming soon`);
-  };
-
   return (
     <div className="min-h-screen bg-background pb-20">
       {/* Header */}
@@ -140,8 +184,8 @@ export default function DocumentsPage() {
                 <FolderOpen className="h-5 w-5 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-foreground">Documents</h1>
-                <p className="text-xs text-muted-foreground">{documentsData.length} files stored securely</p>
+                <h1 className="text-xl font-bold text-foreground">Document Vault</h1>
+                <p className="text-xs text-muted-foreground">{totalDocs} files stored securely</p>
               </div>
             </div>
             <Button size="sm" className="gap-2" data-testid="button-upload">
@@ -153,11 +197,160 @@ export default function DocumentsPage() {
       </div>
 
       <div className="max-w-4xl mx-auto px-4 py-6 space-y-6">
+        
+        {/* Document Health Score - Hero Widget */}
+        <Card className="p-5 border border-border/50 overflow-hidden relative">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-primary/10 to-transparent rounded-bl-full" />
+          <div className="flex items-center gap-5">
+            {/* Circular Progress */}
+            <div className="relative h-20 w-20 flex-shrink-0">
+              <svg className="w-20 h-20 -rotate-90" viewBox="0 0 36 36">
+                <path
+                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  className="text-muted/20"
+                />
+                <path
+                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                  fill="none"
+                  stroke="url(#gradient)"
+                  strokeWidth="3"
+                  strokeDasharray={`${documentHealthScore}, 100`}
+                  strokeLinecap="round"
+                />
+                <defs>
+                  <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" className={documentHealthScore >= 80 ? "text-emerald-500" : documentHealthScore >= 50 ? "text-amber-500" : "text-red-500"} stopColor="currentColor" />
+                    <stop offset="100%" className={documentHealthScore >= 80 ? "text-emerald-600" : documentHealthScore >= 50 ? "text-amber-600" : "text-red-600"} stopColor="currentColor" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className={`text-xl font-bold ${getHealthColor(documentHealthScore)}`}>{documentHealthScore}%</span>
+              </div>
+            </div>
+            
+            {/* Health Info */}
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-1">
+                <h2 className="text-lg font-bold text-foreground">Document Health</h2>
+                {documentHealthScore >= 80 && <CheckCircle2 className="h-4 w-4 text-emerald-500" />}
+              </div>
+              <p className="text-sm text-muted-foreground mb-3">
+                {documentHealthScore >= 80 
+                  ? "Excellent! Most documents are verified." 
+                  : documentHealthScore >= 50 
+                    ? "Good progress. Some documents need attention."
+                    : "Action needed. Review pending documents."}
+              </p>
+              <div className="flex items-center gap-4 text-xs">
+                <div className="flex items-center gap-1.5">
+                  <div className="h-2 w-2 rounded-full bg-emerald-500" />
+                  <span className="text-muted-foreground">{verifiedCount} Verified</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <div className="h-2 w-2 rounded-full bg-amber-500" />
+                  <span className="text-muted-foreground">{pendingCount} Pending</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <div className="h-2 w-2 rounded-full bg-red-500" />
+                  <span className="text-muted-foreground">{needsReviewCount} Review</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Card>
+
+        {/* Quick Stats Grid */}
+        <div className="grid grid-cols-4 gap-3">
+          <Card 
+            className={`p-3 cursor-pointer transition-all border ${activeFilter === "all" ? "border-primary bg-primary/5" : "border-border/50 hover:bg-muted/30"}`}
+            onClick={() => setActiveFilter("all")}
+            data-testid="filter-all"
+          >
+            <div className="text-center">
+              <p className="text-2xl font-bold text-foreground">{totalDocs}</p>
+              <p className="text-xs text-muted-foreground">Total</p>
+            </div>
+          </Card>
+          <Card 
+            className={`p-3 cursor-pointer transition-all border ${activeFilter === "verified" ? "border-emerald-500 bg-emerald-500/5" : "border-border/50 hover:bg-muted/30"}`}
+            onClick={() => setActiveFilter(activeFilter === "verified" ? "all" : "verified")}
+            data-testid="filter-verified"
+          >
+            <div className="text-center">
+              <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">{verifiedCount}</p>
+              <p className="text-xs text-muted-foreground">Verified</p>
+            </div>
+          </Card>
+          <Card 
+            className={`p-3 cursor-pointer transition-all border ${activeFilter === "pending" ? "border-amber-500 bg-amber-500/5" : "border-border/50 hover:bg-muted/30"}`}
+            onClick={() => setActiveFilter(activeFilter === "pending" ? "all" : "pending")}
+            data-testid="filter-pending"
+          >
+            <div className="text-center">
+              <p className="text-2xl font-bold text-amber-600 dark:text-amber-400">{pendingCount}</p>
+              <p className="text-xs text-muted-foreground">Pending</p>
+            </div>
+          </Card>
+          <Card 
+            className={`p-3 cursor-pointer transition-all border ${activeFilter === "needs_review" ? "border-red-500 bg-red-500/5" : "border-border/50 hover:bg-muted/30"}`}
+            onClick={() => setActiveFilter(activeFilter === "needs_review" ? "all" : "needs_review")}
+            data-testid="filter-review"
+          >
+            <div className="text-center">
+              <p className="text-2xl font-bold text-red-600 dark:text-red-400">{needsReviewCount}</p>
+              <p className="text-xs text-muted-foreground">Review</p>
+            </div>
+          </Card>
+        </div>
+
+        {/* Action Required Alert */}
+        {(pendingCount > 0 || needsReviewCount > 0) && (
+          <Card className="p-4 border-l-4 border-l-amber-500 bg-amber-50/50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800/50">
+            <div className="flex items-start gap-3">
+              <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
+              <div className="flex-1 min-w-0">
+                <h3 className="font-semibold text-sm text-amber-800 dark:text-amber-200">Action Required</h3>
+                <p className="text-sm text-amber-700 dark:text-amber-300 mt-0.5">
+                  {pendingCount > 0 && `${pendingCount} document${pendingCount > 1 ? 's' : ''} pending verification. `}
+                  {needsReviewCount > 0 && `${needsReviewCount} document${needsReviewCount > 1 ? 's' : ''} need${needsReviewCount === 1 ? 's' : ''} review.`}
+                </p>
+              </div>
+              <Button size="sm" variant="outline" className="flex-shrink-0 border-amber-300 text-amber-700 hover:bg-amber-100 dark:border-amber-700 dark:text-amber-300">
+                Review Now
+              </Button>
+            </div>
+          </Card>
+        )}
+
+        {/* Expiring Documents Alert */}
+        {expiringDocs.length > 0 && (
+          <Card className="p-4 border-l-4 border-l-red-500 bg-red-50/50 dark:bg-red-950/20 border-red-200 dark:border-red-800/50">
+            <div className="flex items-start gap-3">
+              <Calendar className="h-5 w-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+              <div className="flex-1 min-w-0">
+                <h3 className="font-semibold text-sm text-red-800 dark:text-red-200">Documents Expiring Soon</h3>
+                <p className="text-sm text-red-700 dark:text-red-300 mt-0.5">
+                  {expiringDocs.length} document{expiringDocs.length > 1 ? 's' : ''} will expire within 30 days.
+                </p>
+              </div>
+              <Link href="/renewals">
+                <Button size="sm" variant="outline" className="flex-shrink-0 border-red-300 text-red-700 hover:bg-red-100 dark:border-red-700 dark:text-red-300">
+                  View
+                </Button>
+              </Link>
+            </div>
+          </Card>
+        )}
+
         {/* Search Bar */}
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search documents..."
+            placeholder="Search documents by name or provider..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="pl-10 pr-10 h-11 bg-muted/50 border-border/50"
@@ -173,67 +366,70 @@ export default function DocumentsPage() {
           )}
         </div>
 
-        {/* Quick Stats */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        {/* Document Type Filter Pills */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-2 -mx-4 px-4 scrollbar-hide">
           {(Object.keys(typeConfig) as Array<keyof typeof typeConfig>).map((type) => {
             const config = typeConfig[type];
             const Icon = config.icon;
-            const count = typeCounts[type];
+            const count = documentsData.filter(d => d.type === type).length;
             const isActive = activeFilter === type;
             
             return (
-              <Card 
+              <Button
                 key={type}
-                className={`p-3 cursor-pointer transition-all border ${
-                  isActive 
-                    ? "border-primary bg-primary/5 ring-1 ring-primary/20" 
-                    : "border-border/50 hover:bg-muted/30"
-                }`}
+                variant={isActive ? "default" : "outline"}
+                size="sm"
+                className={`flex-shrink-0 gap-1.5 ${isActive ? "" : "border-border/50"}`}
                 onClick={() => setActiveFilter(isActive ? "all" : type)}
-                data-testid={`filter-${type.toLowerCase().replace(' ', '-')}`}
+                data-testid={`pill-${type.toLowerCase().replace(' ', '-')}`}
               >
-                <div className="flex items-center gap-3">
-                  <div className={`h-9 w-9 rounded-lg ${config.bg} flex items-center justify-center`}>
-                    <Icon className={`h-4 w-4 ${config.color}`} />
-                  </div>
-                  <div>
-                    <p className="text-lg font-bold text-foreground">{count}</p>
-                    <p className="text-xs text-muted-foreground">{config.label}</p>
-                  </div>
-                </div>
-              </Card>
+                <Icon className="h-3.5 w-3.5" />
+                {config.label}
+                <Badge variant="secondary" className="ml-1 px-1.5 py-0 text-xs">
+                  {count}
+                </Badge>
+              </Button>
             );
           })}
         </div>
 
-        {/* Recent Documents */}
+        {/* Recently Added Section */}
         {activeFilter === "all" && !search && recentDocs.length > 0 && (
           <div className="space-y-3">
-            <div className="flex items-center gap-2">
-              <Clock className="h-4 w-4 text-muted-foreground" />
-              <h2 className="text-sm font-semibold text-muted-foreground">Recently Added</h2>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Sparkles className="h-4 w-4 text-primary" />
+                <h2 className="text-sm font-semibold text-foreground">Recently Added</h2>
+              </div>
+              <Button variant="ghost" size="sm" className="text-xs text-muted-foreground">
+                View All <ChevronRight className="h-3 w-3 ml-1" />
+              </Button>
             </div>
             <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 scrollbar-hide">
               {recentDocs.map((doc) => {
-                const config = typeConfig[doc.type];
-                const Icon = config.icon;
+                const typeConf = typeConfig[doc.type];
+                const statusConf = statusConfig[doc.status];
+                const TypeIcon = typeConf.icon;
+                const StatusIcon = statusConf.icon;
                 
                 return (
                   <Card 
                     key={doc.id} 
-                    className="p-3 min-w-[200px] flex-shrink-0 border border-border/50 hover:shadow-md transition-all cursor-pointer"
+                    className="p-4 min-w-[220px] flex-shrink-0 border border-border/50 hover:shadow-md transition-all cursor-pointer"
                     onClick={() => handlePreview(doc)}
                     data-testid={`recent-doc-${doc.id}`}
                   >
-                    <div className="flex items-start gap-3">
-                      <div className={`h-10 w-10 rounded-lg ${config.bg} flex items-center justify-center flex-shrink-0`}>
-                        <Icon className={`h-5 w-5 ${config.color}`} />
+                    <div className="flex items-start justify-between gap-2 mb-3">
+                      <div className={`h-10 w-10 rounded-lg ${typeConf.bg} flex items-center justify-center`}>
+                        <TypeIcon className={`h-5 w-5 ${typeConf.color}`} />
                       </div>
-                      <div className="min-w-0">
-                        <p className="font-medium text-sm text-foreground truncate">{doc.name}</p>
-                        <p className="text-xs text-muted-foreground mt-0.5">{doc.size}</p>
-                      </div>
+                      <Badge variant="outline" className={`text-xs px-1.5 py-0 ${statusConf.color} border-current`}>
+                        <StatusIcon className="h-3 w-3 mr-1" />
+                        {statusConf.label}
+                      </Badge>
                     </div>
+                    <p className="font-medium text-sm text-foreground line-clamp-2 mb-1">{doc.name}</p>
+                    <p className="text-xs text-muted-foreground">{doc.provider} - {doc.size}</p>
                   </Card>
                 );
               })}
@@ -241,178 +437,136 @@ export default function DocumentsPage() {
           </div>
         )}
 
-        {/* Documents List Header */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
+        {/* Documents List */}
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
             <h2 className="text-sm font-semibold text-foreground">
-              {activeFilter === "all" ? "All Documents" : typeConfig[activeFilter as keyof typeof typeConfig]?.label}
+              {activeFilter === "all" ? "All Documents" : 
+               activeFilter in typeConfig ? typeConfig[activeFilter as keyof typeof typeConfig].label :
+               activeFilter in statusConfig ? `${statusConfig[activeFilter as keyof typeof statusConfig].label} Documents` : "Documents"}
             </h2>
             <Badge variant="secondary" className="text-xs px-2 py-0">
-              {filteredDocs.length}
+              {filteredDocs.length} {filteredDocs.length === 1 ? "file" : "files"}
             </Badge>
-            {activeFilter !== "all" && (
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-6 text-xs text-muted-foreground"
-                onClick={() => setActiveFilter("all")}
-              >
-                Clear filter
-              </Button>
-            )}
           </div>
-          <div className="flex items-center gap-1">
-            <Button
-              variant={viewMode === "list" ? "secondary" : "ghost"}
-              size="icon"
-              className="h-8 w-8"
-              onClick={() => setViewMode("list")}
-              data-testid="button-view-list"
-            >
-              <List className="h-4 w-4" />
-            </Button>
-            <Button
-              variant={viewMode === "grid" ? "secondary" : "ghost"}
-              size="icon"
-              className="h-8 w-8"
-              onClick={() => setViewMode("grid")}
-              data-testid="button-view-grid"
-            >
-              <Grid3X3 className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
 
-        {/* Documents Grid/List */}
-        {filteredDocs.length === 0 ? (
-          <Card className="p-12 text-center border-dashed">
-            <div className="h-16 w-16 rounded-full bg-muted/50 flex items-center justify-center mx-auto mb-4">
-              <FolderOpen className="h-8 w-8 text-muted-foreground/50" />
-            </div>
-            <h3 className="text-lg font-semibold text-foreground mb-1">No documents found</h3>
-            <p className="text-sm text-muted-foreground mb-4">
-              {search ? `No results for "${search}"` : "Upload your first document to get started"}
-            </p>
-            <Button variant="outline" onClick={() => { setSearch(""); setActiveFilter("all"); }}>
-              {search ? "Clear search" : "Upload Document"}
-            </Button>
-          </Card>
-        ) : viewMode === "list" ? (
-          <div className="space-y-2">
-            {filteredDocs.map((doc) => {
-              const config = typeConfig[doc.type];
-              const Icon = config.icon;
-              
-              return (
-                <Card 
-                  key={doc.id} 
-                  className="p-4 border border-border/50 hover:shadow-md transition-all"
-                  data-testid={`document-${doc.id}`}
-                >
-                  <div className="flex items-center gap-4">
-                    {/* Icon */}
-                    <div className={`h-12 w-12 rounded-xl ${config.bg} flex items-center justify-center flex-shrink-0`}>
-                      <Icon className={`h-6 w-6 ${config.color}`} />
-                    </div>
-                    
-                    {/* Content */}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="min-w-0">
-                          <h3 className="font-semibold text-sm text-foreground truncate">{doc.name}</h3>
-                          <div className="flex items-center gap-2 mt-1 flex-wrap">
-                            <Badge variant="outline" className="text-xs px-2 py-0">
-                              {doc.type}
-                            </Badge>
-                            {doc.provider && (
-                              <span className="text-xs text-muted-foreground">{doc.provider}</span>
-                            )}
-                            <span className="text-xs text-muted-foreground">{formatDate(doc.date)}</span>
-                            <span className="text-xs text-muted-foreground">{doc.size}</span>
+          {filteredDocs.length === 0 ? (
+            <Card className="p-12 text-center border-dashed">
+              <div className="h-16 w-16 rounded-full bg-muted/50 flex items-center justify-center mx-auto mb-4">
+                <FolderOpen className="h-8 w-8 text-muted-foreground/50" />
+              </div>
+              <h3 className="text-lg font-semibold text-foreground mb-1">No documents found</h3>
+              <p className="text-sm text-muted-foreground mb-4">
+                {search ? `No results for "${search}"` : "No documents match your filter"}
+              </p>
+              <Button variant="outline" onClick={() => { setSearch(""); setActiveFilter("all"); }}>
+                Clear filters
+              </Button>
+            </Card>
+          ) : (
+            <div className="space-y-2">
+              {filteredDocs.map((doc) => {
+                const typeConf = typeConfig[doc.type];
+                const statusConf = statusConfig[doc.status];
+                const TypeIcon = typeConf.icon;
+                const StatusIcon = statusConf.icon;
+                
+                return (
+                  <Card 
+                    key={doc.id} 
+                    className="p-4 border border-border/50 hover:shadow-md transition-all"
+                    data-testid={`document-${doc.id}`}
+                  >
+                    <div className="flex items-center gap-4">
+                      {/* Icon */}
+                      <div className={`h-12 w-12 rounded-xl ${typeConf.bg} flex items-center justify-center flex-shrink-0`}>
+                        <TypeIcon className={`h-6 w-6 ${typeConf.color}`} />
+                      </div>
+                      
+                      {/* Content */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="min-w-0">
+                            <h3 className="font-semibold text-sm text-foreground truncate">{doc.name}</h3>
+                            <div className="flex items-center gap-2 mt-1 flex-wrap">
+                              <Badge variant="outline" className="text-xs px-2 py-0">
+                                {doc.type}
+                              </Badge>
+                              <Badge 
+                                variant="outline" 
+                                className={`text-xs px-2 py-0 ${statusConf.color} border-current`}
+                              >
+                                <StatusIcon className="h-3 w-3 mr-1" />
+                                {statusConf.label}
+                              </Badge>
+                            </div>
+                            <div className="flex items-center gap-2 mt-1.5 text-xs text-muted-foreground">
+                              {doc.provider && <span>{doc.provider}</span>}
+                              <span>{formatDate(doc.date)}</span>
+                              <span>{doc.size}</span>
+                            </div>
                           </div>
                         </div>
                       </div>
+                      
+                      {/* Actions */}
+                      <div className="flex items-center gap-1">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-9 w-9"
+                          onClick={() => handleDownload(doc)}
+                          data-testid={`button-download-${doc.id}`}
+                        >
+                          <Download className="h-4 w-4" />
+                        </Button>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="icon" className="h-9 w-9" data-testid={`button-more-${doc.id}`}>
+                              <MoreVertical className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem onClick={() => handlePreview(doc)}>
+                              <Eye className="h-4 w-4 mr-2" />
+                              Preview
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => handleDownload(doc)}>
+                              <Download className="h-4 w-4 mr-2" />
+                              Download
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => handleShare(doc)}>
+                              <Share2 className="h-4 w-4 mr-2" />
+                              Share
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem className="text-red-600">
+                              <Trash2 className="h-4 w-4 mr-2" />
+                              Delete
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
                     </div>
-                    
-                    {/* Actions */}
-                    <div className="flex items-center gap-1">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-9 w-9"
-                        onClick={() => handleDownload(doc)}
-                        data-testid={`button-download-${doc.id}`}
-                      >
-                        <Download className="h-4 w-4" />
-                      </Button>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-9 w-9" data-testid={`button-more-${doc.id}`}>
-                            <MoreVertical className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem onClick={() => handlePreview(doc)}>
-                            <Eye className="h-4 w-4 mr-2" />
-                            Preview
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => handleDownload(doc)}>
-                            <Download className="h-4 w-4 mr-2" />
-                            Download
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => handleShare(doc)}>
-                            <Share2 className="h-4 w-4 mr-2" />
-                            Share
-                          </DropdownMenuItem>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem onClick={() => handleDelete(doc)} className="text-red-600">
-                            <Trash2 className="h-4 w-4 mr-2" />
-                            Delete
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </div>
-                  </div>
-                </Card>
-              );
-            })}
+                  </Card>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        {/* Storage Info Widget */}
+        <Card className="p-4 border border-border/50">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <TrendingUp className="h-4 w-4 text-primary" />
+              <h3 className="font-semibold text-sm text-foreground">Storage Usage</h3>
+            </div>
+            <span className="text-xs text-muted-foreground">12.6 MB / 100 MB</span>
           </div>
-        ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {filteredDocs.map((doc) => {
-              const config = typeConfig[doc.type];
-              const Icon = config.icon;
-              
-              return (
-                <Card 
-                  key={doc.id} 
-                  className="p-4 border border-border/50 hover:shadow-md transition-all cursor-pointer group"
-                  onClick={() => handlePreview(doc)}
-                  data-testid={`document-grid-${doc.id}`}
-                >
-                  <div className="flex flex-col items-center text-center">
-                    <div className={`h-16 w-16 rounded-2xl ${config.bg} flex items-center justify-center mb-3`}>
-                      <Icon className={`h-8 w-8 ${config.color}`} />
-                    </div>
-                    <h3 className="font-medium text-sm text-foreground line-clamp-2 mb-1">{doc.name}</h3>
-                    <p className="text-xs text-muted-foreground">{doc.size}</p>
-                    <div className="flex items-center gap-2 mt-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-7"
-                        onClick={(e) => { e.stopPropagation(); handleDownload(doc); }}
-                      >
-                        <Download className="h-3 w-3 mr-1" />
-                        Download
-                      </Button>
-                    </div>
-                  </div>
-                </Card>
-              );
-            })}
-          </div>
-        )}
+          <Progress value={12.6} className="h-2 mb-2" />
+          <p className="text-xs text-muted-foreground">87.4 MB available for new documents</p>
+        </Card>
 
         {/* Security Note */}
         <Card className="p-4 bg-muted/30 border-border/50">
@@ -426,7 +580,7 @@ export default function DocumentsPage() {
                 <CheckCircle2 className="h-4 w-4 text-emerald-500" />
               </h3>
               <p className="text-xs text-muted-foreground mt-0.5">
-                All files are encrypted and stored securely. Only you can access your insurance documents.
+                All files are encrypted with AES-256 and stored in compliance with GDPR regulations.
               </p>
             </div>
           </div>
