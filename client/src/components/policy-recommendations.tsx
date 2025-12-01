@@ -163,6 +163,7 @@ export function PolicyRecommendations({ analysis, onContactAgent }: PolicyRecomm
 }
 
 function RecommendationCard({ recommendation, onSelect }: { recommendation: PolicyRecommendation; onSelect: () => void }) {
+  const { t } = useTranslation();
   const config = priorityConfig[recommendation.priority];
   const Icon = config.icon;
   const isAddable = recommendation.type === "add" || recommendation.type === "enhance";
