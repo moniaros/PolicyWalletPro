@@ -425,7 +425,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
 
       const extractionPrompt = `You are an expert, highly accurate Greek/European insurance policy parser specializing in ACORD standards.
-Analyze the provided insurance document image or PDF thoroughly.
+Analyze the provided insurance document image or PDF thoroughly and extract EVERY piece of information available.
 
 CRITICAL INSTRUCTIONS:
 - Do NOT hallucinate or invent data. If a field is not clearly visible in the document, use null.
@@ -433,6 +433,39 @@ CRITICAL INSTRUCTIONS:
 - All monetary values should be numbers (no currency symbols).
 - For Greek documents, look for ΑΦΜ (9-digit tax ID), ΑΜΚΑ (social security), policy numbers.
 - Extract ALL coverages, benefits, and perks mentioned in the document.
+
+COMPREHENSIVE EXTRACTION REQUIREMENTS:
+1. INSURER DETAILS: Extract the insurance company's full name, address, phone numbers, email, website, customer support hotline, claims department contact, and any branch/office locations mentioned.
+
+2. POLICYHOLDER DATA: Extract complete personal information including name, tax ID (ΑΦΜ), social security (ΑΜΚΑ), ID number, address, contact details, occupation, and any co-insured persons.
+
+3. BENEFICIARIES: Extract all beneficiaries with their relationship, percentage share, and contact information.
+
+4. COVERAGES & LIMITS: Extract every coverage type with its limit, deductible, waiting period, and any conditions or exclusions.
+
+5. PERKS & BENEFITS: Look for value-added services like:
+   - Roadside assistance / Οδική βοήθεια
+   - Free annual health checkups / Δωρεάν ετήσιος έλεγχος
+   - Legal assistance / Νομική προστασία
+   - Travel assistance
+   - Discount programs or partnerships
+   - Wellness benefits
+   - 24/7 helplines
+   - Mobile app benefits
+   - Any other included services the policyholder might not be fully aware of
+
+6. CLAIM PROCEDURES: Extract the claim submission process including:
+   - Required documents for claims
+   - Deadlines for claim submission
+   - Contact methods (phone, email, portal)
+   - Claims department hours
+   - Any specific conditions or requirements
+
+7. POSSIBLE CLAIMS: Based on the coverage types, generate a list of specific claim scenarios that this policy covers. For each scenario provide:
+   - A descriptive title
+   - A brief description of the covered event
+   - The step-by-step process to submit this type of claim
+   - Required documents specific to this claim type
 
 Context: This is a ${policyType || 'general'} insurance policy from ${insurerId || 'an insurer'}.`;
 
@@ -456,6 +489,40 @@ Context: This is a ${policyType || 'general'} insurance policy from ${insurerId 
               paymentMethod: { type: Type.STRING }
             }
           },
+          insurer: {
+            type: Type.OBJECT,
+            properties: {
+              name: { type: Type.STRING },
+              legalName: { type: Type.STRING },
+              address: { type: Type.STRING },
+              city: { type: Type.STRING },
+              postalCode: { type: Type.STRING },
+              country: { type: Type.STRING },
+              phone: { type: Type.STRING },
+              fax: { type: Type.STRING },
+              email: { type: Type.STRING },
+              website: { type: Type.STRING },
+              customerSupportPhone: { type: Type.STRING },
+              customerSupportEmail: { type: Type.STRING },
+              customerSupportHours: { type: Type.STRING },
+              claimsDepartmentPhone: { type: Type.STRING },
+              claimsDepartmentEmail: { type: Type.STRING },
+              emergencyHotline: { type: Type.STRING },
+              afm: { type: Type.STRING },
+              registrationNumber: { type: Type.STRING },
+              branches: {
+                type: Type.ARRAY,
+                items: {
+                  type: Type.OBJECT,
+                  properties: {
+                    name: { type: Type.STRING },
+                    address: { type: Type.STRING },
+                    phone: { type: Type.STRING }
+                  }
+                }
+              }
+            }
+          },
           policyholder: {
             type: Type.OBJECT,
             properties: {
@@ -472,7 +539,21 @@ Context: This is a ${policyType || 'general'} insurance policy from ${insurerId 
               phone: { type: Type.STRING },
               mobile: { type: Type.STRING },
               email: { type: Type.STRING },
-              occupation: { type: Type.STRING }
+              occupation: { type: Type.STRING },
+              maritalStatus: { type: Type.STRING },
+              nationality: { type: Type.STRING }
+            }
+          },
+          coInsured: {
+            type: Type.ARRAY,
+            items: {
+              type: Type.OBJECT,
+              properties: {
+                fullName: { type: Type.STRING },
+                relationship: { type: Type.STRING },
+                dateOfBirth: { type: Type.STRING },
+                afm: { type: Type.STRING }
+              }
             }
           },
           beneficiaries: {
@@ -485,7 +566,8 @@ Context: This is a ${policyType || 'general'} insurance policy from ${insurerId 
                 percentage: { type: Type.NUMBER },
                 dateOfBirth: { type: Type.STRING },
                 afm: { type: Type.STRING },
-                contact: { type: Type.STRING }
+                contact: { type: Type.STRING },
+                address: { type: Type.STRING }
               }
             }
           },
@@ -500,19 +582,56 @@ Context: This is a ${policyType || 'general'} insurance policy from ${insurerId 
                 deductible: { type: Type.NUMBER },
                 premium: { type: Type.NUMBER },
                 waitingPeriod: { type: Type.NUMBER },
-                description: { type: Type.STRING }
+                description: { type: Type.STRING },
+                exclusions: { type: Type.ARRAY, items: { type: Type.STRING } },
+                conditions: { type: Type.ARRAY, items: { type: Type.STRING } }
               }
             }
           },
-          benefits: {
+          perks: {
             type: Type.ARRAY,
             items: {
               type: Type.OBJECT,
               properties: {
                 name: { type: Type.STRING },
                 description: { type: Type.STRING },
-                limit: { type: Type.STRING },
-                included: { type: Type.BOOLEAN }
+                howToUse: { type: Type.STRING },
+                contactNumber: { type: Type.STRING },
+                website: { type: Type.STRING },
+                limitations: { type: Type.STRING },
+                reminderNote: { type: Type.STRING }
+              }
+            }
+          },
+          claimProcess: {
+            type: Type.OBJECT,
+            properties: {
+              generalSteps: { type: Type.ARRAY, items: { type: Type.STRING } },
+              requiredDocuments: { type: Type.ARRAY, items: { type: Type.STRING } },
+              deadlineDays: { type: Type.NUMBER },
+              deadlineDescription: { type: Type.STRING },
+              contactPhone: { type: Type.STRING },
+              contactEmail: { type: Type.STRING },
+              onlinePortal: { type: Type.STRING },
+              officeHours: { type: Type.STRING },
+              emergencyProcedure: { type: Type.STRING },
+              paymentMethod: { type: Type.STRING },
+              paymentTimeframe: { type: Type.STRING }
+            }
+          },
+          possibleClaims: {
+            type: Type.ARRAY,
+            items: {
+              type: Type.OBJECT,
+              properties: {
+                title: { type: Type.STRING },
+                description: { type: Type.STRING },
+                coveredBy: { type: Type.STRING },
+                estimatedCoverage: { type: Type.STRING },
+                steps: { type: Type.ARRAY, items: { type: Type.STRING } },
+                requiredDocuments: { type: Type.ARRAY, items: { type: Type.STRING } },
+                timeLimit: { type: Type.STRING },
+                tips: { type: Type.STRING }
               }
             }
           },
@@ -578,6 +697,27 @@ Context: This is a ${policyType || 'general'} insurance policy from ${insurerId 
               hospitalizationHistory: { type: Type.STRING },
               smokingStatus: { type: Type.STRING },
               familyMedicalHistory: { type: Type.STRING }
+            }
+          },
+          exclusions: {
+            type: Type.ARRAY,
+            items: {
+              type: Type.OBJECT,
+              properties: {
+                category: { type: Type.STRING },
+                description: { type: Type.STRING },
+                details: { type: Type.STRING }
+              }
+            }
+          },
+          specialConditions: {
+            type: Type.ARRAY,
+            items: {
+              type: Type.OBJECT,
+              properties: {
+                title: { type: Type.STRING },
+                description: { type: Type.STRING }
+              }
             }
           },
           confidence: {

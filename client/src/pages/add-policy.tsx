@@ -1540,6 +1540,192 @@ export default function AddPolicyPage() {
               </Card>
             )}
 
+            {/* Insurer Contact Information */}
+            {parsedData?.insurer && (parsedData.insurer.name || parsedData.insurer.customerSupportPhone || parsedData.insurer.claimsDepartmentPhone) && (
+              <Card className="p-4 space-y-3">
+                <h3 className="font-semibold text-sm flex items-center gap-2 text-foreground">
+                  <Building2 className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+                  {t("addPolicy.insurerContacts")}
+                </h3>
+                <div className="space-y-2 text-xs">
+                  {parsedData.insurer.name && (
+                    <div><span className="text-muted-foreground">{t("addPolicy.insurerName")}:</span> <span className="font-medium">{parsedData.insurer.name}</span></div>
+                  )}
+                  {parsedData.insurer.address && (
+                    <div><span className="text-muted-foreground">{t("addPolicy.address")}:</span> <span className="font-medium">{parsedData.insurer.address}{parsedData.insurer.city ? `, ${parsedData.insurer.city}` : ''}</span></div>
+                  )}
+                  {parsedData.insurer.customerSupportPhone && (
+                    <div className="flex items-center gap-1">
+                      <Phone className="h-3 w-3 text-muted-foreground" />
+                      <span className="text-muted-foreground">{t("addPolicy.customerSupport")}:</span> 
+                      <span className="font-medium font-mono">{parsedData.insurer.customerSupportPhone}</span>
+                    </div>
+                  )}
+                  {parsedData.insurer.claimsDepartmentPhone && (
+                    <div className="flex items-center gap-1">
+                      <Phone className="h-3 w-3 text-muted-foreground" />
+                      <span className="text-muted-foreground">{t("addPolicy.claimsDepartment")}:</span> 
+                      <span className="font-medium font-mono">{parsedData.insurer.claimsDepartmentPhone}</span>
+                    </div>
+                  )}
+                  {parsedData.insurer.emergencyHotline && (
+                    <div className="flex items-center gap-1 text-red-600 dark:text-red-400">
+                      <Phone className="h-3 w-3" />
+                      <span className="font-semibold">{t("addPolicy.emergencyHotline")}:</span> 
+                      <span className="font-bold font-mono">{parsedData.insurer.emergencyHotline}</span>
+                    </div>
+                  )}
+                  {parsedData.insurer.website && (
+                    <div><span className="text-muted-foreground">{t("addPolicy.website")}:</span> <span className="font-medium text-primary">{parsedData.insurer.website}</span></div>
+                  )}
+                  {parsedData.insurer.customerSupportHours && (
+                    <div><span className="text-muted-foreground">{t("addPolicy.supportHours")}:</span> <span className="font-medium">{parsedData.insurer.customerSupportHours}</span></div>
+                  )}
+                </div>
+              </Card>
+            )}
+
+            {/* Perks & Benefits Section */}
+            {parsedData?.perks && parsedData.perks.length > 0 && (
+              <Card className="p-4 space-y-3 bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30 border-emerald-200 dark:border-emerald-800">
+                <h3 className="font-semibold text-sm flex items-center gap-2 text-foreground">
+                  <Wand2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                  {t("addPolicy.perksTitle")}
+                </h3>
+                <p className="text-[10px] text-muted-foreground">{t("addPolicy.perksDesc")}</p>
+                <div className="space-y-3">
+                  {parsedData.perks.map((perk: any, idx: number) => (
+                    <div key={idx} className="bg-white/60 dark:bg-black/20 rounded-md p-3 space-y-1.5">
+                      <p className="font-semibold text-sm text-foreground">{perk.name}</p>
+                      {perk.description && <p className="text-xs text-muted-foreground">{perk.description}</p>}
+                      {perk.howToUse && (
+                        <div className="text-xs bg-emerald-100/50 dark:bg-emerald-900/30 rounded p-2 mt-2">
+                          <span className="font-medium text-emerald-700 dark:text-emerald-300">{t("addPolicy.howToUse")}:</span>
+                          <p className="text-emerald-600 dark:text-emerald-400 mt-0.5">{perk.howToUse}</p>
+                        </div>
+                      )}
+                      {perk.contactNumber && (
+                        <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                          <Phone className="h-3 w-3" />
+                          <span>{perk.contactNumber}</span>
+                        </div>
+                      )}
+                      {perk.reminderNote && (
+                        <div className="text-[10px] text-amber-600 dark:text-amber-400 italic mt-1">
+                          {perk.reminderNote}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </Card>
+            )}
+
+            {/* Claim Process Section */}
+            {parsedData?.claimProcess && (parsedData.claimProcess.generalSteps?.length > 0 || parsedData.claimProcess.contactPhone) && (
+              <Card className="p-4 space-y-3">
+                <h3 className="font-semibold text-sm flex items-center gap-2 text-foreground">
+                  <FileText className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                  {t("addPolicy.claimProcessTitle")}
+                </h3>
+                <div className="space-y-3">
+                  {parsedData.claimProcess.generalSteps && parsedData.claimProcess.generalSteps.length > 0 && (
+                    <div className="space-y-1.5">
+                      <p className="text-xs font-medium text-foreground">{t("addPolicy.generalSteps")}:</p>
+                      {parsedData.claimProcess.generalSteps.map((step: string, idx: number) => (
+                        <div key={idx} className="flex items-start gap-2 text-xs">
+                          <span className="bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 rounded-full h-5 w-5 flex items-center justify-center text-[10px] font-bold flex-shrink-0">{idx + 1}</span>
+                          <p className="text-muted-foreground">{step}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {parsedData.claimProcess.requiredDocuments && parsedData.claimProcess.requiredDocuments.length > 0 && (
+                    <div className="space-y-1">
+                      <p className="text-xs font-medium text-foreground">{t("addPolicy.requiredDocuments")}:</p>
+                      <div className="flex flex-wrap gap-1">
+                        {parsedData.claimProcess.requiredDocuments.map((doc: string, idx: number) => (
+                          <Badge key={idx} variant="secondary" className="text-[9px]">{doc}</Badge>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  <div className="grid grid-cols-2 gap-2 text-xs">
+                    {parsedData.claimProcess.deadlineDays && (
+                      <div>
+                        <span className="text-muted-foreground">{t("addPolicy.deadline")}:</span>
+                        <span className="font-medium ml-1">{parsedData.claimProcess.deadlineDays} {t("addPolicy.days")}</span>
+                      </div>
+                    )}
+                    {parsedData.claimProcess.contactPhone && (
+                      <div className="flex items-center gap-1">
+                        <Phone className="h-3 w-3 text-muted-foreground" />
+                        <span className="font-mono">{parsedData.claimProcess.contactPhone}</span>
+                      </div>
+                    )}
+                  </div>
+                  {parsedData.claimProcess.emergencyProcedure && (
+                    <div className="bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-md p-2">
+                      <p className="text-xs font-medium text-red-700 dark:text-red-300">{t("addPolicy.emergencyProcedure")}:</p>
+                      <p className="text-xs text-red-600 dark:text-red-400">{parsedData.claimProcess.emergencyProcedure}</p>
+                    </div>
+                  )}
+                </div>
+              </Card>
+            )}
+
+            {/* Possible Claims Section */}
+            {parsedData?.possibleClaims && parsedData.possibleClaims.length > 0 && (
+              <Card className="p-4 space-y-3 bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30 border-amber-200 dark:border-amber-800">
+                <h3 className="font-semibold text-sm flex items-center gap-2 text-foreground">
+                  <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                  {t("addPolicy.possibleClaimsTitle")}
+                </h3>
+                <p className="text-[10px] text-muted-foreground">{t("addPolicy.possibleClaimsDesc")}</p>
+                <div className="space-y-3">
+                  {parsedData.possibleClaims.map((claim: any, idx: number) => (
+                    <div key={idx} className="bg-white/60 dark:bg-black/20 rounded-md p-3 space-y-2">
+                      <div className="flex items-start justify-between gap-2">
+                        <p className="font-semibold text-sm text-foreground">{claim.title}</p>
+                        {claim.estimatedCoverage && (
+                          <Badge variant="outline" className="text-[9px] bg-amber-100 dark:bg-amber-900/40 border-amber-300 dark:border-amber-700 text-amber-700 dark:text-amber-300 whitespace-nowrap">
+                            {claim.estimatedCoverage}
+                          </Badge>
+                        )}
+                      </div>
+                      {claim.description && <p className="text-xs text-muted-foreground">{claim.description}</p>}
+                      {claim.steps && claim.steps.length > 0 && (
+                        <div className="space-y-1 mt-2">
+                          <p className="text-[10px] font-medium text-foreground">{t("addPolicy.howToSubmit")}:</p>
+                          {claim.steps.map((step: string, stepIdx: number) => (
+                            <div key={stepIdx} className="flex items-start gap-1.5 text-[10px]">
+                              <span className="text-amber-600 dark:text-amber-400 font-bold">{stepIdx + 1}.</span>
+                              <span className="text-muted-foreground">{step}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      {claim.requiredDocuments && claim.requiredDocuments.length > 0 && (
+                        <div className="mt-2">
+                          <p className="text-[10px] font-medium text-foreground">{t("addPolicy.documentsNeeded")}:</p>
+                          <div className="flex flex-wrap gap-1 mt-1">
+                            {claim.requiredDocuments.map((doc: string, docIdx: number) => (
+                              <Badge key={docIdx} variant="secondary" className="text-[8px]">{doc}</Badge>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      {claim.tips && (
+                        <div className="text-[10px] text-emerald-600 dark:text-emerald-400 italic border-l-2 border-emerald-300 dark:border-emerald-700 pl-2 mt-2">
+                          {claim.tips}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </Card>
+            )}
+
             <Button 
               className="w-full" 
               onClick={handleSubmit}
