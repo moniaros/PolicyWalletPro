@@ -48,6 +48,21 @@ Cross-platform insurance policy wallet for Greek/European insurers (Ethniki, Gen
 6. ✅ **Share Target** - Accept PDF/image document uploads via share
 7. ✅ **Full i18n** - Greek/English translations for all PWA prompts
 
+### First-Time User Onboarding Carousel (December 2025)
+1. ✅ **5-Slide Fullscreen Carousel** - Value propositions showcasing key features:
+   - Hub: Central policy management
+   - Organize: Document organization
+   - Compare: Coverage comparison
+   - Alerts: Renewal notifications
+   - Wellness: Health tracking integration
+2. ✅ **Mobile-First Design** - Swipeable slides with embla-carousel-react
+3. ✅ **Dark Blue Gradient Theme** - Professional appearance with orange accent buttons
+4. ✅ **Navigation Features** - Pagination dots, desktop arrows, touch gestures
+5. ✅ **Smart Flow Control** - localStorage persistence prevents repeat onboarding
+6. ✅ **Full i18n Support** - Greek (primary) and English translations
+7. ✅ **Comprehensive Test IDs** - All interactive elements and content have data-testid attributes
+8. ✅ **Dual CTAs** - "Get Started" and "Sign In" buttons for different user journeys
+
 ### Enhanced Appointment Booking Wizard (Latest)
 **5-Step Professional Booking Flow:**
 1. ✅ **Step 1: Policy Selection** - Choose from active insurance policies
