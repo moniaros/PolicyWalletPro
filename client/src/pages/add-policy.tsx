@@ -62,6 +62,7 @@ import { toast } from "sonner";
 import { useLocation } from "wouter";
 import { greekInsurers, insuranceTypeLabels, type Insurer, type InsuranceType, getInsurersByType } from "@/data/greek-insurers";
 import { apiRequest } from "@/lib/queryClient";
+import { markFirstTimeSetupComplete } from "./dashboard";
 
 type AddMethod = "document" | "search" | "manual";
 type WizardStep = "insurer" | "type" | "method" | "input" | "review";
@@ -326,6 +327,9 @@ export default function AddPolicyPage() {
       });
 
       const newPolicy = await response.json();
+      
+      // Mark first-time setup as complete
+      markFirstTimeSetupComplete();
       
       toast.success(t("addPolicy.success.policyAdded"));
       setLocation("/policies");

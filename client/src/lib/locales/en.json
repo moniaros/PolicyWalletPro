@@ -109,6 +109,21 @@
       }
     }
   },
+  "firstTimeDashboard": {
+    "title": "Insurance Wallet",
+    "upNext": "Up Next",
+    "addFirstPolicy": "Add your first policy",
+    "yourBalance": "Your balance",
+    "addFirstPolicyTitle": "Add your first policy",
+    "addFirstPolicyDescription": "Take control of your insurance by organizing all your insurance policies in one place!",
+    "addPolicy": "Add a policy",
+    "earn": "EARN",
+    "learnSomethingNew": "Learn something new",
+    "tipTitle1": "What are deductibles?",
+    "tipDescription1": "Learn how deductibles work and when they apply to your claims.",
+    "tipTitle2": "Why you need life insurance",
+    "tipDescription2": "Understand the benefits of protecting your family's financial future."
+  },
   "pwa": {
     "updateAvailable": "New version available",
     "updateDescription": "Refresh to see the latest improvements.",
