@@ -165,7 +165,7 @@ export default function Dashboard() {
         {/* HERO: Coverage Health Score */}
         <div className={`bg-gradient-to-br ${getHealthBgColor(coverageScore)} rounded-3xl p-8 border border-border/50`}>
           <div className="flex flex-col items-center text-center space-y-4">
-            <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Coverage Health</p>
+            <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide">{t("dashboard.coverageHealth")}</p>
             <div className="relative w-48 h-48">
               <CircularProgress 
                 value={coverageScore} 
@@ -182,85 +182,99 @@ export default function Dashboard() {
             </div>
             <div>
               <p className="text-lg font-semibold text-foreground">
-                {coverageScore >= 70 ? "Excellent coverage" : coverageScore >= 40 ? "Good progress" : "Needs attention"}
+                {coverageScore >= 70 ? t("dashboard.excellentCoverage") : coverageScore >= 40 ? t("dashboard.goodProgress") : t("dashboard.needsAttention")}
               </p>
               <p className="text-sm text-muted-foreground mt-1">
-                {coverageScore >= 70 ? "Your insurance portfolio is well-balanced" : "Review gaps to improve your coverage"}
+                {coverageScore >= 70 ? t("dashboard.portfolioBalanced") : t("dashboard.reviewGapsToImprove")}
               </p>
             </div>
+            <Link href="/gap-analysis">
+              <Button variant="outline" className="mt-2" data-testid="button-review-gaps">
+                <Shield className="h-4 w-4 mr-2" />
+                {t("dashboard.reviewProtection")}
+              </Button>
+            </Link>
           </div>
         </div>
 
         {/* QUICK STATS: 4-Up Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {/* Active Policies */}
-          <Card className="p-4 border border-border/50">
-            <div className="flex items-start justify-between mb-2">
-              <div className="h-10 w-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
-                <FileText className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+          <Link href="/policies">
+            <Card className="p-4 border border-border/50 hover:shadow-md transition-all cursor-pointer" data-testid="stat-active-policies">
+              <div className="flex items-start justify-between mb-2">
+                <div className="h-10 w-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                  <FileText className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                </div>
               </div>
-            </div>
-            <p className="text-xs text-muted-foreground font-medium mb-1">Active Policies</p>
-            <p className="text-2xl font-bold text-foreground">{activePolicies}</p>
-            <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-2 flex items-center gap-1">
-              <ArrowUpRight className="h-3 w-3" />
-              All active
-            </p>
-          </Card>
+              <p className="text-xs text-muted-foreground font-medium mb-1">{t("dashboard.activePolicies")}</p>
+              <p className="text-2xl font-bold text-foreground">{activePolicies}</p>
+              <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-2 flex items-center gap-1">
+                <ArrowUpRight className="h-3 w-3" />
+                {t("dashboard.allActive")}
+              </p>
+            </Card>
+          </Link>
 
           {/* Expiring Soon */}
-          <Card className="p-4 border border-border/50">
-            <div className="flex items-start justify-between mb-2">
-              <div className={`h-10 w-10 rounded-lg ${expiringPolicies > 0 ? 'bg-amber-100 dark:bg-amber-900/30' : 'bg-green-100 dark:bg-green-900/30'} flex items-center justify-center`}>
-                <Calendar className={`h-5 w-5 ${expiringPolicies > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-green-600 dark:text-green-400'}`} />
+          <Link href="/renewals">
+            <Card className="p-4 border border-border/50 hover:shadow-md transition-all cursor-pointer" data-testid="stat-expiring-soon">
+              <div className="flex items-start justify-between mb-2">
+                <div className={`h-10 w-10 rounded-lg ${expiringPolicies > 0 ? 'bg-amber-100 dark:bg-amber-900/30' : 'bg-green-100 dark:bg-green-900/30'} flex items-center justify-center`}>
+                  <Calendar className={`h-5 w-5 ${expiringPolicies > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-green-600 dark:text-green-400'}`} />
+                </div>
               </div>
-            </div>
-            <p className="text-xs text-muted-foreground font-medium mb-1">Expiring Soon</p>
-            <p className="text-2xl font-bold text-foreground">{expiringPolicies}</p>
-            <p className={`text-xs mt-2 flex items-center gap-1 ${expiringPolicies > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-emerald-600 dark:text-emerald-400'}`}>
-              <Calendar className="h-3 w-3" />
-              {expiringPolicies > 0 ? "Review dates" : "None"}
-            </p>
-          </Card>
+              <p className="text-xs text-muted-foreground font-medium mb-1">{t("dashboard.expiringSoon")}</p>
+              <p className="text-2xl font-bold text-foreground">{expiringPolicies}</p>
+              <p className={`text-xs mt-2 flex items-center gap-1 ${expiringPolicies > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-emerald-600 dark:text-emerald-400'}`}>
+                <Calendar className="h-3 w-3" />
+                {expiringPolicies > 0 ? t("dashboard.reviewDates") : t("dashboard.none")}
+              </p>
+            </Card>
+          </Link>
 
           {/* Monthly Premium */}
-          <Card className="p-4 border border-border/50">
-            <div className="flex items-start justify-between mb-2">
-              <div className="h-10 w-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
-                <DollarSign className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+          <Link href="/billing">
+            <Card className="p-4 border border-border/50 hover:shadow-md transition-all cursor-pointer" data-testid="stat-monthly-premium">
+              <div className="flex items-start justify-between mb-2">
+                <div className="h-10 w-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+                  <DollarSign className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                </div>
               </div>
-            </div>
-            <p className="text-xs text-muted-foreground font-medium mb-1">Monthly Premium</p>
-            <p className="text-2xl font-bold text-foreground">€{monthlyPremium.toFixed(0)}</p>
-            <p className="text-xs text-muted-foreground mt-2">/month</p>
-          </Card>
+              <p className="text-xs text-muted-foreground font-medium mb-1">{t("dashboard.monthlyPremium")}</p>
+              <p className="text-2xl font-bold text-foreground">€{monthlyPremium.toFixed(0)}</p>
+              <p className="text-xs text-muted-foreground mt-2">{t("dashboard.perMonth")}</p>
+            </Card>
+          </Link>
 
           {/* Coverage Gaps */}
-          <Card className="p-4 border border-border/50">
-            <div className="flex items-start justify-between mb-2">
-              <div className="h-10 w-10 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
-                <AlertTriangle className="h-5 w-5 text-red-600 dark:text-red-400" />
+          <Link href="/gap-analysis">
+            <Card className="p-4 border border-border/50 hover:shadow-md transition-all cursor-pointer" data-testid="stat-coverage-gaps">
+              <div className="flex items-start justify-between mb-2">
+                <div className="h-10 w-10 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
+                  <AlertTriangle className="h-5 w-5 text-red-600 dark:text-red-400" />
+                </div>
               </div>
-            </div>
-            <p className="text-xs text-muted-foreground font-medium mb-1">Coverage Gaps</p>
-            <p className="text-2xl font-bold text-foreground">{policyGaps.length}</p>
-            <p className="text-xs text-red-600 dark:text-red-400 mt-2 flex items-center gap-1">
-              <AlertTriangle className="h-3 w-3" />
-              Action needed
-            </p>
-          </Card>
+              <p className="text-xs text-muted-foreground font-medium mb-1">{t("dashboard.coverageGapsTitle")}</p>
+              <p className="text-2xl font-bold text-foreground">{policyGaps.length}</p>
+              <p className="text-xs text-red-600 dark:text-red-400 mt-2 flex items-center gap-1">
+                <AlertTriangle className="h-3 w-3" />
+                {t("dashboard.actionNeeded")}
+              </p>
+            </Card>
+          </Link>
         </div>
 
         {/* YOUR POLICIES */}
         <section>
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h2 className="text-xl font-bold text-foreground">Your Policies</h2>
-              <p className="text-sm text-muted-foreground mt-1">{policies.length} policies under management</p>
+              <h2 className="text-xl font-bold text-foreground">{t("dashboard.yourPolicies")}</h2>
+              <p className="text-sm text-muted-foreground mt-1">{policies.length} {t("dashboard.policiesUnderManagement")}</p>
             </div>
             <Link href="/policies">
               <Button variant="ghost" size="sm" className="gap-1" data-testid="button-view-all-policies">
-                View All <ChevronRight className="h-4 w-4" />
+                {t("dashboard.viewAll")} <ChevronRight className="h-4 w-4" />
               </Button>
             </Link>
           </div>
@@ -328,8 +342,8 @@ export default function Dashboard() {
         <section>
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h2 className="text-xl font-bold text-foreground">Family Coverage</h2>
-              <p className="text-sm text-muted-foreground mt-1">{sampleFamily.length} family members tracked</p>
+              <h2 className="text-xl font-bold text-foreground">{t("dashboard.familyCoverage")}</h2>
+              <p className="text-sm text-muted-foreground mt-1">{sampleFamily.length} {t("dashboard.familyMembersTracked")}</p>
             </div>
           </div>
           
@@ -362,7 +376,14 @@ export default function Dashboard() {
 
         {/* INSIGHTS & GAPS */}
         <section>
-          <h2 className="text-xl font-bold text-foreground mb-4">Coverage Gaps</h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-bold text-foreground">{t("dashboard.coverageGaps")}</h2>
+            <Link href="/gap-analysis">
+              <Button variant="ghost" size="sm" className="gap-1" data-testid="button-view-gap-analysis">
+                {t("dashboard.viewAnalysis")} <ChevronRight className="h-4 w-4" />
+              </Button>
+            </Link>
+          </div>
           <div className="space-y-3">
             {policyGaps.map((gap, idx) => (
               <Alert 
@@ -375,9 +396,11 @@ export default function Dashboard() {
                     <AlertDescription className="font-semibold text-foreground">{gap.type}</AlertDescription>
                     <AlertDescription className="text-muted-foreground mt-1">{gap.reason}</AlertDescription>
                   </div>
-                  <Button size="sm" variant="outline" className="ml-2">
-                    Fix
-                  </Button>
+                  <Link href="/gap-analysis">
+                    <Button size="sm" variant="outline" className="ml-2" data-testid={`button-fix-gap-${idx}`}>
+                      {t("dashboard.fix")}
+                    </Button>
+                  </Link>
                 </div>
               </Alert>
             ))}
@@ -387,25 +410,37 @@ export default function Dashboard() {
         {/* UPCOMING RENEWALS */}
         {upcomingRenewals.length > 0 && (
           <section>
-            <h2 className="text-xl font-bold text-foreground mb-4">Upcoming Renewals</h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold text-foreground">{t("dashboard.upcomingRenewals")}</h2>
+              <Link href="/renewals">
+                <Button variant="ghost" size="sm" className="gap-1" data-testid="button-view-all-renewals">
+                  {t("dashboard.viewAll")} <ChevronRight className="h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
             <div className="space-y-3">
               {upcomingRenewals.map((policy) => (
-                <Card key={policy.id} className="p-4 border border-border/50 hover:shadow-md transition-all">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-semibold text-foreground">{policy.type}</p>
-                      <p className="text-sm text-muted-foreground">{policy.provider}</p>
+                <Link key={policy.id} href="/renewals">
+                  <Card className="p-4 border border-border/50 hover:shadow-md transition-all cursor-pointer" data-testid={`card-renewal-${policy.id}`}>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="font-semibold text-foreground">{policy.type}</p>
+                        <p className="text-sm text-muted-foreground">{policy.provider}</p>
+                      </div>
+                      <div className="text-right flex items-center gap-2">
+                        <div>
+                          <p className="font-semibold text-foreground">
+                            {new Date(policy.expiry).toLocaleDateString("el-GR")}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {Math.ceil((new Date(policy.expiry).getTime() - Date.now()) / (1000 * 60 * 60 * 24))} {t("dashboard.days")}
+                          </p>
+                        </div>
+                        <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                      </div>
                     </div>
-                    <div className="text-right">
-                      <p className="font-semibold text-foreground">
-                        {new Date(policy.expiry).toLocaleDateString("el-GR")}
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        {Math.ceil((new Date(policy.expiry).getTime() - Date.now()) / (1000 * 60 * 60 * 24))} days
-                      </p>
-                    </div>
-                  </div>
-                </Card>
+                  </Card>
+                </Link>
               ))}
             </div>
           </section>
