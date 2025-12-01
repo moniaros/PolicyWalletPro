@@ -154,6 +154,11 @@ export default function ClaimsPage() {
   const [incidentDate, setIncidentDate] = useState("");
   const [incidentType, setIncidentType] = useState("");
   const [description, setDescription] = useState("");
+  // Provider information
+  const [providerName, setProviderName] = useState("");
+  const [providerAfm, setProviderAfm] = useState("");
+  const [providerAddress, setProviderAddress] = useState("");
+  const [claimAmount, setClaimAmount] = useState("");
 
   // Calculate stats
   const activeClaims = claimsData.filter(c => c.status !== "Paid" && c.status !== "Rejected");
@@ -164,6 +169,12 @@ export default function ClaimsPage() {
   const avgProcessingDays = 12; // Mock average
 
   const handleSubmitClaim = () => {
+    // Validate ΑΦΜ is provided
+    if (!providerAfm.trim()) {
+      toast.error("Provider ΑΦΜ (Tax ID) is required");
+      setWizardStep(3);
+      return;
+    }
     toast.success("Claim submitted successfully! You'll receive updates via email.");
     setIsWizardOpen(false);
     setWizardStep(1);
@@ -171,6 +182,17 @@ export default function ClaimsPage() {
     setIncidentDate("");
     setIncidentType("");
     setDescription("");
+    setProviderName("");
+    setProviderAfm("");
+    setProviderAddress("");
+    setClaimAmount("");
+  };
+
+  // Validate Greek ΑΦΜ format (9 digits)
+  const validateAfm = (afm: string) => {
+    const cleanAfm = afm.replace(/\s/g, '');
+    if (!/^\d{9}$/.test(cleanAfm)) return false;
+    return true;
   };
 
   const recentPayouts = paidClaims.slice(0, 3);
@@ -200,11 +222,11 @@ export default function ClaimsPage() {
               <DialogContent className="sm:max-w-md">
                 <DialogHeader>
                   <DialogTitle>File a New Claim</DialogTitle>
-                  <DialogDescription>Step {wizardStep} of 3</DialogDescription>
+                  <DialogDescription>Step {wizardStep} of 4</DialogDescription>
                 </DialogHeader>
                 
                 <div className="flex items-center gap-2 py-2">
-                  {[1, 2, 3].map((step) => (
+                  {[1, 2, 3, 4].map((step) => (
                     <div key={step} className="flex-1 flex items-center">
                       <div className={`h-2 flex-1 rounded-full ${step <= wizardStep ? "bg-primary" : "bg-muted"}`} />
                     </div>
@@ -279,6 +301,77 @@ export default function ClaimsPage() {
                 )}
 
                 {wizardStep === 3 && (
+                  <div className="space-y-4 py-4">
+                    <div className="p-3 bg-blue-50 dark:bg-blue-950/30 rounded-lg border border-blue-200 dark:border-blue-800">
+                      <p className="text-xs text-blue-700 dark:text-blue-300 flex items-start gap-2">
+                        <HelpCircle className="h-4 w-4 flex-shrink-0 mt-0.5" />
+                        <span>Provider information is required for claim processing. The ΑΦΜ (Tax ID) must match the provider's official registration.</span>
+                      </p>
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Provider / Service Name <span className="text-red-500">*</span></Label>
+                      <Input 
+                        placeholder="e.g., Dr. Papadopoulos, Athens Medical Center"
+                        value={providerName}
+                        onChange={(e) => setProviderName(e.target.value)}
+                        data-testid="input-provider-name"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>ΑΦΜ (Greek Tax ID) <span className="text-red-500">*</span></Label>
+                      <Input 
+                        placeholder="e.g., 123456789"
+                        value={providerAfm}
+                        onChange={(e) => {
+                          const value = e.target.value.replace(/\D/g, '').slice(0, 9);
+                          setProviderAfm(value);
+                        }}
+                        maxLength={9}
+                        className={providerAfm && !validateAfm(providerAfm) ? "border-red-500 focus-visible:ring-red-500" : ""}
+                        data-testid="input-provider-afm"
+                      />
+                      {providerAfm && !validateAfm(providerAfm) && (
+                        <p className="text-xs text-red-500 flex items-center gap-1">
+                          <AlertCircle className="h-3 w-3" />
+                          ΑΦΜ must be exactly 9 digits
+                        </p>
+                      )}
+                      {providerAfm && validateAfm(providerAfm) && (
+                        <p className="text-xs text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                          <CheckCircle2 className="h-3 w-3" />
+                          Valid ΑΦΜ format
+                        </p>
+                      )}
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Provider Address</Label>
+                      <Input 
+                        placeholder="e.g., Vasilissis Sofias 10, Athens"
+                        value={providerAddress}
+                        onChange={(e) => setProviderAddress(e.target.value)}
+                        data-testid="input-provider-address"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Claim Amount (EUR) <span className="text-red-500">*</span></Label>
+                      <div className="relative">
+                        <Euro className="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                        <Input 
+                          type="number"
+                          step="0.01"
+                          min="0"
+                          placeholder="0.00"
+                          value={claimAmount}
+                          onChange={(e) => setClaimAmount(e.target.value)}
+                          className="pl-9"
+                          data-testid="input-claim-amount"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {wizardStep === 4 && (
                   <div className="space-y-4 py-6 text-center">
                     <div className="h-16 w-16 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 rounded-full flex items-center justify-center mx-auto">
                       <CheckCircle2 className="h-8 w-8" />
@@ -301,6 +394,27 @@ export default function ClaimsPage() {
                           <span className="text-muted-foreground">Type:</span>
                           <span className="font-medium capitalize">{incidentType || "—"}</span>
                         </div>
+                        <div className="border-t border-border pt-2 mt-2">
+                          <p className="text-xs text-muted-foreground mb-2 font-medium">Provider Information</p>
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">Provider:</span>
+                            <span className="font-medium">{providerName || "—"}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">ΑΦΜ:</span>
+                            <span className="font-medium font-mono">{providerAfm || "—"}</span>
+                          </div>
+                          {providerAddress && (
+                            <div className="flex justify-between">
+                              <span className="text-muted-foreground">Address:</span>
+                              <span className="font-medium text-right max-w-[60%] truncate">{providerAddress}</span>
+                            </div>
+                          )}
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">Amount:</span>
+                            <span className="font-medium text-primary">€{claimAmount || "0.00"}</span>
+                          </div>
+                        </div>
                       </div>
                     </Card>
                   </div>
@@ -311,8 +425,28 @@ export default function ClaimsPage() {
                     <Button variant="outline" onClick={() => setWizardStep(wizardStep - 1)}>Back</Button>
                   ) : <div />}
                   
-                  {wizardStep < 3 ? (
-                    <Button onClick={() => setWizardStep(wizardStep + 1)} data-testid="button-next">
+                  {wizardStep < 4 ? (
+                    <Button 
+                      onClick={() => {
+                        // Validate step 3 before proceeding
+                        if (wizardStep === 3) {
+                          if (!providerName.trim()) {
+                            toast.error("Provider name is required");
+                            return;
+                          }
+                          if (!providerAfm.trim() || !validateAfm(providerAfm)) {
+                            toast.error("Valid ΑΦΜ (9 digits) is required");
+                            return;
+                          }
+                          if (!claimAmount.trim() || parseFloat(claimAmount) <= 0) {
+                            toast.error("Claim amount is required");
+                            return;
+                          }
+                        }
+                        setWizardStep(wizardStep + 1);
+                      }} 
+                      data-testid="button-next"
+                    >
                       Continue <ArrowRight className="h-4 w-4 ml-2" />
                     </Button>
                   ) : (
