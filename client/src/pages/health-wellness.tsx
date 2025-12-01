@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -6,6 +6,8 @@ import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
+import { Slider } from "@/components/ui/slider";
 import {
   Dialog,
   DialogContent,
@@ -46,12 +48,31 @@ import {
   Stethoscope,
   Pill,
   Eye,
-  Smile
+  Smile,
+  Link2,
+  Link2Off,
+  ExternalLink,
+  Flame,
+  Timer,
+  MapPin,
+  Bike,
+  Dumbbell,
+  Waves,
+  Mountain,
+  RefreshCw,
+  Minus,
+  Edit3,
+  X,
+  Save,
+  ChevronDown,
+  ChevronUp
 } from "lucide-react";
 import { toast } from "sonner";
 import { Link } from "wouter";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
 
-interface HealthMetric {
+interface DailyMetric {
   id: string;
   label: string;
   value: number;
@@ -59,7 +80,8 @@ interface HealthMetric {
   unit: string;
   icon: any;
   color: string;
-  trend?: "up" | "down" | "stable";
+  bgColor: string;
+  field: string;
 }
 
 interface Checkup {
@@ -81,12 +103,17 @@ interface Recommendation {
   completed: boolean;
 }
 
-const healthMetrics: HealthMetric[] = [
-  { id: "steps", label: "Steps", value: 7234, target: 10000, unit: "steps", icon: Footprints, color: "text-blue-600", trend: "up" },
-  { id: "water", label: "Water", value: 6, target: 8, unit: "glasses", icon: Droplets, color: "text-cyan-600", trend: "stable" },
-  { id: "sleep", label: "Sleep", value: 7.5, target: 8, unit: "hours", icon: Moon, color: "text-indigo-600", trend: "up" },
-  { id: "calories", label: "Nutrition", value: 1850, target: 2000, unit: "kcal", icon: Apple, color: "text-green-600", trend: "down" },
-];
+interface StravaActivity {
+  id: string;
+  name: string;
+  type: string;
+  distance: number;
+  moving_time: number;
+  elapsed_time: number;
+  start_date: string;
+  average_heartrate?: number;
+  calories?: number;
+}
 
 const checkupsData: Checkup[] = [
   { id: 1, type: "Annual Physical", provider: "Dr. Papadopoulos", date: "2024-11-15", status: "completed", results: "All tests normal. Cholesterol slightly elevated." },
@@ -107,12 +134,67 @@ const upcomingAppointments = [
   { id: 2, type: "Blood Work", provider: "Diagnostiki Lab", date: "2024-12-18", time: "8:30 AM" },
 ];
 
+const mockStravaActivities: StravaActivity[] = [
+  { id: "1", name: "Morning Run", type: "Run", distance: 5200, moving_time: 1800, elapsed_time: 1900, start_date: "2024-12-01T06:30:00Z", average_heartrate: 145, calories: 320 },
+  { id: "2", name: "Evening Bike Ride", type: "Ride", distance: 15000, moving_time: 2700, elapsed_time: 3000, start_date: "2024-11-30T17:00:00Z", average_heartrate: 135, calories: 450 },
+  { id: "3", name: "Pool Swim", type: "Swim", distance: 1500, moving_time: 2400, elapsed_time: 2500, start_date: "2024-11-29T12:00:00Z", calories: 280 },
+];
+
+const activityTypeIcons: Record<string, any> = {
+  Run: Footprints,
+  Ride: Bike,
+  Swim: Waves,
+  Walk: Footprints,
+  Hike: Mountain,
+  Workout: Dumbbell,
+  default: Activity
+};
+
 export default function HealthWellnessPage() {
+  const queryClient = useQueryClient();
+  const userId = "demo-user"; // In production, get from auth context
+  const today = new Date().toISOString().split('T')[0];
+
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [uploadType, setUploadType] = useState("Annual");
   const [uploadProvider, setUploadProvider] = useState("");
   const [uploadResults, setUploadResults] = useState("");
   const [recommendations, setRecommendations] = useState(recommendationsData);
+  const [isEditingMetrics, setIsEditingMetrics] = useState(false);
+  const [stravaConnected, setStravaConnected] = useState(false);
+  const [showStravaActivities, setShowStravaActivities] = useState(true);
+
+  // Local state for metrics editing
+  const [editableMetrics, setEditableMetrics] = useState({
+    steps: 7234,
+    waterGlasses: 6,
+    sleepHours: 7.5,
+    calories: 1850,
+    activeMinutes: 45,
+  });
+
+  const [metricGoals, setMetricGoals] = useState({
+    stepsGoal: 10000,
+    waterGoal: 8,
+    sleepGoal: 8,
+    caloriesGoal: 2000,
+    activeMinutesGoal: 30,
+  });
+
+  // Mock Strava data
+  const [stravaData, setStravaData] = useState({
+    athleteName: "",
+    athleteProfile: "",
+    activities: mockStravaActivities,
+  });
+
+  // Calculate derived metrics
+  const dailyMetrics: DailyMetric[] = [
+    { id: "steps", label: "Steps", value: editableMetrics.steps, target: metricGoals.stepsGoal, unit: "steps", icon: Footprints, color: "text-blue-600 dark:text-blue-400", bgColor: "bg-blue-100 dark:bg-blue-900/40", field: "steps" },
+    { id: "water", label: "Water", value: editableMetrics.waterGlasses, target: metricGoals.waterGoal, unit: "glasses", icon: Droplets, color: "text-cyan-600 dark:text-cyan-400", bgColor: "bg-cyan-100 dark:bg-cyan-900/40", field: "waterGlasses" },
+    { id: "sleep", label: "Sleep", value: editableMetrics.sleepHours, target: metricGoals.sleepGoal, unit: "hours", icon: Moon, color: "text-indigo-600 dark:text-indigo-400", bgColor: "bg-indigo-100 dark:bg-indigo-900/40", field: "sleepHours" },
+    { id: "calories", label: "Nutrition", value: editableMetrics.calories, target: metricGoals.caloriesGoal, unit: "kcal", icon: Apple, color: "text-green-600 dark:text-green-400", bgColor: "bg-green-100 dark:bg-green-900/40", field: "calories" },
+  ];
 
   // Calculate Wellness Score
   const completedRecs = recommendations.filter(r => r.completed).length;
@@ -120,10 +202,12 @@ export default function HealthWellnessPage() {
   const checkupsUpToDate = checkupsData.filter(c => c.status !== "overdue").length;
   const totalCheckups = checkupsData.length;
   
+  const metricsScore = dailyMetrics.reduce((acc, m) => acc + Math.min((m.value / m.target), 1), 0) / dailyMetrics.length;
+  
   const wellnessScore = Math.round(
-    ((completedRecs / totalRecs) * 30) + 
-    ((checkupsUpToDate / totalCheckups) * 40) +
-    ((healthMetrics.reduce((acc, m) => acc + (m.value / m.target), 0) / healthMetrics.length) * 30)
+    ((completedRecs / totalRecs) * 25) + 
+    ((checkupsUpToDate / totalCheckups) * 35) +
+    (metricsScore * 40)
   );
 
   const getScoreColor = (score: number) => {
@@ -157,8 +241,58 @@ export default function HealthWellnessPage() {
     setUploadResults("");
   };
 
+  const handleConnectStrava = () => {
+    // In production, redirect to Strava OAuth
+    // For demo, simulate connection
+    setStravaConnected(true);
+    setStravaData({
+      athleteName: "Maria K.",
+      athleteProfile: "",
+      activities: mockStravaActivities,
+    });
+    toast.success("Connected to Strava successfully!");
+  };
+
+  const handleDisconnectStrava = () => {
+    setStravaConnected(false);
+    setStravaData({ athleteName: "", athleteProfile: "", activities: [] });
+    toast.info("Disconnected from Strava");
+  };
+
+  const handleMetricChange = (field: string, delta: number) => {
+    setEditableMetrics(prev => ({
+      ...prev,
+      [field]: Math.max(0, (prev as any)[field] + delta)
+    }));
+  };
+
+  const handleSaveMetrics = () => {
+    setIsEditingMetrics(false);
+    toast.success("Daily metrics saved!");
+  };
+
+  const formatDuration = (seconds: number) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    if (hours > 0) return `${hours}h ${minutes}m`;
+    return `${minutes}m`;
+  };
+
+  const formatDistance = (meters: number) => {
+    if (meters >= 1000) return `${(meters / 1000).toFixed(1)} km`;
+    return `${meters} m`;
+  };
+
   const pendingRecs = recommendations.filter(r => !r.completed);
   const overdueCheckups = checkupsData.filter(c => c.status === "overdue");
+
+  // Weekly activity summary from Strava
+  const weeklyStats = stravaConnected ? {
+    totalDistance: stravaData.activities.reduce((sum, a) => sum + a.distance, 0),
+    totalTime: stravaData.activities.reduce((sum, a) => sum + a.moving_time, 0),
+    totalCalories: stravaData.activities.reduce((sum, a) => sum + (a.calories || 0), 0),
+    activityCount: stravaData.activities.length,
+  } : null;
 
   return (
     <div className="min-h-screen bg-background pb-20">
@@ -292,28 +426,294 @@ export default function HealthWellnessPage() {
                   <Stethoscope className="h-3.5 w-3.5 text-blue-500" />
                   <span className="text-muted-foreground">{checkupsUpToDate}/{totalCheckups} Checkups</span>
                 </div>
+                {stravaConnected && (
+                  <div className="flex items-center gap-1.5">
+                    <Activity className="h-3.5 w-3.5 text-orange-500" />
+                    <span className="text-muted-foreground">{weeklyStats?.activityCount} Activities</span>
+                  </div>
+                )}
               </div>
             </div>
           </div>
         </Card>
 
-        {/* Quick Stats Grid */}
-        <div className="grid grid-cols-4 gap-3">
-          {healthMetrics.map((metric) => {
-            const Icon = metric.icon;
-            const progress = Math.min((metric.value / metric.target) * 100, 100);
-            
-            return (
-              <Card key={metric.id} className="p-3 border border-border/50">
-                <div className="flex flex-col items-center text-center">
-                  <Icon className={`h-5 w-5 ${metric.color} mb-1`} />
-                  <p className="text-lg font-bold text-foreground">{metric.value.toLocaleString()}</p>
-                  <p className="text-xs text-muted-foreground mb-2">{metric.label}</p>
-                  <Progress value={progress} className="h-1 w-full" />
+        {/* Strava Connection Widget */}
+        <Card className={`p-4 border overflow-hidden ${stravaConnected ? "border-orange-200 dark:border-orange-800/50 bg-gradient-to-br from-orange-50 to-rose-50 dark:from-orange-950/20 dark:to-rose-950/20" : "border-border/50"}`}>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className={`h-12 w-12 rounded-xl flex items-center justify-center ${stravaConnected ? "bg-orange-500" : "bg-muted"}`}>
+                <svg className="h-6 w-6 text-white" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.598h4.172L10.463 0l-7 13.828h4.169" />
+                </svg>
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h3 className="font-bold text-sm text-foreground">Strava</h3>
+                  {stravaConnected && (
+                    <Badge variant="outline" className="text-xs px-1.5 py-0 text-emerald-600 border-emerald-200 dark:text-emerald-400 dark:border-emerald-800">
+                      <CheckCircle2 className="h-3 w-3 mr-1" />
+                      Connected
+                    </Badge>
+                  )}
                 </div>
-              </Card>
-            );
-          })}
+                <p className="text-xs text-muted-foreground">
+                  {stravaConnected 
+                    ? `Syncing activities for ${stravaData.athleteName}` 
+                    : "Connect to sync your running, cycling & more"}
+                </p>
+              </div>
+            </div>
+            {stravaConnected ? (
+              <div className="flex items-center gap-2">
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="h-8 w-8"
+                  onClick={() => toast.success("Activities synced!")}
+                  data-testid="button-sync-strava"
+                >
+                  <RefreshCw className="h-4 w-4" />
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={handleDisconnectStrava}
+                  className="text-red-600 border-red-200 hover:bg-red-50 dark:text-red-400 dark:border-red-800"
+                  data-testid="button-disconnect-strava"
+                >
+                  <Link2Off className="h-3.5 w-3.5 mr-1.5" />
+                  Disconnect
+                </Button>
+              </div>
+            ) : (
+              <Button 
+                onClick={handleConnectStrava}
+                className="bg-orange-500 hover:bg-orange-600"
+                data-testid="button-connect-strava"
+              >
+                <Link2 className="h-4 w-4 mr-2" />
+                Connect
+              </Button>
+            )}
+          </div>
+          
+          {/* Strava Weekly Stats */}
+          {stravaConnected && weeklyStats && (
+            <div className="mt-4 pt-4 border-t border-orange-200/50 dark:border-orange-800/50">
+              <div className="grid grid-cols-4 gap-3">
+                <div className="text-center">
+                  <p className="text-lg font-bold text-orange-600 dark:text-orange-400">
+                    {formatDistance(weeklyStats.totalDistance)}
+                  </p>
+                  <p className="text-xs text-muted-foreground">Distance</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-lg font-bold text-orange-600 dark:text-orange-400">
+                    {formatDuration(weeklyStats.totalTime)}
+                  </p>
+                  <p className="text-xs text-muted-foreground">Active Time</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-lg font-bold text-orange-600 dark:text-orange-400">
+                    {weeklyStats.totalCalories}
+                  </p>
+                  <p className="text-xs text-muted-foreground">Calories</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-lg font-bold text-orange-600 dark:text-orange-400">
+                    {weeklyStats.activityCount}
+                  </p>
+                  <p className="text-xs text-muted-foreground">Workouts</p>
+                </div>
+              </div>
+            </div>
+          )}
+        </Card>
+
+        {/* Recent Strava Activities */}
+        {stravaConnected && stravaData.activities.length > 0 && (
+          <div className="space-y-3">
+            <button
+              className="flex items-center justify-between w-full"
+              onClick={() => setShowStravaActivities(!showStravaActivities)}
+            >
+              <div className="flex items-center gap-2">
+                <Activity className="h-4 w-4 text-orange-500" />
+                <h2 className="text-sm font-semibold text-foreground">Recent Activities</h2>
+                <Badge variant="secondary" className="text-xs">{stravaData.activities.length}</Badge>
+              </div>
+              {showStravaActivities ? (
+                <ChevronUp className="h-4 w-4 text-muted-foreground" />
+              ) : (
+                <ChevronDown className="h-4 w-4 text-muted-foreground" />
+              )}
+            </button>
+            
+            {showStravaActivities && (
+              <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 scrollbar-hide">
+                {stravaData.activities.map((activity) => {
+                  const ActivityIcon = activityTypeIcons[activity.type] || activityTypeIcons.default;
+                  return (
+                    <Card key={activity.id} className="p-4 min-w-[220px] flex-shrink-0 border border-border/50" data-testid={`activity-${activity.id}`}>
+                      <div className="flex items-start gap-3">
+                        <div className="h-10 w-10 rounded-xl bg-orange-100 dark:bg-orange-900/40 flex items-center justify-center">
+                          <ActivityIcon className="h-5 w-5 text-orange-600 dark:text-orange-400" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-semibold text-sm text-foreground truncate">{activity.name}</p>
+                          <p className="text-xs text-muted-foreground">{activity.type}</p>
+                          <div className="flex items-center gap-3 mt-2 text-xs text-muted-foreground">
+                            <span className="flex items-center gap-1">
+                              <MapPin className="h-3 w-3" />
+                              {formatDistance(activity.distance)}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Timer className="h-3 w-3" />
+                              {formatDuration(activity.moving_time)}
+                            </span>
+                          </div>
+                          {activity.calories && (
+                            <div className="flex items-center gap-1 mt-1 text-xs text-orange-600 dark:text-orange-400">
+                              <Flame className="h-3 w-3" />
+                              {activity.calories} kcal
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </Card>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Daily Metrics - Interactive */}
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Target className="h-4 w-4 text-primary" />
+              <h2 className="text-sm font-semibold text-foreground">Today's Progress</h2>
+            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => isEditingMetrics ? handleSaveMetrics() : setIsEditingMetrics(true)}
+              className="text-xs"
+              data-testid="button-edit-metrics"
+            >
+              {isEditingMetrics ? (
+                <>
+                  <Save className="h-3.5 w-3.5 mr-1" />
+                  Save
+                </>
+              ) : (
+                <>
+                  <Edit3 className="h-3.5 w-3.5 mr-1" />
+                  Edit
+                </>
+              )}
+            </Button>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-3">
+            {dailyMetrics.map((metric) => {
+              const Icon = metric.icon;
+              const progress = Math.min((metric.value / metric.target) * 100, 100);
+              const isComplete = metric.value >= metric.target;
+              
+              return (
+                <Card key={metric.id} className={`p-4 border transition-all ${isComplete ? "border-emerald-200 dark:border-emerald-800" : "border-border/50"}`} data-testid={`metric-${metric.id}`}>
+                  <div className="flex items-start justify-between mb-3">
+                    <div className={`h-10 w-10 rounded-xl ${metric.bgColor} flex items-center justify-center`}>
+                      <Icon className={`h-5 w-5 ${metric.color}`} />
+                    </div>
+                    {isComplete && (
+                      <CheckCircle2 className="h-5 w-5 text-emerald-500" />
+                    )}
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex items-baseline justify-between">
+                      <span className="text-2xl font-bold text-foreground">
+                        {metric.value.toLocaleString()}
+                      </span>
+                      <span className="text-xs text-muted-foreground">
+                        / {metric.target.toLocaleString()} {metric.unit}
+                      </span>
+                    </div>
+                    <p className="text-sm text-muted-foreground">{metric.label}</p>
+                    <Progress value={progress} className="h-2" />
+                    
+                    {isEditingMetrics && (
+                      <div className="flex items-center justify-center gap-2 pt-2">
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          className="h-8 w-8"
+                          onClick={() => handleMetricChange(metric.field, metric.id === "sleep" ? -0.5 : metric.id === "water" ? -1 : metric.id === "calories" ? -50 : -500)}
+                          data-testid={`decrease-${metric.id}`}
+                        >
+                          <Minus className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          className="h-8 w-8"
+                          onClick={() => handleMetricChange(metric.field, metric.id === "sleep" ? 0.5 : metric.id === "water" ? 1 : metric.id === "calories" ? 50 : 500)}
+                          data-testid={`increase-${metric.id}`}
+                        >
+                          <Plus className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                </Card>
+              );
+            })}
+          </div>
+          
+          {/* Active Minutes Metric */}
+          <Card className="p-4 border border-border/50">
+            <div className="flex items-center gap-4">
+              <div className="h-12 w-12 rounded-xl bg-rose-100 dark:bg-rose-900/40 flex items-center justify-center">
+                <Flame className="h-6 w-6 text-rose-600 dark:text-rose-400" />
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium text-foreground">Active Minutes</span>
+                  <span className="text-lg font-bold text-rose-600 dark:text-rose-400">
+                    {editableMetrics.activeMinutes} / {metricGoals.activeMinutesGoal} min
+                  </span>
+                </div>
+                <Progress 
+                  value={Math.min((editableMetrics.activeMinutes / metricGoals.activeMinutesGoal) * 100, 100)} 
+                  className="h-2 mt-2" 
+                />
+              </div>
+              {isEditingMetrics && (
+                <div className="flex items-center gap-1">
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="h-8 w-8"
+                    onClick={() => setEditableMetrics(prev => ({ ...prev, activeMinutes: Math.max(0, prev.activeMinutes - 5) }))}
+                    data-testid="decrease-active-minutes"
+                  >
+                    <Minus className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="h-8 w-8"
+                    onClick={() => setEditableMetrics(prev => ({ ...prev, activeMinutes: prev.activeMinutes + 5 }))}
+                    data-testid="increase-active-minutes"
+                  >
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                </div>
+              )}
+            </div>
+          </Card>
         </div>
 
         {/* Alerts Section */}
@@ -490,10 +890,10 @@ export default function HealthWellnessPage() {
                 <Card key={checkup.id} className="p-4 border border-border/50" data-testid={`checkup-${checkup.id}`}>
                   <div className="flex items-center gap-4">
                     <div className={`h-12 w-12 rounded-xl ${config.bg} flex flex-col items-center justify-center flex-shrink-0`}>
-                      <span className="text-xs font-bold uppercase" style={{ color: 'inherit' }}>
+                      <span className={`text-xs font-bold uppercase ${config.color}`}>
                         {new Date(checkup.date).toLocaleString('default', { month: 'short' })}
                       </span>
-                      <span className="text-lg font-bold">
+                      <span className={`text-lg font-bold ${config.color}`}>
                         {new Date(checkup.date).getDate()}
                       </span>
                     </div>

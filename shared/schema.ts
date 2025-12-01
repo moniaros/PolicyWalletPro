@@ -95,6 +95,43 @@ export const appointments = pgTable("appointments", {
   createdAt: timestamp("created_at").notNull().default(sql`now()`),
 });
 
+export const stravaConnections = pgTable("strava_connections", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().unique(),
+  stravaAthleteId: text("strava_athlete_id"),
+  accessToken: text("access_token"),
+  refreshToken: text("refresh_token"),
+  expiresAt: timestamp("expires_at"),
+  athleteName: text("athlete_name"),
+  athleteProfile: text("athlete_profile"), // profile picture URL
+  connected: boolean("connected").notNull().default(false),
+  createdAt: timestamp("created_at").notNull().default(sql`now()`),
+  updatedAt: timestamp("updated_at").notNull().default(sql`now()`),
+});
+
+export const dailyWellnessLogs = pgTable("daily_wellness_logs", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull(),
+  date: text("date").notNull(), // YYYY-MM-DD format
+  steps: integer("steps").default(0),
+  stepsGoal: integer("steps_goal").default(10000),
+  waterGlasses: integer("water_glasses").default(0),
+  waterGoal: integer("water_goal").default(8),
+  sleepHours: decimal("sleep_hours", { precision: 3, scale: 1 }).default("0"),
+  sleepGoal: decimal("sleep_goal", { precision: 3, scale: 1 }).default("8"),
+  calories: integer("calories").default(0),
+  caloriesGoal: integer("calories_goal").default(2000),
+  activeMinutes: integer("active_minutes").default(0),
+  activeMinutesGoal: integer("active_minutes_goal").default(30),
+  heartRateAvg: integer("heart_rate_avg"),
+  distance: decimal("distance", { precision: 5, scale: 2 }), // km
+  mood: text("mood"), // "great", "good", "okay", "low"
+  notes: text("notes"),
+  stravaActivities: jsonb("strava_activities"), // Array of activity summaries from Strava
+  createdAt: timestamp("created_at").notNull().default(sql`now()`),
+  updatedAt: timestamp("updated_at").notNull().default(sql`now()`),
+});
+
 // Insert Schemas
 export const insertUserSchema = createInsertSchema(users).pick({
   email: true,
@@ -132,6 +169,18 @@ export const insertAppointmentSchema = createInsertSchema(appointments).omit({
   createdAt: true,
 });
 
+export const insertStravaConnectionSchema = createInsertSchema(stravaConnections).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertDailyWellnessLogSchema = createInsertSchema(dailyWellnessLogs).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 // Types
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
@@ -153,3 +202,9 @@ export type UserProfile = typeof userProfiles.$inferSelect;
 
 export type InsertAppointment = z.infer<typeof insertAppointmentSchema>;
 export type Appointment = typeof appointments.$inferSelect;
+
+export type InsertStravaConnection = z.infer<typeof insertStravaConnectionSchema>;
+export type StravaConnection = typeof stravaConnections.$inferSelect;
+
+export type InsertDailyWellnessLog = z.infer<typeof insertDailyWellnessLogSchema>;
+export type DailyWellnessLog = typeof dailyWellnessLogs.$inferSelect;

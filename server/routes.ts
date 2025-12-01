@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertHealthCheckupSchema, insertHealthMetricsSchema, insertPreventiveRecommendationSchema, insertUserSchema, insertUserProfileSchema } from "@shared/schema";
+import { insertHealthCheckupSchema, insertHealthMetricsSchema, insertPreventiveRecommendationSchema, insertUserSchema, insertUserProfileSchema, insertStravaConnectionSchema, insertDailyWellnessLogSchema } from "@shared/schema";
 import { z } from "zod";
 import { authMiddleware, errorHandler, adminMiddleware, type AuthRequest } from "./middleware";
 import { login, register } from "./auth";
@@ -267,6 +267,113 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(updated);
     } catch (error) {
       res.status(500).json({ error: "Failed to update recommendation" });
+    }
+  });
+
+  // Strava Connection Routes
+  app.get("/api/strava/connection/:userId", async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const connection = await storage.getStravaConnection(userId);
+      res.json(connection || { connected: false });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch Strava connection" });
+    }
+  });
+
+  app.post("/api/strava/connect", async (req, res) => {
+    try {
+      const { userId, athleteId, athleteName, athleteProfile } = req.body;
+      
+      const connection = await storage.createStravaConnection({
+        userId,
+        stravaAthleteId: athleteId,
+        athleteName,
+        athleteProfile,
+        connected: true,
+        accessToken: null,
+        refreshToken: null,
+        expiresAt: null,
+      });
+      
+      res.status(201).json(connection);
+    } catch (error) {
+      res.status(400).json({ error: "Failed to create Strava connection" });
+    }
+  });
+
+  app.delete("/api/strava/connection/:userId", async (req, res) => {
+    try {
+      const { userId } = req.params;
+      await storage.deleteStravaConnection(userId);
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to disconnect Strava" });
+    }
+  });
+
+  // Daily Wellness Log Routes
+  app.get("/api/wellness/daily/:userId/:date", async (req, res) => {
+    try {
+      const { userId, date } = req.params;
+      const log = await storage.getDailyWellnessLog(userId, date);
+      
+      if (!log) {
+        return res.json({
+          userId,
+          date,
+          steps: 0,
+          stepsGoal: 10000,
+          waterGlasses: 0,
+          waterGoal: 8,
+          sleepHours: "0",
+          sleepGoal: "8",
+          calories: 0,
+          caloriesGoal: 2000,
+          activeMinutes: 0,
+          activeMinutesGoal: 30,
+        });
+      }
+      
+      res.json(log);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch wellness log" });
+    }
+  });
+
+  app.get("/api/wellness/history/:userId", async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const { startDate, endDate } = req.query;
+      
+      const logs = await storage.getDailyWellnessLogs(
+        userId, 
+        startDate as string || new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+        endDate as string || new Date().toISOString().split('T')[0]
+      );
+      
+      res.json(logs);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch wellness history" });
+    }
+  });
+
+  app.post("/api/wellness/daily", async (req, res) => {
+    try {
+      const log = await storage.createDailyWellnessLog(req.body);
+      res.status(201).json(log);
+    } catch (error) {
+      res.status(400).json({ error: "Failed to create wellness log" });
+    }
+  });
+
+  app.patch("/api/wellness/daily/:userId/:date", async (req, res) => {
+    try {
+      const { userId, date } = req.params;
+      const log = await storage.updateDailyWellnessLog(userId, date, req.body);
+      res.json(log);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to update wellness log" });
     }
   });
 

@@ -1,4 +1,4 @@
-import { type User, type InsertUser, type HealthCheckup, type InsertHealthCheckup, type HealthMetrics, type InsertHealthMetrics, type RiskAssessment, type InsertRiskAssessment, type PreventiveRecommendation, type InsertPreventiveRecommendation } from "@shared/schema";
+import { type User, type InsertUser, type HealthCheckup, type InsertHealthCheckup, type HealthMetrics, type InsertHealthMetrics, type RiskAssessment, type InsertRiskAssessment, type PreventiveRecommendation, type InsertPreventiveRecommendation, type StravaConnection, type InsertStravaConnection, type DailyWellnessLog, type InsertDailyWellnessLog } from "@shared/schema";
 import { randomUUID } from "crypto";
 
 export interface UserProfile {
@@ -78,6 +78,18 @@ export interface IStorage {
   updateAppointment(id: string, appointment: Partial<InsertAppointment>): Promise<Appointment>;
   deleteAppointment(id: string): Promise<void>;
 
+  // Strava Connection
+  getStravaConnection(userId: string): Promise<StravaConnection | undefined>;
+  createStravaConnection(connection: InsertStravaConnection): Promise<StravaConnection>;
+  updateStravaConnection(userId: string, connection: Partial<InsertStravaConnection>): Promise<StravaConnection>;
+  deleteStravaConnection(userId: string): Promise<void>;
+
+  // Daily Wellness Logs
+  getDailyWellnessLog(userId: string, date: string): Promise<DailyWellnessLog | undefined>;
+  getDailyWellnessLogs(userId: string, startDate: string, endDate: string): Promise<DailyWellnessLog[]>;
+  createDailyWellnessLog(log: InsertDailyWellnessLog): Promise<DailyWellnessLog>;
+  updateDailyWellnessLog(userId: string, date: string, log: Partial<InsertDailyWellnessLog>): Promise<DailyWellnessLog>;
+
   // Audit Logging
   logAuditEvent(event: any): Promise<void>;
 }
@@ -90,6 +102,8 @@ export class MemStorage implements IStorage {
   private risks: Map<string, RiskAssessment>;
   private recommendations: Map<string, PreventiveRecommendation>;
   private appointments: Map<string, Appointment>;
+  private stravaConnections: Map<string, StravaConnection>;
+  private dailyWellnessLogs: Map<string, DailyWellnessLog>;
   private auditLog: any[];
 
   constructor() {
@@ -100,6 +114,8 @@ export class MemStorage implements IStorage {
     this.risks = new Map();
     this.recommendations = new Map();
     this.appointments = new Map();
+    this.stravaConnections = new Map();
+    this.dailyWellnessLogs = new Map();
     this.auditLog = [];
   }
 
@@ -275,6 +291,75 @@ export class MemStorage implements IStorage {
 
   async deleteAppointment(id: string): Promise<void> {
     this.appointments.delete(id);
+  }
+
+  // Strava Connection Methods
+  async getStravaConnection(userId: string): Promise<StravaConnection | undefined> {
+    return this.stravaConnections.get(userId);
+  }
+
+  async createStravaConnection(connection: InsertStravaConnection): Promise<StravaConnection> {
+    const now = new Date();
+    const newConnection: StravaConnection = {
+      ...connection,
+      id: randomUUID(),
+      createdAt: now,
+      updatedAt: now,
+    } as StravaConnection;
+    this.stravaConnections.set(connection.userId, newConnection);
+    return newConnection;
+  }
+
+  async updateStravaConnection(userId: string, partial: Partial<InsertStravaConnection>): Promise<StravaConnection> {
+    let connection = this.stravaConnections.get(userId);
+    if (!connection) {
+      connection = await this.createStravaConnection({ userId, connected: false, ...partial } as InsertStravaConnection);
+    } else {
+      connection = { ...connection, ...partial, updatedAt: new Date() } as StravaConnection;
+      this.stravaConnections.set(userId, connection);
+    }
+    return connection;
+  }
+
+  async deleteStravaConnection(userId: string): Promise<void> {
+    this.stravaConnections.delete(userId);
+  }
+
+  // Daily Wellness Log Methods
+  async getDailyWellnessLog(userId: string, date: string): Promise<DailyWellnessLog | undefined> {
+    const key = `${userId}_${date}`;
+    return this.dailyWellnessLogs.get(key);
+  }
+
+  async getDailyWellnessLogs(userId: string, startDate: string, endDate: string): Promise<DailyWellnessLog[]> {
+    return Array.from(this.dailyWellnessLogs.values())
+      .filter(log => log.userId === userId && log.date >= startDate && log.date <= endDate)
+      .sort((a, b) => b.date.localeCompare(a.date));
+  }
+
+  async createDailyWellnessLog(log: InsertDailyWellnessLog): Promise<DailyWellnessLog> {
+    const now = new Date();
+    const key = `${log.userId}_${log.date}`;
+    const newLog: DailyWellnessLog = {
+      ...log,
+      id: randomUUID(),
+      createdAt: now,
+      updatedAt: now,
+    } as DailyWellnessLog;
+    this.dailyWellnessLogs.set(key, newLog);
+    return newLog;
+  }
+
+  async updateDailyWellnessLog(userId: string, date: string, partial: Partial<InsertDailyWellnessLog>): Promise<DailyWellnessLog> {
+    const key = `${userId}_${date}`;
+    let log = this.dailyWellnessLogs.get(key);
+    if (!log) {
+      log = await this.createDailyWellnessLog({ userId, date, ...partial } as InsertDailyWellnessLog);
+    } else {
+      log = { ...log, ...partial, updatedAt: new Date() } as DailyWellnessLog;
+      this.dailyWellnessLogs.set(key, log);
+    }
+    return log;
   }
 
   async logAuditEvent(event: any): Promise<void> {
