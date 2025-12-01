@@ -175,6 +175,7 @@ export default function AddPolicyPage() {
     type: 40,
     method: 60,
     input: 80,
+    correct: 85,
     review: 100,
   };
 
@@ -1004,6 +1005,160 @@ export default function AddPolicyPage() {
         }
         return null;
 
+      case "correct":
+        return (
+          <div className="space-y-4">
+            <div className="text-center py-2">
+              <div className="h-14 w-14 rounded-full bg-amber-100 dark:bg-amber-900/40 flex items-center justify-center mx-auto mb-3">
+                <AlertCircle className="h-7 w-7 text-amber-600" />
+              </div>
+              <h3 className="font-bold text-base text-foreground">{t("addPolicy.reviewExtractedData")}</h3>
+              <p className="text-xs text-muted-foreground mt-1">{t("addPolicy.correctDataDesc")}</p>
+            </div>
+
+            {Object.keys(validationErrors).length > 0 && (
+              <div className="bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900 rounded-md p-3">
+                <p className="text-sm font-semibold text-red-800 dark:text-red-200 mb-2">{t("addPolicy.errors.missingFields")}</p>
+                <ul className="space-y-1">
+                  {Object.values(validationErrors).map((error, idx) => (
+                    <li key={idx} className="text-xs text-red-700 dark:text-red-300 flex items-start gap-2">
+                      <span className="text-red-600 dark:text-red-400 mt-0.5">•</span>
+                      <span>{error}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            <Card className="p-4 space-y-4">
+              <div>
+                <Label htmlFor="correct-policy-number" className="text-xs font-semibold">{t("addPolicy.policyNumberShort")} *</Label>
+                <Input
+                  id="correct-policy-number"
+                  value={formData.policyNumber}
+                  onChange={(e) => {
+                    setFormData(prev => ({ ...prev, policyNumber: e.target.value }));
+                    if (validationErrors.policyNumber) {
+                      setValidationErrors(prev => {
+                        const newErrors = { ...prev };
+                        delete newErrors.policyNumber;
+                        return newErrors;
+                      });
+                    }
+                  }}
+                  className="mt-1 text-sm"
+                  data-testid="input-correct-policy-number"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <Label htmlFor="correct-start-date" className="text-xs font-semibold">{t("addPolicy.startDateShort")} *</Label>
+                  <Input
+                    id="correct-start-date"
+                    type="date"
+                    value={formData.startDate}
+                    onChange={(e) => {
+                      setFormData(prev => ({ ...prev, startDate: e.target.value }));
+                      if (validationErrors.startDate) {
+                        setValidationErrors(prev => {
+                          const newErrors = { ...prev };
+                          delete newErrors.startDate;
+                          return newErrors;
+                        });
+                      }
+                    }}
+                    className="mt-1 text-sm"
+                    data-testid="input-correct-start-date"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="correct-end-date" className="text-xs font-semibold">{t("addPolicy.endDateShort")} *</Label>
+                  <Input
+                    id="correct-end-date"
+                    type="date"
+                    value={formData.endDate}
+                    onChange={(e) => {
+                      setFormData(prev => ({ ...prev, endDate: e.target.value }));
+                      if (validationErrors.endDate) {
+                        setValidationErrors(prev => {
+                          const newErrors = { ...prev };
+                          delete newErrors.endDate;
+                          return newErrors;
+                        });
+                      }
+                    }}
+                    className="mt-1 text-sm"
+                    data-testid="input-correct-end-date"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="correct-premium" className="text-xs font-semibold">{t("addPolicy.premiumLabel")} (€) *</Label>
+                <Input
+                  id="correct-premium"
+                  type="number"
+                  value={formData.premium}
+                  onChange={(e) => {
+                    setFormData(prev => ({ ...prev, premium: e.target.value }));
+                    if (validationErrors.premium) {
+                      setValidationErrors(prev => {
+                        const newErrors = { ...prev };
+                        delete newErrors.premium;
+                        return newErrors;
+                      });
+                    }
+                  }}
+                  className="mt-1 text-sm"
+                  data-testid="input-correct-premium"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="correct-afm" className="text-xs font-semibold">{t("addPolicy.taxId")}</Label>
+                <Input
+                  id="correct-afm"
+                  placeholder="9 digits"
+                  value={formData.holderAfm}
+                  onChange={(e) => {
+                    setFormData(prev => ({ ...prev, holderAfm: e.target.value }));
+                    if (validationErrors.holderAfm) {
+                      setValidationErrors(prev => {
+                        const newErrors = { ...prev };
+                        delete newErrors.holderAfm;
+                        return newErrors;
+                      });
+                    }
+                  }}
+                  className="mt-1 text-sm"
+                  data-testid="input-correct-afm"
+                />
+              </div>
+            </Card>
+
+            <Button
+              onClick={() => {
+                const errors = validateExtractedData(formData);
+                if (Object.keys(errors).length > 0) {
+                  setValidationErrors(errors);
+                  toast.error(t("addPolicy.errors.stillHasErrors"));
+                } else {
+                  setValidationErrors({});
+                  setStep("review");
+                  toast.success(t("addPolicy.success.dataValid"));
+                }
+              }}
+              className="w-full"
+              data-testid="button-correct-continue"
+            >
+              {t("addPolicy.continueParsing")}
+              <ChevronRight className="h-4 w-4 ml-1" />
+            </Button>
+          </div>
+        );
+
       case "review":
         return (
           <div className="space-y-4">
@@ -1118,9 +1273,13 @@ export default function AddPolicyPage() {
                   } else if (step === "input") {
                     setStep("method");
                     setManualStep(1);
+                  } else if (step === "correct") {
+                    setStep("input");
                   } else if (step === "review") {
                     if (addMethod === "manual") {
                       setStep("input");
+                    } else if (validationErrors && Object.keys(validationErrors).length > 0) {
+                      setStep("correct");
                     } else {
                       setStep("method");
                     }
@@ -1137,6 +1296,7 @@ export default function AddPolicyPage() {
                   {step === "type" && t("addPolicy.selectType")}
                   {step === "method" && t("addPolicy.selectMethod")}
                   {step === "input" && t("addPolicy.policyDetails")}
+                  {step === "correct" && t("addPolicy.correctData")}
                   {step === "review" && t("addPolicy.review")}
                 </p>
               </div>
