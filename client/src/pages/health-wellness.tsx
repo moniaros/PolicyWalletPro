@@ -381,21 +381,21 @@ export default function HealthWellnessPage() {
                 <Heart className="h-5 w-5 text-white" />
               </div>
               <div className="min-w-0">
-                <h1 className="text-lg font-bold text-foreground truncate">Υγεία & Ευεξία</h1>
-                <p className="text-xs text-muted-foreground">Παρακολούθηση Προληπτικής Φροντίδας</p>
+                <h1 className="text-lg font-bold text-foreground truncate">{t("wellness.title")}</h1>
+                <p className="text-xs text-muted-foreground">{t("wellness.subtitle")}</p>
               </div>
             </div>
             <Dialog open={isUploadOpen} onOpenChange={setIsUploadOpen}>
               <DialogTrigger asChild>
                 <Button size="sm" variant="outline" className="flex-shrink-0" data-testid="button-upload-exam">
                   <FileUp className="h-4 w-4" />
-                  <span className="hidden sm:inline ml-2">Καταχώρηση</span>
+                  <span className="hidden sm:inline ml-2">{t("wellness.recordExam")}</span>
                 </Button>
               </DialogTrigger>
               <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-md mx-4">
                 <DialogHeader>
-                  <DialogTitle>Καταχώρηση Ιατρικής Εξέτασης</DialogTitle>
-                  <DialogDescription>Προσθέστε τα αποτελέσματα της πρόσφατης εξέτασής σας</DialogDescription>
+                  <DialogTitle>{t("wellness.recordExamTitle")}</DialogTitle>
+                  <DialogDescription>{t("wellness.recordExamTitle")}</DialogDescription>
                 </DialogHeader>
                 <div className="space-y-4 py-4">
                   <div className="space-y-2">
