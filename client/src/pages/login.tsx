@@ -88,12 +88,12 @@ export default function LoginPage() {
               }}
               className={`flex-1 py-2 px-3 rounded-md transition-colors text-sm font-medium ${
                 isLogin
-                  ? "bg-white text-foreground shadow-sm"
+                  ? "bg-white dark:bg-slate-800 text-foreground shadow-sm"
                   : "text-muted-foreground hover:text-foreground"
               }`}
               data-testid="tab-login"
             >
-              {t("common.login") || "Login"}
+              Login
             </button>
             <button
               onClick={() => {
@@ -102,12 +102,12 @@ export default function LoginPage() {
               }}
               className={`flex-1 py-2 px-3 rounded-md transition-colors text-sm font-medium ${
                 !isLogin
-                  ? "bg-white text-foreground shadow-sm"
+                  ? "bg-white dark:bg-slate-800 text-foreground shadow-sm"
                   : "text-muted-foreground hover:text-foreground"
               }`}
               data-testid="tab-signup"
             >
-              {t("common.signup") || "Sign Up"}
+              Sign Up
             </button>
           </div>
 
@@ -116,7 +116,7 @@ export default function LoginPage() {
             {/* Email Input */}
             <div className="space-y-2">
               <Label htmlFor="email" className="text-sm font-medium">
-                {t("common.email") || "Email"}
+                Email
               </Label>
               <div className="relative">
                 <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -128,6 +128,7 @@ export default function LoginPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   className="pl-10"
                   data-testid="input-email"
+                  autoComplete="email"
                 />
               </div>
             </div>
@@ -135,7 +136,7 @@ export default function LoginPage() {
             {/* Password Input */}
             <div className="space-y-2">
               <Label htmlFor="password" className="text-sm font-medium">
-                {t("common.password") || "Password"}
+                Password
               </Label>
               <div className="relative">
                 <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />

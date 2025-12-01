@@ -20,7 +20,13 @@ import {
   FileText,
   MessageCircle,
   ArrowUpRight,
-  ArrowDownLeft
+  ArrowDownLeft,
+  Car,
+  Home,
+  Dog,
+  Briefcase,
+  User,
+  MapPin
 } from "lucide-react";
 import { policies } from "@/lib/mockData";
 
@@ -33,7 +39,7 @@ const sampleFamily = [
 const calculateCoverageHealth = () => {
   const activePoliciesCount = policies.filter(p => p.status === "Active").length;
   const hasFamily = sampleFamily.length > 0;
-  const criticalGaps = 2;
+  const criticalGaps = 2 as number;
   
   let score = 40;
   if (activePoliciesCount > 0) score += 10;
@@ -54,6 +60,62 @@ const getHealthBgColor = (score: number) => {
   if (score < 40) return "from-red-500/20 to-red-500/10";
   if (score < 70) return "from-amber-500/20 to-amber-500/10";
   return "from-emerald-500/20 to-emerald-500/10";
+};
+
+const getPolicyIcon = (type: string) => {
+  switch (type) {
+    case "Auto": return Car;
+    case "Health": return Heart;
+    case "Home & Liability": return Home;
+    case "Investment Life": return Briefcase;
+    case "Pet Insurance": return Dog;
+    default: return FileText;
+  }
+};
+
+const getPolicyKeyInfo = (policy: any) => {
+  const meta = policy.quickViewMetadata;
+  if (!meta) return null;
+
+  switch (policy.type) {
+    case "Auto":
+      return {
+        icon: Car,
+        label: "License Plate",
+        value: meta.licensePlate || policy.vehicleReg || "N/A",
+        secondary: meta.carModel || null
+      };
+    case "Health":
+      return {
+        icon: User,
+        label: "Insured",
+        value: meta.insuredPerson || "Primary",
+        secondary: meta.hospitalClass ? `Class: ${meta.hospitalClass.split(" ")[0]}` : null
+      };
+    case "Home & Liability":
+      return {
+        icon: MapPin,
+        label: "Property",
+        value: meta.propertyAddress ? meta.propertyAddress.split(",")[0] : "N/A",
+        secondary: meta.sumInsured ? `Insured: ${meta.sumInsured}` : null
+      };
+    case "Investment Life":
+      return {
+        icon: TrendingUp,
+        label: "Fund Value",
+        value: meta.fundValue || "N/A",
+        secondary: meta.ytdGrowth ? `YTD: ${meta.ytdGrowth}` : null
+      };
+    case "Pet Insurance":
+      return {
+        icon: Dog,
+        label: "Pet",
+        value: meta.petName || "N/A",
+        secondary: meta.petType || null
+      };
+    default:
+      return null;
+  }
 };
 
 export default function Dashboard() {
@@ -204,28 +266,56 @@ export default function Dashboard() {
           </div>
           
           <div className="grid md:grid-cols-2 gap-4">
-            {policies.slice(0, 4).map((policy) => (
-              <Link key={policy.id} href={`/policies/${policy.id}`}>
-                <Card className="p-4 border border-border/50 hover:shadow-md transition-all cursor-pointer">
-                  <div className="flex items-start justify-between mb-3">
-                    <div>
-                      <h3 className="font-semibold text-foreground">{policy.type}</h3>
-                      <p className="text-sm text-muted-foreground">{policy.provider}</p>
+            {policies.slice(0, 4).map((policy) => {
+              const PolicyIcon = getPolicyIcon(policy.type);
+              const keyInfo = getPolicyKeyInfo(policy);
+              
+              return (
+                <Link key={policy.id} href={`/policies/${policy.id}`}>
+                  <Card className="p-4 border border-border/50 hover:shadow-md transition-all cursor-pointer">
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex items-start gap-3">
+                        <div className={`h-10 w-10 rounded-lg ${policy.color} flex items-center justify-center flex-shrink-0`}>
+                          <PolicyIcon className="h-5 w-5" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-foreground">{policy.type}</h3>
+                          <p className="text-sm text-muted-foreground">{policy.provider}</p>
+                        </div>
+                      </div>
+                      <Badge 
+                        variant="outline"
+                        className={policy.status === "Active" ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800" : "bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 border-amber-200 dark:border-amber-800"}
+                      >
+                        {policy.status}
+                      </Badge>
                     </div>
-                    <Badge 
-                      variant="outline"
-                      className={policy.status === "Active" ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800" : ""}
-                    >
-                      {policy.status}
-                    </Badge>
-                  </div>
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-foreground font-semibold">{policy.premium}/mo</span>
-                    <span className="text-muted-foreground">Expires: {new Date(policy.expiry).toLocaleDateString("el-GR")}</span>
-                  </div>
-                </Card>
-              </Link>
-            ))}
+                    
+                    {keyInfo && (
+                      <div className="mb-3 p-2.5 bg-secondary/50 rounded-lg">
+                        <div className="flex items-center gap-2">
+                          <keyInfo.icon className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <span className="text-xs text-muted-foreground">{keyInfo.label}:</span>
+                              <span className="font-semibold text-sm text-foreground truncate">{keyInfo.value}</span>
+                            </div>
+                            {keyInfo.secondary && (
+                              <p className="text-xs text-muted-foreground mt-0.5 truncate">{keyInfo.secondary}</p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-foreground font-semibold">{policy.premium}/mo</span>
+                      <span className="text-muted-foreground">Exp: {new Date(policy.expiry).toLocaleDateString("el-GR", { month: "short", year: "numeric" })}</span>
+                    </div>
+                  </Card>
+                </Link>
+              );
+            })}
           </div>
         </section>
 
