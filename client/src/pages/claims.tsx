@@ -30,31 +30,34 @@ import {
   CheckCircle2,
   Clock,
   AlertCircle,
-  TrendingUp,
   Euro,
   ChevronRight,
-  Upload,
   Calendar,
   ArrowRight,
   CircleDollarSign,
-  FileCheck,
   MessageSquare,
   HelpCircle,
-  Sparkles,
-  Eye,
   X,
   Banknote,
   Timer,
-  Shield
+  Building2,
+  FileCheck,
+  Upload,
+  Receipt,
+  CreditCard,
+  TrendingUp,
+  AlertTriangle
 } from "lucide-react";
 import { toast } from "sonner";
 
 interface Claim {
   id: string;
   reason: string;
+  reasonEn: string;
   amount: string;
   amountValue: number;
   status: "Submitted" | "In Review" | "Approved" | "Paid" | "Rejected";
+  statusLabel: string;
   policyType: string;
   policyProvider: string;
   reportedDate: string;
@@ -62,30 +65,37 @@ interface Claim {
   step: number;
   documents?: number;
   notes?: string;
+  claimNumber: string;
 }
 
 const claimsData: Claim[] = [
   { 
     id: "CLM-2024-001", 
-    reason: "Car Accident Repair", 
-    amount: "€2,450", 
+    claimNumber: "ΑΙΤ-2024-001",
+    reason: "Επισκευή Αυτοκινήτου μετά από Ατύχημα", 
+    reasonEn: "Car Accident Repair",
+    amount: "€2.450", 
     amountValue: 2450,
     status: "In Review", 
-    policyType: "Auto", 
+    statusLabel: "Σε Εξέλιξη",
+    policyType: "Αυτοκίνητο", 
     policyProvider: "Generali", 
     reportedDate: "2024-11-28",
     estimatedCompletion: "2024-12-15",
     step: 2,
     documents: 4,
-    notes: "Awaiting damage assessment report"
+    notes: "Αναμένεται έκθεση εκτίμησης ζημιών"
   },
   { 
     id: "CLM-2024-002", 
-    reason: "Medical Consultation", 
+    claimNumber: "ΑΙΤ-2024-002",
+    reason: "Ιατρική Επίσκεψη - Παθολόγος", 
+    reasonEn: "Medical Consultation",
     amount: "€180", 
     amountValue: 180,
     status: "Approved", 
-    policyType: "Health", 
+    statusLabel: "Εγκεκριμένη",
+    policyType: "Υγεία", 
     policyProvider: "NN Hellas", 
     reportedDate: "2024-11-20",
     estimatedCompletion: "2024-12-05",
@@ -94,11 +104,14 @@ const claimsData: Claim[] = [
   },
   { 
     id: "CLM-2024-003", 
-    reason: "Dental Treatment", 
+    claimNumber: "ΑΙΤ-2024-003",
+    reason: "Οδοντιατρική Θεραπεία", 
+    reasonEn: "Dental Treatment",
     amount: "€320", 
     amountValue: 320,
     status: "Paid", 
-    policyType: "Health", 
+    statusLabel: "Πληρώθηκε",
+    policyType: "Υγεία", 
     policyProvider: "NN Hellas", 
     reportedDate: "2024-10-15",
     step: 4,
@@ -106,11 +119,14 @@ const claimsData: Claim[] = [
   },
   { 
     id: "CLM-2024-004", 
-    reason: "Water Damage Repair", 
-    amount: "€1,850", 
+    claimNumber: "ΑΙΤ-2024-004",
+    reason: "Επισκευή Ζημιάς από Διαρροή Νερού", 
+    reasonEn: "Water Damage Repair",
+    amount: "€1.850", 
     amountValue: 1850,
     status: "Paid", 
-    policyType: "Home", 
+    statusLabel: "Πληρώθηκε",
+    policyType: "Κατοικία", 
     policyProvider: "Ergo", 
     reportedDate: "2024-09-10",
     step: 4,
@@ -118,11 +134,14 @@ const claimsData: Claim[] = [
   },
   { 
     id: "CLM-2024-005", 
-    reason: "Prescription Medication", 
+    claimNumber: "ΑΙΤ-2024-005",
+    reason: "Φαρμακευτική Αγωγή", 
+    reasonEn: "Prescription Medication",
     amount: "€95", 
     amountValue: 95,
     status: "Paid", 
-    policyType: "Health", 
+    statusLabel: "Πληρώθηκε",
+    policyType: "Υγεία", 
     policyProvider: "NN Hellas", 
     reportedDate: "2024-08-22",
     step: 4,
@@ -131,21 +150,26 @@ const claimsData: Claim[] = [
 ];
 
 const policies = [
-  { id: 1, type: "Health", provider: "NN Hellas" },
-  { id: 2, type: "Auto", provider: "Generali" },
-  { id: 3, type: "Home", provider: "Ergo" },
-  { id: 4, type: "Life", provider: "Interamerican" },
+  { id: 1, type: "Υγεία", typeEn: "Health", provider: "NN Hellas" },
+  { id: 2, type: "Αυτοκίνητο", typeEn: "Auto", provider: "Generali" },
+  { id: 3, type: "Κατοικία", typeEn: "Home", provider: "Ergo" },
+  { id: 4, type: "Ζωή", typeEn: "Life", provider: "Interamerican" },
 ];
 
 const statusConfig = {
-  Submitted: { color: "text-slate-600 dark:text-slate-400", bg: "bg-slate-100 dark:bg-slate-900/40", icon: FileText },
-  "In Review": { color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-100 dark:bg-amber-900/40", icon: Clock },
-  Approved: { color: "text-blue-600 dark:text-blue-400", bg: "bg-blue-100 dark:bg-blue-900/40", icon: CheckCircle2 },
-  Paid: { color: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-100 dark:bg-emerald-900/40", icon: CircleDollarSign },
-  Rejected: { color: "text-red-600 dark:text-red-400", bg: "bg-red-100 dark:bg-red-900/40", icon: X },
+  Submitted: { label: "Υποβλήθηκε", color: "text-slate-600 dark:text-slate-400", bg: "bg-slate-100 dark:bg-slate-900/40", icon: FileText },
+  "In Review": { label: "Σε Εξέλιξη", color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-100 dark:bg-amber-900/40", icon: Clock },
+  Approved: { label: "Εγκεκριμένη", color: "text-blue-600 dark:text-blue-400", bg: "bg-blue-100 dark:bg-blue-900/40", icon: CheckCircle2 },
+  Paid: { label: "Πληρώθηκε", color: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-100 dark:bg-emerald-900/40", icon: CircleDollarSign },
+  Rejected: { label: "Απορρίφθηκε", color: "text-red-600 dark:text-red-400", bg: "bg-red-100 dark:bg-red-900/40", icon: X },
 };
 
-const claimSteps = ["Submitted", "Reviewing", "Approved", "Paid"];
+const claimSteps = [
+  { key: "submitted", label: "Υποβολή" },
+  { key: "review", label: "Έλεγχος" },
+  { key: "approved", label: "Έγκριση" },
+  { key: "paid", label: "Πληρωμή" },
+];
 
 export default function ClaimsPage() {
   const [isWizardOpen, setIsWizardOpen] = useState(false);
@@ -154,29 +178,35 @@ export default function ClaimsPage() {
   const [incidentDate, setIncidentDate] = useState("");
   const [incidentType, setIncidentType] = useState("");
   const [description, setDescription] = useState("");
-  // Provider information
   const [providerName, setProviderName] = useState("");
   const [providerAfm, setProviderAfm] = useState("");
   const [providerAddress, setProviderAddress] = useState("");
   const [claimAmount, setClaimAmount] = useState("");
 
-  // Calculate stats
   const activeClaims = claimsData.filter(c => c.status !== "Paid" && c.status !== "Rejected");
   const paidClaims = claimsData.filter(c => c.status === "Paid");
   const totalPaid = paidClaims.reduce((acc, c) => acc + c.amountValue, 0);
   const pendingAmount = activeClaims.reduce((acc, c) => acc + c.amountValue, 0);
   const successRate = Math.round((paidClaims.length / claimsData.length) * 100);
-  const avgProcessingDays = 12; // Mock average
+  const avgProcessingDays = 12;
+
+  const validateAfm = (afm: string) => {
+    const cleanAfm = afm.replace(/\s/g, '');
+    return /^\d{9}$/.test(cleanAfm);
+  };
 
   const handleSubmitClaim = () => {
-    // Validate ΑΦΜ is provided
-    if (!providerAfm.trim()) {
-      toast.error("Provider ΑΦΜ (Tax ID) is required");
+    if (!providerAfm.trim() || !validateAfm(providerAfm)) {
+      toast.error("Απαιτείται έγκυρο ΑΦΜ παρόχου (9 ψηφία)");
       setWizardStep(3);
       return;
     }
-    toast.success("Claim submitted successfully! You'll receive updates via email.");
+    toast.success("Η αίτηση αποζημίωσης υποβλήθηκε επιτυχώς! Θα λάβετε ενημερώσεις μέσω email.");
     setIsWizardOpen(false);
+    resetWizard();
+  };
+
+  const resetWizard = () => {
     setWizardStep(1);
     setSelectedPolicy("");
     setIncidentDate("");
@@ -188,58 +218,51 @@ export default function ClaimsPage() {
     setClaimAmount("");
   };
 
-  // Validate Greek ΑΦΜ format (9 digits)
-  const validateAfm = (afm: string) => {
-    const cleanAfm = afm.replace(/\s/g, '');
-    if (!/^\d{9}$/.test(cleanAfm)) return false;
-    return true;
-  };
-
   const recentPayouts = paidClaims.slice(0, 3);
 
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <div className="min-h-screen bg-background pb-24">
       {/* Header */}
       <div className="sticky top-0 z-30 bg-background/95 backdrop-blur-md border-b border-border/50">
-        <div className="max-w-4xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-red-500 to-rose-600 flex items-center justify-center">
+        <div className="max-w-lg mx-auto px-4 py-3">
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-red-500 to-rose-600 flex items-center justify-center flex-shrink-0">
                 <ShieldAlert className="h-5 w-5 text-white" />
               </div>
-              <div>
-                <h1 className="text-xl font-bold text-foreground">Claims Center</h1>
-                <p className="text-xs text-muted-foreground">{claimsData.length} total claims</p>
+              <div className="min-w-0">
+                <h1 className="text-lg font-bold text-foreground truncate">Αιτήσεις Αποζημίωσης</h1>
+                <p className="text-xs text-muted-foreground">{claimsData.length} συνολικές αιτήσεις</p>
               </div>
             </div>
-            <Dialog open={isWizardOpen} onOpenChange={setIsWizardOpen}>
+            <Dialog open={isWizardOpen} onOpenChange={(open) => { setIsWizardOpen(open); if (!open) resetWizard(); }}>
               <DialogTrigger asChild>
-                <Button size="sm" className="gap-2 bg-red-600 hover:bg-red-700" data-testid="button-file-claim">
+                <Button size="sm" className="gap-1.5 bg-red-600 hover:bg-red-700 flex-shrink-0" data-testid="button-file-claim">
                   <Plus className="h-4 w-4" />
-                  <span className="hidden sm:inline">File Claim</span>
+                  <span className="hidden sm:inline">Νέα Αίτηση</span>
                 </Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-md">
+              <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-md mx-4">
                 <DialogHeader>
-                  <DialogTitle>File a New Claim</DialogTitle>
-                  <DialogDescription>Step {wizardStep} of 4</DialogDescription>
+                  <DialogTitle>Υποβολή Αίτησης Αποζημίωσης</DialogTitle>
+                  <DialogDescription>Βήμα {wizardStep} από 4</DialogDescription>
                 </DialogHeader>
                 
-                <div className="flex items-center gap-2 py-2">
+                <div className="flex items-center gap-1.5 py-2">
                   {[1, 2, 3, 4].map((step) => (
-                    <div key={step} className="flex-1 flex items-center">
-                      <div className={`h-2 flex-1 rounded-full ${step <= wizardStep ? "bg-primary" : "bg-muted"}`} />
+                    <div key={step} className="flex-1">
+                      <div className={`h-1.5 rounded-full ${step <= wizardStep ? "bg-primary" : "bg-muted"}`} />
                     </div>
                   ))}
                 </div>
 
                 {wizardStep === 1 && (
-                  <div className="space-y-4 py-4">
+                  <div className="space-y-4 py-2">
                     <div className="space-y-2">
-                      <Label>Which policy?</Label>
+                      <Label>Ασφαλιστήριο Συμβόλαιο</Label>
                       <Select value={selectedPolicy} onValueChange={setSelectedPolicy}>
                         <SelectTrigger data-testid="select-policy">
-                          <SelectValue placeholder="Select a policy" />
+                          <SelectValue placeholder="Επιλέξτε συμβόλαιο" />
                         </SelectTrigger>
                         <SelectContent>
                           {policies.map(p => (
@@ -251,7 +274,7 @@ export default function ClaimsPage() {
                       </Select>
                     </div>
                     <div className="space-y-2">
-                      <Label>Date of incident</Label>
+                      <Label>Ημερομηνία Συμβάντος</Label>
                       <Input 
                         type="date" 
                         value={incidentDate}
@@ -260,17 +283,20 @@ export default function ClaimsPage() {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label>Type of incident</Label>
+                      <Label>Τύπος Συμβάντος</Label>
                       <Select value={incidentType} onValueChange={setIncidentType}>
                         <SelectTrigger data-testid="select-type">
-                          <SelectValue placeholder="Select type" />
+                          <SelectValue placeholder="Επιλέξτε τύπο" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="accident">Accident</SelectItem>
-                          <SelectItem value="theft">Theft</SelectItem>
-                          <SelectItem value="damage">Property Damage</SelectItem>
-                          <SelectItem value="medical">Medical Expense</SelectItem>
-                          <SelectItem value="other">Other</SelectItem>
+                          <SelectItem value="accident">Ατύχημα</SelectItem>
+                          <SelectItem value="theft">Κλοπή</SelectItem>
+                          <SelectItem value="damage">Υλική Ζημιά</SelectItem>
+                          <SelectItem value="medical">Ιατρικά Έξοδα</SelectItem>
+                          <SelectItem value="hospitalization">Νοσηλεία</SelectItem>
+                          <SelectItem value="dental">Οδοντιατρικά</SelectItem>
+                          <SelectItem value="pharmacy">Φαρμακευτικά</SelectItem>
+                          <SelectItem value="other">Άλλο</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -278,49 +304,52 @@ export default function ClaimsPage() {
                 )}
 
                 {wizardStep === 2 && (
-                  <div className="space-y-4 py-4">
+                  <div className="space-y-4 py-2">
                     <div className="space-y-2">
-                      <Label>Describe what happened</Label>
+                      <Label>Περιγραφή Συμβάντος</Label>
                       <Textarea 
-                        placeholder="Provide details about the incident..."
+                        placeholder="Περιγράψτε λεπτομερώς το συμβάν..."
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
-                        className="h-28"
+                        className="min-h-[100px]"
                         data-testid="textarea-description"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label>Upload evidence</Label>
-                      <div className="border-2 border-dashed border-muted-foreground/25 rounded-xl h-28 flex flex-col items-center justify-center text-muted-foreground bg-muted/10 hover:bg-muted/20 transition-colors cursor-pointer">
+                      <Label>Δικαιολογητικά Έγγραφα</Label>
+                      <div className="border-2 border-dashed border-muted-foreground/25 rounded-xl p-4 flex flex-col items-center justify-center text-muted-foreground bg-muted/10 hover:bg-muted/20 transition-colors cursor-pointer">
                         <Camera className="h-8 w-8 mb-2 opacity-50" />
-                        <span className="text-sm">Tap to upload photos or documents</span>
-                        <span className="text-xs text-muted-foreground mt-1">PDF, JPG, PNG up to 10MB</span>
+                        <span className="text-sm text-center">Πατήστε για μεταφόρτωση φωτογραφιών ή εγγράφων</span>
+                        <span className="text-xs text-muted-foreground mt-1">PDF, JPG, PNG έως 10MB</span>
                       </div>
+                      <p className="text-[10px] text-muted-foreground">
+                        Απαιτούμενα: Αποδείξεις, Ιατρικές Γνωματεύσεις, Τιμολόγια με ΑΦΜ
+                      </p>
                     </div>
                   </div>
                 )}
 
                 {wizardStep === 3 && (
-                  <div className="space-y-4 py-4">
+                  <div className="space-y-4 py-2">
                     <div className="p-3 bg-blue-50 dark:bg-blue-950/30 rounded-lg border border-blue-200 dark:border-blue-800">
                       <p className="text-xs text-blue-700 dark:text-blue-300 flex items-start gap-2">
                         <HelpCircle className="h-4 w-4 flex-shrink-0 mt-0.5" />
-                        <span>Provider information is required for claim processing. The ΑΦΜ (Tax ID) must match the provider's official registration.</span>
+                        <span>Τα στοιχεία παρόχου είναι απαραίτητα για την επεξεργασία. Το ΑΦΜ πρέπει να είναι αυτό που αναγράφεται στο τιμολόγιο/απόδειξη.</span>
                       </p>
                     </div>
                     <div className="space-y-2">
-                      <Label>Provider / Service Name <span className="text-red-500">*</span></Label>
+                      <Label>Επωνυμία Παρόχου <span className="text-red-500">*</span></Label>
                       <Input 
-                        placeholder="e.g., Dr. Papadopoulos, Athens Medical Center"
+                        placeholder="π.χ. Δρ. Παπαδόπουλος, Διαγνωστικό Κέντρο"
                         value={providerName}
                         onChange={(e) => setProviderName(e.target.value)}
                         data-testid="input-provider-name"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label>ΑΦΜ (Greek Tax ID) <span className="text-red-500">*</span></Label>
+                      <Label>ΑΦΜ Παρόχου <span className="text-red-500">*</span></Label>
                       <Input 
-                        placeholder="e.g., 123456789"
+                        placeholder="π.χ. 123456789"
                         value={providerAfm}
                         onChange={(e) => {
                           const value = e.target.value.replace(/\D/g, '').slice(0, 9);
@@ -333,34 +362,34 @@ export default function ClaimsPage() {
                       {providerAfm && !validateAfm(providerAfm) && (
                         <p className="text-xs text-red-500 flex items-center gap-1">
                           <AlertCircle className="h-3 w-3" />
-                          ΑΦΜ must be exactly 9 digits
+                          Το ΑΦΜ πρέπει να είναι 9 ψηφία
                         </p>
                       )}
                       {providerAfm && validateAfm(providerAfm) && (
                         <p className="text-xs text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
                           <CheckCircle2 className="h-3 w-3" />
-                          Valid ΑΦΜ format
+                          Έγκυρη μορφή ΑΦΜ
                         </p>
                       )}
                     </div>
                     <div className="space-y-2">
-                      <Label>Provider Address</Label>
+                      <Label>Διεύθυνση Παρόχου</Label>
                       <Input 
-                        placeholder="e.g., Vasilissis Sofias 10, Athens"
+                        placeholder="π.χ. Βασ. Σοφίας 10, Αθήνα"
                         value={providerAddress}
                         onChange={(e) => setProviderAddress(e.target.value)}
                         data-testid="input-provider-address"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label>Claim Amount (EUR) <span className="text-red-500">*</span></Label>
+                      <Label>Ποσό Αποζημίωσης (EUR) <span className="text-red-500">*</span></Label>
                       <div className="relative">
                         <Euro className="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                         <Input 
                           type="number"
                           step="0.01"
                           min="0"
-                          placeholder="0.00"
+                          placeholder="0,00"
                           value={claimAmount}
                           onChange={(e) => setClaimAmount(e.target.value)}
                           className="pl-9"
@@ -372,47 +401,43 @@ export default function ClaimsPage() {
                 )}
 
                 {wizardStep === 4 && (
-                  <div className="space-y-4 py-6 text-center">
-                    <div className="h-16 w-16 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 rounded-full flex items-center justify-center mx-auto">
-                      <CheckCircle2 className="h-8 w-8" />
+                  <div className="space-y-4 py-4">
+                    <div className="text-center">
+                      <div className="h-14 w-14 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <CheckCircle2 className="h-7 w-7" />
+                      </div>
+                      <h3 className="text-base font-bold text-foreground">Έτοιμη για Υποβολή</h3>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Ελέγξτε τα στοιχεία πριν την υποβολή
+                      </p>
                     </div>
-                    <h3 className="text-lg font-bold text-foreground">Ready to Submit</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Review your claim details before submitting. You'll receive email updates on the status.
-                    </p>
-                    <Card className="p-4 text-left bg-muted/30">
+                    <Card className="p-3 bg-muted/30">
                       <div className="space-y-2 text-sm">
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Policy:</span>
-                          <span className="font-medium">{policies.find(p => p.id.toString() === selectedPolicy)?.type || "—"}</span>
+                        <div className="flex justify-between items-center">
+                          <span className="text-xs text-muted-foreground">Συμβόλαιο:</span>
+                          <span className="text-xs font-medium">{policies.find(p => p.id.toString() === selectedPolicy)?.type || "—"}</span>
                         </div>
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Incident Date:</span>
-                          <span className="font-medium">{incidentDate || "—"}</span>
+                        <div className="flex justify-between items-center">
+                          <span className="text-xs text-muted-foreground">Ημ/νία Συμβάντος:</span>
+                          <span className="text-xs font-medium">{incidentDate ? new Date(incidentDate).toLocaleDateString('el-GR') : "—"}</span>
                         </div>
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Type:</span>
-                          <span className="font-medium capitalize">{incidentType || "—"}</span>
+                        <div className="flex justify-between items-center">
+                          <span className="text-xs text-muted-foreground">Τύπος:</span>
+                          <span className="text-xs font-medium capitalize">{incidentType || "—"}</span>
                         </div>
                         <div className="border-t border-border pt-2 mt-2">
-                          <p className="text-xs text-muted-foreground mb-2 font-medium">Provider Information</p>
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">Provider:</span>
-                            <span className="font-medium">{providerName || "—"}</span>
+                          <p className="text-[10px] text-muted-foreground mb-1.5 font-medium uppercase">Στοιχεία Παρόχου</p>
+                          <div className="flex justify-between items-center">
+                            <span className="text-xs text-muted-foreground">Πάροχος:</span>
+                            <span className="text-xs font-medium truncate max-w-[50%]">{providerName || "—"}</span>
                           </div>
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">ΑΦΜ:</span>
-                            <span className="font-medium font-mono">{providerAfm || "—"}</span>
+                          <div className="flex justify-between items-center">
+                            <span className="text-xs text-muted-foreground">ΑΦΜ:</span>
+                            <span className="text-xs font-medium font-mono">{providerAfm || "—"}</span>
                           </div>
-                          {providerAddress && (
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">Address:</span>
-                              <span className="font-medium text-right max-w-[60%] truncate">{providerAddress}</span>
-                            </div>
-                          )}
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">Amount:</span>
-                            <span className="font-medium text-primary">€{claimAmount || "0.00"}</span>
+                          <div className="flex justify-between items-center">
+                            <span className="text-xs text-muted-foreground">Αιτούμενο Ποσό:</span>
+                            <span className="text-xs font-bold text-primary">€{claimAmount || "0,00"}</span>
                           </div>
                         </div>
                       </div>
@@ -420,26 +445,26 @@ export default function ClaimsPage() {
                   </div>
                 )}
 
-                <DialogFooter className="flex justify-between sm:justify-between gap-2">
+                <DialogFooter className="flex-row justify-between gap-2">
                   {wizardStep > 1 ? (
-                    <Button variant="outline" onClick={() => setWizardStep(wizardStep - 1)}>Back</Button>
-                  ) : <div />}
+                    <Button variant="outline" onClick={() => setWizardStep(wizardStep - 1)} className="flex-1 sm:flex-none">Πίσω</Button>
+                  ) : <div className="flex-1 sm:flex-none" />}
                   
                   {wizardStep < 4 ? (
                     <Button 
+                      className="flex-1 sm:flex-none"
                       onClick={() => {
-                        // Validate step 3 before proceeding
                         if (wizardStep === 3) {
                           if (!providerName.trim()) {
-                            toast.error("Provider name is required");
+                            toast.error("Απαιτείται επωνυμία παρόχου");
                             return;
                           }
                           if (!providerAfm.trim() || !validateAfm(providerAfm)) {
-                            toast.error("Valid ΑΦΜ (9 digits) is required");
+                            toast.error("Απαιτείται έγκυρο ΑΦΜ (9 ψηφία)");
                             return;
                           }
                           if (!claimAmount.trim() || parseFloat(claimAmount) <= 0) {
-                            toast.error("Claim amount is required");
+                            toast.error("Απαιτείται ποσό αποζημίωσης");
                             return;
                           }
                         }
@@ -447,11 +472,12 @@ export default function ClaimsPage() {
                       }} 
                       data-testid="button-next"
                     >
-                      Continue <ArrowRight className="h-4 w-4 ml-2" />
+                      Συνέχεια <ArrowRight className="h-4 w-4 ml-1" />
                     </Button>
                   ) : (
-                    <Button onClick={handleSubmitClaim} data-testid="button-submit-claim">
-                      Submit Claim
+                    <Button onClick={handleSubmitClaim} className="flex-1 sm:flex-none" data-testid="button-submit-claim">
+                      <FileCheck className="h-4 w-4 mr-1" />
+                      Υποβολή Αίτησης
                     </Button>
                   )}
                 </DialogFooter>
@@ -461,15 +487,14 @@ export default function ClaimsPage() {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 py-6 space-y-6">
+      <div className="max-w-lg mx-auto px-4 py-4 space-y-4">
         
-        {/* Claims Overview - Hero Widget */}
-        <Card className="p-5 border border-border/50 overflow-hidden relative">
-          <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-emerald-500/10 to-transparent rounded-bl-full" />
-          <div className="flex items-center gap-5">
-            {/* Total Paid Circle */}
-            <div className="relative h-24 w-24 flex-shrink-0">
-              <svg className="w-24 h-24 -rotate-90" viewBox="0 0 36 36">
+        {/* Claims Overview Card */}
+        <Card className="p-4 border border-border/50 overflow-hidden relative">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-emerald-500/10 to-transparent rounded-bl-full" />
+          <div className="flex items-center gap-4">
+            <div className="relative h-20 w-20 flex-shrink-0">
+              <svg className="w-20 h-20 -rotate-90" viewBox="0 0 36 36">
                 <path
                   d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                   fill="none"
@@ -493,139 +518,135 @@ export default function ClaimsPage() {
                 </defs>
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">{successRate}%</span>
-                <span className="text-xs text-muted-foreground">Success</span>
+                <span className="text-xl font-bold text-emerald-600 dark:text-emerald-400">{successRate}%</span>
+                <span className="text-[10px] text-muted-foreground">Επιτυχία</span>
               </div>
             </div>
             
-            {/* Overview Info */}
             <div className="flex-1 min-w-0">
-              <h2 className="text-lg font-bold text-foreground mb-1">Claims Overview</h2>
-              <p className="text-sm text-muted-foreground mb-3">
-                Total recovered: <span className="font-bold text-emerald-600 dark:text-emerald-400">€{totalPaid.toLocaleString()}</span>
+              <h2 className="text-base font-bold text-foreground mb-1">Επισκόπηση Αιτήσεων</h2>
+              <p className="text-xs text-muted-foreground mb-2">
+                Συνολικά αποζημιώθηκαν: <span className="font-bold text-emerald-600 dark:text-emerald-400">€{totalPaid.toLocaleString('el-GR')}</span>
               </p>
-              <div className="flex items-center gap-4 text-xs flex-wrap">
-                <div className="flex items-center gap-1.5">
+              <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs">
+                <div className="flex items-center gap-1">
                   <div className="h-2 w-2 rounded-full bg-amber-500" />
-                  <span className="text-muted-foreground">{activeClaims.length} Active</span>
+                  <span className="text-muted-foreground">{activeClaims.length} Ενεργές</span>
                 </div>
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-1">
                   <div className="h-2 w-2 rounded-full bg-emerald-500" />
-                  <span className="text-muted-foreground">{paidClaims.length} Paid</span>
+                  <span className="text-muted-foreground">{paidClaims.length} Πληρωμένες</span>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <Timer className="h-3.5 w-3.5 text-muted-foreground" />
-                  <span className="text-muted-foreground">~{avgProcessingDays} days avg</span>
+                <div className="flex items-center gap-1">
+                  <Timer className="h-3 w-3 text-muted-foreground" />
+                  <span className="text-muted-foreground">~{avgProcessingDays} ημέρες</span>
                 </div>
               </div>
             </div>
           </div>
         </Card>
 
-        {/* Quick Stats Grid */}
-        <div className="grid grid-cols-4 gap-3">
-          <Card className="p-3 border border-border/50">
+        {/* Quick Stats */}
+        <div className="grid grid-cols-4 gap-2">
+          <Card className="p-2.5 border border-border/50">
             <div className="text-center">
-              <FileText className="h-5 w-5 text-slate-600 dark:text-slate-400 mx-auto mb-1" />
-              <p className="text-2xl font-bold text-foreground">{claimsData.length}</p>
-              <p className="text-xs text-muted-foreground">Total</p>
+              <FileText className="h-4 w-4 text-slate-600 dark:text-slate-400 mx-auto mb-1" />
+              <p className="text-lg font-bold text-foreground">{claimsData.length}</p>
+              <p className="text-[10px] text-muted-foreground">Σύνολο</p>
             </div>
           </Card>
-          <Card className="p-3 border border-border/50">
+          <Card className="p-2.5 border border-border/50">
             <div className="text-center">
-              <Clock className="h-5 w-5 text-amber-600 dark:text-amber-400 mx-auto mb-1" />
-              <p className="text-2xl font-bold text-amber-600 dark:text-amber-400">{activeClaims.length}</p>
-              <p className="text-xs text-muted-foreground">Active</p>
+              <Clock className="h-4 w-4 text-amber-600 dark:text-amber-400 mx-auto mb-1" />
+              <p className="text-lg font-bold text-amber-600 dark:text-amber-400">{activeClaims.length}</p>
+              <p className="text-[10px] text-muted-foreground">Ενεργές</p>
             </div>
           </Card>
-          <Card className="p-3 border border-border/50">
+          <Card className="p-2.5 border border-border/50">
             <div className="text-center">
-              <CheckCircle2 className="h-5 w-5 text-emerald-600 dark:text-emerald-400 mx-auto mb-1" />
-              <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">{paidClaims.length}</p>
-              <p className="text-xs text-muted-foreground">Paid</p>
+              <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 mx-auto mb-1" />
+              <p className="text-lg font-bold text-emerald-600 dark:text-emerald-400">{paidClaims.length}</p>
+              <p className="text-[10px] text-muted-foreground">Πληρωμένες</p>
             </div>
           </Card>
-          <Card className="p-3 border border-border/50">
+          <Card className="p-2.5 border border-border/50">
             <div className="text-center">
-              <Euro className="h-5 w-5 text-blue-600 dark:text-blue-400 mx-auto mb-1" />
-              <p className="text-lg font-bold text-blue-600 dark:text-blue-400">€{pendingAmount.toLocaleString()}</p>
-              <p className="text-xs text-muted-foreground">Pending</p>
+              <Euro className="h-4 w-4 text-blue-600 dark:text-blue-400 mx-auto mb-1" />
+              <p className="text-sm font-bold text-blue-600 dark:text-blue-400">€{pendingAmount.toLocaleString('el-GR')}</p>
+              <p className="text-[10px] text-muted-foreground">Εκκρεμεί</p>
             </div>
           </Card>
         </div>
 
-        {/* Active Claims Section */}
+        {/* Active Claims */}
         {activeClaims.length > 0 && (
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4 text-amber-500" />
-                <h2 className="text-sm font-semibold text-foreground">Active Claims</h2>
-                <Badge variant="secondary" className="text-xs px-1.5 py-0">
-                  {activeClaims.length}
-                </Badge>
-              </div>
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 px-1">
+              <Clock className="h-4 w-4 text-amber-500" />
+              <span className="text-sm font-semibold text-foreground">Ενεργές Αιτήσεις</span>
+              <Badge variant="secondary" className="text-xs px-1.5 py-0">
+                {activeClaims.length}
+              </Badge>
             </div>
             
-            <div className="space-y-3">
+            <div className="space-y-2">
               {activeClaims.map((claim) => {
                 const config = statusConfig[claim.status];
                 const StatusIcon = config.icon;
                 const progressPercent = (claim.step / 4) * 100;
                 
                 return (
-                  <Card key={claim.id} className="p-4 border border-border/50" data-testid={`claim-${claim.id}`}>
-                    <div className="flex items-start justify-between gap-4 mb-4">
-                      <div className="min-w-0">
-                        <div className="flex items-center gap-2 flex-wrap mb-1">
-                          <h3 className="font-semibold text-foreground">{claim.reason}</h3>
-                          <Badge variant="outline" className={`text-xs px-1.5 py-0 ${config.color}`}>
-                            <StatusIcon className="h-3 w-3 mr-1" />
-                            {claim.status}
+                  <Card key={claim.id} className="p-3 border border-border/50" data-testid={`claim-${claim.id}`}>
+                    <div className="flex items-start justify-between gap-3 mb-3">
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-1.5 flex-wrap mb-1">
+                          <h3 className="font-semibold text-sm text-foreground truncate">{claim.reason}</h3>
+                          <Badge variant="outline" className={`text-[10px] px-1.5 py-0 ${config.color}`}>
+                            <StatusIcon className="h-2.5 w-2.5 mr-0.5" />
+                            {config.label}
                           </Badge>
                         </div>
-                        <p className="text-xs text-muted-foreground">
-                          {claim.policyType} ({claim.policyProvider}) • Filed {new Date(claim.reportedDate).toLocaleDateString()}
+                        <p className="text-[10px] text-muted-foreground">
+                          {claim.policyType} ({claim.policyProvider}) • Υποβλήθηκε {new Date(claim.reportedDate).toLocaleDateString('el-GR')}
                         </p>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          ID: {claim.id} • {claim.documents} documents
+                        <p className="text-[10px] text-muted-foreground mt-0.5">
+                          Αρ. Αίτησης: {claim.claimNumber} • {claim.documents} έγγραφα
                         </p>
                       </div>
                       <div className="text-right flex-shrink-0">
-                        <p className="text-xl font-bold text-foreground">{claim.amount}</p>
-                        <p className="text-xs text-muted-foreground">Claimed</p>
+                        <p className="text-lg font-bold text-foreground">{claim.amount}</p>
+                        <p className="text-[10px] text-muted-foreground">Αιτούμενο</p>
                       </div>
                     </div>
                     
-                    {/* Progress Tracker */}
-                    <div className="space-y-2">
-                      <Progress value={progressPercent} className="h-2" />
-                      <div className="flex justify-between text-xs">
+                    <div className="space-y-1.5">
+                      <Progress value={progressPercent} className="h-1.5" />
+                      <div className="flex justify-between text-[10px]">
                         {claimSteps.map((step, idx) => (
                           <span 
-                            key={step} 
+                            key={step.key} 
                             className={idx < claim.step ? "text-primary font-medium" : "text-muted-foreground"}
                           >
-                            {step}
+                            {step.label}
                           </span>
                         ))}
                       </div>
                     </div>
                     
                     {claim.notes && (
-                      <div className="mt-3 p-2 bg-amber-50 dark:bg-amber-950/30 rounded-lg">
-                        <p className="text-xs text-amber-700 dark:text-amber-300 flex items-center gap-1.5">
-                          <MessageSquare className="h-3 w-3" />
+                      <div className="mt-2 p-2 bg-amber-50 dark:bg-amber-950/30 rounded-lg">
+                        <p className="text-[10px] text-amber-700 dark:text-amber-300 flex items-center gap-1">
+                          <MessageSquare className="h-3 w-3 flex-shrink-0" />
                           {claim.notes}
                         </p>
                       </div>
                     )}
                     
                     {claim.estimatedCompletion && (
-                      <div className="mt-3 flex items-center justify-between text-xs">
-                        <span className="text-muted-foreground">Estimated completion</span>
+                      <div className="mt-2 flex items-center justify-between text-[10px]">
+                        <span className="text-muted-foreground">Εκτ. ολοκλήρωση</span>
                         <span className="font-medium text-foreground">
-                          {new Date(claim.estimatedCompletion).toLocaleDateString()}
+                          {new Date(claim.estimatedCompletion).toLocaleDateString('el-GR')}
                         </span>
                       </div>
                     )}
@@ -636,49 +657,49 @@ export default function ClaimsPage() {
           </div>
         )}
 
-        {/* No Active Claims State */}
+        {/* No Active Claims */}
         {activeClaims.length === 0 && (
-          <Card className="p-8 text-center border-dashed">
-            <div className="h-16 w-16 rounded-full bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center mx-auto mb-4">
-              <CheckCircle2 className="h-8 w-8 text-emerald-600 dark:text-emerald-400" />
+          <Card className="p-6 text-center border-dashed">
+            <div className="h-14 w-14 rounded-full bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center mx-auto mb-3">
+              <CheckCircle2 className="h-7 w-7 text-emerald-600 dark:text-emerald-400" />
             </div>
-            <h3 className="text-lg font-semibold text-foreground mb-1">No Active Claims</h3>
-            <p className="text-sm text-muted-foreground mb-4">
-              All your claims have been processed. File a new claim if needed.
+            <h3 className="text-base font-semibold text-foreground mb-1">Δεν υπάρχουν ενεργές αιτήσεις</h3>
+            <p className="text-xs text-muted-foreground mb-4">
+              Όλες οι αιτήσεις σας έχουν διεκπεραιωθεί
             </p>
-            <Button onClick={() => setIsWizardOpen(true)}>
-              <Plus className="h-4 w-4 mr-2" />
-              File New Claim
+            <Button onClick={() => setIsWizardOpen(true)} size="sm">
+              <Plus className="h-4 w-4 mr-1" />
+              Νέα Αίτηση Αποζημίωσης
             </Button>
           </Card>
         )}
 
-        {/* Recent Payouts Widget */}
+        {/* Recent Payouts */}
         {recentPayouts.length > 0 && (
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
+          <div className="space-y-2">
+            <div className="flex items-center justify-between px-1">
               <div className="flex items-center gap-2">
                 <Banknote className="h-4 w-4 text-emerald-500" />
-                <h2 className="text-sm font-semibold text-foreground">Recent Payouts</h2>
+                <span className="text-sm font-semibold text-foreground">Πρόσφατες Αποζημιώσεις</span>
               </div>
-              <Button variant="ghost" size="sm" className="text-xs text-muted-foreground">
-                View All <ChevronRight className="h-3 w-3 ml-1" />
+              <Button variant="ghost" size="sm" className="text-xs h-7 px-2 text-muted-foreground">
+                Όλες <ChevronRight className="h-3 w-3 ml-0.5" />
               </Button>
             </div>
-            <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 scrollbar-hide">
+            <div className="flex gap-2.5 overflow-x-auto pb-2 -mx-4 px-4 scrollbar-hide snap-x snap-mandatory">
               {recentPayouts.map((claim) => (
-                <Card key={claim.id} className="p-4 min-w-[200px] flex-shrink-0 border border-border/50 bg-emerald-50/50 dark:bg-emerald-950/20">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="h-10 w-10 rounded-full bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center">
-                      <CheckCircle2 className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                <Card key={claim.id} className="p-3 min-w-[180px] flex-shrink-0 border border-border/50 bg-emerald-50/30 dark:bg-emerald-950/20 snap-start" data-testid={`payout-${claim.id}`}>
+                  <div className="flex items-center gap-2.5 mb-2">
+                    <div className="h-9 w-9 rounded-lg bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center flex-shrink-0">
+                      <CreditCard className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                     </div>
-                    <div>
-                      <p className="font-bold text-lg text-emerald-700 dark:text-emerald-300">{claim.amount}</p>
-                      <p className="text-xs text-emerald-600 dark:text-emerald-400">Paid</p>
+                    <div className="min-w-0 flex-1">
+                      <p className="font-bold text-sm text-emerald-600 dark:text-emerald-400">{claim.amount}</p>
+                      <p className="text-[10px] text-muted-foreground">Αποζημίωση</p>
                     </div>
                   </div>
-                  <p className="font-medium text-sm text-foreground line-clamp-1">{claim.reason}</p>
-                  <p className="text-xs text-muted-foreground">{claim.policyProvider}</p>
+                  <p className="text-xs font-medium text-foreground truncate">{claim.reason}</p>
+                  <p className="text-[10px] text-muted-foreground mt-0.5">{claim.policyType} • {new Date(claim.reportedDate).toLocaleDateString('el-GR')}</p>
                 </Card>
               ))}
             </div>
@@ -686,42 +707,41 @@ export default function ClaimsPage() {
         )}
 
         {/* Claims History */}
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
+        <div className="space-y-2">
+          <div className="flex items-center justify-between px-1">
             <div className="flex items-center gap-2">
-              <FileCheck className="h-4 w-4 text-primary" />
-              <h2 className="text-sm font-semibold text-foreground">Claims History</h2>
+              <FileText className="h-4 w-4 text-primary" />
+              <span className="text-sm font-semibold text-foreground">Ιστορικό Αιτήσεων</span>
             </div>
+            <Button variant="ghost" size="sm" className="text-xs h-7 px-2 text-muted-foreground">
+              Όλες <ChevronRight className="h-3 w-3 ml-0.5" />
+            </Button>
           </div>
           
           <div className="space-y-2">
-            {paidClaims.map((claim) => {
+            {claimsData.slice(0, 4).map((claim) => {
               const config = statusConfig[claim.status];
               const StatusIcon = config.icon;
               
               return (
-                <Card 
-                  key={claim.id} 
-                  className="p-4 border border-border/50 bg-muted/20"
-                  data-testid={`history-${claim.id}`}
-                >
-                  <div className="flex items-center gap-4">
-                    <div className={`h-10 w-10 rounded-full ${config.bg} flex items-center justify-center flex-shrink-0`}>
+                <Card key={claim.id} className="p-3 border border-border/50" data-testid={`history-${claim.id}`}>
+                  <div className="flex items-center gap-3">
+                    <div className={`h-10 w-10 rounded-lg ${config.bg} flex items-center justify-center flex-shrink-0`}>
                       <StatusIcon className={`h-5 w-5 ${config.color}`} />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2">
-                        <h3 className="font-medium text-sm text-foreground">{claim.reason}</h3>
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <h3 className="font-semibold text-xs text-foreground truncate">{claim.reason}</h3>
+                        <Badge variant="outline" className={`text-[10px] px-1 py-0 ${config.color}`}>
+                          {config.label}
+                        </Badge>
                       </div>
-                      <p className="text-xs text-muted-foreground">
-                        {claim.policyProvider} • {new Date(claim.reportedDate).toLocaleDateString()}
+                      <p className="text-[10px] text-muted-foreground">
+                        {claim.policyType} • {new Date(claim.reportedDate).toLocaleDateString('el-GR')}
                       </p>
                     </div>
                     <div className="text-right flex-shrink-0">
-                      <p className="font-bold text-emerald-600 dark:text-emerald-400">{claim.amount}</p>
-                      <Badge variant="outline" className="text-xs px-1.5 py-0 text-emerald-600 border-emerald-200">
-                        Paid
-                      </Badge>
+                      <p className="text-sm font-bold text-foreground">{claim.amount}</p>
                     </div>
                   </div>
                 </Card>
@@ -730,58 +750,31 @@ export default function ClaimsPage() {
           </div>
         </div>
 
-        {/* Help Section */}
-        <Card className="p-4 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 border-blue-200 dark:border-blue-800/50">
-          <div className="flex items-start gap-4">
-            <div className="h-12 w-12 rounded-xl bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center flex-shrink-0">
-              <HelpCircle className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+        {/* Claims Tips */}
+        <Card className="p-4 bg-gradient-to-br from-blue-50/50 to-indigo-50/50 dark:from-blue-950/30 dark:to-indigo-950/30 border-blue-200 dark:border-blue-800/50">
+          <div className="flex items-start gap-3">
+            <div className="h-10 w-10 rounded-lg bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center flex-shrink-0">
+              <HelpCircle className="h-5 w-5 text-blue-600 dark:text-blue-400" />
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className="font-bold text-sm text-blue-900 dark:text-blue-100 mb-1">Need Help Filing a Claim?</h3>
-              <p className="text-xs text-blue-700 dark:text-blue-300 mb-3">
-                Our support team is here to help you through the claims process. Average response time: 2 hours.
-              </p>
-              <div className="flex items-center gap-2 flex-wrap">
-                <Button size="sm" variant="outline" className="border-blue-300 text-blue-700 dark:border-blue-700 dark:text-blue-300">
-                  <MessageSquare className="h-3.5 w-3.5 mr-1.5" />
-                  Chat with Us
-                </Button>
-                <Button size="sm" variant="ghost" className="text-blue-700 dark:text-blue-300">
-                  <FileText className="h-3.5 w-3.5 mr-1.5" />
-                  FAQ
-                </Button>
-              </div>
+              <h3 className="font-bold text-sm text-blue-900 dark:text-blue-100 mb-1">Συμβουλές Αποζημίωσης</h3>
+              <ul className="text-[10px] text-blue-700 dark:text-blue-300 space-y-1">
+                <li className="flex items-start gap-1">
+                  <Receipt className="h-3 w-3 flex-shrink-0 mt-0.5" />
+                  <span>Διατηρείτε πάντα τις αποδείξεις με εμφανές ΑΦΜ</span>
+                </li>
+                <li className="flex items-start gap-1">
+                  <Camera className="h-3 w-3 flex-shrink-0 mt-0.5" />
+                  <span>Φωτογραφίστε τις ζημιές άμεσα μετά το συμβάν</span>
+                </li>
+                <li className="flex items-start gap-1">
+                  <Clock className="h-3 w-3 flex-shrink-0 mt-0.5" />
+                  <span>Υποβάλετε την αίτηση εντός 30 ημερών</span>
+                </li>
+              </ul>
             </div>
           </div>
         </Card>
-
-        {/* Quick Tips */}
-        <div className="space-y-3">
-          <div className="flex items-center gap-2">
-            <Sparkles className="h-4 w-4 text-primary" />
-            <h2 className="text-sm font-semibold text-foreground">Quick Tips</h2>
-          </div>
-          <div className="grid grid-cols-2 gap-3">
-            <Card className="p-3 border border-border/50">
-              <div className="flex items-start gap-2">
-                <Camera className="h-4 w-4 text-muted-foreground flex-shrink-0 mt-0.5" />
-                <div>
-                  <p className="font-medium text-xs text-foreground">Document Everything</p>
-                  <p className="text-xs text-muted-foreground">Photos speed up claims</p>
-                </div>
-              </div>
-            </Card>
-            <Card className="p-3 border border-border/50">
-              <div className="flex items-start gap-2">
-                <Calendar className="h-4 w-4 text-muted-foreground flex-shrink-0 mt-0.5" />
-                <div>
-                  <p className="font-medium text-xs text-foreground">File Within 48h</p>
-                  <p className="text-xs text-muted-foreground">Faster processing time</p>
-                </div>
-              </div>
-            </Card>
-          </div>
-        </div>
       </div>
     </div>
   );
