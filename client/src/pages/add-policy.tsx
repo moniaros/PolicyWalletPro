@@ -65,7 +65,7 @@ import { apiRequest } from "@/lib/queryClient";
 import { markFirstTimeSetupComplete } from "./dashboard";
 
 type AddMethod = "document" | "search" | "manual";
-type WizardStep = "insurer" | "type" | "method" | "input" | "review";
+type WizardStep = "insurer" | "type" | "method" | "input" | "review" | "correct";
 
 interface PolicyFormData {
   insurerId: string;
@@ -133,6 +133,7 @@ export default function AddPolicyPage() {
   const [policySearchId, setPolicySearchId] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const [manualStep, setManualStep] = useState(1);
+  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
 
   const [formData, setFormData] = useState<PolicyFormData>({
     insurerId: "",
@@ -212,6 +213,20 @@ export default function AddPolicyPage() {
     toast.success(t("addPolicy.success.fileUploaded"));
   };
 
+  const validateExtractedData = (mappedData: Partial<PolicyFormData>) => {
+    const errors: Record<string, string> = {};
+    
+    if (!mappedData.policyNumber) errors.policyNumber = t("addPolicy.errors.policyNumberRequired");
+    if (!mappedData.startDate) errors.startDate = t("addPolicy.errors.startDateRequired");
+    if (!mappedData.endDate) errors.endDate = t("addPolicy.errors.endDateRequired");
+    if (!mappedData.premium) errors.premium = t("addPolicy.errors.premiumRequired");
+    if (mappedData.holderAfm && !validateAfm(mappedData.holderAfm)) {
+      errors.holderAfm = t("addPolicy.errors.invalidAfm");
+    }
+    
+    return errors;
+  };
+
   const handleParseDocument = async () => {
     if (!uploadedFile) return;
 
@@ -286,9 +301,16 @@ export default function AddPolicyPage() {
         setParsedData({ ...parsed, ...mappedData });
         setFormData(prev => ({ ...prev, ...mappedData }));
         
-        const confidence = result.confidence || 75;
-        toast.success(t("addPolicy.success.documentParsed") + ` (${confidence}% ${t("addPolicy.confidence")})`);
-        setStep("review");
+        const errors = validateExtractedData(mappedData);
+        if (Object.keys(errors).length > 0) {
+          setValidationErrors(errors);
+          setStep("correct");
+          toast.info(t("addPolicy.info.reviewExtractedData"));
+        } else {
+          const confidence = result.confidence || 75;
+          toast.success(t("addPolicy.success.documentParsed") + ` (${confidence}% ${t("addPolicy.confidence")})`);
+          setStep("review");
+        }
       } else {
         throw new Error(result.error || "Failed to parse document");
       }
