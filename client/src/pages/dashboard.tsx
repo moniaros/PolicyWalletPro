@@ -1,8 +1,7 @@
-import { useMemo, useEffect } from "react";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Link, useLocation } from "wouter";
+import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
-import { useAuth } from "@/lib/auth-context";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -469,46 +468,12 @@ function RegularDashboard({ policies }: { policies: Policy[] }) {
 
 export default function Dashboard() {
   const { t } = useTranslation();
-  const { isAuthenticated, isLoading: authLoading } = useAuth();
-  const [, setLocation] = useLocation();
   
-  const { data: policies = [], isLoading, error } = useQuery<Policy[]>({
+  const { data: policies = [], isLoading } = useQuery<Policy[]>({
     queryKey: ["/api/policies"],
-    enabled: isAuthenticated,
-    retry: false,
   });
-
-  useEffect(() => {
-    if (!authLoading && !isAuthenticated) {
-      setLocation("/login");
-    }
-  }, [authLoading, isAuthenticated, setLocation]);
-
-  useEffect(() => {
-    if (error) {
-      const errorMessage = error instanceof Error ? error.message : "";
-      if (errorMessage.includes("401")) {
-        setLocation("/login");
-      }
-    }
-  }, [error, setLocation]);
   
-  if (authLoading || isLoading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
-          <p className="text-muted-foreground">{t("common.loading")}</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!isAuthenticated) {
-    return null;
-  }
-  
-  if (error) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">

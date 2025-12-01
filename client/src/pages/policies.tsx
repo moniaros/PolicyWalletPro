@@ -1,13 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
-import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { Link, useLocation } from "wouter";
+import { Link } from "wouter";
 import { Search, X, ChevronRight, Plus, FileText, Heart, Car, Home, Briefcase, Dog, Loader2, Shield } from "lucide-react";
 import type { Policy } from "@shared/schema";
 
@@ -64,31 +63,12 @@ export default function PoliciesPage() {
   const [search, setSearch] = useState("");
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [activeFilter, setActiveFilter] = useState<string>("all");
-  const { isAuthenticated, isLoading: authLoading } = useAuth();
-  const [, setLocation] = useLocation();
 
-  const { data: policies = [], isLoading, error } = useQuery<Policy[]>({
+  const { data: policies = [], isLoading } = useQuery<Policy[]>({
     queryKey: ["/api/policies"],
-    enabled: isAuthenticated,
-    retry: false,
   });
 
-  useEffect(() => {
-    if (!authLoading && !isAuthenticated) {
-      setLocation("/login");
-    }
-  }, [authLoading, isAuthenticated, setLocation]);
-
-  useEffect(() => {
-    if (error) {
-      const errorMessage = error instanceof Error ? error.message : "";
-      if (errorMessage.includes("401")) {
-        setLocation("/login");
-      }
-    }
-  }, [error, setLocation]);
-
-  if (authLoading || isLoading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
@@ -97,10 +77,6 @@ export default function PoliciesPage() {
         </div>
       </div>
     );
-  }
-
-  if (!isAuthenticated) {
-    return null;
   }
 
   const filteredPolicies = policies.filter((p) => {
@@ -220,16 +196,7 @@ export default function PoliciesPage() {
 
       {/* Policies Grid */}
       <div className="max-w-6xl mx-auto px-4 py-6">
-        {isLoading ? (
-          <div className="flex flex-col items-center justify-center py-16 gap-4">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            <p className="text-muted-foreground">{t("common.loading")}</p>
-          </div>
-        ) : error ? (
-          <div className="text-center py-16">
-            <p className="text-destructive mb-4">{t("common.error")}</p>
-          </div>
-        ) : policies.length === 0 ? (
+        {policies.length === 0 ? (
           <div className="text-center py-16">
             <div className="mx-auto w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
               <Shield className="h-8 w-8 text-primary" />

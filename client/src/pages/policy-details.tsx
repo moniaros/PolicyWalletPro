@@ -1,8 +1,7 @@
-import { useRoute, Link, useLocation } from "wouter";
-import { useState, useEffect } from "react";
+import { useRoute, Link } from "wouter";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
-import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -95,13 +94,10 @@ export default function PolicyDetailsPage() {
   const [match, params] = useRoute("/policies/:id");
   const policyId = params?.id || "";
   const [activeTab, setActiveTab] = useState<"overview" | "coverages" | "details">("overview");
-  const { isAuthenticated, isLoading: authLoading } = useAuth();
-  const [, setLocation] = useLocation();
 
-  const { data: policyData, isLoading, error } = useQuery<PolicyWithRelations>({
+  const { data: policyData, isLoading } = useQuery<PolicyWithRelations>({
     queryKey: ["/api/policies", policyId],
-    enabled: !!policyId && isAuthenticated,
-    retry: false,
+    enabled: !!policyId,
   });
 
   const policy = policyData;
@@ -111,32 +107,13 @@ export default function PolicyDetailsPage() {
   const beneficiaries = policyData?.beneficiaries || [];
   const drivers = policyData?.drivers || [];
 
-  useEffect(() => {
-    if (!authLoading && !isAuthenticated) {
-      setLocation("/login");
-    }
-  }, [authLoading, isAuthenticated, setLocation]);
-
-  useEffect(() => {
-    if (error) {
-      const errorMessage = error instanceof Error ? error.message : "";
-      if (errorMessage.includes("401")) {
-        setLocation("/login");
-      }
-    }
-  }, [error, setLocation]);
-
-  if (authLoading || isLoading) {
+  if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center h-[50vh] space-y-4">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
         <p className="text-muted-foreground">{t("common.loading")}</p>
       </div>
     );
-  }
-
-  if (!isAuthenticated) {
-    return null;
   }
 
   if (!policy) {
