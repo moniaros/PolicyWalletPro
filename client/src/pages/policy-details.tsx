@@ -126,7 +126,7 @@ export default function PolicyDetailsPage() {
     }
   }, [error, setLocation]);
 
-  if (authLoading) {
+  if (authLoading || isLoading) {
     return (
       <div className="flex flex-col items-center justify-center h-[50vh] space-y-4">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -136,30 +136,7 @@ export default function PolicyDetailsPage() {
   }
 
   if (!isAuthenticated) {
-    return (
-      <div className="flex flex-col items-center justify-center h-[50vh] space-y-4">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        <p className="text-muted-foreground">{t("common.loading")}</p>
-      </div>
-    );
-  }
-
-  if (isLoading) {
-    return (
-      <div className="flex flex-col items-center justify-center h-[50vh] space-y-4">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        <p className="text-muted-foreground">{t("common.loading")}</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="flex flex-col items-center justify-center h-[50vh] space-y-4">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        <p className="text-muted-foreground">{t("common.loading")}</p>
-      </div>
-    );
+    return null;
   }
 
   if (!policy) {
@@ -476,7 +453,7 @@ export default function PolicyDetailsPage() {
                     <div className="grid grid-cols-2 gap-2 pt-2 border-t border-border/50">
                       <div>
                         <p className="text-xs text-muted-foreground">{t("policyDetails.limit")}</p>
-                        <p className="text-sm font-medium">{formatCurrency(coverage.limitAmount)}</p>
+                        <p className="text-sm font-medium">{formatCurrency(coverage.limitAmount || 0)}</p>
                       </div>
                       {coverage.deductible && parseFloat(coverage.deductible.toString()) > 0 && (
                         <div>
