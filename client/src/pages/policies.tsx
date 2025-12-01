@@ -36,9 +36,9 @@ export default function PoliciesPage() {
   ).length;
 
   const filterOptions = [
-    { id: "all", label: "All", count: policies.length },
-    { id: "active", label: "Active", count: activePolicies },
-    { id: "expiring", label: "Expiring", count: expiringPolicies },
+    { id: "all", label: t("policies.allPolicies"), shortLabel: t("common.all"), count: policies.length },
+    { id: "active", label: t("common.active"), shortLabel: t("common.active"), count: activePolicies },
+    { id: "expiring", label: t("policies.expiringSoon"), shortLabel: t("policies.expiring"), count: expiringPolicies },
   ];
 
   return (
@@ -92,28 +92,32 @@ export default function PoliciesPage() {
             </div>
           </div>
 
-          {/* Filter Tabs */}
-          <div className="flex gap-2 overflow-x-auto pb-1">
-            {filterOptions.map((filter) => (
-              <button
-                key={filter.id}
-                onClick={() => setActiveFilter(filter.id)}
-                className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
-                  activeFilter === filter.id
-                    ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white'
-                    : 'bg-secondary/80 text-muted-foreground hover:bg-secondary'
-                }`}
-                data-testid={`filter-${filter.id}`}
-              >
-                {filter.label}
-                <Badge 
-                  variant="secondary" 
-                  className={activeFilter === filter.id ? "bg-white/20 text-white" : ""}
+          {/* Filter Tabs - Mobile Optimized Segmented Control */}
+          <div className="relative bg-secondary/60 rounded-xl p-1">
+            <div className="grid grid-cols-3 gap-1">
+              {filterOptions.map((filter) => (
+                <button
+                  key={filter.id}
+                  onClick={() => setActiveFilter(filter.id)}
+                  className={`relative flex flex-col items-center justify-center min-h-[44px] px-2 py-2 rounded-lg text-sm font-medium transition-all ${
+                    activeFilter === filter.id
+                      ? 'bg-background text-foreground shadow-sm'
+                      : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                  data-testid={`filter-${filter.id}`}
                 >
-                  {filter.count}
-                </Badge>
-              </button>
-            ))}
+                  <span className="hidden sm:inline">{filter.label}</span>
+                  <span className="sm:hidden">{filter.shortLabel}</span>
+                  <span className={`text-xs mt-0.5 ${
+                    activeFilter === filter.id 
+                      ? 'text-primary font-semibold' 
+                      : 'text-muted-foreground'
+                  }`}>
+                    {filter.count}
+                  </span>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
