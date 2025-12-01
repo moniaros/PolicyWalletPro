@@ -1472,18 +1472,103 @@ export default function AddPolicyPage() {
               </Card>
             )}
 
+            {/* General Policy Details (Auto) */}
+            {(selectedType === "auto" && parsedData && (parsedData.policyNumber || parsedData.startDate || parsedData.endDate || parsedData.status || parsedData.premiumFrequency)) && (
+              <Card className="p-4 space-y-3" data-testid="card-general-policy-details">
+                <h3 className="font-semibold text-sm flex items-center gap-2 text-foreground">
+                  <FileText className="h-4 w-4 text-slate-600 dark:text-slate-400" />
+                  {t("addPolicy.generalPolicyDetails")}
+                </h3>
+                <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
+                  {parsedData.policyNumber && (
+                    <div data-testid="text-policy-number">
+                      <span className="text-muted-foreground">{t("addPolicy.policyNumberShort")}:</span>
+                      <span className="font-medium font-mono ml-1">{parsedData.policyNumber}</span>
+                    </div>
+                  )}
+                  {parsedData.startDate && (
+                    <div data-testid="text-start-date">
+                      <span className="text-muted-foreground">{t("addPolicy.startDateShort")}:</span>
+                      <span className="font-medium ml-1">{parsedData.startDate}</span>
+                    </div>
+                  )}
+                  {parsedData.endDate && (
+                    <div data-testid="text-end-date">
+                      <span className="text-muted-foreground">{t("addPolicy.endDateShort")}:</span>
+                      <span className="font-medium ml-1">{parsedData.endDate}</span>
+                    </div>
+                  )}
+                  {parsedData.status && (
+                    <div data-testid="text-policy-status">
+                      <span className="text-muted-foreground">{t("addPolicy.policyStatus")}:</span>
+                      <Badge variant="outline" className="ml-1 text-[9px]">
+                        {parsedData.status === "active" ? t("addPolicy.statusActive") : 
+                         parsedData.status === "expired" ? t("addPolicy.statusExpired") :
+                         parsedData.status === "pending" ? t("addPolicy.statusPending") :
+                         parsedData.status === "cancelled" ? t("addPolicy.statusCancelled") : parsedData.status}
+                      </Badge>
+                    </div>
+                  )}
+                  {parsedData.premiumFrequency && (
+                    <div className="col-span-2" data-testid="text-payment-frequency">
+                      <span className="text-muted-foreground">{t("addPolicy.paymentFrequency")}:</span>
+                      <span className="font-medium ml-1">{parsedData.premiumFrequency}</span>
+                    </div>
+                  )}
+                </div>
+              </Card>
+            )}
+
             {/* Vehicle Details (Auto) */}
             {(selectedType === "auto" && parsedData?.vehicle) && (
-              <Card className="p-4 space-y-3">
+              <Card className="p-4 space-y-3" data-testid="card-vehicle-details">
                 <h3 className="font-semibold text-sm flex items-center gap-2 text-foreground">
                   <Car className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                   {t("addPolicy.vehicleDetails")}
                 </h3>
-                <div className="space-y-2 text-xs">
-                  {parsedData.vehicle.make && <div><span className="text-muted-foreground">{t("addPolicy.vehicleMake")}:</span> <span className="font-medium">{parsedData.vehicle.make}</span></div>}
-                  {parsedData.vehicle.model && <div><span className="text-muted-foreground">{t("addPolicy.vehicleModel")}:</span> <span className="font-medium">{parsedData.vehicle.model}</span></div>}
-                  {parsedData.vehicle.plate && <div><span className="text-muted-foreground">{t("addPolicy.vehiclePlate")}:</span> <span className="font-medium font-mono">{parsedData.vehicle.plate}</span></div>}
-                  {parsedData.vehicle.vin && <div><span className="text-muted-foreground">VIN:</span> <span className="font-medium font-mono text-[9px]">{parsedData.vehicle.vin}</span></div>}
+                <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
+                  {parsedData.vehicle.plate && (
+                    <div data-testid="text-vehicle-plate">
+                      <span className="text-muted-foreground">{t("addPolicy.vehiclePlate")}:</span>
+                      <span className="font-medium font-mono ml-1">{parsedData.vehicle.plate}</span>
+                    </div>
+                  )}
+                  {parsedData.vehicle.usage && (
+                    <div data-testid="text-vehicle-usage">
+                      <span className="text-muted-foreground">{t("addPolicy.vehicleUsage")}:</span>
+                      <span className="font-medium ml-1">{parsedData.vehicle.usage}</span>
+                    </div>
+                  )}
+                  {parsedData.vehicle.make && (
+                    <div data-testid="text-vehicle-make">
+                      <span className="text-muted-foreground">{t("addPolicy.vehicleMake")}:</span>
+                      <span className="font-medium ml-1">{parsedData.vehicle.make}</span>
+                    </div>
+                  )}
+                  {parsedData.vehicle.model && (
+                    <div data-testid="text-vehicle-model">
+                      <span className="text-muted-foreground">{t("addPolicy.vehicleModel")}:</span>
+                      <span className="font-medium ml-1">{parsedData.vehicle.model}</span>
+                    </div>
+                  )}
+                  {parsedData.vehicle.engineCC && (
+                    <div data-testid="text-vehicle-cc">
+                      <span className="text-muted-foreground">{t("addPolicy.engineCC")}:</span>
+                      <span className="font-medium ml-1">{parsedData.vehicle.engineCC} cc</span>
+                    </div>
+                  )}
+                  {parsedData.vehicle.taxableHorsepower && (
+                    <div data-testid="text-vehicle-horsepower">
+                      <span className="text-muted-foreground">{t("addPolicy.taxableHorsepower")}:</span>
+                      <span className="font-medium ml-1">{parsedData.vehicle.taxableHorsepower}</span>
+                    </div>
+                  )}
+                  {parsedData.vehicle.insuredValue && (
+                    <div className="col-span-2" data-testid="text-vehicle-insured-value">
+                      <span className="text-muted-foreground">{t("addPolicy.insuredValue")}:</span>
+                      <span className="font-semibold text-emerald-600 dark:text-emerald-400 ml-1">€{parsedData.vehicle.insuredValue.toLocaleString()}</span>
+                    </div>
+                  )}
                 </div>
               </Card>
             )}
