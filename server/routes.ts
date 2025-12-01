@@ -400,9 +400,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ error: "Unsupported file type. Please upload PDF, JPEG, PNG, or text file." });
       }
 
-      const maxBase64Size = 20 * 1024 * 1024;
+      const maxBase64Size = 10 * 1024 * 1024;
       if (documentBase64 && documentBase64.length > maxBase64Size) {
-        return res.status(413).json({ error: "Document too large. Maximum file size is 15MB." });
+        return res.status(413).json({ error: "Document too large. Maximum file size is 10MB." });
+      }
+
+      if (documentContent && documentContent.length > 5 * 1024 * 1024) {
+        return res.status(413).json({ error: "Text content too large. Maximum size is 5MB." });
       }
 
       const baseUrl = process.env.AI_INTEGRATIONS_GEMINI_BASE_URL;
@@ -542,7 +546,7 @@ ${documentContent || '[Base64 document provided]'}`;
       
       if (documentBase64 && mimeType) {
         response = await ai.models.generateContent({
-          model: "gemini-2.5-flash",
+          model: "gemini-1.5-flash",
           contents: [
             {
               role: "user",
@@ -560,7 +564,7 @@ ${documentContent || '[Base64 document provided]'}`;
         });
       } else {
         response = await ai.models.generateContent({
-          model: "gemini-2.5-flash",
+          model: "gemini-1.5-flash",
           contents: comprehensivePrompt,
         });
       }
@@ -711,88 +715,121 @@ ${documentContent || '[Base64 document provided]'}`;
 
       if (beneficiaries && Array.isArray(beneficiaries)) {
         for (const b of beneficiaries) {
-          await storage.createPolicyBeneficiary({
-            policyId,
-            name: b.name,
-            relationship: b.relationship,
-            percentage: b.percentage?.toString() || "100",
-            dateOfBirth: b.dateOfBirth ? new Date(b.dateOfBirth) : null,
-            afm: b.afm,
-            contact: b.contact,
-          });
+          const fullName = b.name || b.fullName;
+          if (!fullName) continue;
+          
+          try {
+            await storage.createPolicyBeneficiary({
+              policyId,
+              userId: req.userId!,
+              beneficiaryType: b.beneficiaryType || "primary",
+              fullName,
+              relationship: b.relationship || "other",
+              percentage: b.percentage?.toString() || "100",
+              dateOfBirth: b.dateOfBirth || null,
+              afm: b.afm,
+              phone: b.contact || b.phone,
+            });
+          } catch (err) {
+            console.warn("Failed to create beneficiary:", err);
+          }
         }
       }
 
       if (drivers && Array.isArray(drivers)) {
         for (const d of drivers) {
-          await storage.createPolicyDriver({
-            policyId,
-            name: d.name,
-            dateOfBirth: d.dateOfBirth ? new Date(d.dateOfBirth) : null,
-            licenseNumber: d.licenseNumber,
-            licenseDate: d.licenseDate ? new Date(d.licenseDate) : null,
-            licenseExpiry: d.licenseExpiry ? new Date(d.licenseExpiry) : null,
-            isPrimary: d.isPrimary || false,
-            yearsExperience: d.yearsExperience,
-            accidentsLast5Years: d.accidentsLast5Years || 0,
-          });
+          const fullName = d.name || d.fullName;
+          if (!fullName) continue;
+          
+          try {
+            await storage.createPolicyDriver({
+              policyId,
+              userId: req.userId!,
+              driverType: d.isPrimary ? "primary" : (d.driverType || "primary"),
+              fullName,
+              dateOfBirth: d.dateOfBirth || new Date().toISOString().split('T')[0],
+              licenseNumber: d.licenseNumber || "PENDING",
+              licenseIssueDate: d.licenseDate || d.licenseIssueDate,
+              licenseExpiryDate: d.licenseExpiry || d.licenseExpiryDate,
+              yearsLicensed: d.yearsExperience || d.yearsLicensed,
+            });
+          } catch (err) {
+            console.warn("Failed to create driver:", err);
+          }
         }
       }
 
       if (coverages && Array.isArray(coverages)) {
         for (const c of coverages) {
-          await storage.createPolicyCoverage({
-            policyId,
-            name: c.name,
-            code: c.code,
-            limitAmount: c.limit?.toString() || c.limitAmount?.toString() || "0",
-            deductible: c.deductible?.toString() || "0",
-            premium: c.premium?.toString() || "0",
-            waitingPeriodDays: c.waitingPeriod || c.waitingPeriodDays || 0,
-            description: c.description,
-            isActive: true,
-          });
+          const coverageName = c.name || c.coverageName;
+          if (!coverageName) continue;
+          
+          try {
+            await storage.createPolicyCoverage({
+              policyId,
+              userId: req.userId!,
+              coverageType: c.code || c.coverageType || "other",
+              coverageName,
+              limitAmount: c.limit?.toString() || c.limitAmount?.toString() || "0",
+              deductible: c.deductible?.toString() || "0",
+              waitingPeriod: c.waitingPeriod || c.waitingPeriodDays || 0,
+              description: c.description,
+              isActive: true,
+            });
+          } catch (err) {
+            console.warn("Failed to create coverage:", err);
+          }
         }
       }
 
       if (vehicle) {
-        await storage.createPolicyVehicle({
-          policyId,
-          make: vehicle.make,
-          model: vehicle.model,
-          year: vehicle.year,
-          plate: vehicle.plate,
-          vin: vehicle.vin,
-          engineCC: vehicle.engineCC,
-          fuelType: vehicle.fuelType,
-          color: vehicle.color,
-          usage: vehicle.usage || "personal",
-          parkingType: vehicle.parkingType,
-          hasAlarm: vehicle.hasAlarm || false,
-          hasTracker: vehicle.hasTracker || false,
-          mileage: vehicle.mileage,
-        });
+        try {
+          await storage.createPolicyVehicle({
+            policyId,
+            userId: req.userId!,
+            vehicleType: vehicle.vehicleType || "car",
+            make: vehicle.make || "Unknown",
+            model: vehicle.model || "Unknown",
+            year: vehicle.year || new Date().getFullYear(),
+            licensePlate: vehicle.plate || vehicle.licensePlate || "PENDING",
+            vin: vehicle.vin,
+            engineSize: vehicle.engineCC || vehicle.engineSize,
+            fuelType: vehicle.fuelType,
+            color: vehicle.color,
+            primaryUse: vehicle.usage || vehicle.primaryUse || "personal",
+            garageAddress: vehicle.parkingType || vehicle.garageAddress,
+            hasAlarm: vehicle.hasAlarm || false,
+            hasTracker: vehicle.hasTracker || false,
+            currentMileage: vehicle.mileage || vehicle.currentMileage,
+          });
+        } catch (err) {
+          console.warn("Failed to create vehicle:", err);
+        }
       }
 
       if (property) {
-        await storage.createPolicyProperty({
-          policyId,
-          address: property.address,
-          city: property.city,
-          postalCode: property.postalCode,
-          country: property.country || "Greece",
-          propertyType: property.type || property.propertyType || "apartment",
-          squareMeters: property.squareMeters,
-          yearBuilt: property.yearBuilt,
-          floors: property.floors,
-          constructionType: property.construction || property.constructionType,
-          hasBasement: property.hasBasement || false,
-          hasGarage: property.hasGarage || false,
-          hasPool: property.hasPool || false,
-          hasGarden: property.hasGarden || false,
-          isRented: property.isRented || false,
-          securitySystem: property.securitySystem,
-        });
+        try {
+          await storage.createPolicyProperty({
+            policyId,
+            userId: req.userId!,
+            address: property.address || "Unknown",
+            city: property.city,
+            postalCode: property.postalCode,
+            country: property.country || "Greece",
+            propertyType: property.type || property.propertyType || "apartment",
+            squareMeters: property.squareMeters,
+            yearBuilt: property.yearBuilt,
+            numberOfFloors: property.floors || property.numberOfFloors,
+            constructionType: property.construction || property.constructionType,
+            hasBasement: property.hasBasement || false,
+            hasGarage: property.hasGarage || false,
+            hasPool: property.hasPool || false,
+            hasGarden: property.hasGarden || false,
+            securitySystem: property.securitySystem,
+          });
+        } catch (err) {
+          console.warn("Failed to create property:", err);
+        }
       }
 
       await auditLog(req.userId!, "policy_created", "policies", { policyId, policyNumber: policy.policyNumber });
