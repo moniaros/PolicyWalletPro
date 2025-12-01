@@ -2690,7 +2690,8 @@
       "invalidAfm": "Tax ID must be 9 digits",
       "saveFailed": "Failed to save. Try again.",
       "missingFields": "Missing required fields",
-      "stillHasErrors": "The data still has errors. Please correct them."
+      "stillHasErrors": "The data still has errors. Please correct them.",
+      "analysisFailed": "AI analysis failed. Please try again or skip."
     },
     "confidence": "confidence",
     "success": {
@@ -2698,12 +2699,23 @@
       "documentParsed": "Document parsed successfully with AI!",
       "policyFound": "Policy found in database!",
       "policyAdded": "Policy added successfully!",
-      "dataValid": "The data is valid. Continue to the next step."
+      "dataValid": "The data is valid. Continue to the next step.",
+      "analysisComplete": "Policy analyzed successfully!"
     },
     "correctData": "Correct Data",
     "reviewExtractedData": "Review Extracted Data",
     "correctDataDesc": "Fix the errors found or complete the empty fields",
     "continueParsing": "Continue",
+    "confirmAndAnalyze": "Confirm & Analyze",
+    "skipAnalysis": "Skip AI Analysis",
+    "analysisSkipped": "AI summary was skipped. You can still save the policy.",
+    "analyzingPolicy": "Analyzing Policy...",
+    "aiSummary": "AI Policy Summary",
+    "aiSummaryDesc": "Plain-language explanation of your policy",
+    "keyCoverages": "Key Coverages",
+    "keyNumbers": "Key Numbers",
+    "thingsToKnow": "Things to Know",
+    "includedBenefits": "Included Benefits",
     "coverageDetails": "Coverage Details",
     "perksAndBenefits": "Perks & Benefits",
     "coverage": "Coverage",

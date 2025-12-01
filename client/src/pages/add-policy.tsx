@@ -1186,28 +1186,35 @@ export default function AddPolicyPage() {
                     beneficiaries: parsedData?.beneficiaries,
                   };
                   
-                  const response = await fetch("/api/policies/analyze-verified", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                      verifiedData,
-                      policyType: selectedType,
-                      language: i18n.language,
-                    }),
+                  const response = await apiRequest("POST", "/api/policies/analyze-verified", {
+                    verifiedData,
+                    policyType: selectedType,
+                    language: i18n.language,
                   });
                   
-                  if (response.ok) {
-                    const data = await response.json();
-                    setAiAnalysis(data.aiAnalysis);
+                  const data = await response.json();
+                  
+                  const analysis = data.aiAnalysis;
+                  const hasValidAnalysis = analysis && (
+                    analysis.summary ||
+                    (analysis.keyCoverages && analysis.keyCoverages.length > 0) ||
+                    (analysis.keyNumbers && analysis.keyNumbers.length > 0) ||
+                    analysis.thingsToKnow ||
+                    (analysis.benefits && analysis.benefits.length > 0)
+                  );
+                  
+                  if (hasValidAnalysis) {
+                    setAiAnalysis(analysis);
                     toast.success(t("addPolicy.success.analysisComplete"));
+                    setStep("review");
                   } else {
-                    console.warn("Analysis failed, proceeding without AI summary");
+                    toast.error(t("addPolicy.errors.analysisFailed"));
                   }
                 } catch (error) {
                   console.error("Analysis error:", error);
+                  toast.error(t("addPolicy.errors.analysisFailed"));
                 } finally {
                   setIsAnalyzing(false);
-                  setStep("review");
                 }
               }}
               className="w-full"
@@ -1225,6 +1232,26 @@ export default function AddPolicyPage() {
                   {t("addPolicy.confirmAndAnalyze")}
                 </>
               )}
+            </Button>
+
+            <Button
+              variant="ghost"
+              onClick={() => {
+                const errors = validateExtractedData(formData);
+                if (Object.keys(errors).length > 0) {
+                  setValidationErrors(errors);
+                  toast.error(t("addPolicy.errors.stillHasErrors"));
+                  return;
+                }
+                setValidationErrors({});
+                setStep("review");
+              }}
+              className="w-full text-muted-foreground"
+              disabled={isAnalyzing}
+              data-testid="button-skip-analysis"
+            >
+              {t("addPolicy.skipAnalysis")}
+              <ChevronRight className="h-4 w-4 ml-1" />
             </Button>
           </div>
         );
@@ -1385,6 +1412,16 @@ export default function AddPolicyPage() {
                     </div>
                   </div>
                 )}
+              </Card>
+            )}
+
+            {/* AI Analysis Skipped Message */}
+            {!aiAnalysis && addMethod === "document" && (
+              <Card className="p-3 bg-muted/50 border-dashed">
+                <div className="flex items-center gap-2 text-muted-foreground text-xs">
+                  <Sparkles className="h-4 w-4" />
+                  <span>{t("addPolicy.analysisSkipped")}</span>
+                </div>
               </Card>
             )}
 
