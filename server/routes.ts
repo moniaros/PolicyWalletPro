@@ -6,7 +6,7 @@ import { z } from "zod";
 import { authMiddleware, errorHandler, adminMiddleware, type AuthRequest } from "./middleware";
 import { login, register } from "./auth";
 import { auditLog } from "./middleware";
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI, Type } from "@google/genai";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Authentication Routes
@@ -424,126 +424,171 @@ export async function registerRoutes(app: Express): Promise<Server> {
         },
       });
 
-      const comprehensivePrompt = `You are an expert Greek/European insurance document parser specializing in ACORD standards. 
-Analyze this insurance policy document thoroughly and extract ALL available information in the following JSON structure.
-For Greek documents, look for ΑΦΜ (tax ID), ΑΜΚΑ (social security), and other Greek-specific identifiers.
+      const extractionPrompt = `You are an expert, highly accurate Greek/European insurance policy parser specializing in ACORD standards.
+Analyze the provided insurance document image or PDF thoroughly.
 
-Return ONLY valid JSON (no markdown, no explanation):
+CRITICAL INSTRUCTIONS:
+- Do NOT hallucinate or invent data. If a field is not clearly visible in the document, use null.
+- Dates should be in YYYY-MM-DD format.
+- All monetary values should be numbers (no currency symbols).
+- For Greek documents, look for ΑΦΜ (9-digit tax ID), ΑΜΚΑ (social security), policy numbers.
+- Extract ALL coverages, benefits, and perks mentioned in the document.
 
-{
-  "policy": {
-    "policyNumber": "string - policy number/ID",
-    "policyName": "string - product name",
-    "policyType": "health|auto|home|life|travel|business|pet",
-    "startDate": "YYYY-MM-DD",
-    "endDate": "YYYY-MM-DD",
-    "premium": "number - annual premium in EUR",
-    "premiumFrequency": "monthly|quarterly|semi-annual|annual",
-    "totalCoverage": "number - total coverage amount",
-    "deductible": "number - deductible amount",
-    "currency": "EUR|USD|GBP",
-    "autoRenew": "boolean",
-    "paymentMethod": "bank_transfer|credit_card|direct_debit"
-  },
-  "policyholder": {
-    "fullName": "string",
-    "afm": "string - 9-digit Greek tax ID (ΑΦΜ)",
-    "amka": "string - Greek social security number",
-    "idNumber": "string - ID card or passport",
-    "dateOfBirth": "YYYY-MM-DD",
-    "gender": "male|female|other",
-    "address": "string - full address",
-    "city": "string",
-    "postalCode": "string",
-    "country": "string - default Greece",
-    "phone": "string - with country code",
-    "mobile": "string",
-    "email": "string",
-    "occupation": "string"
-  },
-  "beneficiaries": [
-    {
-      "name": "string",
-      "relationship": "spouse|child|parent|sibling|other",
-      "percentage": "number - 0-100",
-      "dateOfBirth": "YYYY-MM-DD",
-      "afm": "string",
-      "contact": "string"
-    }
-  ],
-  "coverages": [
-    {
-      "name": "string - coverage type name",
-      "code": "string - coverage code",
-      "limit": "number - coverage limit",
-      "deductible": "number",
-      "premium": "number - premium for this coverage",
-      "waitingPeriod": "number - days",
-      "description": "string"
-    }
-  ],
-  "vehicle": {
-    "make": "string - manufacturer",
-    "model": "string",
-    "year": "number",
-    "plate": "string - license plate",
-    "vin": "string - vehicle identification number",
-    "engineCC": "number - engine capacity",
-    "fuelType": "petrol|diesel|electric|hybrid|lpg",
-    "color": "string",
-    "usage": "personal|commercial|fleet",
-    "parkingType": "garage|street|parking_lot",
-    "hasAlarm": "boolean",
-    "hasTracker": "boolean",
-    "mileage": "number"
-  },
-  "drivers": [
-    {
-      "name": "string",
-      "dateOfBirth": "YYYY-MM-DD",
-      "licenseNumber": "string",
-      "licenseDate": "YYYY-MM-DD",
-      "licenseExpiry": "YYYY-MM-DD",
-      "isPrimary": "boolean",
-      "yearsExperience": "number",
-      "accidentsLast5Years": "number"
-    }
-  ],
-  "property": {
-    "address": "string",
-    "city": "string",
-    "postalCode": "string",
-    "country": "string",
-    "type": "apartment|house|villa|commercial",
-    "squareMeters": "number",
-    "yearBuilt": "number",
-    "floors": "number",
-    "construction": "concrete|brick|wood|mixed",
-    "hasBasement": "boolean",
-    "hasGarage": "boolean",
-    "hasPool": "boolean",
-    "hasGarden": "boolean",
-    "isRented": "boolean",
-    "securitySystem": "string"
-  },
-  "health": {
-    "preExistingConditions": ["string"],
-    "medications": ["string"],
-    "hospitalizationHistory": "string",
-    "smokingStatus": "never|former|current",
-    "familyMedicalHistory": "string"
-  },
-  "confidence": {
-    "overall": "number - 0-100 confidence score",
-    "notes": "string - any parsing notes or uncertainties"
-  }
-}
+Context: This is a ${policyType || 'general'} insurance policy from ${insurerId || 'an insurer'}.`;
 
-Only include sections relevant to the document type. Omit empty/null fields.
-For ${policyType || 'general'} insurance from ${insurerId || 'unknown insurer'}:
-
-Document (${documentType || 'text'}):
-${documentContent || '[Base64 document provided]'}`;
+      const responseSchema = {
+        type: Type.OBJECT,
+        properties: {
+          policy: {
+            type: Type.OBJECT,
+            properties: {
+              policyNumber: { type: Type.STRING },
+              policyName: { type: Type.STRING },
+              policyType: { type: Type.STRING },
+              startDate: { type: Type.STRING },
+              endDate: { type: Type.STRING },
+              premium: { type: Type.NUMBER },
+              premiumFrequency: { type: Type.STRING },
+              totalCoverage: { type: Type.NUMBER },
+              deductible: { type: Type.NUMBER },
+              currency: { type: Type.STRING },
+              autoRenew: { type: Type.BOOLEAN },
+              paymentMethod: { type: Type.STRING }
+            }
+          },
+          policyholder: {
+            type: Type.OBJECT,
+            properties: {
+              fullName: { type: Type.STRING },
+              afm: { type: Type.STRING },
+              amka: { type: Type.STRING },
+              idNumber: { type: Type.STRING },
+              dateOfBirth: { type: Type.STRING },
+              gender: { type: Type.STRING },
+              address: { type: Type.STRING },
+              city: { type: Type.STRING },
+              postalCode: { type: Type.STRING },
+              country: { type: Type.STRING },
+              phone: { type: Type.STRING },
+              mobile: { type: Type.STRING },
+              email: { type: Type.STRING },
+              occupation: { type: Type.STRING }
+            }
+          },
+          beneficiaries: {
+            type: Type.ARRAY,
+            items: {
+              type: Type.OBJECT,
+              properties: {
+                name: { type: Type.STRING },
+                relationship: { type: Type.STRING },
+                percentage: { type: Type.NUMBER },
+                dateOfBirth: { type: Type.STRING },
+                afm: { type: Type.STRING },
+                contact: { type: Type.STRING }
+              }
+            }
+          },
+          coverages: {
+            type: Type.ARRAY,
+            items: {
+              type: Type.OBJECT,
+              properties: {
+                name: { type: Type.STRING },
+                code: { type: Type.STRING },
+                limit: { type: Type.NUMBER },
+                deductible: { type: Type.NUMBER },
+                premium: { type: Type.NUMBER },
+                waitingPeriod: { type: Type.NUMBER },
+                description: { type: Type.STRING }
+              }
+            }
+          },
+          benefits: {
+            type: Type.ARRAY,
+            items: {
+              type: Type.OBJECT,
+              properties: {
+                name: { type: Type.STRING },
+                description: { type: Type.STRING },
+                limit: { type: Type.STRING },
+                included: { type: Type.BOOLEAN }
+              }
+            }
+          },
+          vehicle: {
+            type: Type.OBJECT,
+            properties: {
+              make: { type: Type.STRING },
+              model: { type: Type.STRING },
+              year: { type: Type.NUMBER },
+              plate: { type: Type.STRING },
+              vin: { type: Type.STRING },
+              engineCC: { type: Type.NUMBER },
+              fuelType: { type: Type.STRING },
+              color: { type: Type.STRING },
+              usage: { type: Type.STRING },
+              parkingType: { type: Type.STRING },
+              hasAlarm: { type: Type.BOOLEAN },
+              hasTracker: { type: Type.BOOLEAN },
+              mileage: { type: Type.NUMBER }
+            }
+          },
+          drivers: {
+            type: Type.ARRAY,
+            items: {
+              type: Type.OBJECT,
+              properties: {
+                fullName: { type: Type.STRING },
+                dateOfBirth: { type: Type.STRING },
+                licenseNumber: { type: Type.STRING },
+                licenseIssueDate: { type: Type.STRING },
+                licenseExpiry: { type: Type.STRING },
+                isPrimary: { type: Type.BOOLEAN },
+                yearsExperience: { type: Type.NUMBER },
+                accidentsLast5Years: { type: Type.NUMBER }
+              }
+            }
+          },
+          property: {
+            type: Type.OBJECT,
+            properties: {
+              address: { type: Type.STRING },
+              city: { type: Type.STRING },
+              postalCode: { type: Type.STRING },
+              country: { type: Type.STRING },
+              type: { type: Type.STRING },
+              squareMeters: { type: Type.NUMBER },
+              yearBuilt: { type: Type.NUMBER },
+              floors: { type: Type.NUMBER },
+              construction: { type: Type.STRING },
+              hasBasement: { type: Type.BOOLEAN },
+              hasGarage: { type: Type.BOOLEAN },
+              hasPool: { type: Type.BOOLEAN },
+              hasGarden: { type: Type.BOOLEAN },
+              isRented: { type: Type.BOOLEAN },
+              securitySystem: { type: Type.STRING }
+            }
+          },
+          health: {
+            type: Type.OBJECT,
+            properties: {
+              preExistingConditions: { type: Type.ARRAY, items: { type: Type.STRING } },
+              medications: { type: Type.ARRAY, items: { type: Type.STRING } },
+              hospitalizationHistory: { type: Type.STRING },
+              smokingStatus: { type: Type.STRING },
+              familyMedicalHistory: { type: Type.STRING }
+            }
+          },
+          confidence: {
+            type: Type.OBJECT,
+            properties: {
+              overall: { type: Type.NUMBER },
+              notes: { type: Type.STRING }
+            }
+          }
+        }
+      };
 
       let response;
       
@@ -560,15 +605,23 @@ ${documentContent || '[Base64 document provided]'}`;
                     data: documentBase64,
                   },
                 },
-                { text: comprehensivePrompt },
+                { text: extractionPrompt },
               ],
             },
           ],
+          config: {
+            responseMimeType: "application/json",
+            responseSchema: responseSchema as any,
+          },
         });
       } else {
         response = await ai.models.generateContent({
           model: "gemini-2.5-flash",
-          contents: comprehensivePrompt,
+          contents: `${extractionPrompt}\n\nDocument content:\n${documentContent}`,
+          config: {
+            responseMimeType: "application/json",
+            responseSchema: responseSchema as any,
+          },
         });
       }
 
@@ -576,16 +629,20 @@ ${documentContent || '[Base64 document provided]'}`;
       let parsedData: any = {};
       
       try {
-        const jsonMatch = text.match(/\{[\s\S]*\}/);
-        if (jsonMatch) {
-          parsedData = JSON.parse(jsonMatch[0]);
-        }
+        parsedData = JSON.parse(text);
       } catch (parseError) {
         console.error("Failed to parse Gemini response:", parseError);
-        return res.status(422).json({ 
-          error: "Could not extract structured data from document",
-          rawResponse: text.substring(0, 500)
-        });
+        const jsonMatch = text.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+          try {
+            parsedData = JSON.parse(jsonMatch[0]);
+          } catch {
+            return res.status(422).json({ 
+              error: "Could not extract structured data from document",
+              rawResponse: text.substring(0, 500)
+            });
+          }
+        }
       }
 
       res.json({
@@ -598,6 +655,115 @@ ${documentContent || '[Base64 document provided]'}`;
       console.error("Document parsing error:", error);
       res.status(500).json({ 
         error: "Failed to parse document", 
+        details: error.message 
+      });
+    }
+  });
+
+  // Step 3: Plain-Language Analysis - After user verification
+  app.post("/api/policies/analyze-verified", async (req, res) => {
+    try {
+      const { verifiedData, policyType, language } = req.body;
+      
+      if (!verifiedData) {
+        return res.status(400).json({ error: "Verified data is required" });
+      }
+
+      const baseUrl = process.env.AI_INTEGRATIONS_GEMINI_BASE_URL;
+      const apiKey = process.env.AI_INTEGRATIONS_GEMINI_API_KEY;
+
+      if (!baseUrl || !apiKey) {
+        return res.status(500).json({ error: "Gemini AI integration not configured" });
+      }
+
+      const ai = new GoogleGenAI({
+        apiKey,
+        httpOptions: {
+          apiVersion: "",
+          baseUrl,
+        },
+      });
+
+      const isGreek = language === 'el';
+      
+      const analysisPrompt = isGreek 
+        ? `Είσαι ένας εξειδικευμένος σύμβουλος ασφαλίσεων που εξηγεί ένα ασφαλιστήριο σε έναν πελάτη.
+Με βάση τα παρακάτω δεδομένα πολιτικής JSON, παρέχεις μια απλή, κατανοητή περίληψη.
+
+- summary: Μία πρόταση που περιγράφει τι καλύπτει αυτό το ασφαλιστήριο.
+- keyCoverages: Οι 3 πιο σημαντικές καλύψεις και τι σημαίνει κάθε μία με απλά λόγια.
+- keyNumbers: Το Συνολικό Ασφάλιστρο, σημαντικές απαλλαγές, και όρια κάλυψης.
+- thingsToKnow: Μία σημαντική εξαίρεση ή προϋπόθεση που πρέπει να γνωρίζει ο χρήστης.
+- benefits: Τυχόν παροχές ή πλεονεκτήματα (π.χ. ετήσιος έλεγχος υγείας, οδική βοήθεια).
+
+Χρησιμοποίησε απλή γλώσσα. Αποφεύγεις την ορολογία. Η απάντηση πρέπει να είναι JSON.
+
+Δεδομένα Πολιτικής:
+${JSON.stringify(verifiedData, null, 2)}`
+        : `You are a helpful insurance expert explaining a policy to a client.
+Based on the following JSON policy data, provide a simple, easy-to-understand summary.
+
+- summary: A one-sentence summary of what this policy covers.
+- keyCoverages: List the 3 most important coverages and what they mean in one simple sentence each.
+- keyNumbers: Clearly state the Total Premium, any significant Deductibles, and coverage limits.
+- thingsToKnow: Briefly mention one important exclusion or condition the user should be aware of.
+- benefits: Any perks or benefits included (e.g., annual health checkup, roadside assistance).
+
+Keep the language simple and direct. Avoid jargon. The response must be a JSON object.
+
+Policy Data:
+${JSON.stringify(verifiedData, null, 2)}`;
+
+      const analysisSchema = {
+        type: Type.OBJECT,
+        properties: {
+          summary: { type: Type.STRING },
+          keyCoverages: {
+            type: Type.ARRAY,
+            items: { type: Type.STRING }
+          },
+          keyNumbers: {
+            type: Type.ARRAY,
+            items: { type: Type.STRING }
+          },
+          thingsToKnow: { type: Type.STRING },
+          benefits: {
+            type: Type.ARRAY,
+            items: { type: Type.STRING }
+          }
+        }
+      };
+
+      const response = await ai.models.generateContent({
+        model: "gemini-2.5-flash",
+        contents: analysisPrompt,
+        config: {
+          responseMimeType: "application/json",
+          responseSchema: analysisSchema as any,
+        },
+      });
+
+      const text = response.text || "";
+      let aiAnalysis: any = {};
+      
+      try {
+        aiAnalysis = JSON.parse(text);
+      } catch (parseError) {
+        console.error("Failed to parse analysis response:", parseError);
+        const jsonMatch = text.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+          aiAnalysis = JSON.parse(jsonMatch[0]);
+        }
+      }
+
+      res.json({
+        success: true,
+        aiAnalysis,
+      });
+    } catch (error: any) {
+      console.error("Policy analysis error:", error);
+      res.status(500).json({ 
+        error: "Failed to analyze policy", 
         details: error.message 
       });
     }
