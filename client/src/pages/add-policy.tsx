@@ -1170,6 +1170,7 @@ export default function AddPolicyPage() {
               <p className="text-xs text-muted-foreground">{t("addPolicy.reviewDesc")}</p>
             </div>
 
+            {/* Policy Header */}
             <Card className="p-4 bg-muted/30 space-y-3">
               <div className="flex items-center gap-3 pb-3 border-b border-border/50">
                 <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
@@ -1229,6 +1230,121 @@ export default function AddPolicyPage() {
                 </div>
               )}
             </Card>
+
+            {/* Coverages Section */}
+            {(parsedData?.coverages && parsedData.coverages.length > 0) && (
+              <Card className="p-4 space-y-3">
+                <h3 className="font-semibold text-sm flex items-center gap-2 text-foreground">
+                  <Shield className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                  {t("addPolicy.coverageDetails")}
+                </h3>
+                <div className="space-y-2">
+                  {parsedData.coverages.map((coverage: any, idx: number) => (
+                    <div key={idx} className="bg-muted/50 rounded-md p-3 space-y-2 text-xs">
+                      <div className="flex items-start justify-between gap-2">
+                        <p className="font-semibold text-foreground">{coverage.name || coverage.code || `${t("addPolicy.coverage")} ${idx + 1}`}</p>
+                        {coverage.limit && <Badge variant="outline" className="text-[9px] px-1.5 py-0.5 whitespace-nowrap">€{coverage.limit}</Badge>}
+                      </div>
+                      <div className="grid grid-cols-2 gap-2 text-muted-foreground">
+                        {coverage.deductible && <div><span className="text-[9px] uppercase">{t("addPolicy.deductibleLabel")}:</span> €{coverage.deductible}</div>}
+                        {coverage.premium && <div><span className="text-[9px] uppercase">{t("addPolicy.premiumLabel")}:</span> €{coverage.premium}</div>}
+                        {coverage.waitingPeriod && <div><span className="text-[9px] uppercase">{t("addPolicy.waitingPeriod")}:</span> {coverage.waitingPeriod} {t("addPolicy.days")}</div>}
+                      </div>
+                      {coverage.description && <p className="text-[9px] text-muted-foreground italic">{coverage.description}</p>}
+                    </div>
+                  ))}
+                </div>
+              </Card>
+            )}
+
+            {/* Perks & Benefits Section */}
+            {(parsedData?.benefits && parsedData.benefits.length > 0) && (
+              <Card className="p-4 space-y-3">
+                <h3 className="font-semibold text-sm flex items-center gap-2 text-foreground">
+                  <Heart className="h-4 w-4 text-rose-600 dark:text-rose-400" />
+                  {t("addPolicy.perksAndBenefits")}
+                </h3>
+                <div className="space-y-2">
+                  {parsedData.benefits.map((benefit: any, idx: number) => (
+                    <div key={idx} className="flex items-start gap-2 text-xs">
+                      <span className="text-emerald-600 dark:text-emerald-400 font-bold">✓</span>
+                      <div>
+                        <p className="font-medium text-foreground">{benefit.name || benefit}</p>
+                        {benefit.description && <p className="text-muted-foreground">{benefit.description}</p>}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </Card>
+            )}
+
+            {/* Vehicle Details (Auto) */}
+            {(selectedType === "auto" && parsedData?.vehicle) && (
+              <Card className="p-4 space-y-3">
+                <h3 className="font-semibold text-sm flex items-center gap-2 text-foreground">
+                  <Car className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                  {t("addPolicy.vehicleDetails")}
+                </h3>
+                <div className="space-y-2 text-xs">
+                  {parsedData.vehicle.make && <div><span className="text-muted-foreground">{t("addPolicy.vehicleMake")}:</span> <span className="font-medium">{parsedData.vehicle.make}</span></div>}
+                  {parsedData.vehicle.model && <div><span className="text-muted-foreground">{t("addPolicy.vehicleModel")}:</span> <span className="font-medium">{parsedData.vehicle.model}</span></div>}
+                  {parsedData.vehicle.plate && <div><span className="text-muted-foreground">{t("addPolicy.vehiclePlate")}:</span> <span className="font-medium font-mono">{parsedData.vehicle.plate}</span></div>}
+                  {parsedData.vehicle.vin && <div><span className="text-muted-foreground">VIN:</span> <span className="font-medium font-mono text-[9px]">{parsedData.vehicle.vin}</span></div>}
+                </div>
+              </Card>
+            )}
+
+            {/* Property Details (Home) */}
+            {(selectedType === "home" && parsedData?.property) && (
+              <Card className="p-4 space-y-3">
+                <h3 className="font-semibold text-sm flex items-center gap-2 text-foreground">
+                  <Home className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                  {t("addPolicy.propertyDetails")}
+                </h3>
+                <div className="space-y-2 text-xs">
+                  {parsedData.property.address && <div><span className="text-muted-foreground">{t("addPolicy.propertyAddress")}:</span> <span className="font-medium">{parsedData.property.address}</span></div>}
+                  {parsedData.property.squareMeters && <div><span className="text-muted-foreground">{t("addPolicy.propertySqm")}:</span> <span className="font-medium">{parsedData.property.squareMeters} m²</span></div>}
+                  {parsedData.property.floors && <div><span className="text-muted-foreground">{t("addPolicy.floors")}:</span> <span className="font-medium">{parsedData.property.floors}</span></div>}
+                  {parsedData.property.construction && <div><span className="text-muted-foreground">{t("addPolicy.construction")}:</span> <span className="font-medium">{parsedData.property.construction}</span></div>}
+                </div>
+              </Card>
+            )}
+
+            {/* Drivers (Auto) */}
+            {(selectedType === "auto" && parsedData?.drivers && parsedData.drivers.length > 0) && (
+              <Card className="p-4 space-y-3">
+                <h3 className="font-semibold text-sm flex items-center gap-2 text-foreground">
+                  <User className="h-4 w-4 text-slate-600 dark:text-slate-400" />
+                  {t("addPolicy.drivers")} ({parsedData.drivers.length})
+                </h3>
+                <div className="space-y-2">
+                  {parsedData.drivers.map((driver: any, idx: number) => (
+                    <div key={idx} className="bg-muted/50 rounded-md p-2 text-xs">
+                      <p className="font-medium text-foreground">{driver.fullName}</p>
+                      <p className="text-muted-foreground">{t("addPolicy.licenseIssueDate")}: {driver.licenseIssueDate}</p>
+                    </div>
+                  ))}
+                </div>
+              </Card>
+            )}
+
+            {/* Beneficiaries (Life) */}
+            {(selectedType === "life" && parsedData?.beneficiaries && parsedData.beneficiaries.length > 0) && (
+              <Card className="p-4 space-y-3">
+                <h3 className="font-semibold text-sm flex items-center gap-2 text-foreground">
+                  <Users className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                  {t("addPolicy.beneficiaries")} ({parsedData.beneficiaries.length})
+                </h3>
+                <div className="space-y-2">
+                  {parsedData.beneficiaries.map((beneficiary: any, idx: number) => (
+                    <div key={idx} className="bg-muted/50 rounded-md p-2 text-xs">
+                      <p className="font-medium text-foreground">{beneficiary.name}</p>
+                      <p className="text-muted-foreground">{beneficiary.relationship} • {beneficiary.percentage}%</p>
+                    </div>
+                  ))}
+                </div>
+              </Card>
+            )}
 
             <Button 
               className="w-full" 
