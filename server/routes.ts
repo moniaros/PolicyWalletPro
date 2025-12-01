@@ -6,6 +6,7 @@ import { z } from "zod";
 import { authMiddleware, errorHandler, adminMiddleware, type AuthRequest } from "./middleware";
 import { login, register } from "./auth";
 import { auditLog } from "./middleware";
+import { GoogleGenAI } from "@google/genai";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Authentication Routes
@@ -374,6 +375,153 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(log);
     } catch (error) {
       res.status(500).json({ error: "Failed to update wellness log" });
+    }
+  });
+
+  // Policy Document Parsing with Gemini AI
+  app.post("/api/policies/parse-document", async (req, res) => {
+    try {
+      const { documentContent, documentType, insurerId, policyType } = req.body;
+      
+      if (!documentContent) {
+        return res.status(400).json({ error: "Document content is required" });
+      }
+
+      // Initialize Gemini AI using Replit's AI integration
+      const baseUrl = process.env.AI_INTEGRATIONS_GEMINI_BASE_URL;
+      const apiKey = process.env.AI_INTEGRATIONS_GEMINI_API_KEY;
+
+      if (!baseUrl || !apiKey) {
+        return res.status(500).json({ error: "Gemini AI integration not configured" });
+      }
+
+      const ai = new GoogleGenAI({
+        apiKey,
+        httpOptions: { baseUrl },
+      });
+
+      const prompt = `You are an expert Greek insurance document parser. Analyze this insurance policy document and extract the following information in JSON format:
+
+{
+  "policyNumber": "the policy number/ID",
+  "policyName": "name of the policy product",
+  "startDate": "YYYY-MM-DD format",
+  "endDate": "YYYY-MM-DD format",
+  "premium": "annual premium amount in EUR (just the number)",
+  "premiumFrequency": "monthly|quarterly|annual",
+  "coverageAmount": "total coverage amount in EUR (just the number)",
+  "deductible": "deductible amount in EUR (just the number)",
+  "holderName": "policyholder full name",
+  "holderAfm": "9-digit Greek tax ID (ΑΦΜ)",
+  "holderAddress": "full address",
+  "holderPhone": "phone number with country code",
+  "holderEmail": "email address",
+  "vehicleMake": "for auto insurance - car manufacturer",
+  "vehicleModel": "for auto insurance - car model",
+  "vehiclePlate": "for auto insurance - license plate",
+  "propertyAddress": "for home insurance - property address",
+  "propertySqm": "for home insurance - square meters"
+}
+
+Only include fields that are present in the document. Return valid JSON only.
+
+Document type: ${policyType || 'general'}
+Insurer: ${insurerId || 'unknown'}
+
+Document content:
+${documentContent}`;
+
+      const response = await ai.models.generateContent({
+        model: "gemini-2.5-flash",
+        contents: prompt,
+      });
+
+      // Parse the response
+      const text = response.text || "";
+      let parsedData = {};
+      
+      try {
+        // Try to extract JSON from the response
+        const jsonMatch = text.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+          parsedData = JSON.parse(jsonMatch[0]);
+        }
+      } catch (parseError) {
+        console.error("Failed to parse Gemini response:", parseError);
+      }
+
+      res.json({
+        success: true,
+        parsedData,
+        rawResponse: text,
+      });
+    } catch (error: any) {
+      console.error("Document parsing error:", error);
+      res.status(500).json({ 
+        error: "Failed to parse document", 
+        details: error.message 
+      });
+    }
+  });
+
+  // Search for policy in insurer database (simulated)
+  app.get("/api/policies/search/:insurerId/:policyNumber", async (req, res) => {
+    try {
+      const { insurerId, policyNumber } = req.params;
+
+      // In a real implementation, this would query the insurer's API or database
+      // For now, simulate a search with mock data
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
+      // Simulate found policy (in production, this would be from actual insurer DB)
+      if (policyNumber && policyNumber.length >= 5) {
+        res.json({
+          found: true,
+          policy: {
+            policyNumber,
+            insurerId,
+            policyName: "Standard Coverage Plan",
+            startDate: "2024-01-01",
+            endDate: "2024-12-31",
+            premium: "1200",
+            premiumFrequency: "annual",
+            coverageAmount: "100000",
+            deductible: "500",
+          }
+        });
+      } else {
+        res.json({
+          found: false,
+          message: "Policy not found in insurer database"
+        });
+      }
+    } catch (error) {
+      res.status(500).json({ error: "Failed to search for policy" });
+    }
+  });
+
+  // Create new policy
+  app.post("/api/policies", async (req, res) => {
+    try {
+      const policyData = req.body;
+      
+      // Validate required fields
+      if (!policyData.policyNumber || !policyData.insurerId || !policyData.policyType) {
+        return res.status(400).json({ error: "Missing required policy fields" });
+      }
+
+      // In a real implementation, save to database
+      // For now, return the policy data with an ID
+      const newPolicy = {
+        id: `policy-${Date.now()}`,
+        ...policyData,
+        createdAt: new Date().toISOString(),
+        status: "active",
+      };
+
+      res.status(201).json(newPolicy);
+    } catch (error) {
+      res.status(400).json({ error: "Failed to create policy" });
     }
   });
 

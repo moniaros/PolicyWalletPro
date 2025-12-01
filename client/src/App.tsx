@@ -27,6 +27,7 @@ import BillingPage from "@/pages/billing";
 import RecommendationsPage from "@/pages/recommendations";
 import NotificationsCenterPage from "@/pages/notifications-center";
 import InsuranceHealthPage from "@/pages/insurance-health";
+import AddPolicyPage from "@/pages/add-policy";
 
 function Router() {
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
@@ -66,6 +67,7 @@ function Router() {
         <Route path="/recommendations" component={RecommendationsPage} />
         <Route path="/notifications" component={NotificationsCenterPage} />
         <Route path="/insurance-health" component={InsuranceHealthPage} />
+        <Route path="/add-policy" component={AddPolicyPage} />
         <Route path="/admin" component={AdminDashboard} />
         <Route component={NotFound} />
       </Switch>
