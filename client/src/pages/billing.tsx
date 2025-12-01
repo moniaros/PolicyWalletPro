@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -103,13 +104,13 @@ const upcomingPayments = [
   { id: 3, policyType: "Ζωή", provider: "Interamerican", amount: 120, dueDate: "2025-01-15", daysUntil: 48 },
 ];
 
-const statusConfig = {
-  paid: { label: "Πληρώθηκε", color: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-100 dark:bg-emerald-900/40", icon: CheckCircle2 },
-  pending: { label: "Εκκρεμεί", color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-100 dark:bg-amber-900/40", icon: Clock },
-  scheduled: { label: "Προγραμματισμένη", color: "text-blue-600 dark:text-blue-400", bg: "bg-blue-100 dark:bg-blue-900/40", icon: Calendar },
-  failed: { label: "Απέτυχε", color: "text-red-600 dark:text-red-400", bg: "bg-red-100 dark:bg-red-900/40", icon: AlertCircle },
-  overdue: { label: "Ληξιπρόθεσμη", color: "text-red-600 dark:text-red-400", bg: "bg-red-100 dark:bg-red-900/40", icon: AlertCircle },
-};
+const getStatusConfig = (t: (key: string) => string) => ({
+  paid: { label: t("billing.status.paid"), color: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-100 dark:bg-emerald-900/40", icon: CheckCircle2 },
+  pending: { label: t("billing.status.pending"), color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-100 dark:bg-amber-900/40", icon: Clock },
+  scheduled: { label: t("billing.status.scheduled"), color: "text-blue-600 dark:text-blue-400", bg: "bg-blue-100 dark:bg-blue-900/40", icon: Calendar },
+  failed: { label: t("billing.status.failed"), color: "text-red-600 dark:text-red-400", bg: "bg-red-100 dark:bg-red-900/40", icon: AlertCircle },
+  overdue: { label: t("billing.status.overdue"), color: "text-red-600 dark:text-red-400", bg: "bg-red-100 dark:bg-red-900/40", icon: AlertCircle },
+});
 
 const policyTypeIcons: Record<string, { icon: any; color: string; bg: string }> = {
   "Υγεία": { icon: Shield, color: "text-rose-600 dark:text-rose-400", bg: "bg-rose-100 dark:bg-rose-900/40" },
@@ -119,12 +120,15 @@ const policyTypeIcons: Record<string, { icon: any; color: string; bg: string }> 
 };
 
 export default function BillingPage() {
+  const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState("");
   const [showAllPayments, setShowAllPayments] = useState(false);
   const [isAddMethodOpen, setIsAddMethodOpen] = useState(false);
   const [newMethodType, setNewMethodType] = useState("card");
   const [autoPayEnabled, setAutoPayEnabled] = useState(true);
   const [reminderEnabled, setReminderEnabled] = useState(true);
+  
+  const statusConfig = getStatusConfig(t);
 
   const totalAnnualPremiums = 2600;
   const paidThisYear = 1875;
@@ -143,16 +147,16 @@ export default function BillingPage() {
   const displayedPayments = showAllPayments ? filteredPayments : filteredPayments.slice(0, 4);
 
   const handleAddPaymentMethod = () => {
-    toast.success("Η μέθοδος πληρωμής προστέθηκε επιτυχώς");
+    toast.success(t("billing.paymentAdded"));
     setIsAddMethodOpen(false);
   };
 
   const handleSetDefault = (id: number) => {
-    toast.success("Η προεπιλεγμένη μέθοδος πληρωμής ενημερώθηκε");
+    toast.success(t("billing.defaultUpdated"));
   };
 
   const handlePayNow = (payment: typeof upcomingPayments[0]) => {
-    toast.success(`Η πληρωμή €${payment.amount} για ${payment.policyType} ξεκίνησε`);
+    toast.success(t("billing.paymentStarted", { amount: payment.amount, type: payment.policyType }));
   };
 
   return (
@@ -166,8 +170,8 @@ export default function BillingPage() {
                 <Wallet className="h-5 w-5 text-white" />
               </div>
               <div className="min-w-0">
-                <h1 className="text-lg font-bold text-foreground truncate">Πληρωμές & Χρεώσεις</h1>
-                <p className="text-xs text-muted-foreground">Διαχείριση Ασφαλίστρων</p>
+                <h1 className="text-lg font-bold text-foreground truncate">{t("billing.title")}</h1>
+                <p className="text-xs text-muted-foreground">{t("billing.subtitle")}</p>
               </div>
             </div>
             <Button size="sm" variant="outline" className="flex-shrink-0" data-testid="button-settings">
@@ -209,23 +213,23 @@ export default function BillingPage() {
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
                 <span className="text-xl font-bold text-emerald-600 dark:text-emerald-400">{paidPercentage}%</span>
-                <span className="text-[10px] text-muted-foreground">Πληρωμένα</span>
+                <span className="text-[10px] text-muted-foreground">{t("billing.paid")}</span>
               </div>
             </div>
             
             <div className="flex-1 min-w-0">
-              <h2 className="text-base font-bold text-foreground mb-1">Ετήσια Ασφάλιστρα</h2>
+              <h2 className="text-base font-bold text-foreground mb-1">{t("billing.annualPremiums")}</h2>
               <p className="text-xs text-muted-foreground mb-2">
                 <span className="font-bold text-emerald-600 dark:text-emerald-400">€{paidThisYear.toLocaleString('el-GR')}</span> / €{totalAnnualPremiums.toLocaleString('el-GR')}
               </p>
               <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs">
                 <div className="flex items-center gap-1">
                   <CheckCircle2 className="h-3 w-3 text-emerald-500" />
-                  <span className="text-muted-foreground">{paidPayments.length} πληρωμές</span>
+                  <span className="text-muted-foreground">{paidPayments.length} {t("billing.payments")}</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Clock className="h-3 w-3 text-blue-500" />
-                  <span className="text-muted-foreground">€{pendingAmount} εκκρεμεί</span>
+                  <span className="text-muted-foreground">€{pendingAmount} {t("billing.pendingAmount")}</span>
                 </div>
               </div>
             </div>
@@ -238,21 +242,21 @@ export default function BillingPage() {
             <div className="text-center">
               <Euro className="h-4 w-4 text-emerald-600 dark:text-emerald-400 mx-auto mb-1" />
               <p className="text-sm font-bold text-emerald-600 dark:text-emerald-400" data-testid="text-paid-amount">€{paidThisYear.toLocaleString('el-GR')}</p>
-              <p className="text-[10px] text-muted-foreground">Πληρωμένα</p>
+              <p className="text-[10px] text-muted-foreground">{t("billing.paid")}</p>
             </div>
           </Card>
           <Card className="p-2.5 border border-border/50" data-testid="card-stat-pending">
             <div className="text-center">
               <Clock className="h-4 w-4 text-blue-600 dark:text-blue-400 mx-auto mb-1" />
               <p className="text-sm font-bold text-blue-600 dark:text-blue-400" data-testid="text-pending-amount">€{pendingAmount}</p>
-              <p className="text-[10px] text-muted-foreground">Εκκρεμούν</p>
+              <p className="text-[10px] text-muted-foreground">{t("billing.pending")}</p>
             </div>
           </Card>
           <Card className="p-2.5 border border-border/50" data-testid="card-stat-trend">
             <div className="text-center">
               <TrendingDown className="h-4 w-4 text-purple-600 dark:text-purple-400 mx-auto mb-1" />
               <p className="text-sm font-bold text-purple-600 dark:text-purple-400" data-testid="text-trend">-5%</p>
-              <p className="text-[10px] text-muted-foreground">vs Πέρυσι</p>
+              <p className="text-[10px] text-muted-foreground">{t("billing.vsLastYear")}</p>
             </div>
           </Card>
         </div>
@@ -262,7 +266,7 @@ export default function BillingPage() {
           <div className="space-y-2">
             <div className="flex items-center gap-2 px-1">
               <Calendar className="h-4 w-4 text-blue-500" />
-              <span className="text-sm font-semibold text-foreground">Επερχόμενες Πληρωμές</span>
+              <span className="text-sm font-semibold text-foreground">{t("billing.upcomingPayments")}</span>
               <Badge variant="secondary" className="text-xs px-1.5 py-0">{upcomingPayments.length}</Badge>
             </div>
             
@@ -287,14 +291,14 @@ export default function BillingPage() {
                       </div>
                       {isUrgent && (
                         <Badge variant="outline" className="text-[10px] px-1 py-0 text-amber-600 border-amber-300 dark:text-amber-400 dark:border-amber-700">
-                          Σύντομα
+                          {t("billing.soon")}
                         </Badge>
                       )}
                     </div>
                     <p className="text-xs text-muted-foreground">{payment.provider}</p>
                     <div className="flex items-center justify-between mt-2">
                       <span className="text-[10px] text-muted-foreground">
-                        {new Date(payment.dueDate).toLocaleDateString('el-GR')} ({payment.daysUntil} ημ.)
+                        {new Date(payment.dueDate).toLocaleDateString('el-GR')} ({payment.daysUntil} {t("billing.days")})
                       </span>
                       <Button 
                         size="sm" 
@@ -302,7 +306,7 @@ export default function BillingPage() {
                         onClick={() => handlePayNow(payment)}
                         data-testid={`button-pay-${payment.id}`}
                       >
-                        Πληρωμή
+                        {t("billing.payNow")}
                       </Button>
                     </div>
                   </Card>
@@ -321,8 +325,8 @@ export default function BillingPage() {
                   <RefreshCw className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                 </div>
                 <div>
-                  <p className="font-semibold text-sm text-foreground">Αυτόματη Πληρωμή</p>
-                  <p className="text-[10px] text-muted-foreground">Αυτόματη χρέωση κατά τη λήξη</p>
+                  <p className="font-semibold text-sm text-foreground">{t("billing.autoPay")}</p>
+                  <p className="text-[10px] text-muted-foreground">{t("billing.autoPayDesc")}</p>
                 </div>
               </div>
               <Switch 
@@ -337,8 +341,8 @@ export default function BillingPage() {
                   <Bell className="h-4 w-4 text-amber-600 dark:text-amber-400" />
                 </div>
                 <div>
-                  <p className="font-semibold text-sm text-foreground">Υπενθυμίσεις</p>
-                  <p className="text-[10px] text-muted-foreground">Email/SMS πριν τη λήξη</p>
+                  <p className="font-semibold text-sm text-foreground">{t("billing.reminders")}</p>
+                  <p className="text-[10px] text-muted-foreground">{t("billing.remindersDesc")}</p>
                 </div>
               </div>
               <Switch 
@@ -355,19 +359,19 @@ export default function BillingPage() {
           <div className="flex items-center justify-between px-1">
             <div className="flex items-center gap-2">
               <CreditCard className="h-4 w-4 text-primary" />
-              <span className="text-sm font-semibold text-foreground">Μέθοδοι Πληρωμής</span>
+              <span className="text-sm font-semibold text-foreground">{t("billing.paymentMethods")}</span>
             </div>
             <Dialog open={isAddMethodOpen} onOpenChange={setIsAddMethodOpen}>
               <DialogTrigger asChild>
                 <Button variant="ghost" size="sm" className="h-7 text-xs px-2" data-testid="button-add-method">
                   <Plus className="h-3 w-3 mr-1" />
-                  Προσθήκη
+                  {t("billing.addMethod")}
                 </Button>
               </DialogTrigger>
               <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-md mx-4">
                 <DialogHeader>
-                  <DialogTitle>Προσθήκη Μεθόδου Πληρωμής</DialogTitle>
-                  <DialogDescription>Προσθέστε κάρτα ή τραπεζικό λογαριασμό</DialogDescription>
+                  <DialogTitle>{t("billing.addPaymentMethod")}</DialogTitle>
+                  <DialogDescription>{t("billing.addPaymentMethodDesc")}</DialogDescription>
                 </DialogHeader>
                 <div className="space-y-4 py-4">
                   <div className="grid grid-cols-2 gap-2">
@@ -378,7 +382,7 @@ export default function BillingPage() {
                       data-testid="button-select-card"
                     >
                       <CreditCard className="h-6 w-6" />
-                      <span className="text-xs">Κάρτα</span>
+                      <span className="text-xs">{t("billing.card")}</span>
                     </Button>
                     <Button
                       variant={newMethodType === "bank" ? "default" : "outline"}
@@ -387,43 +391,43 @@ export default function BillingPage() {
                       data-testid="button-select-bank"
                     >
                       <Landmark className="h-6 w-6" />
-                      <span className="text-xs">Τράπεζα</span>
+                      <span className="text-xs">{t("billing.bank")}</span>
                     </Button>
                   </div>
                   {newMethodType === "card" ? (
                     <div className="space-y-3">
-                      <Input placeholder="Αριθμός Κάρτας" data-testid="input-card-number" />
+                      <Input placeholder={t("billing.cardNumber")} data-testid="input-card-number" />
                       <div className="grid grid-cols-2 gap-2">
-                        <Input placeholder="MM/YY" data-testid="input-expiry" />
-                        <Input placeholder="CVV" type="password" maxLength={4} data-testid="input-cvv" />
+                        <Input placeholder={t("billing.expiry")} data-testid="input-expiry" />
+                        <Input placeholder={t("billing.cvv")} type="password" maxLength={4} data-testid="input-cvv" />
                       </div>
-                      <Input placeholder="Όνομα Κατόχου" data-testid="input-cardholder" />
+                      <Input placeholder={t("billing.cardHolder")} data-testid="input-cardholder" />
                     </div>
                   ) : (
                     <div className="space-y-3">
                       <Select>
                         <SelectTrigger data-testid="select-bank">
-                          <SelectValue placeholder="Επιλογή Τράπεζας" />
+                          <SelectValue placeholder={t("billing.selectBank")} />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="eurobank">Eurobank</SelectItem>
                           <SelectItem value="alpha">Alpha Bank</SelectItem>
-                          <SelectItem value="piraeus">Πειραιώς</SelectItem>
-                          <SelectItem value="nbg">Εθνική</SelectItem>
+                          <SelectItem value="piraeus">Piraeus Bank</SelectItem>
+                          <SelectItem value="nbg">National Bank</SelectItem>
                         </SelectContent>
                       </Select>
-                      <Input placeholder="IBAN (GR...)" data-testid="input-iban" />
-                      <Input placeholder="Όνομα Δικαιούχου" data-testid="input-account-holder" />
+                      <Input placeholder={t("billing.iban")} data-testid="input-iban" />
+                      <Input placeholder={t("billing.accountHolder")} data-testid="input-account-holder" />
                     </div>
                   )}
                 </div>
                 <DialogFooter className="flex-col sm:flex-row gap-2">
                   <Button variant="outline" onClick={() => setIsAddMethodOpen(false)} className="w-full sm:w-auto" data-testid="button-cancel-method">
-                    Ακύρωση
+                    {t("billing.cancel")}
                   </Button>
                   <Button onClick={handleAddPaymentMethod} className="w-full sm:w-auto" data-testid="button-save-method">
                     <Plus className="h-4 w-4 mr-1" />
-                    Προσθήκη
+                    {t("billing.add")}
                   </Button>
                 </DialogFooter>
               </DialogContent>
@@ -448,13 +452,13 @@ export default function BillingPage() {
                       </h3>
                       {method.isDefault && (
                         <Badge variant="secondary" className="text-[10px] px-1 py-0">
-                          Προεπιλογή
+                          {t("billing.default")}
                         </Badge>
                       )}
                     </div>
                     <p className="text-[10px] text-muted-foreground">
-                      {method.type === "card" ? `Λήξη ${method.expiryDate}` : method.iban?.slice(0, 15) + "..."}
-                      {" • "}{method.linkedPolicies} συνδεδεμέν{method.linkedPolicies === 1 ? "ο" : "α"} συμβόλαι{method.linkedPolicies === 1 ? "ο" : "α"}
+                      {method.type === "card" ? `${t("billing.expiry")} ${method.expiryDate}` : method.iban?.slice(0, 15) + "..."}
+                      {" • "}{method.linkedPolicies} {method.linkedPolicies === 1 ? t("billing.linkedPolicy") : t("billing.linkedPolicies")}
                     </p>
                   </div>
                   <div className="flex items-center gap-1 flex-shrink-0">
@@ -466,7 +470,7 @@ export default function BillingPage() {
                         onClick={() => handleSetDefault(method.id)}
                         data-testid={`button-default-${method.id}`}
                       >
-                        Ορισμός
+                        {t("billing.setDefault")}
                       </Button>
                     )}
                     <Button variant="ghost" size="icon" className="h-7 w-7" data-testid={`button-edit-method-${method.id}`}>
@@ -484,7 +488,7 @@ export default function BillingPage() {
           <div className="flex items-center justify-between px-1">
             <div className="flex items-center gap-2">
               <History className="h-4 w-4 text-primary" />
-              <span className="text-sm font-semibold text-foreground">Ιστορικό Πληρωμών</span>
+              <span className="text-sm font-semibold text-foreground">{t("billing.paymentHistory")}</span>
             </div>
           </div>
           
@@ -492,7 +496,7 @@ export default function BillingPage() {
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Αναζήτηση πληρωμής..."
+              placeholder={t("billing.searchPayments")}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-9 h-9 text-sm"
@@ -554,12 +558,12 @@ export default function BillingPage() {
               {showAllPayments ? (
                 <>
                   <ChevronUp className="h-3 w-3 mr-1" />
-                  Λιγότερες
+                  {t("billing.showLess")}
                 </>
               ) : (
                 <>
                   <ChevronDown className="h-3 w-3 mr-1" />
-                  Όλες ({filteredPayments.length})
+                  {t("billing.showMore")} ({filteredPayments.length})
                 </>
               )}
             </Button>
@@ -570,34 +574,34 @@ export default function BillingPage() {
         <Card className="p-4 border border-border/50">
           <div className="flex items-center gap-2 mb-3">
             <PiggyBank className="h-4 w-4 text-primary" />
-            <h3 className="text-sm font-semibold text-foreground">Ανάλυση Ασφαλίστρων</h3>
+            <h3 className="text-sm font-semibold text-foreground">{t("billing.premiumBreakdown")}</h3>
           </div>
           <div className="space-y-3">
             <div>
               <div className="flex justify-between items-center mb-1.5">
-                <span className="text-xs font-medium text-foreground">Υγεία</span>
-                <span className="text-xs text-muted-foreground">€1.740/έτος</span>
+                <span className="text-xs font-medium text-foreground">{t("policyTypes.health")}</span>
+                <span className="text-xs text-muted-foreground">€1.740{t("billing.perYear")}</span>
               </div>
               <Progress value={67} className="h-1.5" />
             </div>
             <div>
               <div className="flex justify-between items-center mb-1.5">
-                <span className="text-xs font-medium text-foreground">Αυτοκίνητο</span>
-                <span className="text-xs text-muted-foreground">€480/έτος</span>
+                <span className="text-xs font-medium text-foreground">{t("policyTypes.auto")}</span>
+                <span className="text-xs text-muted-foreground">€480{t("billing.perYear")}</span>
               </div>
               <Progress value={18} className="h-1.5" />
             </div>
             <div>
               <div className="flex justify-between items-center mb-1.5">
-                <span className="text-xs font-medium text-foreground">Κατοικία</span>
-                <span className="text-xs text-muted-foreground">€255/έτος</span>
+                <span className="text-xs font-medium text-foreground">{t("policyTypes.home")}</span>
+                <span className="text-xs text-muted-foreground">€255{t("billing.perYear")}</span>
               </div>
               <Progress value={10} className="h-1.5" />
             </div>
             <div>
               <div className="flex justify-between items-center mb-1.5">
-                <span className="text-xs font-medium text-foreground">Ζωή</span>
-                <span className="text-xs text-muted-foreground">€125/έτος</span>
+                <span className="text-xs font-medium text-foreground">{t("policyTypes.life")}</span>
+                <span className="text-xs text-muted-foreground">€125{t("billing.perYear")}</span>
               </div>
               <Progress value={5} className="h-1.5" />
             </div>
@@ -611,19 +615,19 @@ export default function BillingPage() {
               <Sparkles className="h-5 w-5 text-green-600 dark:text-green-400" />
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className="font-bold text-sm text-green-900 dark:text-green-100 mb-1">Συμβουλές Εξοικονόμησης</h3>
+              <h3 className="font-bold text-sm text-green-900 dark:text-green-100 mb-1">{t("billing.savingsTips")}</h3>
               <ul className="text-[10px] text-green-700 dark:text-green-300 space-y-1">
                 <li className="flex items-start gap-1">
                   <Banknote className="h-3 w-3 flex-shrink-0 mt-0.5" />
-                  <span>Ετήσια πληρωμή: Έκπτωση έως 10% στα ασφάλιστρα</span>
+                  <span>{t("billing.tipAnnual")}</span>
                 </li>
                 <li className="flex items-start gap-1">
                   <RefreshCw className="h-3 w-3 flex-shrink-0 mt-0.5" />
-                  <span>Αυτόματη πληρωμή: Αποφύγετε καθυστερήσεις και χρεώσεις</span>
+                  <span>{t("billing.tipAutopay")}</span>
                 </li>
                 <li className="flex items-start gap-1">
                   <Shield className="h-3 w-3 flex-shrink-0 mt-0.5" />
-                  <span>Πολλαπλά συμβόλαια: Ζητήστε έκπτωση πακέτου</span>
+                  <span>{t("billing.tipBundle")}</span>
                 </li>
               </ul>
             </div>
@@ -634,11 +638,11 @@ export default function BillingPage() {
         <div className="flex gap-2">
           <Button variant="outline" className="flex-1 h-10 text-xs" data-testid="button-download-statement">
             <Download className="h-4 w-4 mr-1.5" />
-            Κατέβασμα Αναλυτικής
+            {t("billing.downloadStatement")}
           </Button>
           <Button variant="outline" className="flex-1 h-10 text-xs" data-testid="button-download-receipts">
             <Receipt className="h-4 w-4 mr-1.5" />
-            Αποδείξεις Έτους
+            {t("billing.downloadReceipts")}
           </Button>
         </div>
       </div>

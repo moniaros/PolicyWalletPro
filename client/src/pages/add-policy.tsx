@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -117,6 +118,7 @@ const typeColors: Record<InsuranceType, { color: string; bg: string }> = {
 };
 
 export default function AddPolicyPage() {
+  const { t, i18n } = useTranslation();
   const [, setLocation] = useLocation();
   const [step, setStep] = useState<WizardStep>("insurer");
   const [searchTerm, setSearchTerm] = useState("");
@@ -196,7 +198,7 @@ export default function AddPolicyPage() {
     if (!file) return;
 
     if (file.size > 10 * 1024 * 1024) {
-      toast.error("Το αρχείο είναι πολύ μεγάλο (max 10MB)");
+      toast.error(t("addPolicy.errors.fileTooLarge"));
       return;
     }
 
@@ -206,7 +208,7 @@ export default function AddPolicyPage() {
     // Simulate upload
     await new Promise(resolve => setTimeout(resolve, 1500));
     setIsUploading(false);
-    toast.success("Το αρχείο ανέβηκε επιτυχώς");
+    toast.success(t("addPolicy.success.fileUploaded"));
   };
 
   const handleParseDocument = async () => {
@@ -241,14 +243,14 @@ export default function AddPolicyPage() {
         const parsed = result.parsedData as Partial<PolicyFormData>;
         setParsedData(parsed);
         setFormData(prev => ({ ...prev, ...parsed }));
-        toast.success("Το έγγραφο αναλύθηκε επιτυχώς με AI!");
+        toast.success(t("addPolicy.success.documentParsed"));
         setStep("review");
       } else {
         throw new Error("Failed to parse document");
       }
     } catch (error: any) {
       console.error("Document parsing error:", error);
-      toast.error("Αποτυχία ανάλυσης εγγράφου. Δοκιμάστε χειροκίνητη εισαγωγή.");
+      toast.error(t("addPolicy.errors.parseFailed"));
     } finally {
       setIsParsing(false);
     }
@@ -256,7 +258,7 @@ export default function AddPolicyPage() {
 
   const handleSearchPolicy = async () => {
     if (!policySearchId.trim()) {
-      toast.error("Εισάγετε αριθμό συμβολαίου");
+      toast.error(t("addPolicy.errors.enterPolicyNumber"));
       return;
     }
 
@@ -271,14 +273,14 @@ export default function AddPolicyPage() {
         const foundData = result.policy as Partial<PolicyFormData>;
         setParsedData(foundData);
         setFormData(prev => ({ ...prev, ...foundData }));
-        toast.success("Βρέθηκε συμβόλαιο στη βάση δεδομένων!");
+        toast.success(t("addPolicy.success.policyFound"));
         setStep("review");
       } else {
-        toast.error("Δεν βρέθηκε συμβόλαιο. Ελέγξτε τον αριθμό ή δοκιμάστε χειροκίνητη εισαγωγή.");
+        toast.error(t("addPolicy.errors.policyNotFound"));
       }
     } catch (error: any) {
       console.error("Policy search error:", error);
-      toast.error("Σφάλμα αναζήτησης. Δοκιμάστε ξανά.");
+      toast.error(t("addPolicy.errors.searchFailed"));
     } finally {
       setIsSearching(false);
     }
@@ -303,13 +305,13 @@ export default function AddPolicyPage() {
   const handleSubmit = async () => {
     // Validate required fields
     if (!formData.policyNumber || !formData.startDate || !formData.endDate || !formData.premium) {
-      toast.error("Συμπληρώστε τα υποχρεωτικά πεδία");
+      toast.error(t("addPolicy.errors.requiredFields"));
       return;
     }
 
     // Validate ΑΦΜ if provided
     if (formData.holderAfm && !validateAfm(formData.holderAfm)) {
-      toast.error("Το ΑΦΜ πρέπει να είναι 9 ψηφία");
+      toast.error(t("addPolicy.errors.invalidAfm"));
       return;
     }
 
@@ -325,11 +327,11 @@ export default function AddPolicyPage() {
 
       const newPolicy = await response.json();
       
-      toast.success("Το συμβόλαιο προστέθηκε επιτυχώς!");
+      toast.success(t("addPolicy.success.policyAdded"));
       setLocation("/policies");
     } catch (error: any) {
       console.error("Policy creation error:", error);
-      toast.error("Αποτυχία αποθήκευσης. Δοκιμάστε ξανά.");
+      toast.error(t("addPolicy.errors.saveFailed"));
     } finally {
       setIsSubmitting(false);
     }
@@ -348,7 +350,7 @@ export default function AddPolicyPage() {
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Αναζήτηση ασφαλιστικής εταιρείας..."
+                placeholder={t("addPolicy.searchInsurers")}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-9"
@@ -393,7 +395,7 @@ export default function AddPolicyPage() {
             {filteredInsurers.length === 0 && (
               <div className="text-center py-8 text-muted-foreground">
                 <Building2 className="h-12 w-12 mx-auto mb-2 opacity-50" />
-                <p className="text-sm">Δεν βρέθηκαν αποτελέσματα</p>
+                <p className="text-sm">{t("common.noResults")}</p>
               </div>
             )}
           </div>
@@ -414,7 +416,7 @@ export default function AddPolicyPage() {
               </div>
             </Card>
 
-            <p className="text-sm text-muted-foreground">Επιλέξτε τον τύπο ασφάλισης:</p>
+            <p className="text-sm text-muted-foreground">{t("addPolicy.selectTypeDesc")}</p>
             
             <div className="grid grid-cols-2 gap-2">
               {availableTypes.map(type => {
@@ -456,13 +458,13 @@ export default function AddPolicyPage() {
                 <div className="flex-1">
                   <p className="font-semibold text-sm">{selectedInsurer?.name}</p>
                   <Badge variant="secondary" className="text-[10px] px-1.5 py-0 mt-0.5">
-                    {selectedType && insuranceTypeLabels[selectedType].el}
+                    {selectedType && t(`addPolicy.types.${selectedType}`)}
                   </Badge>
                 </div>
               </div>
             </Card>
 
-            <p className="text-sm text-muted-foreground">Πώς θέλετε να προσθέσετε το συμβόλαιο;</p>
+            <p className="text-sm text-muted-foreground">{t("addPolicy.selectMethodDesc")}</p>
 
             <div className="space-y-2">
               {/* Document Upload with AI */}
@@ -477,14 +479,14 @@ export default function AddPolicyPage() {
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <h3 className="font-bold text-sm text-foreground">Ανέβασμα Εγγράφου</h3>
+                      <h3 className="font-bold text-sm text-foreground">{t("addPolicy.methods.document.title")}</h3>
                       <Badge className="bg-purple-600 text-white text-[10px] px-1.5 py-0">
                         <Sparkles className="h-2.5 w-2.5 mr-0.5" />
                         AI
                       </Badge>
                     </div>
                     <p className="text-xs text-muted-foreground mt-1">
-                      Ανεβάστε το PDF του συμβολαίου και το AI θα εξάγει αυτόματα τα στοιχεία
+                      {t("addPolicy.methods.document.desc")}
                     </p>
                   </div>
                   <ChevronRight className="h-4 w-4 text-muted-foreground flex-shrink-0 mt-1" />
@@ -502,9 +504,9 @@ export default function AddPolicyPage() {
                     <Search className="h-6 w-6 text-white" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-bold text-sm text-foreground">Αναζήτηση στη Βάση Δεδομένων</h3>
+                    <h3 className="font-bold text-sm text-foreground">{t("addPolicy.methods.search.title")}</h3>
                     <p className="text-xs text-muted-foreground mt-1">
-                      Αναζητήστε το συμβόλαιο με τον αριθμό του στη βάση της {selectedInsurer?.name}
+                      {t("addPolicy.methods.search.desc", { insurer: selectedInsurer?.name })}
                     </p>
                   </div>
                   <ChevronRight className="h-4 w-4 text-muted-foreground flex-shrink-0 mt-1" />
@@ -522,9 +524,9 @@ export default function AddPolicyPage() {
                     <Edit3 className="h-6 w-6 text-muted-foreground" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-bold text-sm text-foreground">Χειροκίνητη Εισαγωγή</h3>
+                    <h3 className="font-bold text-sm text-foreground">{t("addPolicy.methods.manual.title")}</h3>
                     <p className="text-xs text-muted-foreground mt-1">
-                      Συμπληρώστε τα στοιχεία του συμβολαίου βήμα-βήμα
+                      {t("addPolicy.methods.manual.desc")}
                     </p>
                   </div>
                   <ChevronRight className="h-4 w-4 text-muted-foreground flex-shrink-0 mt-1" />
@@ -542,8 +544,8 @@ export default function AddPolicyPage() {
                 {!uploadedFile ? (
                   <label className="flex flex-col items-center justify-center cursor-pointer">
                     <Upload className="h-12 w-12 text-purple-400 mb-3" />
-                    <span className="text-sm font-medium text-foreground mb-1">Επιλέξτε αρχείο</span>
-                    <span className="text-xs text-muted-foreground">PDF, JPG, PNG έως 10MB</span>
+                    <span className="text-sm font-medium text-foreground mb-1">{t("addPolicy.selectFile")}</span>
+                    <span className="text-xs text-muted-foreground">{t("addPolicy.fileFormats")}</span>
                     <input
                       type="file"
                       accept=".pdf,.jpg,.jpeg,.png"
@@ -588,12 +590,12 @@ export default function AddPolicyPage() {
                   {isParsing ? (
                     <>
                       <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                      Ανάλυση με AI...
+                      {t("addPolicy.analyzingWithAI")}
                     </>
                   ) : (
                     <>
                       <Wand2 className="h-4 w-4 mr-2" />
-                      Ανάλυση Εγγράφου με AI
+                      {t("addPolicy.analyzeDocument")}
                     </>
                   )}
                 </Button>
@@ -604,8 +606,8 @@ export default function AddPolicyPage() {
                   <div className="flex items-center gap-3">
                     <Sparkles className="h-5 w-5 text-purple-600 animate-pulse" />
                     <div>
-                      <p className="font-medium text-sm text-purple-900 dark:text-purple-100">Gemini AI Ανάλυση</p>
-                      <p className="text-xs text-purple-700 dark:text-purple-300">Εξαγωγή στοιχείων συμβολαίου...</p>
+                      <p className="font-medium text-sm text-purple-900 dark:text-purple-100">{t("addPolicy.aiAnalysis")}</p>
+                      <p className="text-xs text-purple-700 dark:text-purple-300">{t("addPolicy.extractingData")}</p>
                     </div>
                   </div>
                 </Card>
@@ -618,11 +620,11 @@ export default function AddPolicyPage() {
           return (
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label>Αριθμός Συμβολαίου</Label>
+                <Label>{t("addPolicy.policyNumber")}</Label>
                 <div className="relative">
                   <Hash className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
-                    placeholder="π.χ. NN-HEALTH-2024-123456"
+                    placeholder={t("addPolicy.policyNumberPlaceholder")}
                     value={policySearchId}
                     onChange={(e) => setPolicySearchId(e.target.value)}
                     className="pl-9"
@@ -630,7 +632,7 @@ export default function AddPolicyPage() {
                   />
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Εισάγετε τον αριθμό συμβολαίου όπως αναγράφεται στα έγγραφά σας
+                  {t("addPolicy.searchHint")}
                 </p>
               </div>
 
@@ -643,12 +645,12 @@ export default function AddPolicyPage() {
                 {isSearching ? (
                   <>
                     <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    Αναζήτηση...
+                    {t("addPolicy.searching")}
                   </>
                 ) : (
                   <>
                     <Search className="h-4 w-4 mr-2" />
-                    Αναζήτηση στη Βάση {selectedInsurer?.name}
+                    {t("addPolicy.searchInDatabase", { insurer: selectedInsurer?.name })}
                   </>
                 )}
               </Button>
@@ -670,20 +672,20 @@ export default function AddPolicyPage() {
 
               {manualStep === 1 && (
                 <div className="space-y-3">
-                  <p className="text-sm font-medium text-foreground">Στοιχεία Συμβολαίου</p>
+                  <p className="text-sm font-medium text-foreground">{t("addPolicy.policyDetails")}</p>
                   <div className="space-y-2">
-                    <Label>Αριθμός Συμβολαίου <span className="text-red-500">*</span></Label>
+                    <Label>{t("addPolicy.policyNumber")} <span className="text-red-500">*</span></Label>
                     <Input
-                      placeholder="π.χ. NN-HEALTH-2024-123456"
+                      placeholder={t("addPolicy.policyNumberPlaceholder")}
                       value={formData.policyNumber}
                       onChange={(e) => setFormData(prev => ({ ...prev, policyNumber: e.target.value }))}
                       data-testid="input-policy-number"
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label>Όνομα Συμβολαίου</Label>
+                    <Label>{t("addPolicy.policyName")}</Label>
                     <Input
-                      placeholder="π.χ. NN Orange Health Plus"
+                      placeholder={t("addPolicy.policyNamePlaceholder")}
                       value={formData.policyName}
                       onChange={(e) => setFormData(prev => ({ ...prev, policyName: e.target.value }))}
                       data-testid="input-policy-name"
@@ -691,7 +693,7 @@ export default function AddPolicyPage() {
                   </div>
                   <div className="grid grid-cols-2 gap-2">
                     <div className="space-y-2">
-                      <Label>Ημ/νία Έναρξης <span className="text-red-500">*</span></Label>
+                      <Label>{t("addPolicy.startDate")} <span className="text-red-500">*</span></Label>
                       <Input
                         type="date"
                         value={formData.startDate}
@@ -700,7 +702,7 @@ export default function AddPolicyPage() {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label>Ημ/νία Λήξης <span className="text-red-500">*</span></Label>
+                      <Label>{t("addPolicy.endDate")} <span className="text-red-500">*</span></Label>
                       <Input
                         type="date"
                         value={formData.endDate}
@@ -711,12 +713,12 @@ export default function AddPolicyPage() {
                   </div>
                   <div className="grid grid-cols-2 gap-2">
                     <div className="space-y-2">
-                      <Label>Ασφάλιστρο (EUR) <span className="text-red-500">*</span></Label>
+                      <Label>{t("addPolicy.premium")} <span className="text-red-500">*</span></Label>
                       <div className="relative">
                         <Euro className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                         <Input
                           type="number"
-                          placeholder="0,00"
+                          placeholder={t("addPolicy.premiumPlaceholder")}
                           value={formData.premium}
                           onChange={(e) => setFormData(prev => ({ ...prev, premium: e.target.value }))}
                           className="pl-9"
@@ -725,7 +727,7 @@ export default function AddPolicyPage() {
                       </div>
                     </div>
                     <div className="space-y-2">
-                      <Label>Συχνότητα</Label>
+                      <Label>{t("addPolicy.premiumFrequency")}</Label>
                       <Select
                         value={formData.premiumFrequency}
                         onValueChange={(v) => setFormData(prev => ({ ...prev, premiumFrequency: v }))}
@@ -734,9 +736,9 @@ export default function AddPolicyPage() {
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="monthly">Μηνιαία</SelectItem>
-                          <SelectItem value="quarterly">Τριμηνιαία</SelectItem>
-                          <SelectItem value="annual">Ετήσια</SelectItem>
+                          <SelectItem value="monthly">{t("addPolicy.monthly")}</SelectItem>
+                          <SelectItem value="quarterly">{t("addPolicy.quarterly")}</SelectItem>
+                          <SelectItem value="annual">{t("addPolicy.annual")}</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -746,14 +748,14 @@ export default function AddPolicyPage() {
 
               {manualStep === 2 && (
                 <div className="space-y-3">
-                  <p className="text-sm font-medium text-foreground">Στοιχεία Κάλυψης</p>
+                  <p className="text-sm font-medium text-foreground">{t("addPolicy.coverageDetails")}</p>
                   <div className="space-y-2">
-                    <Label>Ποσό Κάλυψης (EUR)</Label>
+                    <Label>{t("addPolicy.coverageAmount")}</Label>
                     <div className="relative">
                       <Euro className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                       <Input
                         type="number"
-                        placeholder="0,00"
+                        placeholder={t("addPolicy.coverageAmountPlaceholder")}
                         value={formData.coverageAmount}
                         onChange={(e) => setFormData(prev => ({ ...prev, coverageAmount: e.target.value }))}
                         className="pl-9"
@@ -762,12 +764,12 @@ export default function AddPolicyPage() {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label>Απαλλαγή (EUR)</Label>
+                    <Label>{t("addPolicy.deductible")}</Label>
                     <div className="relative">
                       <Euro className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                       <Input
                         type="number"
-                        placeholder="0,00"
+                        placeholder={t("addPolicy.deductiblePlaceholder")}
                         value={formData.deductible}
                         onChange={(e) => setFormData(prev => ({ ...prev, deductible: e.target.value }))}
                         className="pl-9"
@@ -776,9 +778,9 @@ export default function AddPolicyPage() {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label>Σημειώσεις</Label>
+                    <Label>{t("addPolicy.notes")}</Label>
                     <Textarea
-                      placeholder="Πρόσθετες πληροφορίες..."
+                      placeholder={t("addPolicy.notesPlaceholder")}
                       value={formData.notes}
                       onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
                       data-testid="textarea-notes"
@@ -789,13 +791,13 @@ export default function AddPolicyPage() {
 
               {manualStep === 3 && (
                 <div className="space-y-3">
-                  <p className="text-sm font-medium text-foreground">Στοιχεία Ασφαλισμένου</p>
+                  <p className="text-sm font-medium text-foreground">{t("addPolicy.holderDetails")}</p>
                   <div className="space-y-2">
-                    <Label>Ονοματεπώνυμο</Label>
+                    <Label>{t("addPolicy.holderName")}</Label>
                     <div className="relative">
                       <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                       <Input
-                        placeholder="Όνομα Επώνυμο"
+                        placeholder={t("addPolicy.holderNamePlaceholder")}
                         value={formData.holderName}
                         onChange={(e) => setFormData(prev => ({ ...prev, holderName: e.target.value }))}
                         className="pl-9"
@@ -804,11 +806,11 @@ export default function AddPolicyPage() {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label>ΑΦΜ</Label>
+                    <Label>{t("addPolicy.holderAfm")}</Label>
                     <div className="relative">
                       <Hash className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                       <Input
-                        placeholder="9 ψηφία"
+                        placeholder={t("addPolicy.holderAfmPlaceholder")}
                         value={formData.holderAfm}
                         onChange={(e) => {
                           const value = e.target.value.replace(/\D/g, '').slice(0, 9);
@@ -820,16 +822,16 @@ export default function AddPolicyPage() {
                       />
                     </div>
                     {formData.holderAfm && !validateAfm(formData.holderAfm) && (
-                      <p className="text-xs text-red-500">Το ΑΦΜ πρέπει να είναι 9 ψηφία</p>
+                      <p className="text-xs text-red-500">{t("addPolicy.errors.invalidAfm")}</p>
                     )}
                   </div>
                   <div className="grid grid-cols-2 gap-2">
                     <div className="space-y-2">
-                      <Label>Τηλέφωνο</Label>
+                      <Label>{t("addPolicy.holderPhone")}</Label>
                       <div className="relative">
                         <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                         <Input
-                          placeholder="+30..."
+                          placeholder={t("addPolicy.holderPhonePlaceholder")}
                           value={formData.holderPhone}
                           onChange={(e) => setFormData(prev => ({ ...prev, holderPhone: e.target.value }))}
                           className="pl-9"
@@ -838,12 +840,12 @@ export default function AddPolicyPage() {
                       </div>
                     </div>
                     <div className="space-y-2">
-                      <Label>Email</Label>
+                      <Label>{t("addPolicy.holderEmail")}</Label>
                       <div className="relative">
                         <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                         <Input
                           type="email"
-                          placeholder="email@example.gr"
+                          placeholder={t("addPolicy.holderEmailPlaceholder")}
                           value={formData.holderEmail}
                           onChange={(e) => setFormData(prev => ({ ...prev, holderEmail: e.target.value }))}
                           className="pl-9"
@@ -853,11 +855,11 @@ export default function AddPolicyPage() {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label>Διεύθυνση</Label>
+                    <Label>{t("addPolicy.holderAddress")}</Label>
                     <div className="relative">
                       <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                       <Input
-                        placeholder="Οδός, Αριθμός, Πόλη, ΤΚ"
+                        placeholder={t("addPolicy.holderAddressPlaceholder")}
                         value={formData.holderAddress}
                         onChange={(e) => setFormData(prev => ({ ...prev, holderAddress: e.target.value }))}
                         className="pl-9"
@@ -872,18 +874,18 @@ export default function AddPolicyPage() {
                 {manualStep > 1 && (
                   <Button variant="outline" onClick={handleManualBack} className="flex-1">
                     <ChevronLeft className="h-4 w-4 mr-1" />
-                    Πίσω
+                    {t("addPolicy.back")}
                   </Button>
                 )}
                 <Button onClick={handleManualNext} className="flex-1" data-testid="button-manual-next">
                   {manualStep < 3 ? (
                     <>
-                      Επόμενο
+                      {t("addPolicy.next")}
                       <ChevronRight className="h-4 w-4 ml-1" />
                     </>
                   ) : (
                     <>
-                      Προεπισκόπηση
+                      {t("addPolicy.preview")}
                       <Eye className="h-4 w-4 ml-1" />
                     </>
                   )}
@@ -901,8 +903,8 @@ export default function AddPolicyPage() {
               <div className="h-14 w-14 rounded-full bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center mx-auto mb-3">
                 <CheckCircle2 className="h-7 w-7 text-emerald-600" />
               </div>
-              <h3 className="font-bold text-base text-foreground">Έτοιμο για Αποθήκευση</h3>
-              <p className="text-xs text-muted-foreground">Ελέγξτε τα στοιχεία του συμβολαίου</p>
+              <h3 className="font-bold text-base text-foreground">{t("addPolicy.readyToSave")}</h3>
+              <p className="text-xs text-muted-foreground">{t("addPolicy.reviewDesc")}</p>
             </div>
 
             <Card className="p-4 bg-muted/30 space-y-3">
@@ -913,36 +915,36 @@ export default function AddPolicyPage() {
                 <div>
                   <p className="font-semibold text-sm">{selectedInsurer?.name}</p>
                   <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
-                    {selectedType && insuranceTypeLabels[selectedType].el}
+                    {selectedType && t(`addPolicy.types.${selectedType}`)}
                   </Badge>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-y-2 text-sm">
                 <div>
-                  <p className="text-[10px] text-muted-foreground uppercase">Αρ. Συμβολαίου</p>
+                  <p className="text-[10px] text-muted-foreground uppercase">{t("addPolicy.policyNumberShort")}</p>
                   <p className="font-medium font-mono text-xs">{formData.policyNumber || "—"}</p>
                 </div>
                 <div>
-                  <p className="text-[10px] text-muted-foreground uppercase">Ασφάλιστρο</p>
+                  <p className="text-[10px] text-muted-foreground uppercase">{t("addPolicy.premiumLabel")}</p>
                   <p className="font-bold text-primary">€{formData.premium || "0"}</p>
                 </div>
                 <div>
-                  <p className="text-[10px] text-muted-foreground uppercase">Έναρξη</p>
-                  <p className="font-medium text-xs">{formData.startDate ? new Date(formData.startDate).toLocaleDateString('el-GR') : "—"}</p>
+                  <p className="text-[10px] text-muted-foreground uppercase">{t("addPolicy.startDateShort")}</p>
+                  <p className="font-medium text-xs">{formData.startDate ? new Date(formData.startDate).toLocaleDateString(i18n.language === 'el' ? 'el-GR' : 'en-US') : "—"}</p>
                 </div>
                 <div>
-                  <p className="text-[10px] text-muted-foreground uppercase">Λήξη</p>
-                  <p className="font-medium text-xs">{formData.endDate ? new Date(formData.endDate).toLocaleDateString('el-GR') : "—"}</p>
+                  <p className="text-[10px] text-muted-foreground uppercase">{t("addPolicy.endDateShort")}</p>
+                  <p className="font-medium text-xs">{formData.endDate ? new Date(formData.endDate).toLocaleDateString(i18n.language === 'el' ? 'el-GR' : 'en-US') : "—"}</p>
                 </div>
                 {formData.coverageAmount && (
                   <>
                     <div>
-                      <p className="text-[10px] text-muted-foreground uppercase">Κάλυψη</p>
+                      <p className="text-[10px] text-muted-foreground uppercase">{t("addPolicy.coverageLabel")}</p>
                       <p className="font-medium text-xs">€{formData.coverageAmount}</p>
                     </div>
                     <div>
-                      <p className="text-[10px] text-muted-foreground uppercase">Απαλλαγή</p>
+                      <p className="text-[10px] text-muted-foreground uppercase">{t("addPolicy.deductibleLabel")}</p>
                       <p className="font-medium text-xs">€{formData.deductible || "0"}</p>
                     </div>
                   </>
@@ -951,16 +953,16 @@ export default function AddPolicyPage() {
 
               {(formData.holderName || formData.holderAfm) && (
                 <div className="pt-3 border-t border-border/50">
-                  <p className="text-[10px] text-muted-foreground uppercase mb-1">Ασφαλισμένος</p>
+                  <p className="text-[10px] text-muted-foreground uppercase mb-1">{t("addPolicy.insuredPerson")}</p>
                   <p className="font-medium text-xs">{formData.holderName}</p>
-                  {formData.holderAfm && <p className="text-xs text-muted-foreground">ΑΦΜ: {formData.holderAfm}</p>}
+                  {formData.holderAfm && <p className="text-xs text-muted-foreground">{t("addPolicy.taxId")}: {formData.holderAfm}</p>}
                 </div>
               )}
 
               {parsedData && (
                 <div className="pt-2 flex items-center gap-1 text-purple-600 dark:text-purple-400">
                   <Sparkles className="h-3 w-3" />
-                  <span className="text-[10px]">Αναλύθηκε με Gemini AI</span>
+                  <span className="text-[10px]">{t("addPolicy.parsedWithAI")}</span>
                 </div>
               )}
             </Card>
@@ -974,12 +976,12 @@ export default function AddPolicyPage() {
               {isSubmitting ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  Αποθήκευση...
+                  {t("addPolicy.saving")}
                 </>
               ) : (
                 <>
                   <FileCheck className="h-4 w-4 mr-2" />
-                  Αποθήκευση Συμβολαίου
+                  {t("addPolicy.savePolicy")}
                 </>
               )}
             </Button>
@@ -1021,13 +1023,13 @@ export default function AddPolicyPage() {
                 <ChevronLeft className="h-5 w-5" />
               </Button>
               <div className="min-w-0">
-                <h1 className="text-lg font-bold text-foreground truncate">Προσθήκη Συμβολαίου</h1>
+                <h1 className="text-lg font-bold text-foreground truncate">{t("addPolicy.title")}</h1>
                 <p className="text-xs text-muted-foreground">
-                  {step === "insurer" && "Επιλογή Ασφαλιστικής"}
-                  {step === "type" && "Τύπος Ασφάλισης"}
-                  {step === "method" && "Μέθοδος Εισαγωγής"}
-                  {step === "input" && "Στοιχεία Συμβολαίου"}
-                  {step === "review" && "Προεπισκόπηση"}
+                  {step === "insurer" && t("addPolicy.selectInsurer")}
+                  {step === "type" && t("addPolicy.selectType")}
+                  {step === "method" && t("addPolicy.selectMethod")}
+                  {step === "input" && t("addPolicy.policyDetails")}
+                  {step === "review" && t("addPolicy.review")}
                 </p>
               </div>
             </div>
