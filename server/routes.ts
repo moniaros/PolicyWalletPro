@@ -409,14 +409,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(413).json({ error: "Text content too large. Maximum size is 5MB." });
       }
 
+      const baseUrl = process.env.AI_INTEGRATIONS_GEMINI_BASE_URL;
       const apiKey = process.env.AI_INTEGRATIONS_GEMINI_API_KEY;
 
-      if (!apiKey || apiKey === '_DUMMY_API_KEY_') {
-        return res.status(500).json({ error: "Gemini AI integration not configured. Please set up your Google AI API key in settings." });
+      if (!baseUrl || !apiKey) {
+        return res.status(500).json({ error: "Gemini AI integration not configured. Please ensure Replit AI Integrations are enabled." });
       }
 
       const ai = new GoogleGenAI({
         apiKey,
+        httpOptions: {
+          apiVersion: "",
+          baseUrl,
+        },
       });
 
       const comprehensivePrompt = `You are an expert Greek/European insurance document parser specializing in ACORD standards. 
