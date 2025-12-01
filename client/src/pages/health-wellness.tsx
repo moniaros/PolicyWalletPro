@@ -239,6 +239,7 @@ const activityTypeLabels: Record<string, string> = {
 };
 
 export default function HealthWellnessPage() {
+  const { t } = useTranslation();
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [uploadType, setUploadType] = useState("annual");
   const [uploadProvider, setUploadProvider] = useState("");
@@ -296,10 +297,10 @@ export default function HealthWellnessPage() {
   };
 
   const getScoreLabel = (score: number) => {
-    if (score >= 80) return "Άριστη";
-    if (score >= 60) return "Καλή";
-    if (score >= 40) return "Μέτρια";
-    return "Χρειάζεται Προσοχή";
+    if (score >= 80) return t("wellness.scoreExcellent");
+    if (score >= 60) return t("wellness.scoreGood");
+    if (score >= 40) return t("wellness.scoreAverage");
+    return t("wellness.scoreNeedsWork");
   };
 
   const handleCompleteAction = (id: number) => {
@@ -326,13 +327,13 @@ export default function HealthWellnessPage() {
       athleteName: "Μαρία Κ.",
       activities: mockStravaActivities,
     });
-    toast.success("Επιτυχής σύνδεση με Strava!");
+    toast.success(t("wellness.strava.connectSuccess"));
   };
 
   const handleDisconnectStrava = () => {
     setStravaConnected(false);
     setStravaData({ athleteName: "", activities: [] });
-    toast.info("Αποσύνδεση από Strava");
+    toast.info(t("wellness.strava.disconnected"));
   };
 
   const handleMetricChange = (field: string, delta: number) => {
