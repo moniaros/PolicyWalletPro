@@ -273,22 +273,27 @@ export default function Dashboard() {
               return (
                 <Link key={policy.id} href={`/policies/${policy.id}`}>
                   <Card className="p-4 border border-border/50 hover:shadow-md transition-all cursor-pointer">
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex items-start gap-3">
+                    <div className="flex items-start justify-between gap-2 mb-2">
+                      <div className="flex items-start gap-3 min-w-0 flex-1">
                         <div className={`h-10 w-10 rounded-lg ${policy.color} flex items-center justify-center flex-shrink-0`}>
                           <PolicyIcon className="h-5 w-5" />
                         </div>
-                        <div>
-                          <h3 className="font-semibold text-foreground">{policy.type}</h3>
-                          <p className="text-sm text-muted-foreground">{policy.provider}</p>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <Badge variant="secondary" className="text-xs px-2 py-0">
+                              {policy.type}
+                            </Badge>
+                            <Badge 
+                              variant="outline"
+                              className={policy.status === "Active" ? "text-xs px-2 py-0 bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800" : "text-xs px-2 py-0 bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 border-amber-200 dark:border-amber-800"}
+                            >
+                              {policy.status}
+                            </Badge>
+                          </div>
+                          <h3 className="font-semibold text-foreground mt-1 text-sm leading-tight">{policy.productName}</h3>
+                          <p className="text-xs text-muted-foreground">{policy.provider}</p>
                         </div>
                       </div>
-                      <Badge 
-                        variant="outline"
-                        className={policy.status === "Active" ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800" : "bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 border-amber-200 dark:border-amber-800"}
-                      >
-                        {policy.status}
-                      </Badge>
                     </div>
                     
                     {keyInfo && (
