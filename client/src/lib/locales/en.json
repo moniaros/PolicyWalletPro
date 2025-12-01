@@ -29,6 +29,86 @@
       }
     }
   },
+  "signup": {
+    "header": "Get started",
+    "stepIndicator": "STEP {{current}} OF {{total}}",
+    "progressLabel": "Step {{current}} of {{total}} completed",
+    "continue": "Continue",
+    "notSure": "I'm not sure",
+    "alreadyHaveAccount": "Already have an account?",
+    "signInLink": "Sign in",
+    "step1": {
+      "title": "Welcome to PolicyWallet",
+      "subtitle": "Tell us what you're looking to do! Select all that apply.",
+      "goals": {
+        "manage": "Manage my policies",
+        "learn": "Learn about my coverage",
+        "shop": "Shop for better rates",
+        "rewards": "Earn Rewards"
+      }
+    },
+    "step2": {
+      "title": "Which types of insurance policies do you currently have?",
+      "subtitle": "Select all that apply.",
+      "types": {
+        "auto": "Auto",
+        "home": "Home",
+        "health": "Health",
+        "life": "Life",
+        "travel": "Travel",
+        "family": "Family"
+      }
+    },
+    "step3": {
+      "title": "What's your email address?",
+      "subtitle": "Create an account to continue.",
+      "email": "Email",
+      "password": "Password",
+      "googleSignup": "Continue with Google",
+      "googleComingSoon": "Coming soon",
+      "googleComingSoonDesc": "Google sign-in will be available soon. For now, please use email.",
+      "emailSignup": "Continue with email",
+      "terms": {
+        "prefix": "By proceeding, you agree to our",
+        "termsLink": "Terms of use",
+        "and": "and confirm you have read our",
+        "privacyLink": "Privacy Policy"
+      }
+    },
+    "step4": {
+      "title": "What's your name?",
+      "subtitle": "For security and compliance purposes, we need your name as it appears on insurance documents.",
+      "firstName": "Legal First name",
+      "lastName": "Legal Last name",
+      "preferredName": "Preferred name (optional)"
+    },
+    "step5": {
+      "title": "A few more details to complete your profile",
+      "subtitle": "Don't worry, you can add details to your profile later!",
+      "phone": "Phone number",
+      "birthdate": "Birthdate",
+      "address": "Address",
+      "city": "City",
+      "region": "Region",
+      "selectRegion": "Select a region",
+      "postalCode": "Postal code",
+      "regions": {
+        "attiki": "Attica",
+        "centralMacedonia": "Central Macedonia",
+        "thessaly": "Thessaly",
+        "westernGreece": "Western Greece",
+        "crete": "Crete",
+        "peloponnese": "Peloponnese",
+        "easternMacedoniaThrace": "Eastern Macedonia and Thrace",
+        "epirus": "Epirus",
+        "westernMacedonia": "Western Macedonia",
+        "centralGreece": "Central Greece",
+        "ionianIslands": "Ionian Islands",
+        "northAegean": "North Aegean",
+        "southAegean": "South Aegean"
+      }
+    }
+  },
   "pwa": {
     "updateAvailable": "New version available",
     "updateDescription": "Refresh to see the latest improvements.",

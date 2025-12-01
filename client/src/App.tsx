@@ -23,6 +23,7 @@ import HealthWellnessPage from "@/pages/health-wellness";
 import AdminDashboard from "@/pages/admin-dashboard";
 import LoginPage from "@/pages/login";
 import OnboardingPage from "@/pages/onboarding";
+import SignupPage from "@/pages/signup";
 import NotFound from "@/pages/not-found";
 import RenewalsPage from "@/pages/renewals";
 import BillingPage from "@/pages/billing";
@@ -40,6 +41,8 @@ function Router() {
     return !!localStorage.getItem("auth_token");
   });
 
+  const [showSignup, setShowSignup] = useState(false);
+
   useEffect(() => {
     const handleStorageChange = () => {
       setIsAuthenticated(!!localStorage.getItem("auth_token"));
@@ -50,21 +53,50 @@ function Router() {
     return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
-  const handleOnboardingComplete = () => {
+  const handleOnboardingGetStarted = () => {
     localStorage.setItem("hasSeenOnboarding", "true");
     setHasSeenOnboarding(true);
+    setShowSignup(true);
+  };
+
+  const handleOnboardingSignIn = () => {
+    localStorage.setItem("hasSeenOnboarding", "true");
+    setHasSeenOnboarding(true);
+    setShowSignup(false);
+  };
+
+  const handleSignupComplete = () => {
+    localStorage.setItem("auth_token", "demo_token");
+    setIsAuthenticated(true);
+    setShowSignup(false);
+  };
+
+  const handleSwitchToLogin = () => {
+    setShowSignup(false);
+  };
+
+  const handleSwitchToSignup = () => {
+    setShowSignup(true);
   };
 
   if (!hasSeenOnboarding) {
     return (
       <OnboardingPage 
-        onComplete={handleOnboardingComplete} 
-        onSignIn={handleOnboardingComplete}
+        onComplete={handleOnboardingGetStarted} 
+        onSignIn={handleOnboardingSignIn}
       />
     );
   }
 
   if (!isAuthenticated) {
+    if (showSignup) {
+      return (
+        <SignupPage 
+          onComplete={handleSignupComplete}
+          onSignIn={handleSwitchToLogin}
+        />
+      );
+    }
     return <LoginPage />;
   }
 
