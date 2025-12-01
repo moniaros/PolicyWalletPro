@@ -378,16 +378,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Policy Document Parsing with Gemini AI
+  // Policy Document Parsing with Gemini AI - Enhanced comprehensive extraction
   app.post("/api/policies/parse-document", async (req, res) => {
     try {
-      const { documentContent, documentType, insurerId, policyType } = req.body;
+      const { documentContent, documentBase64, documentType, mimeType, insurerId, policyType } = req.body;
       
-      if (!documentContent) {
-        return res.status(400).json({ error: "Document content is required" });
+      if (!documentContent && !documentBase64) {
+        return res.status(400).json({ error: "Document content or base64 data is required" });
       }
 
-      // Initialize Gemini AI using Replit's AI integration
+      const allowedMimeTypes = [
+        'application/pdf',
+        'image/jpeg',
+        'image/jpg',
+        'image/png',
+        'image/webp',
+        'text/plain',
+      ];
+      
+      if (mimeType && !allowedMimeTypes.includes(mimeType)) {
+        return res.status(400).json({ error: "Unsupported file type. Please upload PDF, JPEG, PNG, or text file." });
+      }
+
+      const maxBase64Size = 20 * 1024 * 1024;
+      if (documentBase64 && documentBase64.length > maxBase64Size) {
+        return res.status(413).json({ error: "Document too large. Maximum file size is 15MB." });
+      }
+
       const baseUrl = process.env.AI_INTEGRATIONS_GEMINI_BASE_URL;
       const apiKey = process.env.AI_INTEGRATIONS_GEMINI_API_KEY;
 
@@ -400,60 +417,175 @@ export async function registerRoutes(app: Express): Promise<Server> {
         httpOptions: { baseUrl },
       });
 
-      const prompt = `You are an expert Greek insurance document parser. Analyze this insurance policy document and extract the following information in JSON format:
+      const comprehensivePrompt = `You are an expert Greek/European insurance document parser specializing in ACORD standards. 
+Analyze this insurance policy document thoroughly and extract ALL available information in the following JSON structure.
+For Greek documents, look for ΑΦΜ (tax ID), ΑΜΚΑ (social security), and other Greek-specific identifiers.
+
+Return ONLY valid JSON (no markdown, no explanation):
 
 {
-  "policyNumber": "the policy number/ID",
-  "policyName": "name of the policy product",
-  "startDate": "YYYY-MM-DD format",
-  "endDate": "YYYY-MM-DD format",
-  "premium": "annual premium amount in EUR (just the number)",
-  "premiumFrequency": "monthly|quarterly|annual",
-  "coverageAmount": "total coverage amount in EUR (just the number)",
-  "deductible": "deductible amount in EUR (just the number)",
-  "holderName": "policyholder full name",
-  "holderAfm": "9-digit Greek tax ID (ΑΦΜ)",
-  "holderAddress": "full address",
-  "holderPhone": "phone number with country code",
-  "holderEmail": "email address",
-  "vehicleMake": "for auto insurance - car manufacturer",
-  "vehicleModel": "for auto insurance - car model",
-  "vehiclePlate": "for auto insurance - license plate",
-  "propertyAddress": "for home insurance - property address",
-  "propertySqm": "for home insurance - square meters"
+  "policy": {
+    "policyNumber": "string - policy number/ID",
+    "policyName": "string - product name",
+    "policyType": "health|auto|home|life|travel|business|pet",
+    "startDate": "YYYY-MM-DD",
+    "endDate": "YYYY-MM-DD",
+    "premium": "number - annual premium in EUR",
+    "premiumFrequency": "monthly|quarterly|semi-annual|annual",
+    "totalCoverage": "number - total coverage amount",
+    "deductible": "number - deductible amount",
+    "currency": "EUR|USD|GBP",
+    "autoRenew": "boolean",
+    "paymentMethod": "bank_transfer|credit_card|direct_debit"
+  },
+  "policyholder": {
+    "fullName": "string",
+    "afm": "string - 9-digit Greek tax ID (ΑΦΜ)",
+    "amka": "string - Greek social security number",
+    "idNumber": "string - ID card or passport",
+    "dateOfBirth": "YYYY-MM-DD",
+    "gender": "male|female|other",
+    "address": "string - full address",
+    "city": "string",
+    "postalCode": "string",
+    "country": "string - default Greece",
+    "phone": "string - with country code",
+    "mobile": "string",
+    "email": "string",
+    "occupation": "string"
+  },
+  "beneficiaries": [
+    {
+      "name": "string",
+      "relationship": "spouse|child|parent|sibling|other",
+      "percentage": "number - 0-100",
+      "dateOfBirth": "YYYY-MM-DD",
+      "afm": "string",
+      "contact": "string"
+    }
+  ],
+  "coverages": [
+    {
+      "name": "string - coverage type name",
+      "code": "string - coverage code",
+      "limit": "number - coverage limit",
+      "deductible": "number",
+      "premium": "number - premium for this coverage",
+      "waitingPeriod": "number - days",
+      "description": "string"
+    }
+  ],
+  "vehicle": {
+    "make": "string - manufacturer",
+    "model": "string",
+    "year": "number",
+    "plate": "string - license plate",
+    "vin": "string - vehicle identification number",
+    "engineCC": "number - engine capacity",
+    "fuelType": "petrol|diesel|electric|hybrid|lpg",
+    "color": "string",
+    "usage": "personal|commercial|fleet",
+    "parkingType": "garage|street|parking_lot",
+    "hasAlarm": "boolean",
+    "hasTracker": "boolean",
+    "mileage": "number"
+  },
+  "drivers": [
+    {
+      "name": "string",
+      "dateOfBirth": "YYYY-MM-DD",
+      "licenseNumber": "string",
+      "licenseDate": "YYYY-MM-DD",
+      "licenseExpiry": "YYYY-MM-DD",
+      "isPrimary": "boolean",
+      "yearsExperience": "number",
+      "accidentsLast5Years": "number"
+    }
+  ],
+  "property": {
+    "address": "string",
+    "city": "string",
+    "postalCode": "string",
+    "country": "string",
+    "type": "apartment|house|villa|commercial",
+    "squareMeters": "number",
+    "yearBuilt": "number",
+    "floors": "number",
+    "construction": "concrete|brick|wood|mixed",
+    "hasBasement": "boolean",
+    "hasGarage": "boolean",
+    "hasPool": "boolean",
+    "hasGarden": "boolean",
+    "isRented": "boolean",
+    "securitySystem": "string"
+  },
+  "health": {
+    "preExistingConditions": ["string"],
+    "medications": ["string"],
+    "hospitalizationHistory": "string",
+    "smokingStatus": "never|former|current",
+    "familyMedicalHistory": "string"
+  },
+  "confidence": {
+    "overall": "number - 0-100 confidence score",
+    "notes": "string - any parsing notes or uncertainties"
+  }
 }
 
-Only include fields that are present in the document. Return valid JSON only.
+Only include sections relevant to the document type. Omit empty/null fields.
+For ${policyType || 'general'} insurance from ${insurerId || 'unknown insurer'}:
 
-Document type: ${policyType || 'general'}
-Insurer: ${insurerId || 'unknown'}
+Document (${documentType || 'text'}):
+${documentContent || '[Base64 document provided]'}`;
 
-Document content:
-${documentContent}`;
+      let response;
+      
+      if (documentBase64 && mimeType) {
+        response = await ai.models.generateContent({
+          model: "gemini-2.5-flash",
+          contents: [
+            {
+              role: "user",
+              parts: [
+                {
+                  inlineData: {
+                    mimeType: mimeType,
+                    data: documentBase64,
+                  },
+                },
+                { text: comprehensivePrompt },
+              ],
+            },
+          ],
+        });
+      } else {
+        response = await ai.models.generateContent({
+          model: "gemini-2.5-flash",
+          contents: comprehensivePrompt,
+        });
+      }
 
-      const response = await ai.models.generateContent({
-        model: "gemini-2.5-flash",
-        contents: prompt,
-      });
-
-      // Parse the response
       const text = response.text || "";
-      let parsedData = {};
+      let parsedData: any = {};
       
       try {
-        // Try to extract JSON from the response
         const jsonMatch = text.match(/\{[\s\S]*\}/);
         if (jsonMatch) {
           parsedData = JSON.parse(jsonMatch[0]);
         }
       } catch (parseError) {
         console.error("Failed to parse Gemini response:", parseError);
+        return res.status(422).json({ 
+          error: "Could not extract structured data from document",
+          rawResponse: text.substring(0, 500)
+        });
       }
 
       res.json({
         success: true,
         parsedData,
-        rawResponse: text,
+        confidence: parsedData.confidence?.overall || 75,
+        rawResponse: text.length > 1000 ? text.substring(0, 1000) + "..." : text,
       });
     } catch (error: any) {
       console.error("Document parsing error:", error);
@@ -461,6 +593,49 @@ ${documentContent}`;
         error: "Failed to parse document", 
         details: error.message 
       });
+    }
+  });
+
+  // Get all policies for a user
+  app.get("/api/policies", authMiddleware, async (req: AuthRequest, res) => {
+    try {
+      const policies = await storage.getPolicies(req.userId!);
+      res.json(policies);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch policies" });
+    }
+  });
+
+  // Get single policy with all related data
+  app.get("/api/policies/:id", authMiddleware, async (req: AuthRequest, res) => {
+    try {
+      const { id } = req.params;
+      const policy = await storage.getPolicy(id);
+      
+      if (!policy) {
+        return res.status(404).json({ error: "Policy not found" });
+      }
+
+      const [beneficiaries, drivers, coverages, vehicles, properties, documents] = await Promise.all([
+        storage.getPolicyBeneficiaries(id),
+        storage.getPolicyDrivers(id),
+        storage.getPolicyCoverages(id),
+        storage.getPolicyVehicles(id),
+        storage.getPolicyProperties(id),
+        storage.getPolicyDocuments(id),
+      ]);
+
+      res.json({
+        ...policy,
+        beneficiaries,
+        drivers,
+        coverages,
+        vehicles,
+        properties,
+        documents,
+      });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch policy details" });
     }
   });
 
@@ -500,28 +675,169 @@ ${documentContent}`;
     }
   });
 
-  // Create new policy
-  app.post("/api/policies", async (req, res) => {
+  // Create new policy with all related data (from AI parsing or manual entry)
+  app.post("/api/policies", authMiddleware, async (req: AuthRequest, res) => {
     try {
-      const policyData = req.body;
+      const { policy, beneficiaries, drivers, coverages, vehicle, property, documents } = req.body;
       
-      // Validate required fields
-      if (!policyData.policyNumber || !policyData.insurerId || !policyData.policyType) {
+      if (!policy?.policyNumber || !policy?.insurerId || !policy?.policyType) {
         return res.status(400).json({ error: "Missing required policy fields" });
       }
 
-      // In a real implementation, save to database
-      // For now, return the policy data with an ID
-      const newPolicy = {
-        id: `policy-${Date.now()}`,
-        ...policyData,
-        createdAt: new Date().toISOString(),
-        status: "active",
+      const policyData = {
+        userId: req.userId!,
+        policyNumber: policy.policyNumber,
+        policyName: policy.policyName || policy.policyNumber,
+        policyType: policy.policyType,
+        insurerId: policy.insurerId,
+        startDate: new Date(policy.startDate),
+        endDate: new Date(policy.endDate),
+        premium: policy.premium?.toString() || "0",
+        premiumFrequency: policy.premiumFrequency || "annual",
+        coverageAmount: policy.totalCoverage?.toString() || policy.coverageAmount?.toString() || "0",
+        deductible: policy.deductible?.toString() || "0",
+        status: "active" as const,
+        autoRenew: policy.autoRenew || false,
+        addedMethod: policy.addedMethod || "ai_parsed",
+        holderName: policy.holderName || req.body.policyholder?.fullName,
+        holderAfm: policy.holderAfm || req.body.policyholder?.afm,
+        holderAddress: policy.holderAddress || req.body.policyholder?.address,
+        holderPhone: policy.holderPhone || req.body.policyholder?.phone,
+        holderEmail: policy.holderEmail || req.body.policyholder?.email,
       };
 
-      res.status(201).json(newPolicy);
+      const createdPolicy = await storage.createPolicy(policyData);
+      const policyId = createdPolicy.id;
+
+      if (beneficiaries && Array.isArray(beneficiaries)) {
+        for (const b of beneficiaries) {
+          await storage.createPolicyBeneficiary({
+            policyId,
+            name: b.name,
+            relationship: b.relationship,
+            percentage: b.percentage?.toString() || "100",
+            dateOfBirth: b.dateOfBirth ? new Date(b.dateOfBirth) : null,
+            afm: b.afm,
+            contact: b.contact,
+          });
+        }
+      }
+
+      if (drivers && Array.isArray(drivers)) {
+        for (const d of drivers) {
+          await storage.createPolicyDriver({
+            policyId,
+            name: d.name,
+            dateOfBirth: d.dateOfBirth ? new Date(d.dateOfBirth) : null,
+            licenseNumber: d.licenseNumber,
+            licenseDate: d.licenseDate ? new Date(d.licenseDate) : null,
+            licenseExpiry: d.licenseExpiry ? new Date(d.licenseExpiry) : null,
+            isPrimary: d.isPrimary || false,
+            yearsExperience: d.yearsExperience,
+            accidentsLast5Years: d.accidentsLast5Years || 0,
+          });
+        }
+      }
+
+      if (coverages && Array.isArray(coverages)) {
+        for (const c of coverages) {
+          await storage.createPolicyCoverage({
+            policyId,
+            name: c.name,
+            code: c.code,
+            limitAmount: c.limit?.toString() || c.limitAmount?.toString() || "0",
+            deductible: c.deductible?.toString() || "0",
+            premium: c.premium?.toString() || "0",
+            waitingPeriodDays: c.waitingPeriod || c.waitingPeriodDays || 0,
+            description: c.description,
+            isActive: true,
+          });
+        }
+      }
+
+      if (vehicle) {
+        await storage.createPolicyVehicle({
+          policyId,
+          make: vehicle.make,
+          model: vehicle.model,
+          year: vehicle.year,
+          plate: vehicle.plate,
+          vin: vehicle.vin,
+          engineCC: vehicle.engineCC,
+          fuelType: vehicle.fuelType,
+          color: vehicle.color,
+          usage: vehicle.usage || "personal",
+          parkingType: vehicle.parkingType,
+          hasAlarm: vehicle.hasAlarm || false,
+          hasTracker: vehicle.hasTracker || false,
+          mileage: vehicle.mileage,
+        });
+      }
+
+      if (property) {
+        await storage.createPolicyProperty({
+          policyId,
+          address: property.address,
+          city: property.city,
+          postalCode: property.postalCode,
+          country: property.country || "Greece",
+          propertyType: property.type || property.propertyType || "apartment",
+          squareMeters: property.squareMeters,
+          yearBuilt: property.yearBuilt,
+          floors: property.floors,
+          constructionType: property.construction || property.constructionType,
+          hasBasement: property.hasBasement || false,
+          hasGarage: property.hasGarage || false,
+          hasPool: property.hasPool || false,
+          hasGarden: property.hasGarden || false,
+          isRented: property.isRented || false,
+          securitySystem: property.securitySystem,
+        });
+      }
+
+      await auditLog(req.userId!, "policy_created", "policies", { policyId, policyNumber: policy.policyNumber });
+
+      const fullPolicy = await storage.getPolicy(policyId);
+      res.status(201).json(fullPolicy);
+    } catch (error: any) {
+      console.error("Policy creation error:", error);
+      res.status(400).json({ error: "Failed to create policy", details: error.message });
+    }
+  });
+
+  // Update policy
+  app.patch("/api/policies/:id", authMiddleware, async (req: AuthRequest, res) => {
+    try {
+      const { id } = req.params;
+      const policy = await storage.getPolicy(id);
+      
+      if (!policy || policy.userId !== req.userId) {
+        return res.status(404).json({ error: "Policy not found" });
+      }
+
+      const updated = await storage.updatePolicy(id, req.body);
+      await auditLog(req.userId!, "policy_updated", "policies", { policyId: id });
+      res.json(updated);
     } catch (error) {
-      res.status(400).json({ error: "Failed to create policy" });
+      res.status(400).json({ error: "Failed to update policy" });
+    }
+  });
+
+  // Delete policy
+  app.delete("/api/policies/:id", authMiddleware, async (req: AuthRequest, res) => {
+    try {
+      const { id } = req.params;
+      const policy = await storage.getPolicy(id);
+      
+      if (!policy || policy.userId !== req.userId) {
+        return res.status(404).json({ error: "Policy not found" });
+      }
+
+      await storage.deletePolicy(id);
+      await auditLog(req.userId!, "policy_deleted", "policies", { policyId: id });
+      res.json({ success: true });
+    } catch (error) {
+      res.status(400).json({ error: "Failed to delete policy" });
     }
   });
 

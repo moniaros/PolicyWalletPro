@@ -129,7 +129,7 @@ export default function AddPolicyPage() {
   const [isUploading, setIsUploading] = useState(false);
   const [isParsing, setIsParsing] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  const [parsedData, setParsedData] = useState<Partial<PolicyFormData> | null>(null);
+  const [parsedData, setParsedData] = useState<any>(null);
   const [policySearchId, setPolicySearchId] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const [manualStep, setManualStep] = useState(1);
@@ -218,36 +218,79 @@ export default function AddPolicyPage() {
     setIsParsing(true);
     
     try {
-      // Read file content as text or base64
-      const reader = new FileReader();
-      const fileContent = await new Promise<string>((resolve, reject) => {
-        reader.onload = () => resolve(reader.result as string);
-        reader.onerror = reject;
-        if (uploadedFile.type === 'application/pdf') {
-          reader.readAsDataURL(uploadedFile);
-        } else {
-          reader.readAsText(uploadedFile);
-        }
-      });
-
-      // Call the Gemini AI API endpoint
-      const response = await apiRequest("POST", "/api/policies/parse-document", {
-        documentContent: fileContent,
+      const isImage = uploadedFile.type.startsWith('image/');
+      const isPdf = uploadedFile.type === 'application/pdf';
+      
+      let requestBody: any = {
         documentType: uploadedFile.type,
         insurerId: selectedInsurer?.id,
         policyType: selectedType,
-      });
+      };
 
+      if (isImage || isPdf) {
+        const base64 = await new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const result = reader.result as string;
+            const base64Data = result.split(',')[1];
+            resolve(base64Data);
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(uploadedFile);
+        });
+        requestBody.documentBase64 = base64;
+        requestBody.mimeType = uploadedFile.type;
+      } else {
+        const textContent = await new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result as string);
+          reader.onerror = reject;
+          reader.readAsText(uploadedFile);
+        });
+        requestBody.documentContent = textContent;
+      }
+
+      const response = await apiRequest("POST", "/api/policies/parse-document", requestBody);
       const result = await response.json();
       
       if (result.success && result.parsedData) {
-        const parsed = result.parsedData as Partial<PolicyFormData>;
-        setParsedData(parsed);
-        setFormData(prev => ({ ...prev, ...parsed }));
-        toast.success(t("addPolicy.success.documentParsed"));
+        const parsed = result.parsedData;
+        
+        const mappedData: Partial<PolicyFormData> = {
+          policyNumber: parsed.policy?.policyNumber,
+          policyName: parsed.policy?.policyName,
+          startDate: parsed.policy?.startDate,
+          endDate: parsed.policy?.endDate,
+          premium: parsed.policy?.premium?.toString(),
+          premiumFrequency: parsed.policy?.premiumFrequency,
+          coverageAmount: parsed.policy?.totalCoverage?.toString(),
+          deductible: parsed.policy?.deductible?.toString(),
+          holderName: parsed.policyholder?.fullName,
+          holderAfm: parsed.policyholder?.afm,
+          holderAddress: parsed.policyholder?.address,
+          holderPhone: parsed.policyholder?.phone || parsed.policyholder?.mobile,
+          holderEmail: parsed.policyholder?.email,
+          vehicleMake: parsed.vehicle?.make,
+          vehicleModel: parsed.vehicle?.model,
+          vehiclePlate: parsed.vehicle?.plate,
+          propertyAddress: parsed.property?.address,
+          propertySqm: parsed.property?.squareMeters?.toString(),
+        };
+        
+        Object.keys(mappedData).forEach(key => {
+          if (mappedData[key as keyof typeof mappedData] === undefined) {
+            delete mappedData[key as keyof typeof mappedData];
+          }
+        });
+
+        setParsedData({ ...parsed, ...mappedData });
+        setFormData(prev => ({ ...prev, ...mappedData }));
+        
+        const confidence = result.confidence || 75;
+        toast.success(t("addPolicy.success.documentParsed") + ` (${confidence}% ${t("addPolicy.confidence")})`);
         setStep("review");
       } else {
-        throw new Error("Failed to parse document");
+        throw new Error(result.error || "Failed to parse document");
       }
     } catch (error: any) {
       console.error("Document parsing error:", error);
@@ -304,13 +347,11 @@ export default function AddPolicyPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async () => {
-    // Validate required fields
     if (!formData.policyNumber || !formData.startDate || !formData.endDate || !formData.premium) {
       toast.error(t("addPolicy.errors.requiredFields"));
       return;
     }
 
-    // Validate ΑΦΜ if provided
     if (formData.holderAfm && !validateAfm(formData.holderAfm)) {
       toast.error(t("addPolicy.errors.invalidAfm"));
       return;
@@ -319,16 +360,57 @@ export default function AddPolicyPage() {
     setIsSubmitting(true);
     
     try {
-      // Call the policy creation API
-      const response = await apiRequest("POST", "/api/policies", {
-        ...formData,
-        insurerId: selectedInsurer?.id,
-        policyType: selectedType,
-      });
+      const policyPayload: any = {
+        policy: {
+          policyNumber: formData.policyNumber,
+          policyName: formData.policyName || formData.policyNumber,
+          policyType: selectedType,
+          insurerId: selectedInsurer?.id,
+          startDate: formData.startDate,
+          endDate: formData.endDate,
+          premium: formData.premium,
+          premiumFrequency: formData.premiumFrequency || "annual",
+          totalCoverage: formData.coverageAmount,
+          deductible: formData.deductible,
+          addedMethod: addMethod === "document" ? "ai_parsed" : addMethod === "search" ? "insurer_search" : "manual",
+        },
+        policyholder: {
+          fullName: formData.holderName,
+          afm: formData.holderAfm,
+          address: formData.holderAddress,
+          phone: formData.holderPhone,
+          email: formData.holderEmail,
+        },
+      };
 
+      if (selectedType === "auto" && (formData.vehicleMake || formData.vehiclePlate)) {
+        policyPayload.vehicle = {
+          make: formData.vehicleMake,
+          model: formData.vehicleModel,
+          plate: formData.vehiclePlate,
+        };
+      }
+
+      if (selectedType === "home" && (formData.propertyAddress || formData.propertySqm)) {
+        policyPayload.property = {
+          address: formData.propertyAddress,
+          squareMeters: formData.propertySqm ? parseInt(formData.propertySqm) : undefined,
+        };
+      }
+
+      if (parsedData?.beneficiaries) {
+        policyPayload.beneficiaries = parsedData.beneficiaries;
+      }
+      if (parsedData?.drivers) {
+        policyPayload.drivers = parsedData.drivers;
+      }
+      if (parsedData?.coverages) {
+        policyPayload.coverages = parsedData.coverages;
+      }
+
+      const response = await apiRequest("POST", "/api/policies", policyPayload);
       const newPolicy = await response.json();
       
-      // Mark first-time setup as complete
       markFirstTimeSetupComplete();
       
       toast.success(t("addPolicy.success.policyAdded"));

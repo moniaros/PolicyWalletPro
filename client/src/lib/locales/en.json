@@ -2690,6 +2690,7 @@
       "invalidAfm": "Tax ID must be 9 digits",
       "saveFailed": "Failed to save. Try again."
     },
+    "confidence": "confidence",
     "success": {
       "fileUploaded": "File uploaded successfully",
       "documentParsed": "Document parsed successfully with AI!",
