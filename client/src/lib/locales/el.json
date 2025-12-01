@@ -3,6 +3,16 @@
     "name": "PolicyWallet",
     "tagline": "Το Ασφαλιστικό σας Πορτοφόλι"
   },
+  "pwa": {
+    "updateAvailable": "Νέα έκδοση διαθέσιμη",
+    "updateDescription": "Ανανεώστε για να δείτε τις τελευταίες βελτιώσεις.",
+    "update": "Ανανέωση",
+    "installTitle": "Εγκαταστήστε το PolicyWallet",
+    "installDescription": "Προσθέστε την εφαρμογή στην αρχική οθόνη για γρήγορη πρόσβαση.",
+    "install": "Εγκατάσταση",
+    "later": "Αργότερα",
+    "offlineReady": "Η εφαρμογή λειτουργεί εκτός σύνδεσης"
+  },
   "nav": {
     "dashboard": "Αρχική",
     "policies": "Συμβόλαια",

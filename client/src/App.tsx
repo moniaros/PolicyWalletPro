@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ErrorBoundary } from "@/components/error-boundary";
 import { NetworkStatus } from "@/components/network-status";
+import { PWAUpdatePrompt } from "@/components/pwa-update-prompt";
 import Layout from "@/components/layout";
 import { Suspense, useState, useEffect } from "react";
 import Dashboard from "@/pages/dashboard";
@@ -82,6 +83,7 @@ function App() {
         <ThemeProvider defaultTheme="system" storageKey="policy-guard-theme">
           <Suspense fallback={<div>Loading...</div>}>
             <NetworkStatus />
+            <PWAUpdatePrompt />
             <Toaster />
             <Router />
           </Suspense>

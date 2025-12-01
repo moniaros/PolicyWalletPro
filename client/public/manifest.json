@@ -1,43 +1,47 @@
 {
-  "name": "PolicyGuard - Insurance Wallet",
-  "short_name": "PolicyGuard",
-  "description": "Manage all your insurance policies, track appointments, and analyze coverage gaps in one secure place.",
+  "name": "PolicyWallet - Ασφαλιστικό Πορτοφόλι",
+  "short_name": "PolicyWallet",
+  "description": "Διαχειριστείτε τα ασφαλιστήριά σας, παρακολουθήστε ραντεβού και αναλύστε κενά κάλυψης σε ένα ασφαλές μέρος.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "theme_color": "#3b82f6",
+  "theme_color": "#4F46E5",
   "background_color": "#ffffff",
-  "categories": ["finance", "insurance"],
+  "categories": ["finance", "insurance", "utilities"],
+  "lang": "el",
+  "dir": "ltr",
   "screenshots": [
     {
-      "src": "/assets/friendly_3d_isometric_insurance_wallet_icon.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "form_factor": "narrow"
-    },
-    {
-      "src": "/assets/friendly_3d_isometric_insurance_wallet_icon.png",
+      "src": "/pwa-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "form_factor": "wide"
+      "form_factor": "narrow",
+      "label": "PolicyWallet Dashboard"
+    },
+    {
+      "src": "/pwa-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "PolicyWallet Dashboard"
     }
   ],
   "icons": [
     {
-      "src": "/assets/friendly_3d_isometric_insurance_wallet_icon.png",
+      "src": "/pwa-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/assets/friendly_3d_isometric_insurance_wallet_icon.png",
+      "src": "/pwa-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/assets/friendly_3d_isometric_insurance_wallet_icon.png",
+      "src": "/pwa-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
@@ -45,26 +49,39 @@
   ],
   "shortcuts": [
     {
-      "name": "View Policies",
-      "short_name": "Policies",
-      "description": "View all your insurance policies",
+      "name": "Τα Ασφαλιστήριά μου",
+      "short_name": "Ασφαλιστήρια",
+      "description": "Προβολή όλων των ασφαλιστηρίων σας",
       "url": "/policies",
       "icons": [
         {
-          "src": "/assets/friendly_3d_isometric_insurance_wallet_icon.png",
+          "src": "/pwa-192x192.png",
           "sizes": "192x192",
           "type": "image/png"
         }
       ]
     },
     {
-      "name": "Health Wellness",
-      "short_name": "Wellness",
-      "description": "Track your health and wellness data",
+      "name": "Υγεία & Ευεξία",
+      "short_name": "Ευεξία",
+      "description": "Παρακολουθήστε τα δεδομένα υγείας σας",
       "url": "/health-wellness",
       "icons": [
         {
-          "src": "/assets/friendly_3d_isometric_insurance_wallet_icon.png",
+          "src": "/pwa-192x192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Δηλώσεις Ζημιών",
+      "short_name": "Δηλώσεις",
+      "description": "Υποβολή και παρακολούθηση δηλώσεων",
+      "url": "/claims",
+      "icons": [
+        {
+          "src": "/pwa-192x192.png",
           "sizes": "192x192",
           "type": "image/png"
         }

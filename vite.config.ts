@@ -13,7 +13,7 @@ export default defineConfig({
     tailwindcss(),
     metaImagesPlugin(),
     VitePWA({
-      registerType: 'autoUpdate',
+      registerType: 'prompt',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png'],
       manifest: {
         name: 'PolicyWallet - Ασφαλιστικό Πορτοφόλι',

@@ -39,6 +39,15 @@ Cross-platform insurance policy wallet for Greek/European insurers (Ethniki, Gen
 3. ✅ **Mobile Bottom Nav** - min-h-[44px] on all navigation items
 4. ✅ **Responsive Layouts** - flex-col md:flex-row patterns throughout
 
+### Progressive Web App (PWA) - Complete
+1. ✅ **Dedicated App Icons** - Generated professional shield icons (192x192, 512x512, Apple Touch)
+2. ✅ **Web App Manifest** - Greek branding, shortcuts to Policies/Wellness/Claims pages
+3. ✅ **Service Worker** - Workbox-based with offline caching via vite-plugin-pwa
+4. ✅ **Install Prompt** - PWAUpdatePrompt component using useRegisterSW hook
+5. ✅ **Update Notifications** - Users notified when new versions available
+6. ✅ **Share Target** - Accept PDF/image document uploads via share
+7. ✅ **Full i18n** - Greek/English translations for all PWA prompts
+
 ### Enhanced Appointment Booking Wizard (Latest)
 **5-Step Professional Booking Flow:**
 1. ✅ **Step 1: Policy Selection** - Choose from active insurance policies

@@ -3,6 +3,16 @@
     "name": "PolicyWallet",
     "tagline": "Your Insurance Wallet"
   },
+  "pwa": {
+    "updateAvailable": "New version available",
+    "updateDescription": "Refresh to see the latest improvements.",
+    "update": "Refresh",
+    "installTitle": "Install PolicyWallet",
+    "installDescription": "Add the app to your home screen for quick access.",
+    "install": "Install",
+    "later": "Later",
+    "offlineReady": "App ready for offline use"
+  },
   "nav": {
     "dashboard": "Dashboard",
     "policies": "Policies",
