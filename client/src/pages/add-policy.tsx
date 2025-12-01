@@ -134,6 +134,14 @@ export default function AddPolicyPage() {
   const [isSearching, setIsSearching] = useState(false);
   const [manualStep, setManualStep] = useState(1);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [aiAnalysis, setAiAnalysis] = useState<{
+    summary?: string;
+    keyCoverages?: string[];
+    keyNumbers?: string[];
+    thingsToKnow?: string;
+    benefits?: string[];
+  } | null>(null);
 
   const [formData, setFormData] = useState<PolicyFormData>({
     insurerId: "",
@@ -1139,22 +1147,84 @@ export default function AddPolicyPage() {
             </Card>
 
             <Button
-              onClick={() => {
+              onClick={async () => {
                 const errors = validateExtractedData(formData);
                 if (Object.keys(errors).length > 0) {
                   setValidationErrors(errors);
                   toast.error(t("addPolicy.errors.stillHasErrors"));
-                } else {
-                  setValidationErrors({});
+                  return;
+                }
+                
+                setValidationErrors({});
+                setIsAnalyzing(true);
+                
+                try {
+                  const verifiedData = {
+                    policy: {
+                      policyNumber: formData.policyNumber,
+                      policyName: formData.policyName,
+                      policyType: selectedType,
+                      startDate: formData.startDate,
+                      endDate: formData.endDate,
+                      premium: parseFloat(formData.premium) || 0,
+                      premiumFrequency: formData.premiumFrequency,
+                      totalCoverage: parseFloat(formData.coverageAmount) || 0,
+                      deductible: parseFloat(formData.deductible) || 0,
+                    },
+                    policyholder: {
+                      fullName: formData.holderName,
+                      afm: formData.holderAfm,
+                      address: formData.holderAddress,
+                      phone: formData.holderPhone,
+                      email: formData.holderEmail,
+                    },
+                    coverages: parsedData?.coverages || [],
+                    benefits: parsedData?.benefits || [],
+                    vehicle: parsedData?.vehicle,
+                    property: parsedData?.property,
+                    drivers: parsedData?.drivers,
+                    beneficiaries: parsedData?.beneficiaries,
+                  };
+                  
+                  const response = await fetch("/api/policies/analyze-verified", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      verifiedData,
+                      policyType: selectedType,
+                      language: i18n.language,
+                    }),
+                  });
+                  
+                  if (response.ok) {
+                    const data = await response.json();
+                    setAiAnalysis(data.aiAnalysis);
+                    toast.success(t("addPolicy.success.analysisComplete"));
+                  } else {
+                    console.warn("Analysis failed, proceeding without AI summary");
+                  }
+                } catch (error) {
+                  console.error("Analysis error:", error);
+                } finally {
+                  setIsAnalyzing(false);
                   setStep("review");
-                  toast.success(t("addPolicy.success.dataValid"));
                 }
               }}
               className="w-full"
+              disabled={isAnalyzing}
               data-testid="button-correct-continue"
             >
-              {t("addPolicy.continueParsing")}
-              <ChevronRight className="h-4 w-4 ml-1" />
+              {isAnalyzing ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  {t("addPolicy.analyzingPolicy")}
+                </>
+              ) : (
+                <>
+                  <Sparkles className="h-4 w-4 mr-2" />
+                  {t("addPolicy.confirmAndAnalyze")}
+                </>
+              )}
             </Button>
           </div>
         );
@@ -1230,6 +1300,93 @@ export default function AddPolicyPage() {
                 </div>
               )}
             </Card>
+
+            {/* AI Analysis Summary - Plain Language Explanation */}
+            {aiAnalysis && (
+              <Card className="p-4 space-y-4 bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-950/30 dark:to-indigo-950/30 border-purple-200 dark:border-purple-800">
+                <div className="flex items-center gap-2">
+                  <div className="h-8 w-8 rounded-full bg-purple-100 dark:bg-purple-900/50 flex items-center justify-center">
+                    <Sparkles className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-sm text-foreground">{t("addPolicy.aiSummary")}</h3>
+                    <p className="text-[10px] text-muted-foreground">{t("addPolicy.aiSummaryDesc")}</p>
+                  </div>
+                </div>
+
+                {/* Summary */}
+                {aiAnalysis.summary && (
+                  <div className="bg-white/60 dark:bg-black/20 rounded-md p-3">
+                    <p className="text-sm text-foreground">{aiAnalysis.summary}</p>
+                  </div>
+                )}
+
+                {/* Key Coverages */}
+                {aiAnalysis.keyCoverages && aiAnalysis.keyCoverages.length > 0 && (
+                  <div className="space-y-2">
+                    <h4 className="text-xs font-semibold text-foreground flex items-center gap-1.5">
+                      <Shield className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
+                      {t("addPolicy.keyCoverages")}
+                    </h4>
+                    <div className="space-y-1.5">
+                      {aiAnalysis.keyCoverages.map((coverage, idx) => (
+                        <div key={idx} className="flex items-start gap-2 text-xs bg-white/40 dark:bg-black/10 rounded-md p-2">
+                          <span className="text-blue-600 dark:text-blue-400 font-bold mt-0.5">{idx + 1}.</span>
+                          <p className="text-muted-foreground">{coverage}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Key Numbers */}
+                {aiAnalysis.keyNumbers && aiAnalysis.keyNumbers.length > 0 && (
+                  <div className="space-y-2">
+                    <h4 className="text-xs font-semibold text-foreground flex items-center gap-1.5">
+                      <Euro className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                      {t("addPolicy.keyNumbers")}
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
+                      {aiAnalysis.keyNumbers.map((num, idx) => (
+                        <Badge key={idx} variant="secondary" className="text-[10px] bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300">
+                          {num}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Things to Know */}
+                {aiAnalysis.thingsToKnow && (
+                  <div className="space-y-2">
+                    <h4 className="text-xs font-semibold text-foreground flex items-center gap-1.5">
+                      <AlertCircle className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
+                      {t("addPolicy.thingsToKnow")}
+                    </h4>
+                    <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-md p-2.5">
+                      <p className="text-xs text-amber-800 dark:text-amber-200">{aiAnalysis.thingsToKnow}</p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Benefits from AI Analysis */}
+                {aiAnalysis.benefits && aiAnalysis.benefits.length > 0 && (
+                  <div className="space-y-2">
+                    <h4 className="text-xs font-semibold text-foreground flex items-center gap-1.5">
+                      <Heart className="h-3.5 w-3.5 text-rose-600 dark:text-rose-400" />
+                      {t("addPolicy.includedBenefits")}
+                    </h4>
+                    <div className="flex flex-wrap gap-1.5">
+                      {aiAnalysis.benefits.map((benefit, idx) => (
+                        <Badge key={idx} variant="outline" className="text-[10px] bg-rose-50 dark:bg-rose-950/30 border-rose-200 dark:border-rose-800 text-rose-700 dark:text-rose-300">
+                          {benefit}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </Card>
+            )}
 
             {/* Coverages Section */}
             {(parsedData?.coverages && parsedData.coverages.length > 0) && (
