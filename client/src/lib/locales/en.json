@@ -2688,15 +2688,22 @@
       "searchFailed": "Search failed. Try again.",
       "requiredFields": "Fill in the required fields",
       "invalidAfm": "Tax ID must be 9 digits",
-      "saveFailed": "Failed to save. Try again."
+      "saveFailed": "Failed to save. Try again.",
+      "missingFields": "Missing required fields",
+      "stillHasErrors": "The data still has errors. Please correct them."
     },
     "confidence": "confidence",
     "success": {
       "fileUploaded": "File uploaded successfully",
       "documentParsed": "Document parsed successfully with AI!",
       "policyFound": "Policy found in database!",
-      "policyAdded": "Policy added successfully!"
+      "policyAdded": "Policy added successfully!",
+      "dataValid": "The data is valid. Continue to the next step."
     },
+    "correctData": "Correct Data",
+    "reviewExtractedData": "Review Extracted Data",
+    "correctDataDesc": "Fix the errors found or complete the empty fields",
+    "continueParsing": "Continue",
     "types": {
       "health": "Health Insurance",
       "auto": "Auto Insurance",
