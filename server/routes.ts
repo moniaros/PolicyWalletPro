@@ -644,6 +644,8 @@ Context: This is a ${policyType || 'general'} insurance policy from ${insurerId 
               plate: { type: Type.STRING },
               vin: { type: Type.STRING },
               engineCC: { type: Type.NUMBER },
+              taxableHorsepower: { type: Type.NUMBER },
+              insuredValue: { type: Type.NUMBER },
               fuelType: { type: Type.STRING },
               color: { type: Type.STRING },
               usage: { type: Type.STRING },
