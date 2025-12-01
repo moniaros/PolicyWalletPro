@@ -1,139 +1,232 @@
-import { useRoute, Link } from "wouter";
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { policies } from "@/lib/mockData";
+import { useRoute, Link, useLocation } from "wouter";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { useQuery } from "@tanstack/react-query";
+import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useTranslation } from "react-i18next";
-import { ArrowLeft, Download, CreditCard, Users, AlertTriangle, FileCheck, Shield, TrendingUp, AlertCircle, DollarSign, CheckCircle2, Calendar, Hash, FileText, ChevronRight, Phone, Mail, MessageCircle, Clock, MapPin, Car, Home, Heart, PawPrint } from "lucide-react";
-import { Progress } from "@/components/ui/progress";
-import { PolicyRecommendations } from "@/components/policy-recommendations";
-import { DynamicGapRecommendations } from "@/components/dynamic-gap-recommendations";
-import { calculatePolicyGaps } from "@/lib/gap-calculation";
 import { 
-  analyzeHomeGaps, 
-  analyzeAutoGaps, 
-  analyzeHealthGaps, 
-  analyzeInvestmentGaps, 
-  analyzePetGaps,
-  analyzeDoctorGaps,
-  analyzeMarineGaps
-} from "@/lib/enhanced-gap-analysis";
-import { useUserProfile } from "@/hooks/useUserProfile";
-import { HealthDetailedView, AutoDetailedView, HomeDetailedView, InvestmentLifeDetailedView, PetDetailedView, UniversalBrokerActions } from "@/components/policy-detail-sections";
-import { PolicyDocumentsUpload } from "@/components/policy-documents-upload";
-import { toast } from "sonner";
+  ArrowLeft, 
+  Download, 
+  Shield, 
+  Calendar, 
+  Hash, 
+  FileText, 
+  Phone, 
+  Mail, 
+  MapPin, 
+  Car, 
+  Home, 
+  Heart, 
+  PawPrint,
+  Briefcase,
+  User,
+  Loader2,
+  AlertCircle
+} from "lucide-react";
+import type { Policy, PolicyCoverage, PolicyVehicle, PolicyProperty, PolicyBeneficiary, PolicyDriver } from "@shared/schema";
+
+interface PolicyWithRelations extends Policy {
+  beneficiaries?: PolicyBeneficiary[];
+  drivers?: PolicyDriver[];
+  coverages?: PolicyCoverage[];
+  vehicles?: PolicyVehicle[];
+  properties?: PolicyProperty[];
+}
 
 function getIOSIconBg(policyType: string) {
-  switch(policyType) {
-    case "Health": return "bg-red-500 dark:bg-red-600";
-    case "Auto": return "bg-blue-500 dark:bg-blue-600";
-    case "Home & Liability": return "bg-amber-500 dark:bg-amber-600";
-    case "Investment Life": return "bg-emerald-500 dark:bg-emerald-600";
-    case "Pet Insurance": return "bg-purple-500 dark:bg-purple-600";
-    case "Travel": return "bg-cyan-500 dark:bg-cyan-600";
-    default: return "bg-muted-foreground";
+  switch(policyType.toLowerCase()) {
+    case "health": return "bg-red-500 dark:bg-red-600";
+    case "auto": return "bg-blue-500 dark:bg-blue-600";
+    case "home": return "bg-amber-500 dark:bg-amber-600";
+    case "life": return "bg-emerald-500 dark:bg-emerald-600";
+    case "pet": return "bg-purple-500 dark:bg-purple-600";
+    case "travel": return "bg-cyan-500 dark:bg-cyan-600";
+    default: return "bg-slate-500 dark:bg-slate-600";
   }
 }
 
 function getPolicyIcon(policyType: string) {
-  switch(policyType) {
-    case "Health": return Heart;
-    case "Auto": return Car;
-    case "Home & Liability": return Home;
-    case "Pet Insurance": return PawPrint;
+  switch(policyType.toLowerCase()) {
+    case "health": return Heart;
+    case "auto": return Car;
+    case "home": return Home;
+    case "life": return Briefcase;
+    case "pet": return PawPrint;
     default: return Shield;
   }
 }
 
+function getStatusBadgeClass(status: string) {
+  switch (status.toLowerCase()) {
+    case "active":
+      return "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400";
+    case "expired":
+      return "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400";
+    case "pending":
+      return "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400";
+    case "cancelled":
+      return "bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400";
+    default:
+      return "";
+  }
+}
+
+const formatCurrency = (amount: string | number) => {
+  const num = typeof amount === "string" ? parseFloat(amount) : amount;
+  return new Intl.NumberFormat("el-GR", {
+    style: "currency",
+    currency: "EUR",
+  }).format(num);
+};
+
+const formatDate = (date: string | Date) => {
+  return new Date(date).toLocaleDateString("el-GR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+};
+
 export default function PolicyDetailsPage() {
   const { t } = useTranslation();
   const [match, params] = useRoute("/policies/:id");
-  const id = params ? parseInt(params.id) : 0;
-  const policy = policies.find((p) => p.id === id);
-  const userProfile = useUserProfile();
-  const [activeTab, setActiveTab] = useState<"overview" | "billing" | "claims" | "analysis">("overview");
+  const policyId = params?.id || "";
+  const [activeTab, setActiveTab] = useState<"overview" | "coverages" | "details">("overview");
+  const { isAuthenticated, isLoading: authLoading } = useAuth();
+  const [, setLocation] = useLocation();
+
+  const { data: policyData, isLoading, error } = useQuery<PolicyWithRelations>({
+    queryKey: ["/api/policies", policyId],
+    enabled: !!policyId && isAuthenticated,
+    retry: false,
+  });
+
+  const policy = policyData;
+  const coverages = policyData?.coverages || [];
+  const vehicles = policyData?.vehicles || [];
+  const properties = policyData?.properties || [];
+  const beneficiaries = policyData?.beneficiaries || [];
+  const drivers = policyData?.drivers || [];
+
+  useEffect(() => {
+    if (!authLoading && !isAuthenticated) {
+      setLocation("/login");
+    }
+  }, [authLoading, isAuthenticated, setLocation]);
+
+  useEffect(() => {
+    if (error) {
+      const errorMessage = error instanceof Error ? error.message : "";
+      if (errorMessage.includes("401")) {
+        setLocation("/login");
+      }
+    }
+  }, [error, setLocation]);
+
+  if (authLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[50vh] space-y-4">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <p className="text-muted-foreground">{t("common.loading")}</p>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[50vh] space-y-4">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <p className="text-muted-foreground">{t("common.loading")}</p>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[50vh] space-y-4">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <p className="text-muted-foreground">{t("common.loading")}</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[50vh] space-y-4">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <p className="text-muted-foreground">{t("common.loading")}</p>
+      </div>
+    );
+  }
 
   if (!policy) {
     return (
       <div className="flex flex-col items-center justify-center h-[50vh] space-y-4">
         <div className="h-20 w-20 rounded-full bg-muted/50 flex items-center justify-center">
-          <Shield className="h-10 w-10 text-muted-foreground/50" />
+          <AlertCircle className="h-10 w-10 text-muted-foreground/50" />
         </div>
-        <h1 className="text-xl font-semibold">{t('policyDetails.policyNotFound')}</h1>
+        <h1 className="text-xl font-semibold">{t("policyDetails.policyNotFound")}</h1>
         <Link href="/policies">
-          <Button className="h-12 px-6 rounded-xl">{t('policyDetails.backToPolicies')}</Button>
+          <Button className="h-12 px-6 rounded-xl">{t("policyDetails.backToPolicies")}</Button>
         </Link>
       </div>
     );
   }
 
-  const gapAnalysis = userProfile ? calculatePolicyGaps(policy.type, userProfile) : null;
-  const gapScore = gapAnalysis?.score || 0;
-  
-  let enhancedGapAnalysis: any = null;
-  
-  if (policy.type === "Home & Liability") {
-    enhancedGapAnalysis = analyzeHomeGaps(450000, 280);
-  } else if (policy.type === "Auto") {
-    enhancedGapAnalysis = analyzeAutoGaps(25000, 180000);
-  } else if (policy.type === "Health") {
-    enhancedGapAnalysis = analyzeHealthGaps(1500, 800, 500);
-  } else if (policy.type === "Investment Life") {
-    enhancedGapAnalysis = analyzeInvestmentGaps(45200, 75000, 15);
-  } else if (policy.type === "Pet Insurance") {
-    enhancedGapAnalysis = analyzePetGaps("Golden Retriever", 3, { "Hip Dysplasia": true });
-  } else if (policy.type === "Doctor Civil Liability") {
-    enhancedGapAnalysis = analyzeDoctorGaps("Surgeon", 2010, 2015);
-  } else if (policy.type === "Marine") {
-    enhancedGapAnalysis = analyzeMarineGaps("Mediterranean", "Ionian", 0, 45000);
-  }
-
-  const IconComponent = policy.icon || getPolicyIcon(policy.type);
+  const IconComponent = getPolicyIcon(policy.policyType);
+  const getPolicyTypeLabel = (type: string) => {
+    const labels: Record<string, string> = {
+      health: t("policyTypes.health"),
+      auto: t("policyTypes.auto"),
+      home: t("policyTypes.home"),
+      life: t("policyTypes.life"),
+      travel: t("policyTypes.travel"),
+      pet: t("policyTypes.pet"),
+      business: t("policyTypes.business"),
+    };
+    return labels[type.toLowerCase()] || type;
+  };
 
   const tabs = [
-    { id: "overview", label: t('policyDetails.overview') },
-    { id: "billing", label: t('policyDetails.billing') },
-    { id: "claims", label: t('policyDetails.claimsTab') },
-    { id: "analysis", label: t('policyDetails.analysis') },
+    { id: "overview", label: t("policyDetails.overview") },
+    { id: "coverages", label: t("policyDetails.coveragesTab") },
+    { id: "details", label: t("policyDetails.detailsTab") },
   ];
 
   return (
     <div className="min-h-screen bg-background pb-24">
-      {/* iOS-Style Sticky Header */}
       <div className="sticky top-0 z-40 bg-background/80 backdrop-blur-xl border-b border-border/50">
         <div className="px-4 py-3">
-          {/* Navigation Row */}
           <div className="flex items-center gap-3">
             <Link href="/policies">
-              <Button 
-                variant="ghost" 
-                size="icon" 
+              <Button
+                variant="ghost"
+                size="icon"
                 className="h-11 w-11 rounded-full -ml-2"
                 data-testid="button-back"
               >
                 <ArrowLeft className="h-5 w-5" />
               </Button>
             </Link>
-            
-            {/* Compact Header Info */}
+
             <div className="flex items-center gap-3 flex-1 min-w-0">
-              <div className={`h-10 w-10 rounded-xl flex items-center justify-center shrink-0 shadow-md ${getIOSIconBg(policy.type)}`}>
+              <div className={`h-10 w-10 rounded-xl flex items-center justify-center shrink-0 shadow-md ${getIOSIconBg(policy.policyType)}`}>
                 <IconComponent className="h-5 w-5 text-white" />
               </div>
               <div className="min-w-0 flex-1">
                 <h1 className="font-semibold text-base text-foreground truncate">
-                  {t(`policyTypes.${policy.type.toLowerCase().replace(/[^a-z]/g, '')}`, policy.type)}
+                  {getPolicyTypeLabel(policy.policyType)}
                 </h1>
-                <p className="text-xs text-muted-foreground truncate">{policy.provider}</p>
+                <p className="text-xs text-muted-foreground truncate">{policy.policyName || policy.policyNumber}</p>
               </div>
             </div>
 
-            {/* Action Buttons */}
             <div className="flex items-center gap-2">
-              <Button 
-                variant="ghost" 
+              <Button
+                variant="ghost"
                 size="icon"
                 className="h-11 w-11 rounded-full"
                 data-testid="button-download"
@@ -144,7 +237,6 @@ export default function PolicyDetailsPage() {
           </div>
         </div>
 
-        {/* iOS-Style Segmented Control */}
         <div className="px-4 pb-3">
           <div className="bg-secondary/80 rounded-xl p-1 flex">
             {tabs.map((tab) => (
@@ -153,8 +245,8 @@ export default function PolicyDetailsPage() {
                 onClick={() => setActiveTab(tab.id as typeof activeTab)}
                 className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-all min-h-[40px] ${
                   activeTab === tab.id
-                    ? 'bg-background text-foreground shadow-sm'
-                    : 'text-muted-foreground'
+                    ? "bg-background text-foreground shadow-sm"
+                    : "text-muted-foreground"
                 }`}
                 data-testid={`tab-${tab.id}`}
               >
@@ -165,387 +257,307 @@ export default function PolicyDetailsPage() {
         </div>
       </div>
 
-      {/* Hero Card */}
       <div className="px-4 pt-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`rounded-2xl p-5 shadow-lg ${getIOSIconBg(policy.type)}`}
+          transition={{ duration: 0.3 }}
         >
-          <div className="flex items-start justify-between gap-4">
-            <div className="text-white">
-              <div className="flex items-center gap-2 mb-2">
-                <Badge 
-                  className={`text-xs font-medium ${
-                    policy.status === "Active" 
-                      ? "bg-white/20 text-white border-white/30" 
-                      : "bg-red-500/80 text-white border-red-400/30"
-                  }`}
-                >
-                  {policy.status === "Active" ? (
-                    <CheckCircle2 className="h-3 w-3 mr-1" />
-                  ) : (
-                    <AlertCircle className="h-3 w-3 mr-1" />
-                  )}
-                  {t(`common.${policy.status.toLowerCase()}`)}
-                </Badge>
-              </div>
-              <h2 className="text-2xl font-bold mb-1">
-                {t(`policyTypes.${policy.type.toLowerCase().replace(/[^a-z]/g, '')}`, policy.type)}
-              </h2>
-              <p className="text-white/80 text-sm">{policy.provider}</p>
-            </div>
-            <div className="h-16 w-16 rounded-2xl bg-white/20 flex items-center justify-center backdrop-blur-sm">
-              <IconComponent className="h-8 w-8 text-white" />
-            </div>
-          </div>
-
-          {/* Quick Stats */}
-          <div className="grid grid-cols-2 gap-4 mt-5 pt-4 border-t border-white/20">
-            <div>
-              <p className="text-white/60 text-xs font-medium uppercase tracking-wider">{t('policyCard.premium')}</p>
-              <p className="text-xl font-bold text-white mt-0.5">{policy.premium}</p>
-            </div>
-            <div>
-              <p className="text-white/60 text-xs font-medium uppercase tracking-wider">{t('policyDetails.effective')}</p>
-              <p className="text-xl font-bold text-white mt-0.5">{policy.effectiveDate}</p>
-            </div>
-          </div>
-        </motion.div>
-      </div>
-
-      {/* Tab Content */}
-      <div className="px-4 pt-6 space-y-4">
-        <AnimatePresence mode="wait">
-          {/* Overview Tab */}
-          {activeTab === "overview" && (
-            <motion.div
-              key="overview"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              className="space-y-4"
-            >
-              {/* Policy Details Card */}
-              <div className="bg-card rounded-2xl border border-border/50 overflow-hidden">
-                <div className="px-4 py-3 border-b border-border/50">
-                  <h3 className="font-semibold text-base">{t('policyDetails.policyDetails')}</h3>
+          <Card className="border border-border/50 overflow-hidden mb-4">
+            <div className={`h-2 ${getIOSIconBg(policy.policyType)}`} />
+            <CardContent className="pt-4 space-y-4">
+              <div className="flex items-center justify-between gap-2">
+                <div>
+                  <p className="text-sm text-muted-foreground">{t("policies.status")}</p>
+                  <Badge className={getStatusBadgeClass(policy.status)}>
+                    {t(`common.${policy.status}`)}
+                  </Badge>
                 </div>
-                <div className="divide-y divide-border/50">
-                  <div className="px-4 py-3.5 flex items-center justify-between min-h-[52px]">
-                    <span className="text-muted-foreground text-sm">{t('appointments.policyNumber')}</span>
-                    <span className="font-mono font-medium text-sm">{policy.policyNumber}</span>
-                  </div>
-                  <div className="px-4 py-3.5 flex items-center justify-between min-h-[52px]">
-                    <span className="text-muted-foreground text-sm">{t('policyDetails.lobCode')}</span>
-                    <span className="font-medium text-sm">{policy.lob}</span>
-                  </div>
-                  <div className="px-4 py-3.5 flex items-center justify-between min-h-[52px]">
-                    <span className="text-muted-foreground text-sm">{t('details.expiration')}</span>
-                    <span className="font-medium text-sm">{policy.expiry}</span>
-                  </div>
-                  <div className="px-4 py-3.5 flex items-center justify-between min-h-[52px]">
-                    <span className="text-muted-foreground text-sm">{t('policyCard.coverage')}</span>
-                    <span className="font-medium text-sm">{policy.coverage}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Coverage Limits */}
-              <div className="bg-card rounded-2xl border border-border/50 overflow-hidden">
-                <div className="px-4 py-3 border-b border-border/50 flex items-center gap-2">
-                  <FileCheck className="h-4 w-4 text-primary" />
-                  <h3 className="font-semibold text-base">{t('policyDetails.scheduleOfBenefits')}</h3>
-                </div>
-                <div className="divide-y divide-border/50">
-                  {Object.entries(policy.details?.coverageLimits || {}).map(([key, value]) => (
-                    <div key={key} className="px-4 py-3.5 flex items-center justify-between min-h-[52px]">
-                      <span className="text-muted-foreground text-sm">{key}</span>
-                      <span className="font-semibold text-sm">{value as string}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Beneficiaries */}
-              {policy.details?.beneficiaries && policy.details.beneficiaries.length > 0 && (
-                <div className="bg-card rounded-2xl border border-border/50 overflow-hidden">
-                  <div className="px-4 py-3 border-b border-border/50 flex items-center gap-2">
-                    <Users className="h-4 w-4 text-primary" />
-                    <h3 className="font-semibold text-base">{t('policyDetails.beneficiaries')}</h3>
-                  </div>
-                  <div className="divide-y divide-border/50">
-                    {policy.details.beneficiaries.map((beneficiary: any, i: number) => (
-                      <div key={i} className="px-4 py-3.5 flex items-center gap-3 min-h-[60px]">
-                        <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm shrink-0">
-                          {beneficiary.name.charAt(0)}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="font-medium text-sm">{beneficiary.name}</p>
-                          <p className="text-xs text-muted-foreground">{beneficiary.relation}</p>
-                        </div>
-                        <div className="text-right shrink-0">
-                          <Badge variant="secondary" className="text-xs">{beneficiary.allocation}</Badge>
-                          {beneficiary.primary && (
-                            <p className="text-[10px] text-primary font-medium mt-1">{t("details.primary")}</p>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Type-Specific Views */}
-              {policy.type === "Health" && <HealthDetailedView policy={policy} metadata={policy.quickViewMetadata} />}
-              {policy.type === "Auto" && <AutoDetailedView policy={policy} metadata={policy.quickViewMetadata} />}
-              {policy.type === "Home & Liability" && <HomeDetailedView policy={policy} metadata={policy.quickViewMetadata} />}
-              {policy.type === "Investment Life" && <InvestmentLifeDetailedView policy={policy} metadata={policy.quickViewMetadata} />}
-              {policy.type === "Pet Insurance" && <PetDetailedView policy={policy} metadata={policy.quickViewMetadata} />}
-
-              {/* Documents Upload Widget */}
-              <PolicyDocumentsUpload 
-                policyId={policy.id} 
-                policyType={policy.type}
-                onUploadComplete={(files) => {
-                  toast.success(t('documents.filesUploaded', { count: files.length }));
-                }}
-              />
-            </motion.div>
-          )}
-
-          {/* Billing Tab */}
-          {activeTab === "billing" && (
-            <motion.div
-              key="billing"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              className="space-y-4"
-            >
-              {/* Payment Alert */}
-              <div className="bg-amber-50 dark:bg-amber-950/50 rounded-2xl p-4 border border-amber-200 dark:border-amber-800">
-                <div className="flex items-start gap-3">
-                  <div className="h-10 w-10 rounded-full bg-amber-100 dark:bg-amber-900 flex items-center justify-center shrink-0">
-                    <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-amber-900 dark:text-amber-100">{t('details.pendingPayment')}</p>
-                    <p className="text-sm text-amber-700 dark:text-amber-300 mt-0.5">
-                      {t('details.dueOn')} {policy.details?.nextPaymentDue}
-                    </p>
-                  </div>
-                  <div className="text-right shrink-0">
-                    <p className="font-bold text-lg text-amber-900 dark:text-amber-100">
-                      ${policy.details?.pendingPayments > 0 ? policy.details?.pendingPayments : policy.premium.replace('/mo', '')}
-                    </p>
-                  </div>
-                </div>
-                <Button 
-                  className="w-full mt-4 h-12 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-semibold"
-                  data-testid="button-pay-now"
-                >
-                  <CreditCard className="h-4 w-4 mr-2" />
-                  {t('details.payNow')}
-                </Button>
-              </div>
-
-              {/* Payment History */}
-              <div className="bg-card rounded-2xl border border-border/50 overflow-hidden">
-                <div className="px-4 py-3 border-b border-border/50">
-                  <h3 className="font-semibold text-base">{t('details.paymentHistory')}</h3>
-                </div>
-                <div className="divide-y divide-border/50">
-                  <div className="px-4 py-3.5 flex items-center gap-3 min-h-[60px]">
-                    <div className="h-10 w-10 rounded-full bg-emerald-100 dark:bg-emerald-900 flex items-center justify-center shrink-0">
-                      <CheckCircle2 className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium text-sm">{t('policy.monthlyPremium')}</p>
-                      <p className="text-xs text-muted-foreground">{policy.details?.lastPayment}</p>
-                    </div>
-                    <span className="font-bold text-sm">{policy.premium}</span>
-                  </div>
-                  <div className="px-4 py-3.5 flex items-center gap-3 min-h-[60px] opacity-60">
-                    <div className="h-10 w-10 rounded-full bg-emerald-100 dark:bg-emerald-900 flex items-center justify-center shrink-0">
-                      <CheckCircle2 className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium text-sm">{t('policy.monthlyPremium')}</p>
-                      <p className="text-xs text-muted-foreground">2025-10-01</p>
-                    </div>
-                    <span className="font-bold text-sm">{policy.premium}</span>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          )}
-
-          {/* Claims Tab */}
-          {activeTab === "claims" && (
-            <motion.div
-              key="claims"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              className="space-y-4"
-            >
-              {/* File New Claim Button */}
-              <Button 
-                className="w-full h-12 rounded-xl font-semibold"
-                data-testid="button-file-claim"
-              >
-                <FileText className="h-4 w-4 mr-2" />
-                {t('actions.fileNewClaim')}
-              </Button>
-
-              {policy.details?.claims?.length === 0 ? (
-                <div className="bg-card rounded-2xl border border-border/50 p-8 text-center">
-                  <div className="h-16 w-16 rounded-full bg-muted/50 flex items-center justify-center mx-auto mb-4">
-                    <Shield className="h-8 w-8 text-muted-foreground/50" />
-                  </div>
-                  <p className="text-muted-foreground">{t('policyDetails.noClaimsFiled')}</p>
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  {policy.details?.claims?.map((claim: any) => (
-                    <div key={claim.id} className="bg-card rounded-2xl border border-border/50 overflow-hidden">
-                      <div className="p-4">
-                        <div className="flex items-start justify-between gap-3 mb-3">
-                          <div>
-                            <div className="flex items-center gap-2 mb-1">
-                              <h4 className="font-semibold text-base">{claim.reason}</h4>
-                              <Badge 
-                                variant="secondary"
-                                className={`text-xs ${
-                                  claim.status === "Paid" 
-                                    ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400"
-                                    : "bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-400"
-                                }`}
-                              >
-                                {claim.status}
-                              </Badge>
-                            </div>
-                            <p className="text-xs text-muted-foreground">
-                              {t('policy.id')}: {claim.id} · {claim.incidentDate}
-                            </p>
-                          </div>
-                          <div className="text-right shrink-0">
-                            <p className="font-bold text-lg">{claim.amount}</p>
-                            <p className="text-xs text-muted-foreground">{t('billing.paid')}: {claim.paidAmount}</p>
-                          </div>
-                        </div>
-                        
-                        {claim.steps && (
-                          <>
-                            <div className="w-full bg-secondary h-2 rounded-full overflow-hidden flex">
-                              {claim.steps.map((s: string, i: number) => (
-                                <div 
-                                  key={i} 
-                                  className={`h-full flex-1 border-r border-background last:border-0 ${
-                                    i < (claim.step || 0) ? 'bg-primary' : 'bg-transparent'
-                                  }`}
-                                />
-                              ))}
-                            </div>
-                            <div className="flex justify-between mt-2">
-                              {claim.steps.map((s: string, i: number) => (
-                                <span 
-                                  key={i} 
-                                  className={`text-[10px] ${
-                                    i < (claim.step || 0) ? 'text-primary font-bold' : 'text-muted-foreground'
-                                  }`}
-                                >
-                                  {s}
-                                </span>
-                              ))}
-                            </div>
-                          </>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </motion.div>
-          )}
-
-          {/* Analysis Tab */}
-          {activeTab === "analysis" && (
-            <motion.div
-              key="analysis"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              className="space-y-4"
-            >
-              {enhancedGapAnalysis && (
-                <DynamicGapRecommendations 
-                  analysis={enhancedGapAnalysis}
-                  onQuoteRequest={() => {
-                    toast.success(t('policyDetails.quoteRequestSent'));
-                  }}
-                />
-              )}
-              
-              {gapAnalysis ? (
-                <PolicyRecommendations 
-                  analysis={gapAnalysis} 
-                  onContactAgent={() => {
-                    toast.info(t('policyDetails.redirectingToAgent'));
-                  }}
-                />
-              ) : (
-                <div className="bg-blue-50 dark:bg-blue-950/50 rounded-2xl p-6 border border-blue-200 dark:border-blue-800 text-center">
-                  <div className="h-16 w-16 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center mx-auto mb-4">
-                    <AlertCircle className="h-8 w-8 text-blue-600 dark:text-blue-400" />
-                  </div>
-                  <h3 className="font-semibold text-lg text-blue-900 dark:text-blue-100 mb-2">
-                    {t('policyDetails.completeYourProfile')}
-                  </h3>
-                  <p className="text-sm text-blue-700 dark:text-blue-300 mb-4">
-                    {t('policyDetails.profileRequiredForGapAnalysis')}
+                <div className="text-right">
+                  <p className="text-sm text-muted-foreground">{t("policies.premium")}</p>
+                  <p className="text-lg font-bold text-foreground">
+                    {formatCurrency(policy.premium)}
+                    <span className="text-sm font-normal text-muted-foreground">
+                      /{policy.premiumFrequency === "monthly" ? t("time.month") : policy.premiumFrequency === "quarterly" ? t("time.quarter") : t("time.year")}
+                    </span>
                   </p>
-                  <Link href="/profile">
-                    <Button className="h-12 px-6 rounded-xl" data-testid="button-complete-profile">
-                      {t('policyDetails.completeProfile')}
-                    </Button>
-                  </Link>
                 </div>
-              )}
+              </div>
 
-              {/* Proposals */}
-              {policy.details?.gapAnalysis?.proposals?.length > 0 && (
-                <div className="bg-card rounded-2xl border border-border/50 overflow-hidden">
-                  <div className="px-4 py-3 border-b border-border/50">
-                    <h3 className="font-semibold text-base">{t("details.proposals")}</h3>
+              <div className="grid grid-cols-2 gap-4 pt-2 border-t border-border/50">
+                <div>
+                  <p className="text-xs text-muted-foreground flex items-center gap-1">
+                    <Calendar className="h-3 w-3" />
+                    {t("policyDetails.startDate")}
+                  </p>
+                  <p className="text-sm font-medium text-foreground">{formatDate(policy.startDate)}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground flex items-center gap-1">
+                    <Calendar className="h-3 w-3" />
+                    {t("policyDetails.endDate")}
+                  </p>
+                  <p className="text-sm font-medium text-foreground">{formatDate(policy.endDate)}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+
+        {activeTab === "overview" && (
+          <div className="space-y-4">
+            <Card className="border border-border/50">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base flex items-center gap-2">
+                  <Hash className="h-4 w-4 text-muted-foreground" />
+                  {t("policyDetails.policyInfo")}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">{t("policies.policyNumber")}</span>
+                  <span className="font-medium">{policy.policyNumber}</span>
+                </div>
+                {policy.coverageAmount && parseFloat(policy.coverageAmount.toString()) > 0 && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">{t("policyDetails.totalCoverage")}</span>
+                    <span className="font-medium">{formatCurrency(policy.coverageAmount)}</span>
                   </div>
-                  <div className="divide-y divide-border/50">
-                    {policy.details.gapAnalysis.proposals.map((prop: string, i: number) => (
-                      <div key={i} className="p-4">
-                        <p className="text-sm mb-3">{prop}</p>
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          className="w-full h-10 rounded-xl"
-                          data-testid={`button-view-quote-${i}`}
-                        >
-                          {t('policyDetails.viewQuote')}
-                          <ChevronRight className="h-4 w-4 ml-1" />
-                        </Button>
+                )}
+                {policy.deductible && parseFloat(policy.deductible.toString()) > 0 && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">{t("policyDetails.deductible")}</span>
+                    <span className="font-medium">{formatCurrency(policy.deductible)}</span>
+                  </div>
+                )}
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">{t("policyDetails.addedMethod")}</span>
+                  <Badge variant="secondary" className="text-xs">
+                    {policy.addedMethod === "ai_parsed" ? t("addPolicy.document") : 
+                     policy.addedMethod === "insurer_search" ? t("addPolicy.search") : 
+                     t("addPolicy.manual")}
+                  </Badge>
+                </div>
+              </CardContent>
+            </Card>
+
+            {policy.holderName && (
+              <Card className="border border-border/50">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-base flex items-center gap-2">
+                    <User className="h-4 w-4 text-muted-foreground" />
+                    {t("policyDetails.policyHolder")}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">{t("addPolicy.holderName")}</span>
+                    <span className="font-medium">{policy.holderName}</span>
+                  </div>
+                  {policy.holderAfm && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">{t("addPolicy.taxId")}</span>
+                      <span className="font-medium">{policy.holderAfm}</span>
+                    </div>
+                  )}
+                  {policy.holderPhone && (
+                    <div className="flex justify-between text-sm items-center">
+                      <span className="text-muted-foreground flex items-center gap-1">
+                        <Phone className="h-3 w-3" />
+                        {t("forms.phone")}
+                      </span>
+                      <span className="font-medium">{policy.holderPhone}</span>
+                    </div>
+                  )}
+                  {policy.holderEmail && (
+                    <div className="flex justify-between text-sm items-center">
+                      <span className="text-muted-foreground flex items-center gap-1">
+                        <Mail className="h-3 w-3" />
+                        {t("forms.email")}
+                      </span>
+                      <span className="font-medium">{policy.holderEmail}</span>
+                    </div>
+                  )}
+                  {policy.holderAddress && (
+                    <div className="flex justify-between text-sm items-center">
+                      <span className="text-muted-foreground flex items-center gap-1">
+                        <MapPin className="h-3 w-3" />
+                        {t("forms.address")}
+                      </span>
+                      <span className="font-medium text-right max-w-[60%]">{policy.holderAddress}</span>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+
+            {vehicles.length > 0 && (
+              <Card className="border border-border/50">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-base flex items-center gap-2">
+                    <Car className="h-4 w-4 text-muted-foreground" />
+                    {t("policyDetails.vehicleInfo")}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {vehicles.map((vehicle, idx) => (
+                    <div key={idx} className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-muted-foreground">{t("addPolicy.vehicleMake")}</span>
+                        <span className="font-medium">{vehicle.make} {vehicle.model}</span>
                       </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-muted-foreground">{t("addPolicy.vehiclePlate")}</span>
+                        <span className="font-medium">{vehicle.licensePlate}</span>
+                      </div>
+                      {vehicle.year && (
+                        <div className="flex justify-between text-sm">
+                          <span className="text-muted-foreground">{t("policyDetails.year")}</span>
+                          <span className="font-medium">{vehicle.year}</span>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+            )}
 
-      {/* Universal Broker Actions */}
-      <div className="px-4 pt-6">
-        <UniversalBrokerActions policy={policy} />
+            {properties.length > 0 && (
+              <Card className="border border-border/50">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-base flex items-center gap-2">
+                    <Home className="h-4 w-4 text-muted-foreground" />
+                    {t("policyDetails.propertyInfo")}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {properties.map((property, idx) => (
+                    <div key={idx} className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-muted-foreground">{t("forms.address")}</span>
+                        <span className="font-medium text-right max-w-[60%]">{property.address}</span>
+                      </div>
+                      {property.squareMeters && (
+                        <div className="flex justify-between text-sm">
+                          <span className="text-muted-foreground">{t("addPolicy.propertySqm")}</span>
+                          <span className="font-medium">{property.squareMeters} m²</span>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+            )}
+          </div>
+        )}
+
+        {activeTab === "coverages" && (
+          <div className="space-y-4">
+            {coverages.length === 0 ? (
+              <Card className="border border-border/50 p-6 text-center">
+                <Shield className="h-12 w-12 mx-auto text-muted-foreground/50 mb-3" />
+                <p className="text-muted-foreground">{t("policyDetails.noCoverages")}</p>
+              </Card>
+            ) : (
+              coverages.map((coverage, idx) => (
+                <Card key={idx} className="border border-border/50">
+                  <CardContent className="pt-4 space-y-2">
+                    <div className="flex items-start justify-between gap-2">
+                      <h3 className="font-semibold text-foreground">{coverage.coverageName}</h3>
+                      {coverage.isActive && (
+                        <Badge className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 text-xs">
+                          {t("common.active")}
+                        </Badge>
+                      )}
+                    </div>
+                    {coverage.description && (
+                      <p className="text-sm text-muted-foreground">{coverage.description}</p>
+                    )}
+                    <div className="grid grid-cols-2 gap-2 pt-2 border-t border-border/50">
+                      <div>
+                        <p className="text-xs text-muted-foreground">{t("policyDetails.limit")}</p>
+                        <p className="text-sm font-medium">{formatCurrency(coverage.limitAmount)}</p>
+                      </div>
+                      {coverage.deductible && parseFloat(coverage.deductible.toString()) > 0 && (
+                        <div>
+                          <p className="text-xs text-muted-foreground">{t("policyDetails.deductible")}</p>
+                          <p className="text-sm font-medium">{formatCurrency(coverage.deductible)}</p>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))
+            )}
+          </div>
+        )}
+
+        {activeTab === "details" && (
+          <div className="space-y-4">
+            {beneficiaries.length > 0 && (
+              <Card className="border border-border/50">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-base">{t("addPolicy.beneficiaries")}</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {beneficiaries.map((beneficiary, idx) => (
+                    <div key={idx} className="p-3 bg-muted/50 rounded-lg space-y-1">
+                      <p className="font-medium text-foreground">{beneficiary.fullName}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {beneficiary.relationship} - {beneficiary.percentage}%
+                      </p>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+            )}
+
+            {drivers.length > 0 && (
+              <Card className="border border-border/50">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-base">{t("addPolicy.drivers")}</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {drivers.map((driver, idx) => (
+                    <div key={idx} className="p-3 bg-muted/50 rounded-lg space-y-1">
+                      <p className="font-medium text-foreground">{driver.fullName}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {t("addPolicy.licenseNumber")}: {driver.licenseNumber}
+                      </p>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+            )}
+
+            <Card className="border border-border/50">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base flex items-center gap-2">
+                  <FileText className="h-4 w-4 text-muted-foreground" />
+                  {t("policyDetails.metadata")}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">{t("policyDetails.autoRenew")}</span>
+                  <Badge variant={policy.autoRenew ? "default" : "secondary"} className="text-xs">
+                    {policy.autoRenew ? t("common.yes") : t("common.no")}
+                  </Badge>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">{t("policyDetails.createdAt")}</span>
+                  <span className="font-medium">{formatDate(policy.createdAt)}</span>
+                </div>
+                {policy.notes && (
+                  <div className="pt-2 border-t border-border/50">
+                    <p className="text-xs text-muted-foreground mb-1">{t("policyDetails.notes")}</p>
+                    <p className="text-sm">{policy.notes}</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+        )}
       </div>
     </div>
   );

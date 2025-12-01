@@ -1,38 +1,157 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
-import { policies } from "@/lib/mockData";
+import { useQuery } from "@tanstack/react-query";
+import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { Link } from "wouter";
-import { Search, X, ChevronRight, Plus } from "lucide-react";
+import { Link, useLocation } from "wouter";
+import { Search, X, ChevronRight, Plus, FileText, Heart, Car, Home, Briefcase, Dog, Loader2, Shield } from "lucide-react";
+import type { Policy } from "@shared/schema";
+
+const getPolicyIcon = (type: string) => {
+  switch (type.toLowerCase()) {
+    case "auto": return Car;
+    case "health": return Heart;
+    case "home": return Home;
+    case "life": return Briefcase;
+    case "pet": return Dog;
+    default: return FileText;
+  }
+};
+
+const getPolicyTypeLabel = (type: string, t: any) => {
+  const labels: Record<string, string> = {
+    health: t("policyTypes.health"),
+    auto: t("policyTypes.auto"),
+    home: t("policyTypes.home"),
+    life: t("policyTypes.life"),
+    travel: t("policyTypes.travel"),
+    pet: t("policyTypes.pet"),
+    business: t("policyTypes.business"),
+  };
+  return labels[type.toLowerCase()] || type;
+};
+
+const getStatusBadgeClass = (status: string) => {
+  switch (status.toLowerCase()) {
+    case "active":
+      return "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400";
+    case "expired":
+      return "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400";
+    case "pending":
+      return "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400";
+    case "cancelled":
+      return "bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400";
+    default:
+      return "";
+  }
+};
+
+const formatPremium = (premium: string | number, frequency: string) => {
+  const amount = typeof premium === "string" ? parseFloat(premium) : premium;
+  const formatted = new Intl.NumberFormat("el-GR", {
+    style: "currency",
+    currency: "EUR",
+  }).format(amount);
+  return `${formatted}/${frequency === "monthly" ? "month" : frequency === "quarterly" ? "quarter" : "year"}`;
+};
 
 export default function PoliciesPage() {
   const { t } = useTranslation();
   const [search, setSearch] = useState("");
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [activeFilter, setActiveFilter] = useState<string>("all");
-  const [isLoading, setIsLoading] = useState(true);
-  
-  useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 500);
-    return () => clearTimeout(timer);
-  }, []);
+  const { isAuthenticated, isLoading: authLoading } = useAuth();
+  const [, setLocation] = useLocation();
 
-  const filteredPolicies = policies.filter(p => {
-    const matchesSearch = p.provider.toLowerCase().includes(search.toLowerCase()) || 
-      p.type.toLowerCase().includes(search.toLowerCase());
-    const matchesFilter = activeFilter === "all" || 
-      (activeFilter === "active" && p.status === "Active") ||
-      (activeFilter === "expiring" && new Date(p.expiry) < new Date(Date.now() + 30 * 24 * 60 * 60 * 1000));
+  const { data: policies = [], isLoading, error } = useQuery<Policy[]>({
+    queryKey: ["/api/policies"],
+    enabled: isAuthenticated,
+    retry: false,
+  });
+
+  useEffect(() => {
+    if (!authLoading && !isAuthenticated) {
+      setLocation("/login");
+    }
+  }, [authLoading, isAuthenticated, setLocation]);
+
+  useEffect(() => {
+    if (error) {
+      const errorMessage = error instanceof Error ? error.message : "";
+      if (errorMessage.includes("401")) {
+        setLocation("/login");
+      }
+    }
+  }, [error, setLocation]);
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <p className="text-muted-foreground">{t("common.loading")}</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <p className="text-muted-foreground">{t("common.loading")}</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <p className="text-muted-foreground">{t("policies.loadingPolicies")}</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <p className="text-muted-foreground">{t("common.loading")}</p>
+        </div>
+      </div>
+    );
+  }
+
+  const filteredPolicies = policies.filter((p) => {
+    const searchLower = search.toLowerCase();
+    const matchesSearch =
+      p.policyNumber.toLowerCase().includes(searchLower) ||
+      p.policyType.toLowerCase().includes(searchLower) ||
+      p.policyName?.toLowerCase().includes(searchLower) ||
+      p.holderName?.toLowerCase().includes(searchLower);
+
+    const isExpiringSoon = new Date(p.endDate) < new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+    const matchesFilter =
+      activeFilter === "all" ||
+      (activeFilter === "active" && p.status === "active") ||
+      (activeFilter === "expiring" && isExpiringSoon && p.status === "active");
+
     return matchesSearch && matchesFilter;
   });
 
-  const activePolicies = policies.filter(p => p.status === "Active").length;
-  const expiringPolicies = policies.filter(p => 
-    new Date(p.expiry) < new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+  const activePolicies = policies.filter((p) => p.status === "active").length;
+  const expiringPolicies = policies.filter(
+    (p) => p.status === "active" && new Date(p.endDate) < new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
   ).length;
 
   const filterOptions = [
@@ -48,26 +167,32 @@ export default function PoliciesPage() {
         <div className="max-w-6xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between gap-3 mb-4">
             <div className="flex-1">
-              <h1 className="text-2xl font-bold text-foreground">Your Policies</h1>
-              <p className="text-sm text-muted-foreground mt-1">{policies.length} total policies</p>
+              <h1 className="text-2xl font-bold text-foreground">{t("policies.title")}</h1>
+              <p className="text-sm text-muted-foreground mt-1">
+                {policies.length} {t("policies.totalPolicies")}
+              </p>
             </div>
-            <Button 
-              size="icon" 
-              className="h-11 w-11 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600"
-              data-testid="button-add-policy"
-            >
-              <Plus className="h-5 w-5" />
-            </Button>
+            <Link href="/add-policy">
+              <Button
+                size="icon"
+                className="h-11 w-11 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600"
+                data-testid="button-add-policy"
+              >
+                <Plus className="h-5 w-5" />
+              </Button>
+            </Link>
           </div>
 
           {/* Search Bar */}
           <div className="relative mb-4">
-            <div className={`flex items-center gap-2 bg-secondary/80 rounded-xl transition-all ${
-              isSearchFocused ? 'ring-2 ring-primary/50' : ''
-            }`}>
+            <div
+              className={`flex items-center gap-2 bg-secondary/80 rounded-xl transition-all ${
+                isSearchFocused ? "ring-2 ring-primary/50" : ""
+              }`}
+            >
               <Search className="h-4 w-4 text-muted-foreground ml-3 flex-shrink-0" />
-              <Input 
-                placeholder="Search policies..." 
+              <Input
+                placeholder={t("policies.searchPlaceholder")}
                 className="border-0 shadow-none focus-visible:ring-0 h-11 bg-transparent text-base"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
@@ -92,7 +217,7 @@ export default function PoliciesPage() {
             </div>
           </div>
 
-          {/* Filter Tabs - Mobile Optimized Segmented Control */}
+          {/* Filter Tabs */}
           <div className="relative bg-secondary/60 rounded-xl p-1">
             <div className="grid grid-cols-3 gap-1">
               {filterOptions.map((filter) => (
@@ -101,18 +226,18 @@ export default function PoliciesPage() {
                   onClick={() => setActiveFilter(filter.id)}
                   className={`relative flex flex-col items-center justify-center min-h-[44px] px-2 py-2 rounded-lg text-sm font-medium transition-all ${
                     activeFilter === filter.id
-                      ? 'bg-background text-foreground shadow-sm'
-                      : 'text-muted-foreground hover:text-foreground'
+                      ? "bg-background text-foreground shadow-sm"
+                      : "text-muted-foreground hover:text-foreground"
                   }`}
                   data-testid={`filter-${filter.id}`}
                 >
                   <span className="hidden sm:inline">{filter.label}</span>
                   <span className="sm:hidden">{filter.shortLabel}</span>
-                  <span className={`text-xs mt-0.5 ${
-                    activeFilter === filter.id 
-                      ? 'text-primary font-semibold' 
-                      : 'text-muted-foreground'
-                  }`}>
+                  <span
+                    className={`text-xs mt-0.5 ${
+                      activeFilter === filter.id ? "text-primary font-semibold" : "text-muted-foreground"
+                    }`}
+                  >
                     {filter.count}
                   </span>
                 </button>
@@ -125,58 +250,92 @@ export default function PoliciesPage() {
       {/* Policies Grid */}
       <div className="max-w-6xl mx-auto px-4 py-6">
         {isLoading ? (
-          <div className="space-y-4">
-            {[1, 2, 3].map((i) => (
-              <Card key={i} className="h-40 bg-secondary/30 animate-pulse" />
-            ))}
+          <div className="flex flex-col items-center justify-center py-16 gap-4">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <p className="text-muted-foreground">{t("common.loading")}</p>
+          </div>
+        ) : error ? (
+          <div className="text-center py-16">
+            <p className="text-destructive mb-4">{t("common.error")}</p>
+          </div>
+        ) : policies.length === 0 ? (
+          <div className="text-center py-16">
+            <div className="mx-auto w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+              <Shield className="h-8 w-8 text-primary" />
+            </div>
+            <h3 className="text-lg font-semibold text-foreground mb-2">{t("policies.noPolicies")}</h3>
+            <p className="text-muted-foreground mb-6 max-w-sm mx-auto">{t("policies.noPoliciesDesc")}</p>
+            <Link href="/add-policy">
+              <Button data-testid="button-add-first-policy">
+                <Plus className="h-4 w-4 mr-2" />
+                {t("policies.addFirstPolicy")}
+              </Button>
+            </Link>
           </div>
         ) : filteredPolicies.length === 0 ? (
           <div className="text-center py-16">
-            <p className="text-muted-foreground mb-4">No policies found</p>
-            <Button>Add Your First Policy</Button>
+            <p className="text-muted-foreground mb-4">{t("policies.noResults")}</p>
+            <Button variant="outline" onClick={() => setSearch("")}>
+              {t("common.clearSearch")}
+            </Button>
           </div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredPolicies.map((policy) => (
-              <Link key={policy.id} href={`/policies/${policy.id}`}>
-                <Card className="p-6 border border-border/50 hover:shadow-lg transition-all cursor-pointer h-full">
-                  <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <h3 className="font-semibold text-foreground text-lg">{policy.type}</h3>
-                      <p className="text-sm text-muted-foreground">{policy.provider}</p>
+            {filteredPolicies.map((policy) => {
+              const PolicyIcon = getPolicyIcon(policy.policyType);
+              return (
+                <Link key={policy.id} href={`/policies/${policy.id}`}>
+                  <Card
+                    className="p-6 border border-border/50 hover:shadow-lg transition-all cursor-pointer h-full"
+                    data-testid={`card-policy-${policy.id}`}
+                  >
+                    <div className="flex items-start justify-between mb-4 gap-2">
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                          <PolicyIcon className="h-5 w-5 text-primary" />
+                        </div>
+                        <div className="min-w-0">
+                          <h3 className="font-semibold text-foreground text-lg truncate">
+                            {getPolicyTypeLabel(policy.policyType, t)}
+                          </h3>
+                          <p className="text-sm text-muted-foreground truncate">{policy.policyName || policy.policyNumber}</p>
+                        </div>
+                      </div>
+                      <Badge className={getStatusBadgeClass(policy.status)}>
+                        {t(`common.${policy.status}`)}
+                      </Badge>
                     </div>
-                    <Badge 
-                      className={policy.status === "Active" ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400" : ""}
-                    >
-                      {policy.status}
-                    </Badge>
-                  </div>
 
-                  <div className="space-y-3 mb-4">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">Policy #</span>
-                      <span className="font-medium">{policy.policyNumber}</span>
+                    <div className="space-y-3 mb-4">
+                      <div className="flex justify-between text-sm gap-2">
+                        <span className="text-muted-foreground">{t("policies.policyNumber")}</span>
+                        <span className="font-medium truncate">{policy.policyNumber}</span>
+                      </div>
+                      <div className="flex justify-between text-sm gap-2">
+                        <span className="text-muted-foreground">{t("policies.premium")}</span>
+                        <span className="font-medium">{formatPremium(policy.premium, policy.premiumFrequency)}</span>
+                      </div>
+                      <div className="flex justify-between text-sm gap-2">
+                        <span className="text-muted-foreground">{t("policies.expires")}</span>
+                        <span className="font-medium">
+                          {new Date(policy.endDate).toLocaleDateString("el-GR")}
+                        </span>
+                      </div>
+                      {policy.holderName && (
+                        <div className="flex justify-between text-sm gap-2">
+                          <span className="text-muted-foreground">{t("addPolicy.holderName")}</span>
+                          <span className="font-medium truncate">{policy.holderName}</span>
+                        </div>
+                      )}
                     </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">Premium</span>
-                      <span className="font-medium">{policy.premium}/{policy.paymentFrequency}</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">Expires</span>
-                      <span className="font-medium">{new Date(policy.expiry).toLocaleDateString("el-GR")}</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">Coverage</span>
-                      <span className="font-medium">{policy.coverage}</span>
-                    </div>
-                  </div>
 
-                  <div className="flex items-center justify-between pt-4 border-t border-border/50 text-sm text-primary font-medium hover:gap-2 transition-all">
-                    View Details <ChevronRight className="h-4 w-4" />
-                  </div>
-                </Card>
-              </Link>
-            ))}
+                    <div className="flex items-center justify-between pt-4 border-t border-border/50 text-sm text-primary font-medium">
+                      {t("policies.viewDetails")} <ChevronRight className="h-4 w-4" />
+                    </div>
+                  </Card>
+                </Link>
+              );
+            })}
           </div>
         )}
       </div>
