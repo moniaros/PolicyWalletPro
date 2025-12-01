@@ -534,12 +534,45 @@
     "doNotDisturb": "Μην Ενοχλείτε"
   },
   "wellness": {
-    "title": "Wellness",
+    "title": "Υγεία & Ευεξία",
     "fitnessTracking": "Παρακολούθηση Φυσικής Κατάστασης",
     "stepsToday": "Βήματα Σήμερα",
     "heartRate": "Καρδιακός Ρυθμός",
     "bloodPressure": "Αρτηριακή Πίεση",
-    "goals": "Στόχοι"
+    "goals": "Στόχοι",
+    "wellnessIndex": "Δείκτης Ευεξίας",
+    "wellnessIndexDesc": "Βασισμένο σε ιατρικούς ελέγχους, στόχους υγείας και προληπτικές ενέργειες",
+    "actions": "Ενέργειες",
+    "exams": "Εξετάσεις",
+    "dailyHealthGoals": "Ημερήσιοι Στόχοι Υγείας",
+    "scoreExcellent": "Εξαιρετικό",
+    "scoreGood": "Καλό",
+    "scoreAverage": "Μέτριο",
+    "scoreNeedsWork": "Χρειάζεται Βελτίωση",
+    "strava": {
+      "title": "Strava",
+      "connected": "Συνδεδεμένο",
+      "syncFor": "Συγχρονισμός για {{name}}",
+      "syncActivities": "Συγχρονισμός δραστηριοτήτων fitness",
+      "connect": "Σύνδεση",
+      "disconnect": "Αποσύνδεση",
+      "syncComplete": "Συγχρονισμός ολοκληρώθηκε!",
+      "connectSuccess": "Επιτυχής σύνδεση με Strava!",
+      "disconnected": "Αποσύνδεση από Strava",
+      "recentActivities": "Πρόσφατες Δραστηριότητες",
+      "distance": "Απόσταση",
+      "time": "Χρόνος",
+      "calories": "Θερμίδες",
+      "workouts": "Ασκήσεις",
+      "activityTypes": {
+        "run": "Τρέξιμο",
+        "ride": "Ποδηλασία",
+        "swim": "Κολύμβηση",
+        "walk": "Περπάτημα",
+        "hike": "Πεζοπορία",
+        "workout": "Άσκηση"
+      }
+    }
   },
   "gapAnalysis": {
     "lifeInsurance": "Ασφάλεια Ζωής",

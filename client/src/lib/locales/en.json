@@ -544,12 +544,45 @@
     "doNotDisturb": "Do Not Disturb"
   },
   "wellness": {
-    "title": "Wellness",
+    "title": "Health & Wellness",
     "fitnessTracking": "Fitness Tracking",
     "stepsToday": "Steps Today",
     "heartRate": "Heart Rate",
     "bloodPressure": "Blood Pressure",
-    "goals": "Goals"
+    "goals": "Goals",
+    "wellnessIndex": "Wellness Index",
+    "wellnessIndexDesc": "Based on medical checkups, health goals, and preventive actions",
+    "actions": "Actions",
+    "exams": "Exams",
+    "dailyHealthGoals": "Daily Health Goals",
+    "scoreExcellent": "Excellent",
+    "scoreGood": "Good",
+    "scoreAverage": "Average",
+    "scoreNeedsWork": "Needs Work",
+    "strava": {
+      "title": "Strava",
+      "connected": "Connected",
+      "syncFor": "Syncing for {{name}}",
+      "syncActivities": "Sync fitness activities",
+      "connect": "Connect",
+      "disconnect": "Disconnect",
+      "syncComplete": "Sync complete!",
+      "connectSuccess": "Successfully connected to Strava!",
+      "disconnected": "Disconnected from Strava",
+      "recentActivities": "Recent Activities",
+      "distance": "Distance",
+      "time": "Time",
+      "calories": "Calories",
+      "workouts": "Workouts",
+      "activityTypes": {
+        "run": "Run",
+        "ride": "Ride",
+        "swim": "Swim",
+        "walk": "Walk",
+        "hike": "Hike",
+        "workout": "Workout"
+      }
+    }
   },
   "validation": {
     "required": "The {{fieldName}} field is required.",
