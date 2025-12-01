@@ -37,6 +37,13 @@ I prefer simple language and clear explanations. I want iterative development wi
 - **AI-Powered Recommendations:** Six types of recommendations covering coverage gaps, life events, savings, renewals, and wellness benefits.
 - **Dashboard Widgets:** Integrated widgets for renewals, billing, recommendations, insurance health, and payment reminders, dynamically prioritized based on user context.
 
+## Recent Changes (December 2024)
+- **Migrated from Mock to Real Data:** All policy-related pages (dashboard, policies, policy-details) now fetch authenticated user data from PostgreSQL backend using TanStack Query
+- **Robust Authentication Guards:** All protected pages check authentication state before rendering, with proper loading states and redirect logic for unauthenticated users and expired sessions
+- **Dynamic Dashboard Experience:** Shows first-time user onboarding flow when no policies exist, or regular dashboard with calculated metrics from real policy data
+- **Complete API Integration:** Full CRUD support for policies with all relations (beneficiaries, drivers, coverages, vehicles, properties, documents)
+- **Comprehensive i18n Coverage:** Added translations for all loading states, empty states, and error messages in Greek and English
+
 ## External Dependencies
 - **Database:** PostgreSQL (Neon serverless)
 - **AI:** Google Gemini 1.5 Flash API
